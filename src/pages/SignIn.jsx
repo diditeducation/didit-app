@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, googleProvider } from '../firebase'
-import { signInWithPopup, sendSignInLinkToEmail } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, sendSignInLinkToEmail } from 'firebase/auth'
 
 const getActionCodeSettings = (email) => ({
   url: `${window.location.origin}/auth/callback?email=${encodeURIComponent(email)}`,
@@ -22,8 +22,13 @@ export default function SignIn() {
   const handleGoogle = async () => {
     setLoading(true)
     try {
-      await signInWithPopup(auth, googleProvider)
-      navigate('/hub')
+      const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+      if (isMobile) {
+        await signInWithRedirect(auth, googleProvider)
+      } else {
+        await signInWithPopup(auth, googleProvider)
+        navigate('/hub')
+      }
     } catch (err) {
       setError(err.message)
       setLoading(false)

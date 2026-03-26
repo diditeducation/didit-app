@@ -75,18 +75,19 @@ const css = `
 .hub-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
 .hub-desc{font-size:0.8rem;color:#2D2A26;line-height:1.5;margin:0;min-height:2.25em;font-family:'Nunito',sans-serif}
 .hub-skills{display:flex;flex-wrap:nowrap;gap:6px;justify-content:center;margin-top:auto;margin-bottom:4px;min-height:28px;width:100%;overflow:hidden}
-.hub-skill{padding:6px 12px;border-radius:9999px;font-size:0.65rem;font-weight:700;font-family:'Nunito',sans-serif;border:none}
+.hub-skill{padding:6px 12px;border-radius:9999px;font-size:0.65rem;font-weight:700;font-family:'Nunito',sans-serif}
 .hub-play-btn{padding:10px 34px;border-radius:9999px;border:none;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all .25s;color:#fff;margin-top:auto}
 .hub-play-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
 .hub-lock-overlay{position:absolute;inset:0;z-index:10;border-radius:18px;background:rgba(255,255,255,0.7);backdrop-filter:blur(2px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:background .2s}
 .hub-lock-overlay:hover{background:rgba(255,255,255,0.6)}
 .hub-lock-icon{font-size:2.5rem;opacity:0.8}
 .hub-lock-text{font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:700;color:${colors.text};opacity:0.7}
-@media(max-width:768px){
+@media (max-width: 768px){
   .hub-nav{padding:14px 16px}
-  .hub-nav-links a:not(.hub-nav-cta){display:none}
+  .hub-nav-links{gap:12px}
+  .hub-nav-links a{display:none}
   .hub-grid{grid-template-columns:1fr;padding:0 20px 40px;max-width:400px;gap:16px}
-  .hub-card-v{aspect-ratio:auto!important}
+  .hub-card{aspect-ratio:auto}
   .hub-arch-header{height:180px}
   .hub-body{padding:16px 16px 20px!important}
   .hub-title{font-size:1.5rem!important}
@@ -94,7 +95,7 @@ const css = `
   .hub-intro h2{font-size:clamp(24px,6vw,36px)!important}
   .hub-intro p{font-size:14px!important}
 }
-@media(max-width:480px){
+@media (max-width: 480px){
   .hub-grid{padding:0 16px 32px}
   .hub-arch-header{height:160px}
   .hub-intro{padding:48px 16px 12px!important}
@@ -125,10 +126,12 @@ export default function HubPage() {
           <img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} />
         </span>
         <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
-          <a onClick={() => navigate('/')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Home</a>
-          <a onClick={() => navigate('/#problem')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Why</a>
-          <a onClick={() => navigate('/#how')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Our Philosophy</a>
-          <a onClick={() => navigate('/#ourstory')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Our Story</a>
+          <div className="hub-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+            <a onClick={() => navigate('/')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Home</a>
+            <a onClick={() => navigate('/#problem')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Why</a>
+            <a onClick={() => navigate('/#how')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Our Philosophy</a>
+            <a onClick={() => navigate('/#ourstory')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Our Story</a>
+          </div>
           {isLoggedIn && (
             <div style={{ position: 'relative' }}>
               <div
@@ -186,7 +189,7 @@ export default function HubPage() {
       </nav>
 
       <div style={{ minHeight: '100vh', background: '#FFFFFF', fontFamily: "'Nunito', sans-serif" }}>
-        <div style={{ textAlign: 'center', padding: '60px 40px 20px' }}>
+        <div className="hub-intro" style={{ textAlign: 'center', padding: '60px 40px 20px' }}>
           <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 'clamp(30px, 4.5vw, 46px)', letterSpacing: '-0.03em', color: colors.text, marginBottom: 16, lineHeight: 1.15 }}>
             Choose a game
           </h1>
@@ -219,11 +222,11 @@ export default function HubPage() {
               </div>
               <div className="hub-body">
                 <div className="hub-title" style={{ color: game.dark }}>{game.title}</div>
-                <div className="hub-tag" style={{ background: game.light, color: game.primary }}>{game.tag}</div>
+                <div className="hub-tag" style={{ background: game.light, color: game.dark }}>{game.tag}</div>
                 <div className="hub-desc">{game.desc}</div>
                 <div className="hub-skills">
                   {game.skills.map((s) => (
-                    <span key={s} className="hub-skill" style={{ background: game.light, color: game.primary }}>{s}</span>
+                    <span key={s} className="hub-skill" style={{ background: `color-mix(in srgb, ${game.dark} 15%, transparent)`, border: `1.5px solid color-mix(in srgb, ${game.dark} 40%, transparent)`, color: game.dark }}>{s}</span>
                   ))}
                 </div>
                 <button

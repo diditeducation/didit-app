@@ -132,7 +132,7 @@ export default function HomePage() {
     <div style={theme}>
       <GameHomeLayout
         heroVisual={<HeroVisual />}
-        title="Little DJ"
+        title="DJ"
         tagline="Tap, slide, mix — your toddler's first music lesson."
         illustration="/game%20illustrations/Music.png"
         tag="🎵 Music Fundamentals"

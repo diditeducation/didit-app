@@ -45,8 +45,8 @@ export const sound = {
     const g1 = audioCtx.createGain();
     o1.frequency.setValueAtTime(80, audioCtx.currentTime);
     o1.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.12);
-    g1.gain.setValueAtTime(0.6, audioCtx.currentTime);
-    g1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+    g1.gain.setValueAtTime(1.0, audioCtx.currentTime);
+    g1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
     o1.connect(g1);
     g1.connect(masterGain);
     o1.start();
@@ -57,8 +57,8 @@ export const sound = {
     o2.frequency.setValueAtTime(60, audioCtx.currentTime + 0.15);
     o2.frequency.exponentialRampToValueAtTime(25, audioCtx.currentTime + 0.27);
     g2.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    g2.gain.setValueAtTime(0.4, audioCtx.currentTime + 0.15);
-    g2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    g2.gain.setValueAtTime(0.8, audioCtx.currentTime + 0.15);
+    g2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
     o2.connect(g2);
     g2.connect(masterGain);
     o2.start();

@@ -120,32 +120,32 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .mp-game-hook{font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;color:#2D2A26;line-height:1.4;margin:0;min-height:2.8em}
 .mp-game-desc{font-size:0.8rem;color:#2D2A26;line-height:1.5;margin:0;min-height:2.25em}
 .mp-game-skills{display:flex;flex-wrap:nowrap;gap:6px;justify-content:center;margin-top:auto;margin-bottom:4px;min-height:28px;width:100%;overflow:hidden}
-.mp-game-skill{padding:6px 12px;border-radius:9999px;font-size:0.65rem;font-weight:700;font-family:'Nunito',sans-serif;border:none}
+.mp-game-skill{padding:6px 12px;border-radius:9999px;font-size:0.65rem;font-weight:700;font-family:'Nunito',sans-serif}
 .mp-game-play-btn{padding:10px 34px;border-radius:9999px;border:none;font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:800;cursor:pointer;transition:all .25s;color:#fff;margin-top:auto}
 .mp-game-play-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
 
 .mp-game-engineer .mp-game-arch-header{background:#3A6CE5;background-image:url('/backgrounds/background-blue.png');background-size:cover;background-position:center}
 .mp-game-engineer .mp-game-title{color:var(--didit-blueberry-dark)}
 .mp-game-engineer .mp-game-tag{background:var(--didit-blueberry-light);color:var(--didit-blueberry-dark)}
-.mp-game-engineer .mp-game-skill{background:var(--didit-blueberry-light);color:var(--didit-blueberry-dark)}
+.mp-game-engineer .mp-game-skill{background:color-mix(in srgb, var(--didit-blueberry-dark) 15%, transparent);border:1.5px solid color-mix(in srgb, var(--didit-blueberry-dark) 40%, transparent);color:var(--didit-blueberry-dark)}
 .mp-game-engineer .mp-game-play-btn{background:#3A6CE5}
 
 .mp-game-dj .mp-game-arch-header{background:#CF4A4A;background-image:url('/backgrounds/background-red.png');background-size:cover;background-position:center}
 .mp-game-dj .mp-game-title{color:var(--didit-coral-dark)}
 .mp-game-dj .mp-game-tag{background:var(--didit-coral-light);color:var(--didit-coral-dark)}
-.mp-game-dj .mp-game-skill{background:var(--didit-coral-light);color:var(--didit-coral-dark)}
+.mp-game-dj .mp-game-skill{background:color-mix(in srgb, var(--didit-coral-dark) 15%, transparent);border:1.5px solid color-mix(in srgb, var(--didit-coral-dark) 40%, transparent);color:var(--didit-coral-dark)}
 .mp-game-dj .mp-game-play-btn{background:#CF4A4A}
 
 .mp-game-shopper .mp-game-arch-header{background:#4CC830;background-image:url('/backgrounds/background-green.png');background-size:cover;background-position:center}
 .mp-game-shopper .mp-game-title{color:var(--didit-grass-dark)}
 .mp-game-shopper .mp-game-tag{background:var(--didit-grass-light);color:var(--didit-grass-dark)}
-.mp-game-shopper .mp-game-skill{background:var(--didit-grass-light);color:var(--didit-grass-dark)}
+.mp-game-shopper .mp-game-skill{background:color-mix(in srgb, var(--didit-grass-dark) 15%, transparent);border:1.5px solid color-mix(in srgb, var(--didit-grass-dark) 40%, transparent);color:var(--didit-grass-dark)}
 .mp-game-shopper .mp-game-play-btn{background:#2EA820}
 
 .mp-game-chef .mp-game-arch-header{background:#E8B840;background-image:url('/backgrounds/background-yellow.png');background-size:cover;background-position:center}
 .mp-game-chef .mp-game-title{color:var(--didit-sun-dark)}
 .mp-game-chef .mp-game-tag{background:var(--didit-sun-light);color:var(--didit-sun-dark)}
-.mp-game-chef .mp-game-skill{background:var(--didit-sun-light);color:var(--didit-sun-dark)}
+.mp-game-chef .mp-game-skill{background:color-mix(in srgb, var(--didit-sun-dark) 15%, transparent);border:1.5px solid color-mix(in srgb, var(--didit-sun-dark) 40%, transparent);color:var(--didit-sun-dark)}
 .mp-game-chef .mp-game-play-btn{background:#EE6A30}
 
 .mp-how{padding:80px 40px 100px;background:#FFFFFF;margin-top:-1px}
@@ -194,7 +194,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-@media(max-width:768px){
+@media (max-width: 768px){
   .mp-nav{padding:14px 16px}
   .mp-nav-links a:not(.mp-nav-cta){display:none}
   .mp-nav-cta{padding:8px 18px!important;font-size:13px!important}
@@ -237,7 +237,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-maker-visual > div:first-child{width:220px!important;height:220px!important}
   .mp-maker-visual img{width:180px!important;height:180px!important}
 }
-@media(max-width:480px){
+@media (max-width: 480px){
   .mp-hero{padding:80px 16px 16px}
   .mp-hero h1{font-size:clamp(28px,9vw,40px)}
   .mp-hero-sub{font-size:14px}
@@ -295,7 +295,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         </div>
         <div className="mp-problem-inner" style={{ position: 'relative', zIndex: 2 }}>
           <h2 className="reveal" style={{ color: '#2D2A26' }}>Between 2 and 5, their brains are doing the most incredible work they'll ever do, wiring connections for life. <em style={{ color: '#CF4A4A' }}>We thought — why stop at ABCs?</em></h2>
-          <p className="reveal" style={{ fontSize: 16, lineHeight: 1.7, color: '#2D2A26', maxWidth: 580, margin: '0 auto' }}>Finance. Logic. Algorithms. Engineering. Skills most people stumble into as adults — imagine your little one already exploring them.</p>
+          <p className="reveal" style={{ fontSize: 16, lineHeight: 1.7, color: '#2D2A26', maxWidth: 580, margin: '0 auto' }}>Finance. Logic. Algorithms. Engineering. Skills most people stumble into as adults — imagine your little one getting an early start.</p>
         </div>
       </section>
 
@@ -306,7 +306,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         <div className="mp-float-dot" style={{ width: 8, height: 8, background: 'var(--didit-sun-mid)', top: '35%', right: '15%', opacity: 0.5, animationDelay: '1s', animationDuration: '11s' }} />
         <div className="mp-games-intro-inner">
           <h2 className="reveal">Four games. Four skills that give them a{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>head start.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-1deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
-          <p className="reveal">Each game teaches one big real-world concept through simple, joyful interactions designed for little hands.</p>
+          <p className="reveal">Each game teaches one big real-world concept through simple, joyful interactions designed for <strong>kids and parents to play together.</strong></p>
         </div>
       </section>
 
@@ -436,7 +436,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           <div>
             <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.85rem', fontWeight: 800, color: '#2D2A26', letterSpacing: '0.05em', marginBottom: '8px', textTransform: 'uppercase' }}>How it started</p>
             <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '1.4rem', fontWeight: 900, color: '#2D2A26', marginBottom: '8px' }}>Our Story</div>
-            <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>We're from Sydney, Australia — parents to a wonderfully energetic and curious toddler. {'\uD83E\uDDE1'}</p>
+            <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>We're parents from Sydney, Australia who have a wonderfully energetic and curious toddler. {'\uD83E\uDDE1'}</p>
             <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems.</p>
             <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', margin: '0 0 16px', paddingLeft: '20px' }}>
               <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}><span style={{ color: 'var(--didit-coral-mid)', fontWeight: 800, flexShrink: 0 }}>1.</span><span>Most kids' games are loud, busy, and designed to keep little eyes glued to the screen.</span></div>

@@ -269,8 +269,8 @@ export default function ChefGame({ resetRef, onMilestone, onGameEnd }) {
       {!dishRevealed && !transitioning && (
         <div style={{
           display: 'flex',
-          flexWrap: 'wrap',
-          gap: 10,
+          flexWrap: 'nowrap',
+          gap: 8,
           justifyContent: 'center',
           width: '100%',
           padding: '4px 0',
@@ -280,22 +280,23 @@ export default function ChefGame({ resetRef, onMilestone, onGameEnd }) {
               key={`${step.label}-${i}`}
               onClick={() => handleTap(step, i)}
               style={{
+                flex: 1,
+                minWidth: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: 4,
-                padding: '10px 14px',
+                padding: 'clamp(6px, 2vw, 10px) clamp(4px, 1.5vw, 14px)',
                 borderRadius: 18,
                 border: 'none',
                 background: wrongIdx === i ? 'rgba(207,74,74,0.15)' : '#FFFFFF',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 animation: wrongIdx === i ? 'chefShake 0.4s ease' : 'none',
-                minWidth: 68,
                 boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
               }}
             >
-              <div style={{ fontSize: '2.5rem' }}>{step.emoji}</div>
+              <div style={{ fontSize: 'clamp(1.6rem, 6vw, 2.5rem)' }}>{step.emoji}</div>
             </button>
           ))}
         </div>
