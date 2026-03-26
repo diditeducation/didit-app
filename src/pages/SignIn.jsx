@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { auth, googleProvider } from '../firebase'
 import { signInWithPopup, sendSignInLinkToEmail } from 'firebase/auth'
 
-const actionCodeSettings = {
-  url: `${window.location.origin}/auth/callback`,
+const getActionCodeSettings = (email) => ({
+  url: `${window.location.origin}/auth/callback?email=${encodeURIComponent(email)}`,
   handleCodeInApp: true,
-}
+})
 
 const floatCSS = `
 @keyframes siFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(12px,-18px) scale(1.08)}50%{transform:translate(-8px,-30px) scale(0.95)}75%{transform:translate(16px,-12px) scale(1.04)}}
@@ -33,7 +33,15 @@ export default function SignIn() {
   const handleEmailLink = async (e) => {
     e.preventDefault()
     if (!email) return
-    navigate('/hub')
+    setLoading(true)
+    try {
+      await sendSignInLinkToEmail(auth, email, getActionCodeSettings(email))
+      localStorage.setItem('didit_email', email)
+      navigate('/check-email')
+    } catch (err) {
+      setError(err.message)
+      setLoading(false)
+    }
   }
 
   return (

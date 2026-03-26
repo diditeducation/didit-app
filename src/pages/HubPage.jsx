@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors } from '../design-system/tokens';
 import { useAuth } from '../context/AuthContext';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
 
 const GAMES = [
   {
@@ -102,6 +105,7 @@ export default function HubPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isLoggedIn = !!user;
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleCardClick = (path) => {
     if (isLoggedIn) {
@@ -125,6 +129,59 @@ export default function HubPage() {
           <a onClick={() => navigate('/#problem')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Why</a>
           <a onClick={() => navigate('/#how')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Our Philosophy</a>
           <a onClick={() => navigate('/#ourstory')} style={{ fontFamily: "'Nunito', sans-serif", fontSize: '14px', fontWeight: 600, color: colors.text, textDecoration: 'none', opacity: 0.6, cursor: 'pointer' }}>Our Story</a>
+          {isLoggedIn && (
+            <div style={{ position: 'relative' }}>
+              <div
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                style={{
+                  width: '36px', height: '36px', borderRadius: '50%',
+                  background: colors.blueberryDark, display: 'flex',
+                  alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', transition: 'all 0.2s',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              {showUserMenu && (
+                <>
+                  <div onClick={() => setShowUserMenu(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
+                  <div style={{
+                    position: 'absolute', top: '44px', right: 0, zIndex: 99,
+                    background: 'white', borderRadius: '16px',
+                    border: `1px solid ${colors.border}`,
+                    padding: '16px 20px', minWidth: '220px',
+                    fontFamily: "'Nunito', sans-serif",
+                  }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: colors.text, marginBottom: '4px' }}>
+                      {user?.displayName || 'Signed in'}
+                    </div>
+                    <div style={{ fontSize: '12px', color: colors.muted, marginBottom: '16px', wordBreak: 'break-all' }}>
+                      {user?.email}
+                    </div>
+                    <button
+                      onClick={async () => {
+                        await signOut(auth);
+                        setShowUserMenu(false);
+                        navigate('/');
+                      }}
+                      style={{
+                        width: '100%', padding: '10px 16px',
+                        background: 'transparent', border: `1px solid ${colors.border}`,
+                        borderRadius: '9999px', fontFamily: "'Nunito', sans-serif",
+                        fontSize: '13px', fontWeight: 700, color: colors.coralDark,
+                        cursor: 'pointer', transition: 'all 0.2s',
+                      }}
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </nav>
 

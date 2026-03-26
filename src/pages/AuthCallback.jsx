@@ -9,7 +9,9 @@ export default function AuthCallback() {
 
   useEffect(() => {
     if (isSignInWithEmailLink(auth, window.location.href)) {
-      let email = localStorage.getItem('didit_email')
+      // Try URL param first, then localStorage, then prompt as last resort
+      const urlParams = new URLSearchParams(window.location.search)
+      let email = urlParams.get('email') || localStorage.getItem('didit_email')
 
       if (!email) {
         email = window.prompt('Please enter your email to confirm:')
