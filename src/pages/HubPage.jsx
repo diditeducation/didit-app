@@ -80,9 +80,21 @@ const css = `
 .hub-lock-icon{font-size:2.5rem;opacity:0.8}
 .hub-lock-text{font-family:'Nunito',sans-serif;font-size:0.8rem;font-weight:700;color:${colors.text};opacity:0.7}
 @media(max-width:768px){
-  .hub-nav{padding:16px 20px}
-  .hub-grid{grid-template-columns:1fr 1fr;padding:0 24px 40px}
-  .hub-arch-header{height:140px}
+  .hub-nav{padding:14px 16px}
+  .hub-nav-links a:not(.hub-nav-cta){display:none}
+  .hub-grid{grid-template-columns:1fr;padding:0 20px 40px;max-width:400px;gap:16px}
+  .hub-card-v{aspect-ratio:auto!important}
+  .hub-arch-header{height:180px}
+  .hub-body{padding:16px 16px 20px!important}
+  .hub-title{font-size:1.5rem!important}
+  .hub-intro{padding:60px 20px 16px!important}
+  .hub-intro h2{font-size:clamp(24px,6vw,36px)!important}
+  .hub-intro p{font-size:14px!important}
+}
+@media(max-width:480px){
+  .hub-grid{padding:0 16px 32px}
+  .hub-arch-header{height:160px}
+  .hub-intro{padding:48px 16px 12px!important}
 }
 `;
 

@@ -195,19 +195,61 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .reveal.visible{opacity:1;transform:translateY(0)}
 
 @media(max-width:768px){
-  .mp-nav{padding:16px 20px}
+  .mp-nav{padding:14px 16px}
   .mp-nav-links a:not(.mp-nav-cta){display:none}
-  .mp-hero{padding:100px 24px 20px}
-  .mp-problem,.mp-games-intro,.mp-how,.mp-manifesto,.mp-cta-section{padding-left:24px;padding-right:24px}
-  .mp-games-grid{grid-template-columns:1fr 1fr;padding:0 24px 40px}
-  .mp-game-arch-header{height:140px}
+  .mp-nav-cta{padding:8px 18px!important;font-size:13px!important}
+  .mp-hero{padding:90px 20px 20px;min-height:auto}
+  .mp-hero h1{font-size:clamp(32px,8vw,48px);margin-bottom:20px}
+  .mp-hero-sub{font-size:15px;margin-bottom:28px}
+  .mp-btn-primary{padding:12px 28px;font-size:14px}
+  .mp-problem{padding:48px 20px;margin-bottom:20px}
+  .mp-problem h2{font-size:22px}
+  .mp-problem-inner p{font-size:14px!important}
+  .mp-games-intro{padding:60px 20px 16px}
+  .mp-games-intro h2{font-size:clamp(24px,6vw,36px)}
+  .mp-games-intro p{font-size:14px}
+  .mp-games-grid{grid-template-columns:1fr;padding:0 20px 40px;gap:16px;max-width:400px}
+  .mp-game-card-v{aspect-ratio:auto}
+  .mp-game-arch-header{height:180px}
+  .mp-game-arch-circle{width:130px;height:130px}
+  .mp-game-arch-circle img{width:110px;height:110px}
+  .mp-game-body{padding:16px 16px 20px}
+  .mp-game-title{font-size:1.5rem;margin-top:-16px!important}
+  .mp-game-desc{font-size:0.75rem}
+  .mp-game-skills{flex-wrap:wrap}
+  .mp-game-play-btn{padding:10px 28px;font-size:0.75rem}
+  .mp-cta-section{padding:48px 20px 40px!important;margin-top:20px}
+  .mp-cta-section h2{font-size:clamp(24px,6vw,36px)}
+  .mp-cta-desc{font-size:14px;margin-bottom:24px}
+  .mp-how{padding:60px 20px 60px}
+  .mp-how h2{font-size:clamp(24px,5vw,36px);margin-bottom:40px}
   .mp-principles{grid-template-columns:1fr;gap:28px}
+  .mp-principle-num{font-size:28px}
+  .mp-principle h3{font-size:18px}
+  .mp-principle p{font-size:13px}
   .mp-manifesto-grid{grid-template-columns:1fr}
   .mp-email-form{flex-direction:column}
   .mp-email-form button{width:100%}
+  .mp-footer{padding:32px 20px}
   .mp-footer-inner{flex-direction:column;text-align:center}
   .mp-maker-grid{grid-template-columns:1fr!important;gap:32px!important}
-  .mp-maker-visual{height:280px!important}
+  .mp-maker-visual{height:240px!important}
+  .mp-maker-visual > div:first-child{width:220px!important;height:220px!important}
+  .mp-maker-visual img{width:180px!important;height:180px!important}
+}
+@media(max-width:480px){
+  .mp-hero{padding:80px 16px 16px}
+  .mp-hero h1{font-size:clamp(28px,9vw,40px)}
+  .mp-hero-sub{font-size:14px}
+  .mp-problem{padding:40px 16px}
+  .mp-problem h2{font-size:20px}
+  .mp-games-grid{padding:0 16px 32px}
+  .mp-game-arch-header{height:160px}
+  .mp-cta-section{padding:40px 16px 32px!important}
+  .mp-how{padding:48px 16px 48px}
+  .mp-maker-visual{height:200px!important}
+  .mp-maker-visual > div:first-child{width:180px!important;height:180px!important}
+  .mp-maker-visual img{width:140px!important;height:140px!important}
 }
       `}</style>
 
