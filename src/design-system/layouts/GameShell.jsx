@@ -2,6 +2,7 @@ import { fonts, easing } from '../tokens';
 import { PAGE_MAX_WIDTH, BOTTOM_STRIP_HEIGHT } from '../layout';
 import ParentStrip from '../components/ParentStrip';
 import { useSoundManager } from '../useSoundManager';
+import { useNavigate } from 'react-router-dom';
 
 export default function GameShell({
   title,
@@ -16,6 +17,7 @@ export default function GameShell({
   bottomSlot,
 }) {
   const { muted, toggleMute } = useSoundManager();
+  const nav = useNavigate();
 
   const outerStyle = {
     minHeight: '100vh',
@@ -42,8 +44,8 @@ export default function GameShell({
   };
 
   const backBtnStyle = {
-    width: '40px',
-    height: '40px',
+    width: '32px',
+    height: '32px',
     borderRadius: '50%',
     background: 'rgba(0,0,0,0.04)',
     border: '1px solid rgba(0,0,0,0.08)',
@@ -52,13 +54,13 @@ export default function GameShell({
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    fontSize: '1.1rem',
+    fontSize: '0.9rem',
     padding: 0,
   };
 
   const iconBtnStyle = {
-    width: '36px',
-    height: '36px',
+    width: '32px',
+    height: '32px',
     borderRadius: '50%',
     background: 'rgba(0,0,0,0.04)',
     border: '1px solid rgba(0,0,0,0.08)',
@@ -67,7 +69,7 @@ export default function GameShell({
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
-    fontSize: '0.9rem',
+    fontSize: '0.8rem',
     padding: 0,
   };
 
@@ -130,15 +132,18 @@ export default function GameShell({
       <div style={topBarStyle}>
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <button style={backBtnStyle} onClick={onBack} aria-label="Go back">
-              ←
+            <button style={iconBtnStyle} onClick={() => nav('/hub')} aria-label="Games hub">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </button>
             <button style={iconBtnStyle} onClick={toggleMute} aria-label="Toggle sound">
-              {muted ? '🔇' : '🔊'}
+              {muted
+                ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              }
             </button>
           </div>
-          <span style={{ fontFamily: fonts.display, fontWeight: 800, fontSize: '1rem', color: 'var(--game-text)', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>{title}</span>
-          <div style={{ width: '84px' }} />
+          <span onClick={onBack} style={{ fontFamily: fonts.display, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-text)', position: 'absolute', left: '50%', transform: 'translateX(-50%)', cursor: 'pointer' }}>{title}</span>
+          <div style={{ width: '72px' }} />
         </div>
       </div>
 
