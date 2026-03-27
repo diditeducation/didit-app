@@ -107,15 +107,15 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .mp-games-intro h2 em{font-style:italic;color:var(--didit-coral)}
 .mp-games-intro p{font-family:'Nunito',sans-serif;font-size:16px;line-height:1.65;color:var(--didit-text);max-width:560px;margin:0 auto}
 
-.mp-games-grid{max-width:728px;margin:40px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 40px 60px;justify-items:center}
-.mp-game-card-v{display:flex;flex-direction:column;overflow:visible;transition:transform .2s ease;cursor:pointer;background:white;position:relative;border-radius:18px;border:1px solid var(--didit-border);aspect-ratio:54/86}
+.mp-games-grid{max-width:728px;margin:40px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;padding:0 40px 60px;justify-items:center}
+.mp-game-card-v{display:flex;flex-direction:column;overflow:visible;transition:transform .2s ease;cursor:pointer;background:white;position:relative;border-radius:18px;border:1px solid var(--didit-border)}
 .mp-game-card-v:hover{transform:translateY(-4px)}
-.mp-game-arch-header{position:relative;height:45%;border-radius:18px 18px 0 0;overflow:hidden}
+.mp-game-arch-header{position:relative;height:200px;border-radius:18px 18px 0 0;overflow:hidden}
 .mp-game-arch-header::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:160%;height:80px;background:white;border-radius:50% 50% 0 0}
 .mp-game-arch-circle{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:150px;height:150px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;z-index:2}
 .mp-game-arch-circle img{width:128px;height:128px;object-fit:contain}
 .mp-game-body{padding:20px 18px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;flex:1}
-.mp-game-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.8rem;margin:-20px 0 0;letter-spacing:-0.02em}
+.mp-game-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.6rem;margin:-20px 0 0;letter-spacing:-0.02em;padding:0 4px}
 .mp-game-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
 .mp-game-hook{font-family:'Nunito',sans-serif;font-weight:700;font-size:0.9rem;color:#2D2A26;line-height:1.4;margin:0;min-height:2.8em}
 .mp-game-desc{font-size:0.8rem;color:#2D2A26;line-height:1.5;margin:0;min-height:2.25em}

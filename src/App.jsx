@@ -6,6 +6,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import SignIn from './pages/SignIn';
 import CheckEmail from './pages/CheckEmail';
 import AuthCallback from './pages/AuthCallback';
+import { useAuth } from './context/AuthContext';
+
+function HomePage() {
+  const { user } = useAuth();
+  if (user === undefined) return null; // loading
+  return user ? <HubPage /> : <MarketingPage />;
+}
 
 const EngineerHome = lazy(() => import('./games/little-engineer/HomePage'));
 const EngineerGame = lazy(() => import('./games/little-engineer/Game'));
@@ -21,7 +28,8 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={null}>
         <Routes>
-          <Route path="/" element={<MarketingPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<MarketingPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/auth/callback" element={<AuthCallback />} />

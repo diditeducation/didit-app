@@ -33,8 +33,7 @@ export default function ParentStrip({ showTagline = true }) {
     <div style={stripStyle}>
       {showTagline && (
         <div style={labelStyle}>
-          No ads, no in-app purchases.<br />
-          Just simple and fun games you can feel safe about.
+          No ads. Just simple and fun games you can feel safe about.
         </div>
       )}
     </div>

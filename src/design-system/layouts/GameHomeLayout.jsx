@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import SkillPill from '../components/SkillPill';
 import ParentStrip from '../components/ParentStrip';
 import { useSoundManager } from '../useSoundManager';
+import { useNavigate } from 'react-router-dom';
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
 
@@ -56,6 +57,7 @@ export default function GameHomeLayout({
   illustration,
 }) {
   const { muted, toggleMute } = useSoundManager();
+  const nav = useNavigate();
   const [guideOpen, setGuideOpen] = useState(false);
 
   useEffect(() => {
@@ -97,11 +99,11 @@ export default function GameHomeLayout({
   };
 
   const iconBtnStyle = {
-    width: '40px',
-    height: '40px',
+    width: '36px',
+    height: '36px',
     borderRadius: '50%',
     background: 'rgba(0,0,0,0.06)',
-    border: '1px solid rgba(0,0,0,0.1)',
+    border: 'none',
     color: 'var(--game-text-muted)',
     display: 'flex',
     alignItems: 'center',
@@ -339,11 +341,15 @@ export default function GameHomeLayout({
       <div style={pageStyle}>
         {/* TopBar */}
         <div style={topBarStyle}>
-          <button style={iconBtnStyle} onClick={onBack} aria-label="Go back">
-            ←
+          <button style={iconBtnStyle} onClick={() => nav('/hub')} aria-label="Games hub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </button>
           <button style={iconBtnStyle} onClick={toggleMute} aria-label="Toggle sound">
-            {muted ? '🔇' : '🔊'}
+            {muted ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            )}
           </button>
         </div>
 
