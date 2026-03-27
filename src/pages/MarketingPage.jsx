@@ -260,7 +260,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           <a onClick={() => scrollTo('games')}>Our Games</a>
           <a onClick={() => scrollTo('how')}>Our Philosophy</a>
           <a onClick={() => scrollTo('ourstory')}>Our Story</a>
-          <a className="mp-nav-cta" onClick={() => navigate('/signin')}>Let's play! →</a>
+          <a className="mp-nav-cta" onClick={() => navigate('/signin')}>Log in</a>
         </div>
       </nav>
 
@@ -275,7 +275,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 
         <div className="mp-hero-content">
           <h1>Kids learning<br /><span className="mp-rotating-wrapper"><span className="mp-rotating-words"><span style={{ color: '#CF4A4A' }}>algorithms</span><span style={{ color: '#CF4A4A' }}>finance</span><span style={{ color: '#CF4A4A' }}>engineering</span><span style={{ color: '#CF4A4A' }}>DJ-ing</span><span style={{ color: '#CF4A4A' }}>algorithms</span></span></span><br />through <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>play.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h1>
-          <p className="mp-hero-sub">We packed big concepts and real-world skills into tiny games.<br />And something kind of wonderful happened — they just picked it up!</p>
+          <p className="mp-hero-sub">We packed big concepts and real-world skills into tiny games. And something kind of wonderful happened — they just picked it up!</p>
           <div className="mp-hero-actions">
             <button className="mp-btn-primary" onClick={() => navigate(user ? '/hub' : '/signin')}>Try the games{' '}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button>
           </div>

@@ -18,6 +18,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showEmail, setShowEmail] = useState(false)
 
   const handleGoogle = async () => {
     setLoading(true)
@@ -156,67 +157,88 @@ export default function SignIn() {
           Continue with Google
         </button>
 
-        {/* Divider */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          width: '100%',
-          marginBottom: '20px',
-        }}>
-          <div style={{ flex: 1, height: '1px', background: '#EDE5D8' }} />
-          <span style={{ color: '#9A8F82', fontSize: '0.75rem', fontWeight: 600 }}>or use email</span>
-          <div style={{ flex: 1, height: '1px', background: '#EDE5D8' }} />
-        </div>
-
-        {/* Email form */}
-        <form
-          onSubmit={handleEmailLink}
-          style={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-          }}>
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="your@email.com"
-            required
+        {/* Email toggle link */}
+        {!showEmail && (
+          <p
+            onClick={() => setShowEmail(true)}
             style={{
-              padding: '14px 20px',
-              borderRadius: '9999px',
-              border: '2px solid #EDE5D8',
-              fontFamily: "'Nunito', sans-serif",
-              fontSize: '0.95rem',
-              outline: 'none',
-              background: '#FFFFFF',
-              transition: 'border-color 0.2s',
-              color: '#2D2A26',
+              color: '#9A8F82',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'color 0.2s',
             }}
-            onFocus={(e) => e.target.style.borderColor = '#3A6CE5'}
-            onBlur={(e) => e.target.style.borderColor = '#EDE5D8'}
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: '14px 24px',
-              background: '#D4DB4A',
-              color: '#1A1A1A',
-              border: 'none',
-              borderRadius: '9999px',
-              fontFamily: "'Nunito', sans-serif",
-              fontWeight: 800,
-              fontSize: '0.95rem',
-              cursor: loading ? 'wait' : 'pointer',
-              opacity: loading ? 0.7 : 1,
-              transition: 'all 0.2s',
+            onMouseEnter={(e) => e.target.style.color = '#2D2A26'}
+            onMouseLeave={(e) => e.target.style.color = '#9A8F82'}
+          >
+            or use email instead →
+          </p>
+        )}
+
+        {/* Email form - slides open */}
+        {showEmail && (
+          <div style={{ marginTop: '4px' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              width: '100%',
+              marginBottom: '16px',
             }}>
-            Send magic link →
-          </button>
-        </form>
+              <div style={{ flex: 1, height: '1px', background: '#EDE5D8' }} />
+              <span style={{ color: '#9A8F82', fontSize: '0.7rem', fontWeight: 600 }}>email</span>
+              <div style={{ flex: 1, height: '1px', background: '#EDE5D8' }} />
+            </div>
+            <form
+              onSubmit={handleEmailLink}
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                required
+                autoFocus
+                style={{
+                  padding: '12px 18px',
+                  borderRadius: '9999px',
+                  border: '2px solid #EDE5D8',
+                  fontFamily: "'Nunito', sans-serif",
+                  fontSize: '0.9rem',
+                  outline: 'none',
+                  background: '#FFFFFF',
+                  transition: 'border-color 0.2s',
+                  color: '#2D2A26',
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#3A6CE5'}
+                onBlur={(e) => e.target.style.borderColor = '#EDE5D8'}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  color: '#2D2A26',
+                  border: '2px solid #EDE5D8',
+                  borderRadius: '9999px',
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  cursor: loading ? 'wait' : 'pointer',
+                  opacity: loading ? 0.7 : 1,
+                  transition: 'all 0.2s',
+                }}>
+                Send magic link →
+              </button>
+            </form>
+          </div>
+        )}
 
         {/* Back link */}
         <p style={{
