@@ -198,7 +198,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-nav{padding:14px 16px}
   .mp-nav-links a:not(.mp-nav-cta){display:none}
   .mp-nav-cta{padding:8px 18px!important;font-size:13px!important}
-  .mp-hero{padding:100px 20px 40px;min-height:auto}
+  .mp-hero{padding:100px 20px 60px;min-height:100vh}
   .mp-hero h1{font-size:clamp(32px,8vw,48px);margin-bottom:20px}
   .mp-hero-sub{font-size:15px;margin-bottom:28px}
   .mp-btn-primary{padding:12px 28px;font-size:14px}
@@ -238,7 +238,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-maker-visual img{width:180px!important;height:180px!important}
 }
 @media (max-width: 480px){
-  .mp-hero{padding:90px 16px 32px}
+  .mp-hero{padding:90px 16px 40px;min-height:100vh}
   .mp-hero h1{font-size:clamp(28px,9vw,40px)}
   .mp-hero-sub{font-size:14px}
   .mp-problem{padding:40px 16px}
