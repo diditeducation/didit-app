@@ -73,7 +73,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .mp-nav-cta{background:#D4DB4A!important;color:#1A1A1A!important;opacity:1!important;padding:10px 22px;border-radius:9999px;font-weight:700!important;transition:all .3s!important}
 .mp-nav-cta:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 6px 20px rgba(212,219,74,0.3)}
 
-.mp-hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 40px 20px;overflow:hidden}
+.mp-hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:140px 40px 60px;overflow:hidden}
 .mp-hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 50% 40% at 15% 80%,rgba(78,205,196,0.1) 0%,transparent 60%),radial-gradient(ellipse 40% 35% at 85% 20%,rgba(255,107,107,0.08) 0%,transparent 60%),radial-gradient(ellipse 35% 30% at 50% 60%,rgba(255,230,109,0.06) 0%,transparent 50%)}
 .mp-hero-content{position:relative;z-index:10;max-width:900px;text-align:center}
 .mp-hero h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(42px,6.5vw,76px);letter-spacing:-0.03em;line-height:1.05;color:#3A6CE5;margin-bottom:28px;animation:mp-fadeInUp .8s ease .15s forwards;opacity:0}
@@ -198,7 +198,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-nav{padding:14px 16px}
   .mp-nav-links a:not(.mp-nav-cta){display:none}
   .mp-nav-cta{padding:8px 18px!important;font-size:13px!important}
-  .mp-hero{padding:90px 20px 20px;min-height:auto}
+  .mp-hero{padding:100px 20px 40px;min-height:auto}
   .mp-hero h1{font-size:clamp(32px,8vw,48px);margin-bottom:20px}
   .mp-hero-sub{font-size:15px;margin-bottom:28px}
   .mp-btn-primary{padding:12px 28px;font-size:14px}
@@ -238,7 +238,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-maker-visual img{width:180px!important;height:180px!important}
 }
 @media (max-width: 480px){
-  .mp-hero{padding:80px 16px 16px}
+  .mp-hero{padding:90px 16px 32px}
   .mp-hero h1{font-size:clamp(28px,9vw,40px)}
   .mp-hero-sub{font-size:14px}
   .mp-problem{padding:40px 16px}
