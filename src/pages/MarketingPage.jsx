@@ -76,7 +76,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .mp-hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:140px 40px 60px;overflow:hidden}
 .mp-hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 50% 40% at 15% 80%,rgba(78,205,196,0.1) 0%,transparent 60%),radial-gradient(ellipse 40% 35% at 85% 20%,rgba(255,107,107,0.08) 0%,transparent 60%),radial-gradient(ellipse 35% 30% at 50% 60%,rgba(255,230,109,0.06) 0%,transparent 50%)}
 .mp-hero-content{position:relative;z-index:10;max-width:900px;text-align:center}
-.mp-hero h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(42px,6.5vw,76px);letter-spacing:-0.03em;line-height:1.05;color:#3A6CE5;margin-bottom:28px;animation:mp-fadeInUp .8s ease .15s forwards;opacity:0}
+.mp-hero h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(42px,6.5vw,76px);letter-spacing:-0.03em;line-height:1.05;color:#3A6CE5;margin-bottom:28px;padding-top:40px;animation:mp-fadeInUp .8s ease .15s forwards;opacity:0}
 .mp-hero-sub{font-family:'Nunito',sans-serif;font-size:clamp(17px,2.2vw,21px);line-height:1.65;color:#2D2A26;max-width:640px;margin:0 auto 40px;animation:mp-fadeInUp .8s ease .3s forwards;opacity:0}
 .mp-hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:mp-fadeInUp .8s ease .45s forwards;opacity:0}
 .mp-btn-primary{display:inline-flex;align-items:center;gap:10px;background:#D4DB4A;color:#1A1A1A;padding:14px 36px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;border:none;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
@@ -198,7 +198,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-nav{padding:14px 16px}
   .mp-nav-links a:not(.mp-nav-cta){display:none}
   .mp-nav-cta{padding:8px 18px!important;font-size:13px!important}
-  .mp-hero{padding:100px 20px 60px;min-height:100vh}
+  .mp-hero{padding:100px 20px 60px;min-height:92vh}
   .mp-hero h1{font-size:clamp(32px,8vw,48px);margin-bottom:20px}
   .mp-hero-sub{font-size:15px;margin-bottom:28px}
   .mp-btn-primary{padding:12px 28px;font-size:14px}
@@ -238,7 +238,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-maker-visual img{width:180px!important;height:180px!important}
 }
 @media (max-width: 480px){
-  .mp-hero{padding:90px 16px 40px;min-height:100vh}
+  .mp-hero{padding:90px 16px 52px;min-height:90vh}
   .mp-hero h1{font-size:clamp(28px,9vw,40px)}
   .mp-hero-sub{font-size:14px}
   .mp-problem{padding:40px 16px}
@@ -275,7 +275,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 
         <div className="mp-hero-content">
           <h1>Kids learning<br /><span className="mp-rotating-wrapper"><span className="mp-rotating-words"><span style={{ color: '#CF4A4A' }}>algorithms</span><span style={{ color: '#CF4A4A' }}>finance</span><span style={{ color: '#CF4A4A' }}>engineering</span><span style={{ color: '#CF4A4A' }}>DJ-ing</span><span style={{ color: '#CF4A4A' }}>algorithms</span></span></span><br />through <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>play.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h1>
-          <p className="mp-hero-sub">We packed big concepts and real-world skills into tiny games. And something kind of wonderful happened — they just picked it up!</p>
+          <p className="mp-hero-sub">What if your child could explore the concepts most grown-ups only encounter later in life — just by playing?</p>
           <div className="mp-hero-actions">
             <button className="mp-btn-primary" onClick={() => navigate(user ? '/hub' : '/signin')}>Try the games{' '}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button>
           </div>
@@ -305,7 +305,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         <div className="mp-float-dot" style={{ width: 12, height: 12, background: 'var(--didit-grass-mid)', bottom: '20%', left: '12%', opacity: 0.45, animationDelay: '4s', animationDuration: '13s' }} />
         <div className="mp-float-dot" style={{ width: 8, height: 8, background: 'var(--didit-sun-mid)', top: '35%', right: '15%', opacity: 0.5, animationDelay: '1s', animationDuration: '11s' }} />
         <div className="mp-games-intro-inner">
-          <h2 className="reveal">Four games. Four skills that give them a{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>head start.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-1deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
+          <h2 className="reveal">Four games. Four{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>real-world skills<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-1deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span>{' '}they could start exploring!</h2>
           <p className="reveal">Each game teaches one big real-world concept through simple, joyful interactions designed for <strong>kids and parents to play together.</strong></p>
         </div>
       </section>
@@ -401,9 +401,9 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           <p className="mp-section-label-lg reveal">Our Design Philosophy</p>
           <h2 className="reveal">Thoughtfully made for little hands and{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>big a-ha moments.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
           <div className="mp-principles">
-            <div className="mp-principle reveal"><div className="mp-principle-num">01</div><h3>Play Together.<br />That's the Magic.</h3><p>Think of the games as a tool in your parenting toolkit, for you and your child to explore together. You bring them to life. Because no app, curriculum, or classroom will ever matter as much as your parenting.</p></div>
-            <div className="mp-principle reveal"><div className="mp-principle-num">02</div><h3>Big Concepts.<br />Made Simple.</h3><p>The ideas may be complex, but the games are simple. Designed for tiny fingers — intuitive, tactile interactions that toddlers figure out naturally. Tap, drag, discover.</p></div>
-            <div className="mp-principle reveal"><div className="mp-principle-num">03</div><h3>No Clutter.<br />No Surprises.</h3><p>A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever. Just simple and fun games you can feel safe about.</p></div>
+            <div className="mp-principle reveal"><div className="mp-principle-num">01</div><h3>Play Together.<br />That's the Magic.</h3><p>The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.</p></div>
+            <div className="mp-principle reveal"><div className="mp-principle-num">02</div><h3>Big Concepts.<br />Made Simple.</h3><p>The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.</p></div>
+            <div className="mp-principle reveal"><div className="mp-principle-num">03</div><h3>No Clutter.<br />No Surprises.</h3><p>A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.</p></div>
           </div>
         </div>
       </section>
