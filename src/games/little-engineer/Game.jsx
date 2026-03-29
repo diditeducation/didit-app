@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
+import FeedbackModal from '../../design-system/components/FeedbackModal';
 import theme from './theme';
 import JunctionBoxLevel from './levels/JunctionBoxLevel';
 
@@ -20,6 +21,7 @@ export default function Game() {
   const navigate = useNavigate();
   const [showSuccess, setShowSuccess] = useState(false);
   const [collectedAnimals, setCollectedAnimals] = useState([]);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const handleComplete = (animals) => {
     setCollectedAnimals(animals ?? []);
@@ -54,7 +56,10 @@ export default function Game() {
         boughtLabel="Animals you found"
         onPlayAgain={handlePlayAgain}
         onBack={() => navigate('/hub')}
+        onFeedback={() => setFeedbackOpen(true)}
+        showShare
       />
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-engineer" />
     </div>
   );
 }

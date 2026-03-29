@@ -4,6 +4,7 @@ import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
+import FeedbackModal from '../../design-system/components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
@@ -33,6 +34,7 @@ export default function Game() {
   });
   const [nextAction, setNextAction] = useState(null);
   const { toast, showToast } = useToast();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const handleComplete = (levelId) => {
     if (completedLevels.has(levelId)) return;
@@ -162,7 +164,10 @@ export default function Game() {
         learnedText="beat, tempo, pitch and mixing"
         onPlayAgain={() => navigate('/games/little-dj')}
         onBack={() => navigate('/hub')}
+        onFeedback={() => setFeedbackOpen(true)}
+        showShare
       />
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-dj" />
     </div>
   );
 }

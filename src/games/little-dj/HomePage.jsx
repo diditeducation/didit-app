@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameHomeLayout from '../../design-system/layouts/GameHomeLayout';
+import FeedbackModal from '../../design-system/components/FeedbackModal';
 import theme from './theme';
 import { easing, colors } from '../../design-system/tokens';
 
@@ -127,6 +129,7 @@ function HeroVisual() {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   return (
     <div style={theme}>
@@ -140,6 +143,8 @@ export default function HomePage() {
         skillPills={[{ label: 'Pitch & tone' }, { label: 'Tempo & rhythm' }, { label: 'Sound layering' }]}
         onPlay={() => navigate('/games/little-dj/play')}
         onBack={() => navigate('/hub')}
+        onFeedback={() => setFeedbackOpen(true)}
+        shareButton
         parentTipBody={
           <span>
             Sit with your little one and explore sounds together. Ask <em>&quot;can you feel the beat?&quot;</em> or <em>&quot;is that sound high or low?&quot;</em>
@@ -148,6 +153,7 @@ export default function HomePage() {
           </span>
         }
       />
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-dj" />
     </div>
   );
 }

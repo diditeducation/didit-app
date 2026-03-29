@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameHomeLayout from '../../design-system/layouts/GameHomeLayout';
+import FeedbackModal from '../../design-system/components/FeedbackModal';
 import theme from './theme';
 import { easing, colors } from '../../design-system/tokens';
 
@@ -104,7 +105,7 @@ function HeroVisual() {
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [soundOn, setSoundOn] = useState(true);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   return (
     <div style={theme}>
@@ -118,6 +119,8 @@ export default function HomePage() {
         skillPills={[{ label: 'Cause & effect' }, { label: 'Binary logic' }, { label: 'Systems thinking' }]}
         onPlay={() => navigate('/games/little-engineer/play')}
         onBack={() => navigate('/hub')}
+        onFeedback={() => setFeedbackOpen(true)}
+        shareButton
         parentTipBody={
           <span>
             Sit with your little one and let them tap around. Ask <em>&quot;what do you think happens if we press that?&quot;</em> — then find out together.
@@ -125,9 +128,8 @@ export default function HomePage() {
             That&apos;s it. Have fun! 🌟
           </span>
         }
-        soundOn={soundOn}
-        onSoundToggle={() => setSoundOn(!soundOn)}
       />
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-engineer" />
     </div>
   );
 }

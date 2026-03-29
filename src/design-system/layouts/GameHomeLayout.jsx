@@ -4,6 +4,7 @@ import { PAGE_MAX_WIDTH } from '../layout';
 import Button from '../components/Button';
 import SkillPill from '../components/SkillPill';
 import ParentStrip from '../components/ParentStrip';
+import ShareButton from '../components/ShareButton';
 import { useSoundManager } from '../useSoundManager';
 import { useNavigate } from 'react-router-dom';
 
@@ -55,6 +56,8 @@ export default function GameHomeLayout({
   parentTipBody,
   onBack,
   illustration,
+  onFeedback,
+  shareButton = false,
 }) {
   const { muted, toggleMute } = useSoundManager();
   const nav = useNavigate();
@@ -408,6 +411,18 @@ export default function GameHomeLayout({
               <button style={guideLinkTextStyle} onClick={() => setGuideOpen(true)}>
                 👋 Parent's Guide
               </button>
+            </div>
+          )}
+
+          {/* Share + Feedback links */}
+          {(shareButton || onFeedback) && (
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 2, flexWrap: 'wrap', ...slotAnimation(7) }}>
+              {shareButton && <ShareButton />}
+              {onFeedback && (
+                <button style={guideLinkTextStyle} onClick={onFeedback}>
+                  💬 Share feedback
+                </button>
+              )}
             </div>
           )}
         </div>

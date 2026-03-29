@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameHomeLayout from '../../design-system/layouts/GameHomeLayout';
+import FeedbackModal from '../../design-system/components/FeedbackModal';
 import theme from './theme';
 import { easing } from '../../design-system/tokens';
 
@@ -97,6 +99,7 @@ function HeroVisual() {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   return (
     <div style={theme}>
@@ -110,6 +113,8 @@ export default function HomePage() {
         skillPills={[{ label: 'Sequencing' }, { label: 'Planning' }, { label: 'Process' }]}
         onPlay={() => navigate('/games/little-chef/play')}
         onBack={() => navigate('/hub')}
+        onFeedback={() => setFeedbackOpen(true)}
+        shareButton
         parentTipBody={
           <span>
             Cook together! Point to each step and say{' '}
@@ -120,6 +125,7 @@ export default function HomePage() {
           </span>
         }
       />
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-chef" />
     </div>
   );
 }

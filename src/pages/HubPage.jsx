@@ -4,6 +4,7 @@ import { colors } from '../design-system/tokens';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
+import ShareButton from '../design-system/components/ShareButton';
 
 const GAMES = [
   {
@@ -243,6 +244,10 @@ export default function HubPage() {
               </div>
             </div>
           ))}
+        </div>
+        {/* Share CTA */}
+        <div style={{ textAlign: 'center', padding: '0 16px 48px', marginTop: -8 }}>
+          <ShareButton label="Know a parent who'd love this? Share Did It! 🔗" style={{ fontSize: '0.88rem' }} />
         </div>
       </div>
     </>

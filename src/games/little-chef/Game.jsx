@@ -4,6 +4,7 @@ import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
+import FeedbackModal from '../../design-system/components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
@@ -21,6 +22,7 @@ export default function Game() {
   const [chefResult, setChefResult] = useState({ cooked: [], total: 0 });
   const chefResetRef = useRef(null);
   const { toast, showToast } = useToast();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const triggerMilestone = (originX, originY, nextFn, message, toastTop) => {
     setMilestone({ active: true, originX, originY });
@@ -120,7 +122,10 @@ export default function Game() {
         boughtLabel="You prepared"
         onPlayAgain={() => navigate('/games/little-chef')}
         onBack={() => navigate('/hub')}
+        onFeedback={() => setFeedbackOpen(true)}
+        showShare
       />
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-chef" />
     </div>
   );
 }

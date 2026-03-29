@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Confetti from './Confetti';
+import ShareButton from './ShareButton';
 
 const KEYFRAMES_ID = 'didit-success-screen-keyframes';
 
@@ -123,7 +124,7 @@ function EmptySlot() {
   );
 }
 
-export default function SuccessScreen({ visible, gameName, learnedText, onPlayAgain, onBack, savedCoins = null, boughtItems = null, boughtLabel = 'You bought' }) {
+export default function SuccessScreen({ visible, gameName, learnedText, onPlayAgain, onBack, savedCoins = null, boughtItems = null, boughtLabel = 'You bought', onFeedback, showShare = false }) {
   const [confettiActive, setConfettiActive] = useState(false);
   const [savingsConfetti, setSavingsConfetti] = useState(false);
 
@@ -390,6 +391,26 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
           ← Other games
         </button>
       </div>
+
+      {/* Share + Feedback */}
+      {(showShare || onFeedback) && (
+        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginTop: 4, flexShrink: 0 }}>
+          {showShare && <ShareButton label="Share with a friend 🔗" style={{ color: 'rgba(255,255,255,0.6)' }} />}
+          {onFeedback && (
+            <button
+              onClick={onFeedback}
+              style={{
+                background: 'none', border: 'none', padding: 0,
+                fontFamily: FONT, fontWeight: 700, fontSize: '0.85rem',
+                color: 'rgba(255,255,255,0.6)', cursor: 'pointer',
+                textDecoration: 'underline', textDecorationStyle: 'dotted',
+              }}
+            >
+              💬 Feedback
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
