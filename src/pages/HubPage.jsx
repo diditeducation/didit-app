@@ -87,15 +87,15 @@ const css = `
 @media (max-width:600px){
   .hub-nav{padding:12px 16px}
   .hub-grid{grid-template-columns:1fr;padding:0 16px 40px;gap:14px;margin-top:20px}
-  .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;height:180px;align-items:stretch}
-  .hub-arch-header{width:150px;height:100%!important;border-radius:0;flex-shrink:0}
+  .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;min-height:205px;align-items:stretch}
+  .hub-arch-header{width:110px;min-height:205px;height:100%!important;border-radius:0;flex-shrink:0;overflow:visible;align-self:stretch}
   .hub-arch-header::after{display:none}
-  .hub-arch-circle{width:112px;height:112px;bottom:auto;top:50%;transform:translate(-50%,-50%)}
-  .hub-arch-circle img{width:90px;height:90px}
-  .hub-body{flex-direction:column;align-items:flex-start;text-align:left;padding:12px 14px 12px;gap:4px}
+  .hub-arch-circle{width:118px;height:118px;bottom:auto;top:50%;left:85%;transform:translate(-50%,-50%)}
+  .hub-arch-circle img{width:94px;height:94px}
+  .hub-body{flex-direction:column;align-items:flex-start;text-align:left;padding:12px 14px 12px 32px;gap:4px;position:relative;z-index:1}
   .hub-title{font-size:1.05rem;margin:0;white-space:normal}
   .hub-tag{font-size:0.55rem;padding:2px 8px}
-  .hub-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:0.68rem;line-height:1.4}
+  .hub-desc{display:block;font-size:0.72rem;line-height:1.45}
   .hub-skills{justify-content:flex-start;margin-top:2px;padding-top:0}
   .hub-skill{font-size:0.58rem;padding:3px 8px}
   .hub-play-btn{width:auto;padding:7px 18px;font-size:0.78rem;margin-top:auto;align-self:flex-start}
@@ -104,6 +104,7 @@ const css = `
   .hub-intro p{font-size:0.85rem!important}
 }
 @keyframes hubDrift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(15px,-20px) scale(1.1)}50%{transform:translate(-10px,-35px) scale(0.95)}75%{transform:translate(20px,-15px) scale(1.05)}}
+@keyframes shareEmit{0%{transform:translate(-50%,-50%) scale(0.4);opacity:0.9}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
 .hub-dot{position:absolute;border-radius:50%;pointer-events:none;animation:hubDrift 12s ease-in-out infinite}
 `;
 
@@ -266,24 +267,51 @@ export default function HubPage() {
           <div style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '0.88rem', color: colors.text }}>
             👨‍👩‍👧‍👦 Know a parent who'd love this?
           </div>
-          <ShareButton
-            label="Share Did It!"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '9px 22px',
-              borderRadius: '9999px',
-              border: `1.5px solid color-mix(in srgb, #7A4800 20%, transparent)`,
-              background: colors.sunMid,
-              color: '#7A4800',
-              fontFamily: "'Nunito', sans-serif",
-              fontWeight: 700,
-              fontSize: '0.82rem',
-              textDecoration: 'none',
-              cursor: 'pointer',
-            }}
-          />
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            {/* Energy emission dots — behind the button */}
+            {[
+              { top: '50%', left: '20%',  size: 9,  color: colors.coralMid,     delay: '0s' },
+              { top: '50%', left: '50%',  size: 7,  color: colors.blueberryMid, delay: '0.5s' },
+              { top: '50%', left: '80%',  size: 8,  color: colors.grassMid,     delay: '1s' },
+              { top: '50%', left: '35%',  size: 6,  color: colors.sunMid,       delay: '1.5s' },
+              { top: '50%', left: '65%',  size: 7,  color: colors.coralLight,   delay: '0.8s' },
+              { top: '50%', left: '10%',  size: 5,  color: colors.blueberryMid, delay: '1.2s' },
+              { top: '50%', left: '90%',  size: 6,  color: colors.grassMid,     delay: '0.3s' },
+            ].map((dot, i) => (
+              <div key={i} style={{
+                position: 'absolute',
+                top: dot.top, left: dot.left,
+                width: dot.size, height: dot.size,
+                borderRadius: '50%',
+                background: dot.color,
+                animation: `shareEmit 1.8s ease-out infinite`,
+                animationDelay: dot.delay,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }} />
+            ))}
+            <ShareButton
+              label="Share Did It!"
+              style={{
+                position: 'relative',
+                zIndex: 1,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '11px 28px',
+                borderRadius: '9999px',
+                border: 'none',
+                background: colors.sun,
+                color: '#1A1A1A',
+                boxShadow: '0 4px 14px rgba(232,184,64,0.55), 0 2px 4px rgba(0,0,0,0.08)',
+                fontFamily: "'Nunito', sans-serif",
+                fontWeight: 800,
+                fontSize: '0.9rem',
+                textDecoration: 'none',
+                cursor: 'pointer',
+              }}
+            />
+          </div>
         </div>
       </div>
     </>
