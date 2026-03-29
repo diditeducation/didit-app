@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const SHARE_TEXT = "We've been playing Did It! with the kids — fun little learning games. Check it out → https://didit.games";
+const SHARE_TEXT = "We have been playing Did·It with the little one. These games pack in real life concepts such as finance, engineering, music production into simple games that kids enjoy. Give it a go! → didit.games";
 
 export default function ShareButton({ label = 'Share with a friend 🔗', style = {} }) {
   const [copied, setCopied] = useState(false);
