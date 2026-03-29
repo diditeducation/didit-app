@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, googleProvider } from '../firebase'
-import { signInWithPopup, signInWithRedirect, sendSignInLinkToEmail } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail } from 'firebase/auth'
 
 const getActionCodeSettings = (email) => ({
   url: `${window.location.origin}/auth/callback?email=${encodeURIComponent(email)}`,
@@ -20,19 +20,39 @@ export default function SignIn() {
   const [error, setError] = useState(null)
   const [showEmail, setShowEmail] = useState(false)
 
+  /* On mobile, Firebase falls back from popup → redirect.
+     Pick up the result when we land back on this page. */
+  useEffect(() => {
+    setLoading(true)
+    getRedirectResult(auth)
+      .then(result => {
+        if (result?.user) navigate('/hub')
+        else setLoading(false)
+      })
+      .catch(err => {
+        setError(err.message)
+        setLoading(false)
+      })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleGoogle = async () => {
     setLoading(true)
+    setError(null)
     try {
-      const isMobile = window.innerWidth < 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-      if (isMobile) {
-        await signInWithRedirect(auth, googleProvider)
-      } else {
-        await signInWithPopup(auth, googleProvider)
-        navigate('/hub')
-      }
+      // Try popup first; on mobile browsers that block popups this throws
+      // and we fall through to the redirect flow.
+      await signInWithPopup(auth, googleProvider)
+      navigate('/hub')
     } catch (err) {
-      setError(err.message)
-      setLoading(false)
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user' ||
+          err.code === 'auth/cancelled-popup-request') {
+        // Fall back to redirect (mobile / restrictive browsers)
+        await signInWithRedirect(auth, googleProvider)
+        // Navigation happens after redirect returns — handled by useEffect above
+      } else {
+        setError(err.message)
+        setLoading(false)
+      }
     }
   }
 
