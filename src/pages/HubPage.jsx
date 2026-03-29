@@ -105,6 +105,7 @@ const css = `
 }
 @keyframes hubDrift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(15px,-20px) scale(1.1)}50%{transform:translate(-10px,-35px) scale(0.95)}75%{transform:translate(20px,-15px) scale(1.05)}}
 @keyframes shareEmit{0%{transform:translate(-50%,-50%) scale(0.4);opacity:0.9}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
+@keyframes shareDot{0%,100%{transform:translateY(0) scale(1);opacity:0.85}50%{transform:translateY(-8px) scale(1.15);opacity:1}}
 .hub-dot{position:absolute;border-radius:50%;pointer-events:none;animation:hubDrift 12s ease-in-out infinite}
 `;
 
@@ -268,23 +269,23 @@ export default function HubPage() {
             👨‍👩‍👧‍👦 Know a parent who'd love this?
           </div>
           <div style={{ position: 'relative', display: 'inline-block' }}>
-            {/* Energy emission dots — behind the button */}
+            {/* Red floating dots around the button */}
             {[
-              { top: '50%', left: '20%',  size: 9,  color: colors.coralMid,     delay: '0s' },
-              { top: '50%', left: '50%',  size: 7,  color: colors.blueberryMid, delay: '0.5s' },
-              { top: '50%', left: '80%',  size: 8,  color: colors.grassMid,     delay: '1s' },
-              { top: '50%', left: '35%',  size: 6,  color: colors.sunMid,       delay: '1.5s' },
-              { top: '50%', left: '65%',  size: 7,  color: colors.coralLight,   delay: '0.8s' },
-              { top: '50%', left: '10%',  size: 5,  color: colors.blueberryMid, delay: '1.2s' },
-              { top: '50%', left: '90%',  size: 6,  color: colors.grassMid,     delay: '0.3s' },
+              { top: '-10px', left: '12%',  size: 8,  delay: '0s',    dur: '2.2s' },
+              { top: '-14px', left: '40%',  size: 6,  delay: '0.4s',  dur: '2.6s' },
+              { top: '-8px',  left: '70%',  size: 9,  delay: '0.8s',  dur: '2s'   },
+              { top: '50%',   left: '-16px',size: 7,  delay: '0.6s',  dur: '2.4s' },
+              { top: '50%',   left: '108%', size: 7,  delay: '0.2s',  dur: '2.8s' },
+              { top: '102%',  left: '20%',  size: 6,  delay: '1s',    dur: '2.3s' },
+              { top: '102%',  left: '65%',  size: 8,  delay: '0.5s',  dur: '2.5s' },
             ].map((dot, i) => (
               <div key={i} style={{
                 position: 'absolute',
                 top: dot.top, left: dot.left,
                 width: dot.size, height: dot.size,
                 borderRadius: '50%',
-                background: dot.color,
-                animation: `shareEmit 1.8s ease-out infinite`,
+                background: colors.coralMid,
+                animation: `shareDot ${dot.dur} ease-in-out infinite`,
                 animationDelay: dot.delay,
                 pointerEvents: 'none',
                 zIndex: 0,
