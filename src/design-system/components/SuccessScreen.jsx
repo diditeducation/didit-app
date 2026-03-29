@@ -335,8 +335,9 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
           </div>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
               gap: 6,
             }}
           >
@@ -351,7 +352,8 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
                   padding: '8px 12px',
                   background: 'rgba(255,255,255,0.1)',
                   borderRadius: 16,
-                  minWidth: 0,
+                  width: 'calc(50% - 3px)',
+                  boxSizing: 'border-box',
                 }}
               >
                 <span style={{ fontSize: '2.4rem', lineHeight: 1 }}>{item.emoji}</span>
