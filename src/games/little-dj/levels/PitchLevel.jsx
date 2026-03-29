@@ -154,10 +154,10 @@ export default function PitchLevel({ onMilestone }) {
       {/* Scene card */}
       <div
         style={{
-          flex: 1,
+          flex: 0.8,
           width: '80%',
           maxWidth: 340,
-          minHeight: 280,
+          minHeight: 200,
           borderRadius: 18,
           position: 'relative',
           overflow: 'hidden',

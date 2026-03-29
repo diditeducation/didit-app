@@ -1,26 +1,30 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-const SHARE_TEXT = "We have been playing Did·It with the little one. These games pack in real life concepts such as finance, engineering, music production into simple games that kids enjoy. Give it a go! ✨ https://didit.games";
+// Text and URL kept separate — iOS iMessage combines them into one bubble correctly.
+// Embedding the URL inside the text string causes iOS to split it into two message bubbles.
+const SHARE_TEXT = "We have been playing Did·It with the little one. These games pack in real life concepts such as finance, engineering, music production into simple games that kids enjoy. Give it a go! ✨";
+const SHARE_URL  = "https://didit.games";
 
 export default function ShareButton({ label = 'Share with a friend 🔗', style = {} }) {
   const [copied, setCopied] = useState(false);
+  const busy = useRef(false);
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        // URL embedded in text only — passing url field separately causes iOS to send 2 messages
-        await navigator.share({ text: SHARE_TEXT });
-      } catch (_) {
-        // user cancelled — do nothing
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(SHARE_TEXT);
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    if (busy.current) return;
+    busy.current = true;
+    try {
+      if (navigator.share) {
+        await navigator.share({ text: SHARE_TEXT, url: SHARE_URL });
+      } else {
+        await navigator.clipboard.writeText(`${SHARE_TEXT} → ${SHARE_URL}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-      } catch (_) {
-        // clipboard not available
       }
+    } catch (_) {
+      // user cancelled — do nothing
+    } finally {
+      busy.current = false;
     }
   };
 
