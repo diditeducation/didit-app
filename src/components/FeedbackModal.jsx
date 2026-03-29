@@ -121,7 +121,6 @@ export default function FeedbackModal({ isOpen, onClose, gameName = '' }) {
     };
     console.log(payload);
     setSubmitted(true);
-    setTimeout(() => onClose(), 2200);
   }
 
   const overlayStyle = {
