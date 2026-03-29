@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
-import FeedbackModal from '../../design-system/components/FeedbackModal';
+import FeedbackModal from '../../components/FeedbackModal';
 import theme from './theme';
 import JunctionBoxLevel from './levels/JunctionBoxLevel';
 
@@ -57,9 +57,8 @@ export default function Game() {
         onPlayAgain={handlePlayAgain}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
-        showShare
       />
-      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-engineer" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Engineer" />
     </div>
   );
 }

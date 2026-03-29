@@ -414,17 +414,6 @@ export default function GameHomeLayout({
             </div>
           )}
 
-          {/* Share + Feedback links */}
-          {(shareButton || onFeedback) && (
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 2, flexWrap: 'wrap', ...slotAnimation(7) }}>
-              {shareButton && <ShareButton />}
-              {onFeedback && (
-                <button style={guideLinkTextStyle} onClick={onFeedback}>
-                  💬 Share feedback
-                </button>
-              )}
-            </div>
-          )}
         </div>
 
         {/* ParentStrip */}

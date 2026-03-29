@@ -392,21 +392,36 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
         </button>
       </div>
 
-      {/* Share + Feedback */}
+      {/* Share + Feedback — subtle text links */}
       {(showShare || onFeedback) && (
-        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginTop: 4, flexShrink: 0 }}>
-          {showShare && <ShareButton label="Share with a friend 🔗" style={{ color: 'rgba(255,255,255,0.6)' }} />}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 4, flexShrink: 0 }}>
+          {showShare && (
+            <ShareButton
+              label="Share with a friend"
+              style={{
+                background: 'none', border: 'none', padding: 0,
+                fontFamily: FONT, fontWeight: 600, fontSize: '0.72rem',
+                color: 'var(--game-text-muted)', cursor: 'pointer',
+                textDecoration: 'underline', textDecorationStyle: 'dashed',
+                textUnderlineOffset: '3px',
+              }}
+            />
+          )}
+          {showShare && onFeedback && (
+            <span style={{ color: 'var(--game-text-muted)', opacity: 0.4, fontSize: '0.72rem', userSelect: 'none' }}>•</span>
+          )}
           {onFeedback && (
             <button
               onClick={onFeedback}
               style={{
                 background: 'none', border: 'none', padding: 0,
-                fontFamily: FONT, fontWeight: 700, fontSize: '0.85rem',
-                color: 'rgba(255,255,255,0.6)', cursor: 'pointer',
-                textDecoration: 'underline', textDecorationStyle: 'dotted',
+                fontFamily: FONT, fontWeight: 600, fontSize: '0.72rem',
+                color: 'var(--game-text-muted)', cursor: 'pointer',
+                textDecoration: 'underline', textDecorationStyle: 'dashed',
+                textUnderlineOffset: '3px',
               }}
             >
-              💬 Feedback
+              Share feedback
             </button>
           )}
         </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameHomeLayout from '../../design-system/layouts/GameHomeLayout';
-import FeedbackModal from '../../design-system/components/FeedbackModal';
+import FeedbackModal from '../../components/FeedbackModal';
 import theme from './theme';
 import { easing } from '../../design-system/tokens';
 
@@ -125,7 +125,7 @@ export default function HomePage() {
           </span>
         }
       />
-      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-chef" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Chef" />
     </div>
   );
 }

@@ -133,6 +133,22 @@ export default function HubPage() {
         <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
           <div className="hub-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
           </div>
+          <ShareButton
+            label={
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+            }
+            style={{
+              width: '36px', height: '36px', borderRadius: '50%',
+              background: 'rgba(0,0,0,0.06)', border: 'none',
+              color: colors.text, display: 'flex',
+              alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', textDecoration: 'none', padding: 0,
+            }}
+          />
           {isLoggedIn && (
             <div style={{ position: 'relative' }}>
               <div
@@ -246,8 +262,25 @@ export default function HubPage() {
           ))}
         </div>
         {/* Share CTA */}
-        <div style={{ textAlign: 'center', padding: '0 16px 48px', marginTop: -8 }}>
-          <ShareButton label="Know a parent who'd love this? Share Did It! 🔗" style={{ fontSize: '0.88rem' }} />
+        <div style={{ textAlign: 'center', padding: '0 16px 48px', marginTop: 4 }}>
+          <ShareButton
+            label="👨‍👩‍👧‍👦 Know a parent who'd love this? Share Did It!"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '9px 20px',
+              borderRadius: '9999px',
+              border: `1.5px solid color-mix(in srgb, ${colors.blueberryMid} 25%, transparent)`,
+              background: `linear-gradient(135deg, ${colors.blueberryLight}, ${colors.sunLight})`,
+              color: colors.blueberryDark,
+              fontFamily: "'Nunito', sans-serif",
+              fontWeight: 700,
+              fontSize: '0.82rem',
+              textDecoration: 'none',
+              cursor: 'pointer',
+            }}
+          />
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
-import FeedbackModal from '../../design-system/components/FeedbackModal';
+import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
@@ -125,9 +125,8 @@ export default function Game() {
         onPlayAgain={() => navigate('/games/little-shopper')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
-        showShare
       />
-      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameId="little-shopper" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Shopper" />
     </div>
   );
 }
