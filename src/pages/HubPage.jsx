@@ -86,11 +86,11 @@ const css = `
 @media (max-width:600px){
   .hub-nav{padding:12px 16px}
   .hub-grid{grid-template-columns:1fr;padding:0 16px 40px;gap:14px;margin-top:20px}
-  .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;height:100px;align-items:stretch}
-  .hub-arch-header{width:100px;height:100%!important;border-radius:0;flex-shrink:0}
+  .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;height:130px;align-items:stretch}
+  .hub-arch-header{width:130px;height:100%!important;border-radius:0;flex-shrink:0}
   .hub-arch-header::after{display:none}
-  .hub-arch-circle{width:72px;height:72px;bottom:auto;top:50%;transform:translate(-50%,-50%)}
-  .hub-arch-circle img{width:58px;height:58px}
+  .hub-arch-circle{width:96px;height:96px;bottom:auto;top:50%;transform:translate(-50%,-50%)}
+  .hub-arch-circle img{width:78px;height:78px}
   .hub-body{flex-direction:column;align-items:flex-start;text-align:left;padding:12px 14px 12px;gap:4px}
   .hub-title{font-size:1.05rem;margin:0;white-space:normal}
   .hub-tag{font-size:0.55rem;padding:2px 8px}
