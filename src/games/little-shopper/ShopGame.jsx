@@ -771,6 +771,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
                 fontFamily: font,
                 opacity: itemVisible ? 1 : 0,
                 transition: 'opacity 0.3s ease',
+                marginTop: 6,
               }}
             >
               {currentItem.name}

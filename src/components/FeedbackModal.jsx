@@ -156,7 +156,7 @@ export default function FeedbackModal({ isOpen, onClose, gameName = '' }) {
         <div style={{ ...modalStyle, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, minHeight: 200 }}>
           <div style={{ fontSize: 40, animation: 'fbConfirmPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both' }}>💌</div>
           <p style={{ fontFamily: FONT, fontWeight: 700, fontSize: '0.95rem', color: '#2D2A26', textAlign: 'center', lineHeight: 1.55, margin: 0, maxWidth: 280 }}>
-            Thank you! This genuinely helps us build better things for your child.
+            Thank you for taking the time! 💛 We value your input and read every single piece of feedback. It's going to help make Did It! even better for the kids and carers to enjoy. Cheers!
           </p>
         </div>
       </div>

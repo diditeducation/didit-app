@@ -99,29 +99,29 @@ export default function Game() {
           </div>
         }
       >
-        {/* Level content */}
-        {activeLevel === 1 && (
+        {/* Level content — unmounted when success screen shows, stopping all audio */}
+        {!showSuccess && activeLevel === 1 && (
           <BeatLevel
             onMilestone={(x, y) =>
               triggerMilestone(x, y, () => handleComplete(1), "You've got the beat! 💓", 40, 3000)
             }
           />
         )}
-        {activeLevel === 2 && (
+        {!showSuccess && activeLevel === 2 && (
           <TempoLevel
             onMilestone={(x, y) =>
               triggerMilestone(x, y, () => handleComplete(2), 'Speed master! 🏃', 22)
             }
           />
         )}
-        {activeLevel === 3 && (
+        {!showSuccess && activeLevel === 3 && (
           <PitchLevel
             onMilestone={(x, y) =>
               triggerMilestone(x, y, () => handleComplete(3), 'Perfect pitch! 🎵', 20)
             }
           />
         )}
-        {activeLevel === 4 && (
+        {!showSuccess && activeLevel === 4 && (
           <MixLevel
             onMilestone={(x, y) =>
               triggerMilestone(x, y, () => handleComplete(4), 'DJ master! 🎧', 20)

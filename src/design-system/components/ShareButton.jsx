@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-const SHARE_TEXT = "We have been playing Did·It with the little one. These games pack in real life concepts such as finance, engineering, music production into simple games that kids enjoy. Give it a go! ✨ → https://didit.games";
+const SHARE_TEXT = "We have been playing Did·It with the little one. These games pack in real life concepts such as finance, engineering, music production into simple games that kids enjoy. Give it a go! ✨";
+const SHARE_URL = "https://didit.games";
 
 export default function ShareButton({ label = 'Share with a friend 🔗', style = {} }) {
   const [copied, setCopied] = useState(false);
@@ -9,13 +10,13 @@ export default function ShareButton({ label = 'Share with a friend 🔗', style 
     if (navigator.share) {
       try {
         // Include URL in text so every app shows it — don't rely on the url field alone
-        await navigator.share({ text: SHARE_TEXT });
+        await navigator.share({ text: SHARE_TEXT, url: SHARE_URL });
       } catch (_) {
         // user cancelled — do nothing
       }
     } else {
       try {
-        await navigator.clipboard.writeText(SHARE_TEXT);
+        await navigator.clipboard.writeText(`${SHARE_TEXT} → ${SHARE_URL}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch (_) {
