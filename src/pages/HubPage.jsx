@@ -88,12 +88,12 @@ const css = `
   .hub-nav{padding:12px 16px}
   .hub-grid{grid-template-columns:1fr;padding:0 16px 40px;gap:14px;margin-top:20px}
   .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;min-height:205px;align-items:stretch}
-  .hub-arch-header{width:110px;min-height:205px;height:100%!important;border-radius:0;flex-shrink:0;overflow:visible;align-self:stretch}
+  .hub-arch-header{width:110px;min-height:205px;height:100%!important;border-radius:0;flex-shrink:0;overflow:visible;align-self:stretch;position:relative;z-index:0}
   .hub-arch-header::after{display:none}
   .hub-arch-circle{width:118px;height:118px;bottom:auto;top:50%;left:85%;transform:translate(-50%,-50%)}
   .hub-arch-circle img{width:94px;height:94px}
-  .hub-body{flex-direction:column;align-items:flex-start;text-align:left;padding:12px 14px 12px 32px;gap:4px;position:relative;z-index:1}
-  .hub-title{font-size:1.05rem;margin:0;white-space:normal}
+  .hub-body{flex-direction:column;align-items:flex-start;text-align:left;padding:15px 14px 15px 32px;gap:4px;position:relative;z-index:2}
+  .hub-title{font-size:1.25rem;margin:0;white-space:normal}
   .hub-tag{font-size:0.55rem;padding:2px 8px}
   .hub-desc{display:block;font-size:0.72rem;line-height:1.45}
   .hub-skills{justify-content:flex-start;margin-top:2px;padding-top:0}
@@ -303,7 +303,6 @@ export default function HubPage() {
                 border: 'none',
                 background: colors.sun,
                 color: '#1A1A1A',
-                boxShadow: '0 4px 14px rgba(232,184,64,0.55), 0 2px 4px rgba(0,0,0,0.08)',
                 fontFamily: "'Nunito', sans-serif",
                 fontWeight: 800,
                 fontSize: '0.9rem',
