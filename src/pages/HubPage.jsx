@@ -87,18 +87,18 @@ const css = `
 @media (max-width:600px){
   .hub-nav{padding:12px 16px}
   .hub-grid{grid-template-columns:1fr;padding:0 16px 40px;gap:14px;margin-top:20px}
-  .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;height:130px;align-items:stretch}
-  .hub-arch-header{width:130px;height:100%!important;border-radius:0;flex-shrink:0}
+  .hub-card{flex-direction:row;border-radius:16px;overflow:hidden;height:180px;align-items:stretch}
+  .hub-arch-header{width:150px;height:100%!important;border-radius:0;flex-shrink:0}
   .hub-arch-header::after{display:none}
-  .hub-arch-circle{width:96px;height:96px;bottom:auto;top:50%;transform:translate(-50%,-50%)}
-  .hub-arch-circle img{width:78px;height:78px}
+  .hub-arch-circle{width:112px;height:112px;bottom:auto;top:50%;transform:translate(-50%,-50%)}
+  .hub-arch-circle img{width:90px;height:90px}
   .hub-body{flex-direction:column;align-items:flex-start;text-align:left;padding:12px 14px 12px;gap:4px}
   .hub-title{font-size:1.05rem;margin:0;white-space:normal}
   .hub-tag{font-size:0.55rem;padding:2px 8px}
-  .hub-desc{display:none}
+  .hub-desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:0.68rem;line-height:1.4}
   .hub-skills{justify-content:flex-start;margin-top:2px;padding-top:0}
   .hub-skill{font-size:0.58rem;padding:3px 8px}
-  .hub-play-btn{width:auto;padding:7px 18px;font-size:0.78rem;margin-top:auto;align-self:center}
+  .hub-play-btn{width:auto;padding:7px 18px;font-size:0.78rem;margin-top:auto;align-self:flex-start}
   .hub-intro{padding:32px 16px 8px!important}
   .hub-intro h1{font-size:1.6rem!important}
   .hub-intro p{font-size:0.85rem!important}
@@ -130,7 +130,7 @@ export default function HubPage() {
         <span className="hub-nav-logo" onClick={() => navigate('/')}>
           <img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} />
         </span>
-        <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <div className="hub-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
           </div>
           <ShareButton
@@ -262,14 +262,17 @@ export default function HubPage() {
           ))}
         </div>
         {/* Share CTA */}
-        <div style={{ textAlign: 'center', padding: '0 16px 48px', marginTop: 4 }}>
+        <div style={{ textAlign: 'center', padding: '0 16px 52px', marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+          <div style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: '0.88rem', color: colors.text }}>
+            👨‍👩‍👧‍👦 Know a parent who'd love this?
+          </div>
           <ShareButton
-            label="👨‍👩‍👧‍👦 Know a parent who'd love this? Share Did It!"
+            label="Share Did It!"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
-              padding: '9px 20px',
+              padding: '9px 22px',
               borderRadius: '9999px',
               border: `1.5px solid color-mix(in srgb, ${colors.blueberryMid} 25%, transparent)`,
               background: `linear-gradient(135deg, ${colors.blueberryLight}, ${colors.sunLight})`,
