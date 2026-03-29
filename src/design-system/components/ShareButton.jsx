@@ -9,7 +9,7 @@ export default function ShareButton({ label = 'Share with a friend 🔗', style 
     if (navigator.share) {
       try {
         // Include URL in text so every app shows it — don't rely on the url field alone
-        await navigator.share({ title: 'Did It!', text: SHARE_TEXT });
+        await navigator.share({ text: SHARE_TEXT });
       } catch (_) {
         // user cancelled — do nothing
       }

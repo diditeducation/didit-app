@@ -144,8 +144,8 @@ export default function HubPage() {
             }
             style={{
               width: '36px', height: '36px', borderRadius: '50%',
-              background: 'rgba(0,0,0,0.06)', border: 'none',
-              color: colors.text, display: 'flex',
+              background: colors.blueberryDark, border: 'none',
+              color: '#fff', display: 'flex',
               alignItems: 'center', justifyContent: 'center',
               cursor: 'pointer', textDecoration: 'none', padding: 0,
             }}
