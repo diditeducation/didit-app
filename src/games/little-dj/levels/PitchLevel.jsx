@@ -155,8 +155,8 @@ export default function PitchLevel({ onMilestone }) {
       <div
         style={{
           flex: 1,
-          width: '100%',
-          maxWidth: 420,
+          width: '80%',
+          maxWidth: 340,
           minHeight: 280,
           borderRadius: 18,
           position: 'relative',
@@ -164,7 +164,7 @@ export default function PitchLevel({ onMilestone }) {
           background: isGlowing
             ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.15), ${C.nightSky} 70%)`
             : C.nightSky,
-          border: `3px solid ${isGlowing ? C.coralGlow + '44' : C.nightEdge}`,
+          border: `3px solid #CF4A4A`,
           boxShadow: 'none',
           transition: 'all 0.6s ease',
           margin: '0 auto',

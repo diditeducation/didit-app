@@ -337,7 +337,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: 12,
+              gap: 6,
             }}
           >
             {boughtItems.map((item, i) => (
