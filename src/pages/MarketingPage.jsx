@@ -208,15 +208,18 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
   .mp-games-intro{padding:60px 20px 16px}
   .mp-games-intro h2{font-size:clamp(24px,6vw,36px)}
   .mp-games-intro p{font-size:14px}
-  .mp-games-grid{grid-template-columns:1fr;padding:0 20px 40px;gap:16px;max-width:400px}
-  .mp-game-card-v{aspect-ratio:auto}
-  .mp-game-arch-header{height:180px}
-  .mp-game-arch-circle{width:130px;height:130px}
-  .mp-game-arch-circle img{width:110px;height:110px}
-  .mp-game-body{padding:16px 16px 20px}
-  .mp-game-title{font-size:1.5rem;margin-top:-16px!important}
-  .mp-game-desc{font-size:0.75rem}
-  .mp-game-skills{flex-wrap:wrap}
+  .mp-games-grid{grid-template-columns:1fr;padding:0 16px 40px;gap:14px;max-width:100%}
+  .mp-game-card-v{flex-direction:row;height:140px;border-radius:16px;overflow:hidden}
+  .mp-game-arch-header{width:140px;height:100%!important;border-radius:0;flex-shrink:0}
+  .mp-game-arch-header::after{display:none}
+  .mp-game-arch-circle{width:104px;height:104px;bottom:auto;top:50%;transform:translate(-50%,-50%)}
+  .mp-game-arch-circle img{width:84px;height:84px}
+  .mp-game-body{flex-direction:column;align-items:flex-start;text-align:left;padding:14px 16px;gap:5px}
+  .mp-game-title{font-size:1.1rem;margin:-4px 0 0!important;white-space:normal}
+  .mp-game-hook{font-size:0.78rem;min-height:unset}
+  .mp-game-desc{font-size:0.72rem;min-height:unset;display:none}
+  .mp-game-skills{flex-wrap:wrap;justify-content:flex-start;margin-top:2px}
+  .mp-game-play-btn{padding:7px 18px;font-size:0.75rem;margin-top:auto;align-self:flex-start}
   .mp-game-play-btn{padding:10px 28px;font-size:0.75rem}
   .mp-cta-section{padding:48px 20px 40px!important;margin-top:20px}
   .mp-cta-section h2{font-size:clamp(24px,6vw,36px)}
