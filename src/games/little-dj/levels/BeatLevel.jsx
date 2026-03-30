@@ -301,10 +301,8 @@ export default function BeatLevel({ onMilestone }) {
           borderRadius: 18,
           position: 'relative',
           overflow: 'hidden',
-          background: isGlowing
-            ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.15), ${C.nightSky} 70%)`
-            : C.nightSky,
-          border: `3px solid ${isGlowing ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
+          background: C.nightSky,
+          border: `3px solid ${C.nightEdge}`,
           boxShadow: 'none',
           transition: 'all 0.6s ease',
           margin: '0 auto',
@@ -378,7 +376,7 @@ export default function BeatLevel({ onMilestone }) {
               background: heartGlow
                 ? `radial-gradient(circle at 40% 35%, ${C.coralGlow}, #C23C3C)`
                 : `radial-gradient(circle at 40% 35%, #C23C3C, ${C.coralGlow})`,
-              boxShadow: 'none',
+              boxShadow: heartGlow ? '0 0 28px rgba(194,60,60,0.55), 0 0 10px rgba(194,60,60,0.3)' : 'none',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -387,8 +385,8 @@ export default function BeatLevel({ onMilestone }) {
               transform: heartTransform,
               animation: heartAnimation,
               transition: pressed
-                ? 'transform 0.1s ease-in, background 0.2s'
-                : 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s',
+                ? 'transform 0.1s ease-in, background 0.2s, box-shadow 0.1s'
+                : 'transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, box-shadow 0.25s',
               border: 'none',
               padding: 0,
             }}

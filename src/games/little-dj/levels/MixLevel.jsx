@@ -112,7 +112,7 @@ export default function MixLevel({ onMilestone }) {
       const a = activeRef.current;
       if (a.kick) sound.kick();
       if (a.hihat) sound.hihat();
-      if (a.snare && (beat === 1 || beat === 3)) sound.snare();
+      if (a.snare) sound.snare();
       if (a.bass) {
         const notes = [0, 0, 5, 3];
         sound.bass(notes[beat]);
@@ -206,55 +206,30 @@ export default function MixLevel({ onMilestone }) {
                 </span>
               </div>
 
-              {/* Beveled tactile button */}
+              {/* Toggle switch */}
               <div
                 style={{
-                  width: 52,
+                  width: 48,
                   height: 28,
-                  borderRadius: 8,
+                  borderRadius: 14,
                   flexShrink: 0,
+                  background: on ? 'var(--game-primary)' : 'rgba(255,255,255,0.18)',
                   position: 'relative',
-                  transition: 'all 0.12s ease',
+                  transition: 'background 0.2s ease',
+                  boxShadow: on ? '0 0 0 1px rgba(255,255,255,0.15)' : 'inset 0 1px 3px rgba(0,0,0,0.3)',
                 }}
               >
-                {/* Button shadow/base layer */}
                 <div style={{
                   position: 'absolute',
-                  inset: 0,
-                  borderRadius: 8,
-                  background: on ? '#8B1A1A' : 'rgba(0,0,0,0.35)',
-                  transform: 'translateY(3px)',
+                  top: 4,
+                  left: on ? 24 : 4,
+                  width: 20,
+                  height: 20,
+                  borderRadius: '50%',
+                  background: '#fff',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.35)',
+                  transition: 'left 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }} />
-                {/* Button face */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  borderRadius: 8,
-                  background: on
-                    ? 'linear-gradient(180deg, #FF8A8A 0%, var(--game-primary) 60%, #CC4444 100%)'
-                    : 'linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%)',
-                  border: on ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(255,255,255,0.12)',
-                  boxShadow: on
-                    ? 'inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.2)'
-                    : 'inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.15)',
-                  transform: isPressed ? 'translateY(3px)' : 'translateY(0px)',
-                  transition: 'transform 0.08s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <span style={{
-                    fontFamily: "'Nunito', sans-serif",
-                    fontWeight: 900,
-                    fontSize: '0.6rem',
-                    color: on ? '#fff' : 'rgba(255,255,255,0.4)',
-                    letterSpacing: '0.08em',
-                    userSelect: 'none',
-                    transition: 'color 0.15s',
-                  }}>
-                    {on ? 'ON' : 'OFF'}
-                  </span>
-                </div>
               </div>
             </div>
           );

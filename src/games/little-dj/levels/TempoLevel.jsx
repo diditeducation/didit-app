@@ -314,32 +314,6 @@ export default function TempoLevel({ onMilestone, onComplete }) {
               boxShadow: 'none',
             }}
           />
-          <div
-            style={{
-              position: 'absolute',
-              left: 14,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              fontSize: '0.75rem',
-              opacity: 0.4,
-              pointerEvents: 'none',
-            }}
-          >
-            🐌
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              right: 14,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              fontSize: '0.75rem',
-              opacity: 0.4,
-              pointerEvents: 'none',
-            }}
-          >
-            🚀
-          </div>
         </div>
       </div>
 

@@ -133,7 +133,7 @@ export const sound = {
   bass: (note = 0) => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;
-    const freq = 55 * Math.pow(2, note / 12);
+    const freq = 110 * Math.pow(2, note / 12);
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();
