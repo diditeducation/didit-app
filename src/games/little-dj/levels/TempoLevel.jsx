@@ -309,7 +309,7 @@ export default function TempoLevel({ onMilestone }) {
               width: 44,
               height: 44,
               borderRadius: '50%',
-              background: '#C23C3C',
+              background: '#8B1A1A',
               boxShadow: 'none',
             }}
           />

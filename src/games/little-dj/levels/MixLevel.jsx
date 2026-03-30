@@ -206,30 +206,32 @@ export default function MixLevel({ onMilestone }) {
                 </span>
               </div>
 
-              {/* Visual toggle indicator */}
+              {/* Tap button indicator */}
               <div
                 style={{
-                  width: 56,
-                  height: 32,
-                  borderRadius: 16,
-                  background: on ? 'var(--game-primary)' : 'rgba(255,255,255,0.15)',
-                  position: 'relative',
-                  transition: 'all 0.3s',
+                  minWidth: 64,
+                  height: 36,
+                  borderRadius: 10,
+                  background: on ? 'var(--game-primary)' : 'rgba(255,255,255,0.12)',
+                  border: on ? '2px solid rgba(255,255,255,0.3)' : '2px solid rgba(255,255,255,0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   flexShrink: 0,
+                  transform: on ? 'scale(1.05)' : 'scale(1)',
                 }}
               >
-                <div
-                  style={{
-                    position: 'absolute',
-                    width: 24,
-                    height: 24,
-                    borderRadius: '50%',
-                    background: 'white',
-                    top: 4,
-                    left: on ? 'calc(100% - 28px)' : 4,
-                    transition: 'left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  }}
-                />
+                <span style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 800,
+                  fontSize: '0.75rem',
+                  color: on ? '#fff' : 'rgba(255,255,255,0.4)',
+                  letterSpacing: '0.05em',
+                  transition: 'color 0.2s',
+                }}>
+                  {on ? 'ON' : 'OFF'}
+                </span>
               </div>
             </div>
           );
