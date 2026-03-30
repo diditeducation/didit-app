@@ -338,7 +338,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
               display: 'flex',
               flexWrap: 'wrap',
               justifyContent: 'center',
-              gap: 6,
+              gap: 4,
             }}
           >
             {boughtItems.map((item, i) => (
@@ -348,15 +348,15 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: 4,
-                  padding: '8px 12px',
+                  gap: 2,
+                  padding: '6px 8px',
                   background: 'rgba(255,255,255,0.1)',
-                  borderRadius: 16,
-                  width: 'calc(50% - 3px)',
+                  borderRadius: 12,
+                  width: 'calc(50% - 2px)',
                   boxSizing: 'border-box',
                 }}
               >
-                <span style={{ fontSize: '2.4rem', lineHeight: 1 }}>{item.emoji}</span>
+                <span style={{ fontSize: '2rem', lineHeight: 1 }}>{item.emoji}</span>
                 <span
                   style={{
                     fontSize: '0.75rem',
