@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const KEYFRAMES_ID = 'didit-feedback-modal-keyframes';
 
@@ -119,7 +121,8 @@ export default function FeedbackModal({ isOpen, onClose, gameName = '' }) {
       other: likes.has('other') ? otherText.trim() : null,
       wish: wish.trim(),
     };
-    console.log(payload);
+    addDoc(collection(db, 'feedback'), { ...payload, timestamp: serverTimestamp() })
+      .catch((err) => console.error('Feedback save failed:', err));
     setSubmitted(true);
   }
 
