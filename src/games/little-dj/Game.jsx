@@ -32,7 +32,6 @@ export default function Game() {
     originX: 50,
     originY: 50,
   });
-  const [nextAction, setNextAction] = useState(null);
   const { toast, showToast } = useToast();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
@@ -40,7 +39,6 @@ export default function Game() {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels((prev) => new Set(prev).add(levelId));
     setShowNext(false);
-    setNextAction(null);
     if (levelId === 4) {
       setTimeout(() => setShowSuccess(true), 1500);
     } else {
@@ -48,9 +46,8 @@ export default function Game() {
     }
   };
 
-  const triggerMilestone = (originX, originY, nextFn, message, toastTop, toastDuration = 1500) => {
+  const triggerMilestone = (originX, originY, message, toastTop, toastDuration = 1500) => {
     setMilestone({ active: true, originX, originY });
-    setNextAction(() => nextFn);
     setShowNext(true);
     if (message) {
       setTimeout(() => showToast(message, toastDuration, toastTop), 600);
@@ -101,9 +98,8 @@ export default function Game() {
               <button
                 style={nextBtnStyle}
                 onClick={() => {
-                  setShowNext(false);
                   setMilestone({ active: false, originX: 50, originY: 50 });
-                  if (nextAction) nextAction();
+                  handleComplete(activeLevel);
                 }}
               >
                 {activeLevel === 4 ? 'Finished! 🎧' : 'Next ▶'}
@@ -116,28 +112,28 @@ export default function Game() {
         {!showSuccess && activeLevel === 1 && (
           <BeatLevel
             onMilestone={(x, y) =>
-              triggerMilestone(x, y, () => handleComplete(1), "You've got the beat! 💓", 40, 3000)
+              triggerMilestone(x, y, "You've got the beat! 💓", 40, 3000)
             }
           />
         )}
         {!showSuccess && activeLevel === 2 && (
           <TempoLevel
             onMilestone={(x, y) =>
-              triggerMilestone(x, y, () => handleComplete(2), 'Speed master! 🏃', 22)
+              triggerMilestone(x, y, 'Speed master! 🏃', 22)
             }
           />
         )}
         {!showSuccess && activeLevel === 3 && (
           <PitchLevel
             onMilestone={(x, y) =>
-              triggerMilestone(x, y, () => handleComplete(3), 'Perfect pitch! 🎵', 20)
+              triggerMilestone(x, y, 'Perfect pitch! 🎵', 20)
             }
           />
         )}
         {!showSuccess && activeLevel === 4 && (
           <MixLevel
             onMilestone={(x, y) =>
-              triggerMilestone(x, y, () => handleComplete(4), 'DJ master! 🎧', 20)
+              triggerMilestone(x, y, 'DJ master! 🎧', 20)
             }
           />
         )}
