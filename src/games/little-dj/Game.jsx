@@ -9,15 +9,15 @@ import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
 import BeatLevel from './levels/BeatLevel';
+import TempoLevel from './levels/TempoLevel';
 import SolfegLevel from './levels/SolfegLevel';
-import InstrumentLevel from './levels/InstrumentLevel';
 import MixLevel from './levels/MixLevel';
 import Waveform from './Waveform';
 
 const levels = [
   { id: 1, label: '💓 Beat' },
-  { id: 2, label: '🎵 Notes' },
-  { id: 3, label: '🎸 Instruments' },
+  { id: 2, label: '⏱️ Tempo' },
+  { id: 3, label: '🎵 Notes' },
   { id: 4, label: '🎚️ Mix' },
 ];
 
@@ -117,16 +117,16 @@ export default function Game() {
           />
         )}
         {!showSuccess && activeLevel === 2 && (
-          <SolfegLevel
+          <TempoLevel
             onMilestone={(x, y) =>
-              triggerMilestone(x, y, 'Do Re Mi! 🎵', 22)
+              triggerMilestone(x, y, "Feel the beat! ⏱️", 50, 3000)
             }
           />
         )}
         {!showSuccess && activeLevel === 3 && (
-          <InstrumentLevel
+          <SolfegLevel
             onMilestone={(x, y) =>
-              triggerMilestone(x, y, 'Instrument master! 🎸', 20)
+              triggerMilestone(x, y, 'Do Re Mi! 🎵', 22)
             }
           />
         )}
