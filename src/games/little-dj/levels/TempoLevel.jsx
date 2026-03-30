@@ -183,7 +183,7 @@ export default function TempoLevel({ onMilestone, disabled = false }) {
           position: 'relative',
           overflow: 'hidden',
           background: interacted
-            ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.15), ${C.nightSky} 70%)`
+            ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.07), ${C.nightSky} 70%)`
             : C.nightSky,
           border: `3px solid ${interacted ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
           boxShadow: 'none',

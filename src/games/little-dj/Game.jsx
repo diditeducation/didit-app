@@ -108,7 +108,8 @@ export default function Game() {
           ) : null
         }
       >
-        {/* Level content — unmounted when success screen shows, stopping all audio */}
+        {/* Level content — pointer events disabled when Next button is visible */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', pointerEvents: showNext ? 'none' : 'auto' }}>
         {!showSuccess && activeLevel === 1 && (
           <BeatLevel
             onMilestone={(x, y) =>
@@ -137,6 +138,7 @@ export default function Game() {
             }
           />
         )}
+        </div>
       </GameShell>
 
       <Toast

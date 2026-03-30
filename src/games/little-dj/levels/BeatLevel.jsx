@@ -401,7 +401,7 @@ export default function BeatLevel({ onMilestone }) {
               style={{
                 fontSize: 50,
                 pointerEvents: 'none',
-                filter: heartGlow ? 'brightness(1.3)' : 'none',
+                filter: heartGlow ? 'brightness(1.1)' : 'none',
               }}
             >
               ❤️
