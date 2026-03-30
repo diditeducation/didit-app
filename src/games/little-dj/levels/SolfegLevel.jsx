@@ -9,7 +9,6 @@ const C = {
 const KEYFRAMES_ID = 'didit-solfeg-level-keyframes';
 const keyframesCSS = `
 @keyframes twinkle{0%,100%{opacity:0.2}50%{opacity:0.8}}
-@keyframes noteLight{0%{transform:scale(0.6);opacity:0.3}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
 `;
 
 function injectKeyframes() {
@@ -65,27 +64,26 @@ const Starfield = () => {
   );
 };
 
-// Treble clef staff lines at Y: [142,155,168,181,194] = F5,D5,B4,G4,E4 (top→bottom)
+// Treble clef staff lines shifted up 20px from original positions
 // Line spacing = 13px, half-step = 6.5px
 // Do(C4)=ledger line below staff, Re=space below, Mi=line1, Fa=space1,
 // Sol=line2, La=space2, Ti=line3(middle)
 // noteX values match button centers (card 320px, padding 10px, gap 5px, 7 btns)
 const SOLFEGE = [
-  { name: 'Do',  freq: 261.63, color: '#FF6B6B', staffY: 207, noteX: 29  }, // ledger line below staff
-  { name: 'Re',  freq: 293.66, color: '#FF9F43', staffY: 201, noteX: 73  }, // space below line 1
-  { name: 'Mi',  freq: 329.63, color: '#FECA57', staffY: 194, noteX: 116 }, // line 1 (E4)
-  { name: 'Fa',  freq: 349.23, color: '#48DBFB', staffY: 188, noteX: 160 }, // space 1 (F4)
-  { name: 'Sol', freq: 392.00, color: '#1DD1A1', staffY: 181, noteX: 204 }, // line 2 (G4)
-  { name: 'La',  freq: 440.00, color: '#54A0FF', staffY: 175, noteX: 247 }, // space 2 (A4)
-  { name: 'Ti',  freq: 493.88, color: '#C8A2FF', staffY: 168, noteX: 291 }, // line 3 (B4)
+  { name: 'Do',  freq: 261.63, color: '#FF6B6B', staffY: 187, noteX: 29  }, // ledger line below staff
+  { name: 'Re',  freq: 293.66, color: '#FF9F43', staffY: 181, noteX: 73  }, // space below line 1
+  { name: 'Mi',  freq: 329.63, color: '#FECA57', staffY: 174, noteX: 116 }, // line 1 (E4)
+  { name: 'Fa',  freq: 349.23, color: '#48DBFB', staffY: 168, noteX: 160 }, // space 1 (F4)
+  { name: 'Sol', freq: 392.00, color: '#1DD1A1', staffY: 161, noteX: 204 }, // line 2 (G4)
+  { name: 'La',  freq: 440.00, color: '#54A0FF', staffY: 155, noteX: 247 }, // space 2 (A4)
+  { name: 'Ti',  freq: 493.88, color: '#C8A2FF', staffY: 148, noteX: 291 }, // line 3 (B4)
 ];
 
-const STAFF_LINE_YS = [142, 155, 168, 181, 194];
+const STAFF_LINE_YS = [122, 135, 148, 161, 174];
 
 export default function SolfegLevel({ onMilestone }) {
   const [tapped, setTapped] = useState(new Set());
   const [pressedIdx, setPressedIdx] = useState(null);
-  const [animKeys, setAnimKeys] = useState({});
   const milestoneFired = useRef(false);
 
   useEffect(() => {
@@ -95,8 +93,6 @@ export default function SolfegLevel({ onMilestone }) {
   const handleTap = (idx) => {
     initAudio();
     sound.solfege(SOLFEGE[idx].freq);
-
-    setAnimKeys((prev) => ({ ...prev, [idx]: (prev[idx] || 0) + 1 }));
 
     setTapped((prev) => {
       const next = new Set(prev);
@@ -155,7 +151,6 @@ export default function SolfegLevel({ onMilestone }) {
         {/* Note slots */}
         {SOLFEGE.map((note, i) => {
           const isTapped = tapped.has(i);
-          const animKey = animKeys[i] || 0;
           return (
             <div
               key={i}
@@ -170,8 +165,7 @@ export default function SolfegLevel({ onMilestone }) {
                 background: isTapped ? note.color : 'rgba(255,255,255,0.15)',
                 border: `1.5px solid ${isTapped ? note.color : 'rgba(255,255,255,0.25)'}`,
                 zIndex: 3,
-                transition: 'background 0.2s',
-                animation: animKey > 0 ? `noteLight 0.35s ease-out` : 'none',
+                transition: 'background 0.2s, border-color 0.2s, box-shadow 0.2s',
                 boxShadow: isTapped ? `0 0 8px ${note.color}88` : 'none',
               }}
             />
