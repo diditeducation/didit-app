@@ -206,28 +206,29 @@ export default function MixLevel({ onMilestone }) {
                 </span>
               </div>
 
-              {/* Tap button indicator */}
+              {/* Rounded pressable button */}
               <div
                 style={{
-                  minWidth: 64,
-                  height: 36,
-                  borderRadius: 10,
+                  width: 48,
+                  height: 48,
+                  borderRadius: '50%',
                   background: on ? 'var(--game-primary)' : 'rgba(255,255,255,0.12)',
-                  border: on ? '2px solid rgba(255,255,255,0.3)' : '2px solid rgba(255,255,255,0.15)',
+                  border: on ? '2px solid rgba(255,255,255,0.35)' : '2px solid rgba(255,255,255,0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
                   flexShrink: 0,
-                  transform: on ? 'scale(1.05)' : 'scale(1)',
+                  transition: 'all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transform: isPressed ? 'scale(0.88)' : on ? 'scale(1.08)' : 'scale(1)',
+                  boxShadow: on ? '0 0 12px rgba(255,107,107,0.45)' : 'none',
                 }}
               >
                 <span style={{
                   fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 800,
-                  fontSize: '0.75rem',
-                  color: on ? '#fff' : 'rgba(255,255,255,0.4)',
-                  letterSpacing: '0.05em',
+                  fontWeight: 900,
+                  fontSize: '0.65rem',
+                  color: on ? '#fff' : 'rgba(255,255,255,0.35)',
+                  letterSpacing: '0.06em',
                   transition: 'color 0.2s',
                 }}>
                   {on ? 'ON' : 'OFF'}
