@@ -58,10 +58,8 @@ export default function Game() {
   };
 
   const nextBtnStyle = {
-    position: 'fixed',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    zIndex: 300,
+    display: 'block',
+    margin: '12px auto 0',
     background: 'var(--game-primary)',
     color: '#FFFFFF',
     borderRadius: '9999px',
@@ -73,7 +71,6 @@ export default function Game() {
     cursor: 'pointer',
     boxShadow: 'none',
     whiteSpace: 'nowrap',
-    bottom: '32px',
     animation: 'nextFloatUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
   };
 
@@ -97,6 +94,22 @@ export default function Game() {
           <div style={{ padding: '4px 24px 8px' }}>
             <Waveform height={48} />
           </div>
+        }
+        bottomSlot={
+          showNext ? (
+            <div style={{ padding: '0 24px 16px' }}>
+              <button
+                style={nextBtnStyle}
+                onClick={() => {
+                  setShowNext(false);
+                  setMilestone({ active: false, originX: 50, originY: 50 });
+                  if (nextAction) nextAction();
+                }}
+              >
+                {activeLevel === 4 ? 'Finished! 🎧' : 'Next ▶'}
+              </button>
+            </div>
+          ) : null
         }
       >
         {/* Level content — unmounted when success screen shows, stopping all audio */}
@@ -144,19 +157,6 @@ export default function Game() {
         originY={milestone.originY}
         onComplete={() => setMilestone((m) => ({ ...m, active: false }))}
       />
-
-      {showNext && (
-        <button
-          style={nextBtnStyle}
-          onClick={() => {
-            setShowNext(false);
-            setMilestone({ active: false, originX: 50, originY: 50 });
-            if (nextAction) nextAction();
-          }}
-        >
-          {activeLevel === 4 ? 'Finished! 🎧' : 'Next ▶'}
-        </button>
-      )}
 
       <SuccessScreen
         visible={showSuccess}
