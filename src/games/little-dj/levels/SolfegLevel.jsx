@@ -65,14 +65,17 @@ const Starfield = () => {
   );
 };
 
+// noteX values match button centers exactly:
+// card 320px, padding 10px each side, 6 gaps of 5px → btnW = 270/7 ≈ 38.57px
+// center_i = 10 + i*(38.57+5) + 19.29
 const SOLFEGE = [
-  { name: 'Do', freq: 261.63, color: '#FF6B6B', staffY: 220, noteX: 55 },
-  { name: 'Re', freq: 293.66, color: '#FF9F43', staffY: 207, noteX: 85 },
-  { name: 'Mi', freq: 329.63, color: '#FECA57', staffY: 194, noteX: 115 },
-  { name: 'Fa', freq: 349.23, color: '#48DBFB', staffY: 181, noteX: 145 },
-  { name: 'Sol', freq: 392.00, color: '#1DD1A1', staffY: 168, noteX: 175 },
-  { name: 'La', freq: 440.00, color: '#54A0FF', staffY: 155, noteX: 205 },
-  { name: 'Ti', freq: 493.88, color: '#C8A2FF', staffY: 142, noteX: 235 },
+  { name: 'Do', freq: 261.63, color: '#FF6B6B', staffY: 220, noteX: 29 },
+  { name: 'Re', freq: 293.66, color: '#FF9F43', staffY: 207, noteX: 73 },
+  { name: 'Mi', freq: 329.63, color: '#FECA57', staffY: 194, noteX: 116 },
+  { name: 'Fa', freq: 349.23, color: '#48DBFB', staffY: 181, noteX: 160 },
+  { name: 'Sol', freq: 392.00, color: '#1DD1A1', staffY: 168, noteX: 204 },
+  { name: 'La', freq: 440.00, color: '#54A0FF', staffY: 155, noteX: 247 },
+  { name: 'Ti', freq: 493.88, color: '#C8A2FF', staffY: 142, noteX: 291 },
 ];
 
 const STAFF_LINE_YS = [142, 155, 168, 181, 194];
@@ -121,31 +124,14 @@ export default function SolfegLevel({ onMilestone }) {
       >
         <Starfield />
 
-        {/* Treble clef symbol */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 8,
-            top: 108,
-            fontSize: 80,
-            lineHeight: 1,
-            color: 'rgba(255,255,255,0.45)',
-            zIndex: 2,
-            fontFamily: 'serif',
-            userSelect: 'none',
-          }}
-        >
-          𝄞
-        </div>
-
-        {/* Staff lines */}
+        {/* Staff lines — span full button width */}
         {STAFF_LINE_YS.map((y, i) => (
           <div
             key={i}
             style={{
               position: 'absolute',
-              left: 38,
-              right: 16,
+              left: 10,
+              right: 10,
               top: y,
               height: 1.5,
               background: 'rgba(255,255,255,0.25)',
