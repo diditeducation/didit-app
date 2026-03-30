@@ -150,10 +150,15 @@ export const sound = {
     osc.stop(audioCtx.currentTime + 0.35);
   },
 
-  melody: (step) => {
+  melody: () => {
     if (isGlobalMuted()) return;
-    const notes = [0, 3, 7, 12, 7, 3, 0, -5];
-    playTone(440 * Math.pow(2, notes[step % notes.length] / 12), 0.2, 'triangle', 0.15);
+    // Happy Birthday in semitones from A4=440
+    // "Hap-py Birth-day to you" x2, "Hap-py Birth-day dear [name]", "Hap-py Birth-day to you"
+    const hb = [-9,-9,-7,-9,-4,-5, -9,-9,-7,-9,-2,-4, -9,-9,3,0,-4,-5,-7, 1,1,0,-4,-4];
+    if (!sound._hbStep) sound._hbStep = 0;
+    const note = hb[sound._hbStep % hb.length];
+    sound._hbStep++;
+    playTone(440 * Math.pow(2, note / 12), 0.28, 'triangle', 0.18);
   },
 
   pitchTone: (freq) => {

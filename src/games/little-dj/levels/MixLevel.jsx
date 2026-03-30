@@ -117,7 +117,7 @@ export default function MixLevel({ onMilestone }) {
         const notes = [0, 0, 5, 3];
         sound.bass(notes[beat]);
       }
-      if (a.melody) sound.melody(beat);
+      if (a.melody) sound.melody();
       beat = (beat + 1) % 4;
     }, ms);
     return () => clearInterval(intervalRef.current);
