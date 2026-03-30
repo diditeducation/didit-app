@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 
 // Text and URL kept separate — iOS iMessage combines them into one bubble correctly.
 // Embedding the URL inside the text string causes iOS to split it into two message bubbles.
-const SHARE_TEXT = "We have been playing Did·It with the little one. These games pack in real life concepts such as finance, engineering, music production into simple games that kids enjoy. Give it a go! ✨";
+const SHARE_TEXT = "Hey! Just discovered Did·It. These games pack in real life concepts such as finance, engineering, music production into simple games little kids enjoy. Give it a go! ✨";
 const SHARE_URL  = "https://didit.games";
 
 export default function ShareButton({ label = 'Share with a friend 🔗', style = {} }) {
