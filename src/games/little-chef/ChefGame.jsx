@@ -21,7 +21,7 @@ const ALL_RECIPES = [
   { name: 'Hot Dog', emoji: '🌭', steps: [{ emoji: '🍞', label: 'Bun' }, { emoji: '🌭', label: 'Sausage' }, { emoji: '🍅', label: 'Ketchup' }, { emoji: '🟡', label: 'Mustard' }] },
   { name: 'Waffles', emoji: '🧇', steps: [{ emoji: '🌾', label: 'Flour' }, { emoji: '🥛', label: 'Milk' }, { emoji: '🥄', label: 'Mix' }, { emoji: '🧇', label: 'Press' }] },
   { name: 'Cake', emoji: '🎂', steps: [{ emoji: '🌾', label: 'Flour' }, { emoji: '🥛', label: 'Milk' }, { emoji: '🍫', label: 'Chocolate' }, { emoji: '🔥', label: 'Bake' }] },
-  { name: 'Porridge', emoji: '🫕', steps: [{ emoji: '🌾', label: 'Oats' }, { emoji: '🥛', label: 'Milk' }, { emoji: '🔥', label: 'Cook' }, { emoji: '🫐', label: 'Berries' }] },
+  { name: 'Ramen', emoji: '🍜', steps: [{ emoji: '💧', label: 'Broth' }, { emoji: '🍜', label: 'Noodles' }, { emoji: '🥚', label: 'Egg' }, { emoji: '🌿', label: 'Toppings' }] },
   { name: 'Stir Fry', emoji: '🥘', steps: [{ emoji: '🥕', label: 'Veggies' }, { emoji: '🍄', label: 'Mushroom' }, { emoji: '🥄', label: 'Stir' }, { emoji: '🍝', label: 'Noodles' }] },
 ];
 
