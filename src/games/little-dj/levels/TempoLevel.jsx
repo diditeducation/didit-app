@@ -100,8 +100,9 @@ function getStepSize(bpm) {
   return 10;
 }
 
-export default function TempoLevel({ onMilestone, disabled = false }) {
+export default function TempoLevel({ onMilestone, onComplete }) {
   const [pct, setPct] = useState(0.1);
+  const [done, setDone] = useState(false);
   const changesRef = useRef(0);
   const milestoneFired = useRef(false);
 
@@ -154,6 +155,7 @@ export default function TempoLevel({ onMilestone, disabled = false }) {
       changesRef.current += 1;
       if (changesRef.current >= 6 && !milestoneFired.current) {
         milestoneFired.current = true;
+        setDone(true);
         onMilestone(50, 50);
       }
     },
@@ -182,10 +184,8 @@ export default function TempoLevel({ onMilestone, disabled = false }) {
           borderRadius: 18,
           position: 'relative',
           overflow: 'hidden',
-          background: interacted
-            ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.07), ${C.nightSky} 70%)`
-            : C.nightSky,
-          border: `3px solid ${interacted ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
+          background: C.nightSky,
+          border: `3px solid ${C.nightEdge}`,
           boxShadow: 'none',
           transition: 'all 0.6s ease',
           margin: '0 auto',
@@ -271,7 +271,7 @@ export default function TempoLevel({ onMilestone, disabled = false }) {
       </div>
 
       {/* Slider (outside card) */}
-      <div style={{ position: 'relative', width: '88%' }}>
+      <div style={{ position: 'relative', width: 320 }}>
         <div
           style={{
             width: '100%',
@@ -280,10 +280,10 @@ export default function TempoLevel({ onMilestone, disabled = false }) {
             borderRadius: 32,
             position: 'relative',
             border: '2px solid color-mix(in srgb, var(--game-primary) 30%, transparent)',
-            cursor: disabled ? 'default' : 'pointer',
+            cursor: done ? 'default' : 'pointer',
             touchAction: 'none',
             overflow: 'hidden',
-            pointerEvents: disabled ? 'none' : 'auto',
+            pointerEvents: done ? 'none' : 'auto',
           }}
           onPointerDown={handleSlider}
           onPointerMove={(e) => {
@@ -342,6 +342,28 @@ export default function TempoLevel({ onMilestone, disabled = false }) {
           </div>
         </div>
       </div>
+
+      {/* Internal Next button — appears after milestone, no shared state */}
+      {done && (
+        <button
+          onClick={onComplete}
+          style={{
+            width: 320,
+            padding: '16px 0',
+            background: 'var(--game-primary)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 9999,
+            fontFamily: "'Nunito', sans-serif",
+            fontWeight: 800,
+            fontSize: '1rem',
+            cursor: 'pointer',
+            touchAction: 'manipulation',
+          }}
+        >
+          Next ▶
+        </button>
+      )}
 
     </div>
   );
