@@ -69,11 +69,9 @@ const Starfield = () => {
 };
 
 const LAYER_DATA = [
-  { id: 'kick',   icon: '🥁', name: 'Kick Drum' },
-  { id: 'hihat',  icon: '🎩', name: 'Hi-Hat' },
-  { id: 'snare',  icon: '🪘', name: 'Snare' },
-  { id: 'bass',   icon: '🎸', name: 'Bass Line' },
-  { id: 'melody', icon: '🎹', name: 'Melody' },
+  { id: 'kick',    icon: '🥁', name: 'Kick Drum' },
+  { id: 'hihat',   icon: '🎩', name: 'Hi-Hat' },
+  { id: 'melody',  icon: '🎹', name: 'Melody' },
 ];
 
 export default function MixLevel({ onMilestone }) {
@@ -95,7 +93,7 @@ export default function MixLevel({ onMilestone }) {
     setActive((prev) => {
       const next = { ...prev, [id]: !prev[id] };
       const count = Object.keys(next).filter((k) => next[k]).length;
-      if (count >= 3 && !milestoneFired.current) {
+      if (count >= 2 && !milestoneFired.current) {
         milestoneFired.current = true;
         setTimeout(() => onMilestone(50, 30), 400);
       }

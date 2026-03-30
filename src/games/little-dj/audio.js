@@ -161,6 +161,71 @@ export const sound = {
     playTone(440 * Math.pow(2, note / 12), 0.28, 'triangle', 0.18);
   },
 
+  solfege: (freq) => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.85);
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.9);
+  },
+
+  piano: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    const baseFreq = 261.63;
+    [1, 2, 3].forEach((h, i) => {
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = baseFreq * h;
+      const vol = [0.28, 0.1, 0.04][i];
+      g.gain.setValueAtTime(vol, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
+      osc.connect(g); g.connect(masterGain);
+      osc.start(); osc.stop(audioCtx.currentTime + 1.5);
+    });
+  },
+
+  guitar: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+    osc.type = 'sawtooth';
+    osc.frequency.value = 196;
+    filter.type = 'bandpass';
+    filter.frequency.value = 600;
+    filter.Q.value = 1.5;
+    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
+    osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 1.0);
+  },
+
+  trumpet: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = 466;
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime + 0.2);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.55);
+    osc.connect(gain); gain.connect(masterGain);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+  },
+
   pitchTone: (freq) => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;
