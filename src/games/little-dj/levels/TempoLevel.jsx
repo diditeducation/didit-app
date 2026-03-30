@@ -100,7 +100,7 @@ function getStepSize(bpm) {
   return 10;
 }
 
-export default function TempoLevel({ onMilestone }) {
+export default function TempoLevel({ onMilestone, disabled = false }) {
   const [pct, setPct] = useState(0.1);
   const changesRef = useRef(0);
   const milestoneFired = useRef(false);
@@ -280,9 +280,10 @@ export default function TempoLevel({ onMilestone }) {
             borderRadius: 32,
             position: 'relative',
             border: '2px solid color-mix(in srgb, var(--game-primary) 30%, transparent)',
-            cursor: 'pointer',
+            cursor: disabled ? 'default' : 'pointer',
             touchAction: 'none',
             overflow: 'hidden',
+            pointerEvents: disabled ? 'none' : 'auto',
           }}
           onPointerDown={handleSlider}
           onPointerMove={(e) => {

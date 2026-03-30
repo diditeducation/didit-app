@@ -118,6 +118,7 @@ export default function Game() {
         )}
         {!showSuccess && activeLevel === 2 && (
           <TempoLevel
+            disabled={showNext}
             onMilestone={(x, y) =>
               triggerMilestone(x, y, 'Speed master! 🏃', 22)
             }
