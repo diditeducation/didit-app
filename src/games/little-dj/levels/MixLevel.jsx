@@ -69,11 +69,11 @@ const Starfield = () => {
 };
 
 const LAYER_DATA = [
+  { id: 'melody', icon: '🎹', name: 'Melody' },
   { id: 'kick',   icon: '🥁', name: 'Kick Drum' },
   { id: 'hihat',  icon: '🎩', name: 'Hi-Hat' },
   { id: 'snare',  icon: '🪘', name: 'Snare' },
   { id: 'bass',   icon: '🎸', name: 'Bass Line' },
-  { id: 'melody', icon: '🎹', name: 'Melody' },
 ];
 
 export default function MixLevel({ onMilestone }) {
