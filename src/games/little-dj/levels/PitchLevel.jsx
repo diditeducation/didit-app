@@ -162,7 +162,7 @@ export default function PitchLevel({ onMilestone }) {
           background: isGlowing
             ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.15), ${C.nightSky} 70%)`
             : C.nightSky,
-          border: `3px solid #CF4A4A`,
+          border: `3px solid ${isGlowing ? 'rgba(207,74,74,0.4)' : '#1e3460'}`,
           boxShadow: 'none',
           transition: 'all 0.6s ease',
           margin: '0 auto',

@@ -304,7 +304,7 @@ export default function BeatLevel({ onMilestone }) {
           background: isGlowing
             ? `radial-gradient(ellipse at 50% 35%, rgba(255,107,107,0.15), ${C.nightSky} 70%)`
             : C.nightSky,
-          border: `3px solid ${isGlowing ? C.coralGlow + '44' : C.nightEdge}`,
+          border: `3px solid ${isGlowing ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
           boxShadow: 'none',
           transition: 'all 0.6s ease',
           margin: '0 auto',

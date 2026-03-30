@@ -145,7 +145,7 @@ export default function MixLevel({ onMilestone }) {
           position: 'relative',
           overflow: 'hidden',
           background: C.nightSky,
-          border: `3px solid ${isGlowing ? 'rgba(255,107,107,0.2)' : C.nightEdge}`,
+          border: `3px solid ${isGlowing ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
           boxShadow: 'none',
           transition: 'all 0.6s ease',
           margin: '0 auto',
