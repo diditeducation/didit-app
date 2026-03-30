@@ -65,17 +65,19 @@ const Starfield = () => {
   );
 };
 
-// noteX values match button centers exactly:
-// card 320px, padding 10px each side, 6 gaps of 5px → btnW = 270/7 ≈ 38.57px
-// center_i = 10 + i*(38.57+5) + 19.29
+// Treble clef staff lines at Y: [142,155,168,181,194] = F5,D5,B4,G4,E4 (top→bottom)
+// Line spacing = 13px, half-step = 6.5px
+// Do(C4)=ledger line below staff, Re=space below, Mi=line1, Fa=space1,
+// Sol=line2, La=space2, Ti=line3(middle)
+// noteX values match button centers (card 320px, padding 10px, gap 5px, 7 btns)
 const SOLFEGE = [
-  { name: 'Do', freq: 261.63, color: '#FF6B6B', staffY: 220, noteX: 29 },
-  { name: 'Re', freq: 293.66, color: '#FF9F43', staffY: 207, noteX: 73 },
-  { name: 'Mi', freq: 329.63, color: '#FECA57', staffY: 194, noteX: 116 },
-  { name: 'Fa', freq: 349.23, color: '#48DBFB', staffY: 181, noteX: 160 },
-  { name: 'Sol', freq: 392.00, color: '#1DD1A1', staffY: 168, noteX: 204 },
-  { name: 'La', freq: 440.00, color: '#54A0FF', staffY: 155, noteX: 247 },
-  { name: 'Ti', freq: 493.88, color: '#C8A2FF', staffY: 142, noteX: 291 },
+  { name: 'Do',  freq: 261.63, color: '#FF6B6B', staffY: 207, noteX: 29  }, // ledger line below staff
+  { name: 'Re',  freq: 293.66, color: '#FF9F43', staffY: 201, noteX: 73  }, // space below line 1
+  { name: 'Mi',  freq: 329.63, color: '#FECA57', staffY: 194, noteX: 116 }, // line 1 (E4)
+  { name: 'Fa',  freq: 349.23, color: '#48DBFB', staffY: 188, noteX: 160 }, // space 1 (F4)
+  { name: 'Sol', freq: 392.00, color: '#1DD1A1', staffY: 181, noteX: 204 }, // line 2 (G4)
+  { name: 'La',  freq: 440.00, color: '#54A0FF', staffY: 175, noteX: 247 }, // space 2 (A4)
+  { name: 'Ti',  freq: 493.88, color: '#C8A2FF', staffY: 168, noteX: 291 }, // line 3 (B4)
 ];
 
 const STAFF_LINE_YS = [142, 155, 168, 181, 194];
@@ -139,6 +141,16 @@ export default function SolfegLevel({ onMilestone }) {
             }}
           />
         ))}
+        {/* Ledger line for Do (C4 sits below the staff) */}
+        <div style={{
+          position: 'absolute',
+          left: SOLFEGE[0].noteX - 10,
+          width: 20,
+          top: SOLFEGE[0].staffY,
+          height: 1.5,
+          background: 'rgba(255,255,255,0.35)',
+          zIndex: 2,
+        }} />
 
         {/* Note slots */}
         {SOLFEGE.map((note, i) => {
