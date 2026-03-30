@@ -69,9 +69,11 @@ const Starfield = () => {
 };
 
 const LAYER_DATA = [
-  { id: 'kick',    icon: '🥁', name: 'Kick Drum' },
-  { id: 'hihat',   icon: '🎩', name: 'Hi-Hat' },
-  { id: 'melody',  icon: '🎹', name: 'Melody' },
+  { id: 'kick',   icon: '🥁', name: 'Kick Drum' },
+  { id: 'hihat',  icon: '🎩', name: 'Hi-Hat' },
+  { id: 'snare',  icon: '🪘', name: 'Snare' },
+  { id: 'bass',   icon: '🎸', name: 'Bass Line' },
+  { id: 'melody', icon: '🎹', name: 'Melody' },
 ];
 
 export default function MixLevel({ onMilestone }) {
@@ -93,7 +95,7 @@ export default function MixLevel({ onMilestone }) {
     setActive((prev) => {
       const next = { ...prev, [id]: !prev[id] };
       const count = Object.keys(next).filter((k) => next[k]).length;
-      if (count >= 2 && !milestoneFired.current) {
+      if (count >= 3 && !milestoneFired.current) {
         milestoneFired.current = true;
         setTimeout(() => onMilestone(50, 30), 400);
       }
@@ -204,33 +206,55 @@ export default function MixLevel({ onMilestone }) {
                 </span>
               </div>
 
-              {/* Rounded pressable button */}
+              {/* Beveled tactile button */}
               <div
                 style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: '50%',
-                  background: on ? 'var(--game-primary)' : 'rgba(255,255,255,0.12)',
-                  border: on ? '2px solid rgba(255,255,255,0.35)' : '2px solid rgba(255,255,255,0.15)',
+                  width: 52,
+                  height: 28,
+                  borderRadius: 8,
+                  flexShrink: 0,
+                  position: 'relative',
+                  transition: 'all 0.12s ease',
+                }}
+              >
+                {/* Button shadow/base layer */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: 8,
+                  background: on ? '#8B1A1A' : 'rgba(0,0,0,0.35)',
+                  transform: 'translateY(3px)',
+                }} />
+                {/* Button face */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: 8,
+                  background: on
+                    ? 'linear-gradient(180deg, #FF8A8A 0%, var(--game-primary) 60%, #CC4444 100%)'
+                    : 'linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%)',
+                  border: on ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(255,255,255,0.12)',
+                  boxShadow: on
+                    ? 'inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.2)'
+                    : 'inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.15)',
+                  transform: isPressed ? 'translateY(3px)' : 'translateY(0px)',
+                  transition: 'transform 0.08s ease',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexShrink: 0,
-                  transition: 'all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  transform: isPressed ? 'scale(0.88)' : on ? 'scale(1.08)' : 'scale(1)',
-                  boxShadow: on ? '0 0 12px rgba(255,107,107,0.45)' : 'none',
-                }}
-              >
-                <span style={{
-                  fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 900,
-                  fontSize: '0.65rem',
-                  color: on ? '#fff' : 'rgba(255,255,255,0.35)',
-                  letterSpacing: '0.06em',
-                  transition: 'color 0.2s',
                 }}>
-                  {on ? 'ON' : 'OFF'}
-                </span>
+                  <span style={{
+                    fontFamily: "'Nunito', sans-serif",
+                    fontWeight: 900,
+                    fontSize: '0.6rem',
+                    color: on ? '#fff' : 'rgba(255,255,255,0.4)',
+                    letterSpacing: '0.08em',
+                    userSelect: 'none',
+                    transition: 'color 0.15s',
+                  }}>
+                    {on ? 'ON' : 'OFF'}
+                  </span>
+                </div>
               </div>
             </div>
           );

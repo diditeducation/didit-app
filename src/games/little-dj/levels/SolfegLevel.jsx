@@ -208,8 +208,10 @@ export default function SolfegLevel({ onMilestone }) {
                   flex: 1,
                   height: 56,
                   borderRadius: 10,
-                  border: `2px solid ${isTapped ? note.color + 'aa' : 'rgba(255,255,255,0.15)'}`,
-                  background: isTapped ? note.color + '25' : 'rgba(255,255,255,0.07)',
+                  border: `2px solid ${isPressed ? note.color + 'cc' : isTapped ? note.color + 'aa' : 'rgba(255,255,255,0.15)'}`,
+                  background: isPressed
+                    ? note.color + '40'
+                    : isTapped ? note.color + '25' : 'rgba(255,255,255,0.07)',
                   cursor: 'pointer',
                   display: 'flex',
                   flexDirection: 'column',
@@ -217,8 +219,7 @@ export default function SolfegLevel({ onMilestone }) {
                   justifyContent: 'center',
                   gap: 3,
                   padding: 0,
-                  transform: isPressed ? 'scale(0.9)' : 'scale(1)',
-                  transition: 'all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transition: 'background 0.1s, border-color 0.1s',
                 }}
               >
                 <div

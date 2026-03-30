@@ -152,13 +152,14 @@ export const sound = {
 
   melody: () => {
     if (isGlobalMuted()) return;
-    // Happy Birthday in semitones from A4=440
-    // "Hap-py Birth-day to you" x2, "Hap-py Birth-day dear [name]", "Hap-py Birth-day to you"
-    const hb = [-9,-9,-7,-9,-4,-5, -9,-9,-7,-9,-2,-4, -9,-9,3,0,-4,-5,-7, 1,1,0,-4,-4];
-    if (!sound._hbStep) sound._hbStep = 0;
-    const note = hb[sound._hbStep % hb.length];
-    sound._hbStep++;
-    playTone(440 * Math.pow(2, note / 12), 0.28, 'triangle', 0.18);
+    // Twinkle Twinkle Little Star in semitones from A4=440
+    // C C G G | A A G(rest) | F F E E | D D C(rest)
+    // semitones: C4=-9, D4=-7, E4=-5, F4=-4, G4=-2, A4=0
+    const tw = [-9,-9,-2,-2, 0,0,-2,null, -4,-4,-5,-5, -7,-7,-9,null];
+    if (!sound._twStep) sound._twStep = 0;
+    const note = tw[sound._twStep % tw.length];
+    sound._twStep++;
+    if (note !== null) playTone(440 * Math.pow(2, note / 12), 0.28, 'triangle', 0.18);
   },
 
   solfege: (freq) => {
