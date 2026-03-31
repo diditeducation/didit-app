@@ -100,9 +100,8 @@ function getStepSize(bpm) {
   return 10;
 }
 
-export default function TempoLevel({ onMilestone, onComplete }) {
+export default function TempoLevel({ onMilestone }) {
   const [pct, setPct] = useState(0.1);
-  const [done, setDone] = useState(false);
   const changesRef = useRef(0);
   const milestoneFired = useRef(false);
 
@@ -155,7 +154,6 @@ export default function TempoLevel({ onMilestone, onComplete }) {
       changesRef.current += 1;
       if (changesRef.current >= 6 && !milestoneFired.current) {
         milestoneFired.current = true;
-        setDone(true);
         onMilestone(50, 50);
       }
     },
@@ -280,10 +278,9 @@ export default function TempoLevel({ onMilestone, onComplete }) {
             borderRadius: 32,
             position: 'relative',
             border: '2px solid color-mix(in srgb, var(--game-primary) 30%, transparent)',
-            cursor: done ? 'default' : 'pointer',
+            cursor: 'pointer',
             touchAction: 'none',
             overflow: 'hidden',
-            pointerEvents: done ? 'none' : 'auto',
           }}
           onPointerDown={handleSlider}
           onPointerMove={(e) => {
@@ -316,28 +313,6 @@ export default function TempoLevel({ onMilestone, onComplete }) {
           />
         </div>
       </div>
-
-      {/* Internal Next button — appears after milestone, no shared state */}
-      {done && (
-        <button
-          onClick={onComplete}
-          style={{
-            width: 320,
-            padding: '16px 0',
-            background: 'var(--game-primary)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 9999,
-            fontFamily: "'Nunito', sans-serif",
-            fontWeight: 800,
-            fontSize: '1rem',
-            cursor: 'pointer',
-            touchAction: 'manipulation',
-          }}
-        >
-          Next ▶
-        </button>
-      )}
 
     </div>
   );

@@ -119,14 +119,9 @@ export default function Game() {
         )}
         {!showSuccess && activeLevel === 2 && (
           <TempoLevel
-            onMilestone={(x, y) => {
-              setMilestone({ active: true, originX: x, originY: y });
-              setTimeout(() => showToast('Feel the beat! ⏱️', 3000, 50), 600);
-            }}
-            onComplete={() => {
-              setMilestone({ active: false, originX: 50, originY: 50 });
-              handleComplete(2);
-            }}
+            onMilestone={(x, y) =>
+              triggerMilestone(x, y, 'Feel the beat! ⏱️', 50, 3000)
+            }
           />
         )}
         {!showSuccess && activeLevel === 3 && (
@@ -138,9 +133,14 @@ export default function Game() {
         )}
         {!showSuccess && activeLevel === 4 && (
           <MixLevel
-            onMilestone={(x, y) =>
-              triggerMilestone(x, y, 'DJ master! 🎧', 20)
-            }
+            onMilestone={(x, y) => {
+              setMilestone({ active: true, originX: x, originY: y });
+              setTimeout(() => showToast('DJ master! 🎧', 1500, 20), 600);
+            }}
+            onComplete={() => {
+              setMilestone({ active: false, originX: 50, originY: 50 });
+              handleComplete(4);
+            }}
           />
         )}
         </div>

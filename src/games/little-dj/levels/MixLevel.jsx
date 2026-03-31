@@ -76,8 +76,9 @@ const LAYER_DATA = [
   { id: 'bass',   icon: '🎸', name: 'Bass Line' },
 ];
 
-export default function MixLevel({ onMilestone }) {
+export default function MixLevel({ onMilestone, onComplete }) {
   const [active, setActive] = useState({});
+  const [done, setDone] = useState(false);
   const [pressedId, setPressedId] = useState(null);
   const intervalRef = useRef(null);
   const activeRef = useRef(active);
@@ -97,6 +98,7 @@ export default function MixLevel({ onMilestone }) {
       const count = Object.keys(next).filter((k) => next[k]).length;
       if (count >= 3 && !milestoneFired.current) {
         milestoneFired.current = true;
+        setDone(true);
         setTimeout(() => onMilestone(50, 30), 400);
       }
       return next;
@@ -235,6 +237,27 @@ export default function MixLevel({ onMilestone }) {
           );
         })}
       </div>
+
+      {done && (
+        <button
+          onClick={onComplete}
+          style={{
+            marginTop: 4,
+            padding: '16px 48px',
+            background: 'var(--game-primary)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 9999,
+            fontFamily: "'Nunito', sans-serif",
+            fontWeight: 800,
+            fontSize: '1rem',
+            cursor: 'pointer',
+            touchAction: 'manipulation',
+          }}
+        >
+          Finished! 🎧
+        </button>
+      )}
     </div>
   );
 }
