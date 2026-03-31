@@ -6,10 +6,12 @@ const C = {
   nightEdge: '#1e3460',
 };
 
-const KEYFRAMES_ID = 'didit-solfeg-level-keyframes';
+const KEYFRAMES_ID = 'didit-twinkle-level-keyframes';
 const keyframesCSS = `
 @keyframes twinkle{0%,100%{opacity:0.2}50%{opacity:0.8}}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 6px currentColor}50%{box-shadow:0 0 18px currentColor, 0 0 30px currentColor}}
+@keyframes wrongShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes nudgeBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 @keyframes miniPop{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
 `;
 
@@ -76,9 +78,12 @@ const SOLFEGE = [
   { name: 'Ti',  freq: 493.88, color: '#C8A2FF', staffY: 148, noteX: '91.3%' },
 ];
 
+// Twinkle Twinkle Little Star mapped to SOLFEGE indices
+// Do Do Sol Sol La La Sol | Fa Fa Mi Mi Re Re Do
+const MELODY = [0, 0, 4, 4, 5, 5, 4, 3, 3, 2, 2, 1, 1, 0];
+
 const STAFF_LINE_YS = [122, 135, 148, 161, 174];
 
-// Mini confetti burst component
 function MiniConfetti({ particles }) {
   return particles.map((p) => (
     <div
@@ -93,18 +98,21 @@ function MiniConfetti({ particles }) {
         background: p.color,
         pointerEvents: 'none',
         zIndex: 10,
-        animation: `miniPop 0.5s ease-out forwards`,
+        animation: 'miniPop 0.5s ease-out forwards',
       }}
     />
   ));
 }
 
-export default function SolfegLevel({ onMilestone }) {
-  const [tapped, setTapped] = useState(new Set());
+export default function TwinkleLevel({ onMilestone }) {
+  const [step, setStep] = useState(0);
+  const [playedNotes, setPlayedNotes] = useState([]);
   const [pressedIdx, setPressedIdx] = useState(null);
   const [flashIdx, setFlashIdx] = useState(null);
+  const [wrongIdx, setWrongIdx] = useState(null);
   const [particles, setParticles] = useState([]);
   const milestoneFired = useRef(false);
+  const wrongTimer = useRef(null);
   const nextId = useRef(0);
   const cardRef = useRef(null);
 
@@ -112,8 +120,9 @@ export default function SolfegLevel({ onMilestone }) {
     injectKeyframes();
   }, []);
 
-  // The next note the player should tap (sequential: 0,1,2,3,4,5,6)
-  const nextTarget = tapped.size < 7 ? [...Array(7)].findIndex((_, i) => !tapped.has(i)) : -1;
+  const done = step >= MELODY.length;
+  const expectedIdx = done ? -1 : MELODY[step];
+  const playedSet = useMemo(() => new Set(playedNotes), [playedNotes]);
 
   const spawnParticles = useCallback((btnEl, color) => {
     if (!cardRef.current || !btnEl) return;
@@ -136,24 +145,34 @@ export default function SolfegLevel({ onMilestone }) {
 
   const handleTap = (idx, btnEl) => {
     initAudio();
-    sound.solfege(SOLFEGE[idx].freq);
 
-    // Flash the button color briefly
-    setFlashIdx(idx);
-    setTimeout(() => setFlashIdx(null), 200);
+    if (done) {
+      sound.solfege(SOLFEGE[idx].freq);
+      setFlashIdx(idx);
+      setTimeout(() => setFlashIdx(null), 200);
+      spawnParticles(btnEl, SOLFEGE[idx].color);
+      return;
+    }
 
-    // Spawn confetti
-    spawnParticles(btnEl, SOLFEGE[idx].color);
+    if (idx === expectedIdx) {
+      sound.solfege(SOLFEGE[idx].freq);
+      setFlashIdx(idx);
+      setTimeout(() => setFlashIdx(null), 200);
+      spawnParticles(btnEl, SOLFEGE[idx].color);
+      const newPlayed = [...playedNotes, idx];
+      setPlayedNotes(newPlayed);
+      const nextStep = step + 1;
+      setStep(nextStep);
 
-    setTapped((prev) => {
-      const next = new Set(prev);
-      next.add(idx);
-      if (next.size === 7 && !milestoneFired.current) {
+      if (nextStep >= MELODY.length && !milestoneFired.current) {
         milestoneFired.current = true;
         setTimeout(() => onMilestone(50, 30), 400);
       }
-      return next;
-    });
+    } else {
+      setWrongIdx(idx);
+      clearTimeout(wrongTimer.current);
+      wrongTimer.current = setTimeout(() => setWrongIdx(null), 400);
+    }
   };
 
   return (
@@ -166,7 +185,7 @@ export default function SolfegLevel({ onMilestone }) {
           position: 'relative',
           overflow: 'hidden',
           background: C.nightSky,
-          border: `3px solid ${tapped.size > 0 ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
+          border: `3px solid ${playedNotes.length > 0 ? 'rgba(207,74,74,0.4)' : C.nightEdge}`,
           borderRadius: 18,
           boxSizing: 'border-box',
           transition: 'border-color 0.4s ease',
@@ -174,6 +193,35 @@ export default function SolfegLevel({ onMilestone }) {
       >
         <Starfield />
         <MiniConfetti particles={particles} />
+
+        {/* Title */}
+        <div style={{
+          position: 'absolute',
+          top: 14,
+          left: 0,
+          right: 0,
+          textAlign: 'center',
+          zIndex: 5,
+          fontFamily: "'Nunito', sans-serif",
+          fontWeight: 800,
+          fontSize: '1.1rem',
+          letterSpacing: 1,
+          color: 'rgba(255,255,255,0.7)',
+        }}>
+          {'Twinkle Star'.split('').map((ch, i) => (
+            <span
+              key={i}
+              style={{
+                color: i < step
+                  ? SOLFEGE[MELODY[i]]?.color ?? 'rgba(255,255,255,0.7)'
+                  : 'rgba(255,255,255,0.3)',
+                transition: 'color 0.3s',
+              }}
+            >
+              {ch}
+            </span>
+          ))}
+        </div>
 
         {/* Staff lines */}
         {STAFF_LINE_YS.map((y, i) => (
@@ -201,10 +249,10 @@ export default function SolfegLevel({ onMilestone }) {
           zIndex: 2,
         }} />
 
-        {/* Note dots on staff */}
+        {/* Note dots on staff — stay colored once played */}
         {SOLFEGE.map((note, i) => {
-          const isTapped = tapped.has(i);
-          const isTarget = i === nextTarget;
+          const hasBeenPlayed = playedSet.has(i) || done;
+          const isTarget = i === expectedIdx;
           return (
             <div
               key={i}
@@ -216,11 +264,11 @@ export default function SolfegLevel({ onMilestone }) {
                 width: 14,
                 height: 14,
                 borderRadius: '50%',
-                background: isTapped ? note.color : isTarget ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)',
-                border: `1.5px solid ${isTapped ? note.color : isTarget ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.25)'}`,
+                background: hasBeenPlayed ? note.color : isTarget ? 'rgba(255,255,255,0.3)' : 'transparent',
+                border: `1.5px solid ${hasBeenPlayed ? note.color : isTarget ? 'rgba(255,255,255,0.4)' : 'transparent'}`,
                 zIndex: 3,
                 transition: 'background 0.2s, border-color 0.2s, box-shadow 0.2s',
-                boxShadow: isTapped ? `0 0 8px ${note.color}88` : 'none',
+                boxShadow: hasBeenPlayed ? `0 0 8px ${note.color}88` : 'none',
               }}
             />
           );
@@ -244,14 +292,16 @@ export default function SolfegLevel({ onMilestone }) {
           }}
         >
           {SOLFEGE.map((note, i) => {
-            const isTapped = tapped.has(i);
             const isPressed = pressedIdx === i;
+            const isTarget = i === expectedIdx;
+            const isWrong = wrongIdx === i;
+            const isRepeat = isTarget && step > 0 && MELODY[step - 1] === MELODY[step];
             const isFlash = flashIdx === i;
-            const isTarget = !isTapped && i === nextTarget;
+            const showColor = isPressed || isFlash || done;
             return (
               <button
                 key={i}
-                onPointerDown={(e) => { setPressedIdx(i); handleTap(i, e.currentTarget); }}
+                onPointerDown={(e) => { if (isTarget || done) { setPressedIdx(i); handleTap(i, e.currentTarget); } }}
                 onPointerUp={() => setPressedIdx(null)}
                 onPointerLeave={() => setPressedIdx(null)}
                 style={{
@@ -259,9 +309,9 @@ export default function SolfegLevel({ onMilestone }) {
                   height: 90,
                   borderRadius: 14,
                   border: 'none',
-                  background: isFlash ? note.color : isTapped ? note.color : '#555',
-                  opacity: isPressed ? 0.75 : 1,
-                  cursor: 'pointer',
+                  background: showColor ? note.color : '#555',
+                  opacity: 1,
+                  cursor: isTarget || done ? 'pointer' : 'default',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -270,8 +320,14 @@ export default function SolfegLevel({ onMilestone }) {
                   padding: 0,
                   transition: 'background 0.15s',
                   color: note.color,
-                  animation: isTarget ? 'pulseGlow 1s ease-in-out infinite' : 'none',
-                  outline: isTarget ? '3px solid #fff' : 'none',
+                  animation: isWrong
+                    ? 'wrongShake 0.3s ease'
+                    : isRepeat
+                    ? 'nudgeBounce 0.6s ease-in-out infinite, pulseGlow 1s ease-in-out infinite'
+                    : isTarget
+                    ? 'pulseGlow 1s ease-in-out infinite'
+                    : 'none',
+                  outline: isTarget ? `3px solid #fff` : 'none',
                   outlineOffset: isTarget ? 2 : 0,
                 }}
               >
@@ -280,7 +336,7 @@ export default function SolfegLevel({ onMilestone }) {
                     width: 10,
                     height: 10,
                     borderRadius: '50%',
-                    background: (isFlash || isTapped) ? '#fff' : 'rgba(255,255,255,0.4)',
+                    background: showColor ? '#fff' : 'rgba(255,255,255,0.4)',
                   }}
                 />
                 <span
@@ -288,7 +344,7 @@ export default function SolfegLevel({ onMilestone }) {
                     fontSize: '0.65rem',
                     fontFamily: "'Nunito', sans-serif",
                     fontWeight: 800,
-                    color: (isFlash || isTapped) ? '#fff' : 'rgba(255,255,255,0.4)',
+                    color: showColor ? '#fff' : 'rgba(255,255,255,0.4)',
                   }}
                 >
                   {note.name}
