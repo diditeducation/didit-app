@@ -30,7 +30,7 @@ const ALL_ITEMS = [
   { emoji: '🎹', name: 'Piano' },
   { emoji: '🔔', name: 'Chime' },
   { emoji: '🥁', name: 'Drum' },
-  { emoji: '🎩', name: 'Hi-Hat' },
+  { emoji: '🫧', name: 'Bubbles' },
   { emoji: '🪘', name: 'Snare' },
   { emoji: '🎈', name: 'Boing' },
 ];
