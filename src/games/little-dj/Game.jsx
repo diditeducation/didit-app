@@ -11,7 +11,6 @@ import theme from './theme';
 import Waveform from './Waveform';
 import SolfegLevel from './levels/SolfegLevel';
 import MelodyLevel from './levels/MelodyLevel';
-import MixLevel from './levels/MixLevel';
 import { SONG_CATALOG } from './songCatalog';
 
 // Pick 3 random songs from the catalog (called once per module load so it
@@ -41,7 +40,6 @@ export default function Game() {
     { id: 2, label: `${selectedSongs[0].emoji} ${selectedSongs[0].short}` },
     { id: 3, label: `${selectedSongs[1].emoji} ${selectedSongs[1].short}` },
     { id: 4, label: `${selectedSongs[2].emoji} ${selectedSongs[2].short}` },
-    { id: 5, label: '🎛️ Mix' },
   ];
 
   const handleComplete = (levelId) => {
@@ -64,11 +62,7 @@ export default function Game() {
       setTimeout(() => showToast(message, toastDuration, toastTop), 600);
     }
     // Emoji pop then auto-advance
-    const song = activeLevel === 1
-      ? { emoji: '🎹' }
-      : activeLevel === 5
-      ? { emoji: '🎛️' }
-      : selectedSongs[activeLevel - 2];
+    const song = activeLevel === 1 ? { emoji: '🎹' } : selectedSongs[activeLevel - 2];
     const levelId = activeLevel;
     clearTimeout(emojiTimer.current);
     emojiKey.current += 1;
@@ -83,9 +77,8 @@ export default function Game() {
   const allSongs = [
     { emoji: '🎹', name: 'Do-Re-Mi' },
     ...selectedSongs.map((s) => ({ emoji: s.emoji, name: s.title })),
-    { emoji: '🎛️', name: 'Mix' },
   ];
-  const learnedText = ['Do-Re-Mi', ...selectedSongs.map((s) => s.title), 'Mixing'].join(', ');
+  const learnedText = ['Do-Re-Mi', ...selectedSongs.map((s) => s.title)].join(', ');
 
   return (
     <div style={theme}>
@@ -138,11 +131,6 @@ export default function Game() {
               key={selectedSongs[2].id}
               song={selectedSongs[2]}
               onMilestone={(x, y) => triggerMilestone(x, y, selectedSongs[2].toast, 22)}
-            />
-          )}
-          {!showSuccess && activeLevel === 5 && (
-            <MixLevel
-              onMilestone={(x, y) => triggerMilestone(x, y, 'Mix Master! 🎛️', 22)}
             />
           )}
         </div>

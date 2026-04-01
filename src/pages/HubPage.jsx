@@ -59,6 +59,19 @@ const GAMES = [
     light: colors.sunLight,
     path: '/games/little-chef',
   },
+  {
+    key: 'mixer',
+    title: 'Little Mixer',
+    tag: '\uD83C\uDF9B\uFE0F Beat Making',
+    desc: 'Five instruments, four beats, endless grooves. Tap to layer tracks and mix your own rhythm.',
+    skills: ['Beat making', 'Layering', 'Rhythm'],
+    img: '/game%20illustrations/Music.png',
+    bgImage: '/backgrounds/background-blue.png',
+    primary: colors.sky,
+    dark: colors.skyDark,
+    light: colors.skyLight,
+    path: '/games/little-mixer',
+  },
 ];
 
 const css = `
