@@ -267,6 +267,27 @@ export const sound = {
     osc.stop(audioCtx.currentTime + 0.55);
   },
 
+  bubbles: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    // Quick sequence of short sine pops — watery bubble cluster
+    [0, 0.06, 0.13].forEach((delay, i) => {
+      const freq = 900 - i * 120;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.6, audioCtx.currentTime + delay + 0.08);
+      gain.gain.setValueAtTime(0, audioCtx.currentTime + delay);
+      gain.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + delay + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 0.1);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(audioCtx.currentTime + delay);
+      osc.stop(audioCtx.currentTime + delay + 0.12);
+    });
+  },
+
   cowbell: () => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;

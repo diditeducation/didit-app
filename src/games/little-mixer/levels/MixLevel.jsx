@@ -12,14 +12,14 @@ const ALL_LAYERS = [
   { id: 'hihat', emoji: '🎩', name: 'Hi-Hat', color: colors.blueberryDark, play: ()    => sound.hihat()   },
   { id: 'snare', emoji: '🪘', name: 'Snare',  color: colors.blueberryMid,  play: ()    => sound.snare()   },
   { id: 'bass',    emoji: '🎈', name: 'Boing',   color: colors.grassMid,   play: ()    => sound.boing()   },
-  { id: 'cowbell', emoji: '🔔', name: 'Cowbell', color: colors.sunMid,     play: ()    => sound.cowbell() },
+  { id: 'bubbles', emoji: '🫧', name: 'Bubbles', color: colors.sky,        play: ()    => sound.bubbles() },
 ];
 
 const LEVEL_LAYERS = {
   1: ['piano', 'drum'],
   2: ['piano', 'drum', 'bass'],
   3: ['piano', 'chime', 'snare', 'bass'],
-  4: ['piano', 'chime', 'snare', 'cowbell', 'drum'],
+  4: ['piano', 'chime', 'snare', 'bubbles', 'drum'],
 };
 const MILESTONE_AT = { 1: 2, 2: 2, 3: 2, 4: 3 };
 
