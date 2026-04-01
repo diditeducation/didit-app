@@ -143,7 +143,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little DJ"
-        learnedText="6 different sounds — piano, drum, boing, chime, snare & bubbles"
+        learnedText="how to mix 6 different sounds"
         onPlayAgain={() => {
           setShowSuccess(false);
           setActiveLevel(1);
