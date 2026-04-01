@@ -29,14 +29,14 @@ export const SONG_CATALOG = [
     toast: 'Jingle Bells! 🔔',
   },
   {
-    id: 'rowrow',
-    title: 'Row Your Boat',
-    short: 'Row Row',
-    emoji: '🚣',
-    // Row row row your boat gently down the stream
-    // Do Do Do Re Mi | Mi Re Mi Fa Sol
-    melody: [0, 0, 0, 1, 2, 2, 1, 2, 3, 4],
-    toast: 'Row Your Boat! 🚣',
+    id: 'mary',
+    title: 'Mary Had a Little Lamb',
+    short: 'Mary',
+    emoji: '🐑',
+    // Mary had a little lamb, little lamb little lamb
+    // Mi Re Do Re Mi Mi Mi | Re Re Re Mi Re Do
+    melody: [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 1, 0],
+    toast: 'Mary Had a Little Lamb! 🐑',
   },
   {
     id: 'oldmacdonald',
@@ -48,14 +48,14 @@ export const SONG_CATALOG = [
     toast: 'Old MacDonald! 🐄',
   },
   {
-    id: 'itsybitsy',
-    title: 'Itsy Bitsy Spider',
-    short: 'Itsy',
-    emoji: '🕷️',
-    // The itsy bitsy spider went up the water spout
-    // Sol Sol La Sol Mi | Sol Mi Do Re Mi
-    melody: [4, 4, 5, 4, 2, 4, 2, 0, 1, 2],
-    toast: 'Itsy Bitsy! 🕷️',
+    id: 'headshoulder',
+    title: 'Head Shoulders Knees and Toes',
+    short: 'Head & Toes',
+    emoji: '🙆',
+    // Head shoulders knees and toes, knees and toes
+    // Do Sol Sol Mi Re Do | Re Mi Fa Mi Re Do
+    melody: [0, 4, 4, 2, 1, 0, 1, 2, 3, 2, 1, 0],
+    toast: 'Head Shoulders Knees and Toes! 🙆',
   },
   {
     id: 'happyhappy',
@@ -67,13 +67,13 @@ export const SONG_CATALOG = [
     toast: "If You're Happy! 😊",
   },
   {
-    id: 'rosie',
-    title: 'Ring Around the Rosie',
-    short: 'Rosie',
-    emoji: '💐',
-    // Ringa ringa rosie pocket full of posies
-    // Mi Mi Mi Mi Sol | Mi Re Mi Sol Mi Re Do
-    melody: [2, 2, 2, 2, 4, 2, 1, 2, 4, 2, 1, 0],
-    toast: 'Ring Around the Rosie! 💐',
+    id: 'wheels',
+    title: 'Wheels on the Bus',
+    short: 'Wheels',
+    emoji: '🚌',
+    // The wheels on the bus go round and round
+    // Sol Sol Sol Mi Sol Sol | La Sol Mi
+    melody: [4, 4, 4, 2, 4, 4, 5, 4, 2],
+    toast: 'Wheels on the Bus! 🚌',
   },
 ];
