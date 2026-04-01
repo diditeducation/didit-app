@@ -38,7 +38,7 @@ export default function Game() {
   return (
     <div style={theme}>
       <GameShell
-        title="Little Mixer"
+        title="Little DJ"
         levels={[]}
         onBack={() => navigate('/hub')}
         topSlot={
@@ -74,7 +74,7 @@ export default function Game() {
 
       <SuccessScreen
         visible={showSuccess}
-        gameName="Little Mixer"
+        gameName="Little DJ"
         learnedText="Beat Making, Mixing, Rhythm"
         onPlayAgain={() => {
           setShowSuccess(false);
@@ -85,7 +85,7 @@ export default function Game() {
         boughtItems={ALL_ITEMS}
         boughtLabel="Instruments"
       />
-      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Mixer" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little DJ" />
     </div>
   );
 }

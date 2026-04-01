@@ -160,10 +160,10 @@ export default function HomePage() {
     <div style={theme}>
       <GameHomeLayout
         heroVisual={<HeroVisual />}
-        title="Mixer"
-        tagline="Build beats, layer sounds — your toddler's first music studio."
+        title="DJ"
+        tagline="Build beats, layer sounds — your toddler's first DJ set."
         illustration="/game%20illustrations/Music.png"
-        tag="🎛️ Beat Making"
+        tag="🎛️ DJing & Beat Making"
         description="Five instruments, four beats, endless grooves. Tap to activate tracks and mix your own rhythm."
         skillPills={[{ label: 'Beat making' }, { label: 'Layering' }, { label: 'Rhythm' }]}
         onPlay={() => navigate('/games/little-mixer/play')}
@@ -180,7 +180,7 @@ export default function HomePage() {
           </span>
         }
       />
-      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Mixer" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little DJ" />
     </div>
   );
 }

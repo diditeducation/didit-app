@@ -1,2 +1,2 @@
-// Little Mixer re-uses the Little DJ audio engine
+// Little DJ (mixer) re-uses the Little Pianist audio engine
 export { initAudio, analyser, sound } from '../little-dj/audio';

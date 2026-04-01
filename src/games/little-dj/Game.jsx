@@ -94,7 +94,7 @@ export default function Game() {
       `}</style>
 
       <GameShell
-        title="Little DJ"
+        title="Little Pianist"
         levels={levels}
         activeLevel={activeLevel}
         onLevelChange={(id) => setActiveLevel(id)}
@@ -172,7 +172,7 @@ export default function Game() {
 
       <SuccessScreen
         visible={showSuccess}
-        gameName="Little DJ"
+        gameName="Little Pianist"
         learnedText={learnedText}
         onPlayAgain={() => {
           setShowSuccess(false);
@@ -184,7 +184,7 @@ export default function Game() {
         boughtItems={allSongs}
         boughtLabel="Songs & skills"
       />
-      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little DJ" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Pianist" />
     </div>
   );
 }

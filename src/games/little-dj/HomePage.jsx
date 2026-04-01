@@ -118,7 +118,7 @@ function HeroVisual() {
       <div style={glowRingStyle} />
       <div style={pulseRingStyle} />
       <div style={vinylStyle}>
-        <img src="/game%20illustrations/Music.png" alt="Little DJ" style={{ width: '80%', height: '80%', objectFit: 'contain', position: 'absolute', top: '10%', left: '10%' }} />
+        <img src="/game%20illustrations/Music.png" alt="Little Pianist" style={{ width: '80%', height: '80%', objectFit: 'contain', position: 'absolute', top: '10%', left: '10%' }} />
       </div>
       <span style={noteStyle(0, '10%')}>🎵</span>
       <span style={noteStyle(0.6, '80%')}>🎶</span>
@@ -135,11 +135,11 @@ export default function HomePage() {
     <div style={theme}>
       <GameHomeLayout
         heroVisual={<HeroVisual />}
-        title="DJ"
-        tagline="Tap, slide, mix — your toddler's first music lesson."
+        title="Pianist"
+        tagline="Tap the keys, follow the melody — your toddler's first piano lesson."
         illustration="/game%20illustrations/Music.png"
-        tag="🎵 Music Fundamentals"
-        description="Sliders for tempo, notes to stretch, and tracks to play with. Rhythm, pitch, and composition."
+        tag="🎹 Piano & Melody"
+        description="Do Re Mi, then real songs. Tap the right notes in order and hear the melody come alive."
         skillPills={[{ label: 'Pitch & tone' }, { label: 'Tempo & rhythm' }, { label: 'Sound layering' }]}
         onPlay={() => navigate('/games/little-dj/play')}
         onBack={() => navigate('/hub')}
@@ -153,7 +153,7 @@ export default function HomePage() {
           </span>
         }
       />
-      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little DJ" />
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Pianist" />
     </div>
   );
 }
