@@ -67,9 +67,9 @@ const GAMES = [
     skills: ['Layering', 'Rhythm', 'Creativity'],
     img: '/game%20illustrations/Music.png',
     bgImage: '/backgrounds/background-blue.png',
-    primary: colors.sky,
-    dark: colors.skyDark,
-    light: colors.skyLight,
+    primary: colors.blueberryMid,
+    dark: colors.blueberryDark,
+    light: colors.blueberryLight,
     path: '/games/little-mixer',
   },
 ];

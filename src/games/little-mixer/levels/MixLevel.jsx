@@ -14,29 +14,29 @@ const ALL_LAYERS = [
   { id: 'bass',  emoji: '🎸', name: 'Bass',   color: colors.grassMid,      play: ()    => sound.bass(0)   },
 ];
 
-// Instrument sets and milestone thresholds per level
 const LEVEL_LAYERS = {
-  1: ['piano', 'chime'],
+  1: ['piano', 'drum'],
   2: ['piano', 'drum', 'bass'],
-  3: ['piano', 'hihat', 'snare', 'bass'],
+  3: ['piano', 'chime', 'snare', 'bass'],
   4: ['piano', 'chime', 'snare', 'bass', 'drum'],
 };
 const MILESTONE_AT = { 1: 2, 2: 2, 3: 2, 4: 3 };
 
-const BEATS   = 4;
-const BPM     = 100;
+// Fixed circle diameter — chosen so Full Mix (5 rows) is ~75% of the original height
+const CELL_SIZE = 42;
+
+const BEATS = 4;
+const BPM   = 100;
 const BEAT_MS = Math.round((60 / BPM) * 1000);
 
 // ─── Component ─────────────────────────────────────────────────────────────
-export default function MixLevel({ level = 1, onMilestone }) {
-  // Stable layer list for this mount (level never changes within a mount)
+export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
   const layersRef = useRef(
-    LEVEL_LAYERS[level]
-      .map(id => ALL_LAYERS.find(l => l.id === id))
+    LEVEL_LAYERS[level].map(id => ALL_LAYERS.find(l => l.id === id))
   );
   const layers = layersRef.current;
 
-  const makeGrid = () => layers.map((_, li) => Array(BEATS).fill(li === 0)); // piano row on by default
+  const makeGrid = () => layers.map((_, li) => Array(BEATS).fill(li === 0));
 
   const [grid,    setGrid]    = useState(makeGrid);
   const [beatCol, setBeatCol] = useState(-1);
@@ -105,10 +105,7 @@ export default function MixLevel({ level = 1, onMilestone }) {
 
   // ── Render ───────────────────────────────────────────────────────────────
   return (
-    <div style={{
-      display: 'flex', flex: 1, width: '100%',
-      flexDirection: 'column', gap: 12,
-    }}>
+    <div style={{ display: 'flex', flex: 1, width: '100%', flexDirection: 'column', gap: 12 }}>
       {/* ── Sequencer card ─────────────────────────────────────────────── */}
       <div style={{
         width: '100%',
@@ -121,32 +118,8 @@ export default function MixLevel({ level = 1, onMilestone }) {
         boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
       }}>
 
-        {/* Top bar: BPM pill + play/pause */}
-        <div style={{
-          display: 'flex', alignItems: 'center',
-          justifyContent: 'space-between', marginBottom: 18,
-        }}>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 7,
-            background: 'rgba(0,0,0,0.05)',
-            borderRadius: 20, padding: '5px 13px',
-          }}>
-            <div style={{
-              width: 8, height: 8, borderRadius: '50%',
-              background: playing ? colors.grassMid : 'rgba(0,0,0,0.18)',
-              boxShadow: playing ? `0 0 7px ${colors.grassMid}` : 'none',
-              transition: 'background 0.3s, box-shadow 0.3s',
-            }} />
-            <span style={{
-              fontFamily: "'Nunito', sans-serif",
-              fontSize: '0.7rem', fontWeight: 700,
-              color: 'rgba(0,0,0,0.5)',
-              letterSpacing: '0.04em',
-            }}>
-              {BPM} BPM
-            </span>
-          </div>
-
+        {/* Top bar: play/pause only */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 18 }}>
           <button
             onPointerDown={togglePlay}
             style={{
@@ -188,35 +161,41 @@ export default function MixLevel({ level = 1, onMilestone }) {
                 </span>
               </div>
 
-              {/* Beat cells — circles */}
+              {/* Beat cells — fixed-size circles inside flex wrappers for large tap area */}
               {Array.from({ length: BEATS }, (_, col) => {
                 const on        = grid[li][col];
                 const isCurrent = playing && beatCol === col;
                 return (
-                  <button
+                  <div
                     key={col}
                     onPointerDown={() => toggleCell(li, col)}
                     style={{
                       flex: 1,
-                      aspectRatio: '1 / 1',
+                      height: CELL_SIZE,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', touchAction: 'manipulation',
+                      // Yellow column highlight behind the circle
+                      background: isCurrent ? 'rgba(254,202,87,0.28)' : 'transparent',
+                      borderRadius: 10,
+                      transition: 'background 0.08s',
+                    }}
+                  >
+                    <div style={{
+                      width: CELL_SIZE, height: CELL_SIZE,
                       borderRadius: '50%',
-                      border: 'none',
-                      cursor: 'pointer',
-                      touchAction: 'manipulation',
+                      pointerEvents: 'none',
                       background: on
                         ? layer.color
-                        : isCurrent
-                          ? 'rgba(0,0,0,0.10)'
-                          : 'rgba(0,0,0,0.05)',
+                        : 'rgba(0,0,0,0.07)',
                       boxShadow: on && isCurrent
-                        ? `0 0 20px ${layer.color}bb`
+                        ? `0 0 20px ${layer.color}cc`
                         : on
                           ? `0 0 10px ${layer.color}66`
                           : 'none',
-                      opacity: on && isCurrent ? 0.82 : 1,
+                      opacity: on && isCurrent ? 0.85 : 1,
                       transition: 'background 0.08s, box-shadow 0.08s, opacity 0.06s',
-                    }}
-                  />
+                    }} />
+                  </div>
                 );
               })}
             </div>
@@ -230,11 +209,8 @@ export default function MixLevel({ level = 1, onMilestone }) {
             <div key={i} style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
               <div style={{
                 width: 8, height: 8, borderRadius: '50%',
-                background: playing && beatCol === i
-                  ? 'var(--game-primary)'
-                  : 'rgba(0,0,0,0.12)',
-                boxShadow: playing && beatCol === i
-                  ? '0 0 8px var(--game-primary)' : 'none',
+                background: playing && beatCol === i ? '#FECA57' : 'rgba(0,0,0,0.12)',
+                boxShadow: playing && beatCol === i ? '0 0 8px #FECA57' : 'none',
                 transition: 'background 0.08s, box-shadow 0.08s',
               }} />
             </div>
@@ -242,7 +218,7 @@ export default function MixLevel({ level = 1, onMilestone }) {
         </div>
       </div>
 
-      {/* ── Next button (appears once milestone reached) ────────────────── */}
+      {/* ── Next / Finished button ──────────────────────────────────────── */}
       {done && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <button
@@ -260,7 +236,7 @@ export default function MixLevel({ level = 1, onMilestone }) {
               touchAction: 'manipulation',
             }}
           >
-            Next ▶
+            {isLast ? 'Finished! 🎉' : 'Next ▶'}
           </button>
         </div>
       )}

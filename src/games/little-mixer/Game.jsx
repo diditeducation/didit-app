@@ -12,19 +12,19 @@ import Waveform from './Waveform';
 import MixLevel from './levels/MixLevel';
 
 const levels = [
-  { id: 1, label: '🎹 Duo' },
-  { id: 2, label: '🥁 Trio' },
-  { id: 3, label: '🎩 Quartet' },
+  { id: 1, label: '🥁 Duo' },
+  { id: 2, label: '🎸 Trio' },
+  { id: 3, label: '🔔 Quartet' },
   { id: 4, label: '🎛️ Full Mix' },
 ];
 
 const LEVEL_TOASTS = {
-  1: 'Piano & Chime! 🔔',
-  2: 'Trio groove! 🥁',
-  3: 'Quartet beat! 🎩',
+  1: 'Piano & Drum! 🥁',
+  2: 'Trio groove! 🎸',
+  3: 'Quartet beat! 🔔',
   4: 'Full Mix! 🎛️',
 };
-const LEVEL_EMOJIS = { 1: '🎹', 2: '🥁', 3: '🎩', 4: '🎛️' };
+const LEVEL_EMOJIS = { 1: '🥁', 2: '🎸', 3: '🔔', 4: '🎛️' };
 
 const ALL_ITEMS = [
   { emoji: '🎹', name: 'Piano' },
@@ -104,6 +104,7 @@ export default function Game() {
             <MixLevel
               key={activeLevel}
               level={activeLevel}
+              isLast={activeLevel === levels.length}
               onMilestone={(x, y) => triggerMilestone(x, y)}
             />
           )}
@@ -142,7 +143,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little DJ"
-        learnedText="Beat Making, Layering, Rhythm"
+        learnedText="to mix 5 different sounds — piano, chime, drum, snare & bass"
         onPlayAgain={() => {
           setShowSuccess(false);
           setActiveLevel(1);

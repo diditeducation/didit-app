@@ -5,11 +5,11 @@ const BAR_COUNT = 10;
 const IDLE_MIN = 4;
 const IDLE_MAX = 10;
 
-/* Interpolate between skyLight (#E0F8F6) and skyDark (#03B292) */
+/* Interpolate between blueberryLight (#CFD9F4) and blueberryDark (#3A6CE5) */
 function barColor(t) {
-  const r = Math.round(224 + (3   - 224) * t);
-  const g = Math.round(248 + (178 - 248) * t);
-  const b = Math.round(246 + (146 - 246) * t);
+  const r = Math.round(207 + (58  - 207) * t);
+  const g = Math.round(217 + (108 - 217) * t);
+  const b = Math.round(244 + (229 - 244) * t);
   return `rgb(${r},${g},${b})`;
 }
 
