@@ -166,9 +166,9 @@ export default function MixLevel({ onMilestone }) {
 
               {/* Layer emoji label */}
               <div style={{
-                width: 34, flexShrink: 0,
+                width: 40, flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.3rem',
+                fontSize: '1.8rem',
               }}>
                 {layer.emoji}
               </div>
@@ -183,7 +183,7 @@ export default function MixLevel({ onMilestone }) {
                     onPointerDown={() => toggleCell(li, col)}
                     style={{
                       flex: 1,
-                      aspectRatio: '1 / 1',
+                      aspectRatio: '4 / 3',
                       borderRadius: '50%',
                       border: 'none',
                       cursor: 'pointer',
@@ -210,7 +210,7 @@ export default function MixLevel({ onMilestone }) {
 
         {/* ── Beat indicator dots ──────────────────────────────────────── */}
         <div style={{ display: 'flex', gap: 10, marginTop: 16, alignItems: 'center' }}>
-          <div style={{ width: 34, flexShrink: 0 }} />
+          <div style={{ width: 40, flexShrink: 0 }} />
           {Array.from({ length: BEATS }, (_, i) => (
             <div key={i} style={{
               flex: 1, display: 'flex', justifyContent: 'center',
