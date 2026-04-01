@@ -31,7 +31,7 @@ const GAMES = [
     primary: colors.coralMid,
     dark: colors.coralDark,
     light: colors.coralLight,
-    path: '/games/little-dj',
+    path: '/games/little-pianist',
   },
   {
     key: 'engineer',
@@ -70,7 +70,7 @@ const GAMES = [
     primary: colors.blueberryMid,
     dark: colors.blueberryDark,
     light: colors.blueberryLight,
-    path: '/games/little-mixer',
+    path: '/games/little-dj',
   },
 ];
 
