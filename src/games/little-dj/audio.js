@@ -267,6 +267,29 @@ export const sound = {
     osc.stop(audioCtx.currentTime + 0.55);
   },
 
+  cowbell: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    // Two detuned square waves → metallic cowbell character
+    [[562, 0.22], [845, 0.14]].forEach(([freq, vol]) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      osc.type = 'square';
+      osc.frequency.value = freq;
+      filter.type = 'bandpass';
+      filter.frequency.value = 700;
+      filter.Q.value = 0.8;
+      gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.35);
+    });
+  },
+
   boing: () => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;
