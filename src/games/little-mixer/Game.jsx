@@ -51,7 +51,7 @@ export default function Game() {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels((prev) => new Set(prev).add(levelId));
     if (levelId === levels.length) {
-      setTimeout(() => setShowSuccess(true), 1500);
+      setShowSuccess(true);
     } else {
       setActiveLevel(levelId + 1);
     }
