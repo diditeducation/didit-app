@@ -150,6 +150,23 @@ export const sound = {
     osc.stop(audioCtx.currentTime + 0.35);
   },
 
+  // Short triangle note for the Mix sequencer (0.45s, no async resume needed —
+  // context is already running by the time the sequencer fires)
+  melodyNote: (freq) => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.42);
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.45);
+  },
+
   melody: () => {
     if (isGlobalMuted()) return;
     // Twinkle Twinkle Little Star in semitones from A4=440
