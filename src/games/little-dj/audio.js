@@ -267,6 +267,24 @@ export const sound = {
     osc.stop(audioCtx.currentTime + 0.55);
   },
 
+  chime: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    // Bell-like tone: sine fundamental + partials, long decay
+    [[1046.50, 0.28, 0.75], [1318.51, 0.12, 0.50], [1567.98, 0.07, 0.35]].forEach(([freq, vol, dur]) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start();
+      osc.stop(audioCtx.currentTime + dur + 0.05);
+    });
+  },
+
   celebrate: () => {
     if (isGlobalMuted()) return;
     [0, 4, 7, 12].forEach((note, i) => {

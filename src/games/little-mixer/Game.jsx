@@ -11,9 +11,25 @@ import theme from './theme';
 import Waveform from './Waveform';
 import MixLevel from './levels/MixLevel';
 
+const levels = [
+  { id: 1, label: '🎹 Duo' },
+  { id: 2, label: '🥁 Trio' },
+  { id: 3, label: '🎩 Quartet' },
+  { id: 4, label: '🎛️ Full Mix' },
+];
+
+const LEVEL_TOASTS = {
+  1: 'Piano & Chime! 🔔',
+  2: 'Trio groove! 🥁',
+  3: 'Quartet beat! 🎩',
+  4: 'Full Mix! 🎛️',
+};
+const LEVEL_EMOJIS = { 1: '🎹', 2: '🥁', 3: '🎩', 4: '🎛️' };
+
 const ALL_ITEMS = [
-  { emoji: '🎹', name: 'Melody' },
-  { emoji: '🥁', name: 'Kick' },
+  { emoji: '🎹', name: 'Piano' },
+  { emoji: '🔔', name: 'Chime' },
+  { emoji: '🥁', name: 'Drum' },
   { emoji: '🎩', name: 'Hi-Hat' },
   { emoji: '🪘', name: 'Snare' },
   { emoji: '🎸', name: 'Bass' },
@@ -21,26 +37,62 @@ const ALL_ITEMS = [
 
 export default function Game() {
   const navigate = useNavigate();
+  const [activeLevel, setActiveLevel] = useState(1);
+  const [completedLevels, setCompletedLevels] = useState(new Set());
   const [showSuccess, setShowSuccess] = useState(false);
   const [milestone, setMilestone] = useState({ active: false, originX: 50, originY: 50 });
   const { toast, showToast } = useToast();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const [gameKey, setGameKey] = useState(0);
+  const [emojiPopup, setEmojiPopup] = useState(null);
+  const emojiTimer = useRef(null);
+  const emojiKey = useRef(0);
 
-  const handleMilestone = (originX, originY) => {
+  const handleComplete = (levelId) => {
+    if (completedLevels.has(levelId)) return;
+    setCompletedLevels((prev) => new Set(prev).add(levelId));
+    if (levelId === levels.length) {
+      setTimeout(() => setShowSuccess(true), 1500);
+    } else {
+      setActiveLevel(levelId + 1);
+    }
+  };
+
+  const triggerMilestone = (originX, originY) => {
     initAudio();
     sound.levelComplete();
     setMilestone({ active: true, originX, originY });
-    setTimeout(() => showToast('Mix Master! 🎛️', 1500, 22), 600);
-    setTimeout(() => setShowSuccess(true), 2000);
+    setTimeout(() => showToast(LEVEL_TOASTS[activeLevel], 1500, 22), 600);
+
+    const levelId = activeLevel;
+    clearTimeout(emojiTimer.current);
+    emojiKey.current += 1;
+    setEmojiPopup({ emoji: LEVEL_EMOJIS[levelId], key: emojiKey.current });
+    emojiTimer.current = setTimeout(() => {
+      setEmojiPopup(null);
+      handleComplete(levelId);
+    }, 2000);
   };
 
   return (
     <div style={theme}>
+      <style>{`
+        @keyframes emojiPopIn {
+          0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+          40%  { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
+          60%  { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+          75%  { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+          85%  { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+      `}</style>
+
       <GameShell
         title="Little DJ"
-        levels={[]}
+        levels={levels}
+        activeLevel={activeLevel}
+        onLevelChange={(id) => setActiveLevel(id)}
         onBack={() => navigate('/hub')}
+        unlockedUpTo={levels.length}
         topSlot={
           <div style={{ padding: '4px 24px 8px' }}>
             <Waveform height={48} />
@@ -50,12 +102,27 @@ export default function Game() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
           {!showSuccess && (
             <MixLevel
-              key={gameKey}
-              onMilestone={(x, y) => handleMilestone(x, y)}
+              key={activeLevel}
+              level={activeLevel}
+              onMilestone={(x, y) => triggerMilestone(x, y)}
             />
           )}
         </div>
       </GameShell>
+
+      {emojiPopup && (
+        <div
+          key={emojiPopup.key}
+          style={{
+            position: 'fixed', top: '50%', left: '50%',
+            zIndex: 300, fontSize: '6rem', lineHeight: 1,
+            pointerEvents: 'none',
+            animation: 'emojiPopIn 2s ease-out forwards',
+          }}
+        >
+          {emojiPopup.emoji}
+        </div>
+      )}
 
       <Toast
         message={toast.message}
@@ -75,10 +142,11 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little DJ"
-        learnedText="Beat Making, Mixing, Rhythm"
+        learnedText="Beat Making, Layering, Rhythm"
         onPlayAgain={() => {
           setShowSuccess(false);
-          setGameKey((k) => k + 1);
+          setActiveLevel(1);
+          setCompletedLevels(new Set());
         }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
