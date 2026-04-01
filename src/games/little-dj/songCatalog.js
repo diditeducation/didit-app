@@ -33,6 +33,7 @@ export const SONG_CATALOG = [
     title: 'Row Your Boat',
     short: 'Row Row',
     emoji: '🚣',
+    // Row row row your boat gently down the stream
     // Do Do Do Re Mi | Mi Re Mi Fa Sol
     melody: [0, 0, 0, 1, 2, 2, 1, 2, 3, 4],
     toast: 'Row Your Boat! 🚣',
@@ -51,6 +52,7 @@ export const SONG_CATALOG = [
     title: 'Itsy Bitsy Spider',
     short: 'Itsy',
     emoji: '🕷️',
+    // The itsy bitsy spider went up the water spout
     // Sol Sol La Sol Mi | Sol Mi Do Re Mi
     melody: [4, 4, 5, 4, 2, 4, 2, 0, 1, 2],
     toast: 'Itsy Bitsy! 🕷️',
@@ -69,8 +71,9 @@ export const SONG_CATALOG = [
     title: 'Ring Around the Rosie',
     short: 'Rosie',
     emoji: '💐',
-    // Mi Mi Mi Mi Re | Mi Mi Sol Mi Re Do
-    melody: [2, 2, 2, 2, 1, 2, 2, 4, 2, 1, 0],
+    // Ringa ringa rosie pocket full of posies
+    // Mi Mi Mi Mi Sol | Mi Re Mi Sol Mi Re Do
+    melody: [2, 2, 2, 2, 4, 2, 1, 2, 4, 2, 1, 0],
     toast: 'Ring Around the Rosie! 💐',
   },
 ];
