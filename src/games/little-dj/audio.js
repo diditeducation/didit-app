@@ -251,4 +251,25 @@ export const sound = {
       }, i * 120);
     });
   },
+
+  levelComplete: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    // Ascending arpeggio: C4 - E4 - G4 - C5
+    const notes = [261.63, 329.63, 392.00, 523.25];
+    notes.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      const t = audioCtx.currentTime + i * 0.1;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.4, t + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(t);
+      osc.stop(t + 0.45);
+    });
+  },
 };
