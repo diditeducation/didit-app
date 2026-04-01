@@ -165,17 +165,24 @@ export const sound = {
   solfege: (freq) => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.3, audioCtx.currentTime + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.85);
-    osc.connect(gain);
-    gain.connect(masterGain);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.9);
+    const play = () => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.85);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.9);
+    };
+    if (audioCtx.state === 'running') {
+      play();
+    } else {
+      audioCtx.resume().then(play);
+    }
   },
 
   piano: () => {
@@ -255,21 +262,27 @@ export const sound = {
   levelComplete: () => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;
-    // Ascending arpeggio: C4 - E4 - G4 - C5
-    const notes = [261.63, 329.63, 392.00, 523.25];
-    notes.forEach((freq, i) => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.value = freq;
-      const t = audioCtx.currentTime + i * 0.1;
-      gain.gain.setValueAtTime(0, t);
-      gain.gain.linearRampToValueAtTime(0.4, t + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-      osc.connect(gain);
-      gain.connect(masterGain);
-      osc.start(t);
-      osc.stop(t + 0.45);
-    });
+    const play = () => {
+      const notes = [261.63, 329.63, 392.00, 523.25];
+      notes.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        const t = audioCtx.currentTime + i * 0.1;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.4, t + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+        osc.connect(gain);
+        gain.connect(masterGain);
+        osc.start(t);
+        osc.stop(t + 0.45);
+      });
+    };
+    if (audioCtx.state === 'running') {
+      play();
+    } else {
+      audioCtx.resume().then(play);
+    }
   },
 };
