@@ -98,7 +98,7 @@ export default function MixLevel({ onMilestone }) {
   // ── Render ───────────────────────────────────────────────────────────────
   return (
     <div style={{
-      display: 'flex', flex: 1, width: '100%',
+      display: 'flex', flex: 1, width: '80%', alignSelf: 'center',
       flexDirection: 'column', gap: 12,
     }}>
       {/* ── Sequencer card ─────────────────────────────────────────────── */}
