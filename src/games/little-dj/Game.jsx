@@ -174,7 +174,11 @@ export default function Game() {
         visible={showSuccess}
         gameName="Little DJ"
         learnedText={learnedText}
-        onPlayAgain={() => navigate('/games/little-dj')}
+        onPlayAgain={() => {
+          setShowSuccess(false);
+          setActiveLevel(1);
+          setCompletedLevels(new Set());
+        }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         boughtItems={allSongs}

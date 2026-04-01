@@ -122,7 +122,13 @@ export default function Game() {
         learnedText="money and saving 💰"
         savedCoins={shopResult.saved}
         boughtItems={shopResult.bought}
-        onPlayAgain={() => navigate('/games/little-shopper')}
+        onPlayAgain={() => {
+          shopResetRef.current?.();
+          setShowSuccess(false);
+          setShowNext(false);
+          setMilestone({ active: false, originX: 50, originY: 50 });
+          setShopResult({ bought: [], saved: 0 });
+        }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
       />

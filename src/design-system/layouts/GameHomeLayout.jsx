@@ -5,8 +5,30 @@ import Button from '../components/Button';
 import SkillPill from '../components/SkillPill';
 import ParentStrip from '../components/ParentStrip';
 import ShareButton from '../components/ShareButton';
+import Confetti from '../components/Confetti';
 import { useSoundManager } from '../useSoundManager';
 import { useNavigate } from 'react-router-dom';
+
+function playStartChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523.25, 659.25, 783.99]; // C5, E5, G5 — quick ascending flourish
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const t = ctx.currentTime + i * 0.09;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.22, t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.25);
+    });
+  } catch (e) { /* fail silently */ }
+}
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
 
@@ -62,6 +84,13 @@ export default function GameHomeLayout({
   const { muted, toggleMute } = useSoundManager();
   const nav = useNavigate();
   const [guideOpen, setGuideOpen] = useState(false);
+  const [playConfetti, setPlayConfetti] = useState(false);
+
+  const handlePlay = () => {
+    playStartChime();
+    setPlayConfetti(true);
+    setTimeout(() => onPlay(), 550);
+  };
 
   useEffect(() => {
     injectKeyframes();
@@ -334,6 +363,7 @@ export default function GameHomeLayout({
 
   return (
     <div style={outerStyle}>
+      <Confetti active={playConfetti} originX={50} originY={70} onComplete={() => setPlayConfetti(false)} />
       {/* Floating dots */}
       <div style={{ position: 'absolute', width: 14, height: 14, borderRadius: '50%', background: 'var(--game-accent)', top: '8%', left: '6%', opacity: 0.4, pointerEvents: 'none', animation: 'fadeUp 0.6s ease both, playFloat 8s ease-in-out infinite' }} />
       <div style={{ position: 'absolute', width: 10, height: 10, borderRadius: '50%', background: 'var(--game-primary)', top: '15%', right: '8%', opacity: 0.35, pointerEvents: 'none', animation: 'fadeUp 0.6s ease 0.3s both, playFloat 11s ease-in-out infinite' }} />
@@ -400,7 +430,7 @@ export default function GameHomeLayout({
 
           {/* Play Button */}
           <div style={playBtnWrapperStyle}>
-            <Button variant="primary" size="lg" onClick={onPlay} style={playBtnOverride}>
+            <Button variant="primary" size="lg" onClick={handlePlay} style={playBtnOverride}>
               Let's play ▶
             </Button>
           </div>

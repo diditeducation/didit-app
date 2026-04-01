@@ -120,7 +120,13 @@ export default function Game() {
         savedCoins={null}
         boughtItems={chefResult.cooked.map(c => ({ emoji: c.emoji, name: c.name, price: null }))}
         boughtLabel="You prepared"
-        onPlayAgain={() => navigate('/games/little-chef')}
+        onPlayAgain={() => {
+          chefResetRef.current?.();
+          setShowSuccess(false);
+          setShowNext(false);
+          setMilestone({ active: false, originX: 50, originY: 50 });
+          setChefResult({ cooked: [], total: 0 });
+        }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
       />
