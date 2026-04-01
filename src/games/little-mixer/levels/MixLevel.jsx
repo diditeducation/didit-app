@@ -13,7 +13,7 @@ const LAYERS = [
 ];
 
 const BEATS   = 4;
-const BPM     = 90;
+const BPM     = 100;
 const BEAT_MS = Math.round((60 / BPM) * 1000); // 667 ms
 
 function makeGrid() {
