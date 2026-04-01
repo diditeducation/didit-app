@@ -16,14 +16,14 @@ function HomePage() {
 
 const EngineerHome = lazy(() => import('./games/little-engineer/HomePage'));
 const EngineerGame = lazy(() => import('./games/little-engineer/Game'));
-const PianistHome  = lazy(() => import('./games/little-dj/HomePage'));      // Little Pianist
-const PianistGame  = lazy(() => import('./games/little-dj/Game'));
+const PianistHome  = lazy(() => import('./games/little-pianist/HomePage'));
+const PianistGame  = lazy(() => import('./games/little-pianist/Game'));
 const ShopperHome  = lazy(() => import('./games/little-shopper/HomePage'));
 const ShopperGame  = lazy(() => import('./games/little-shopper/Game'));
 const ChefHome     = lazy(() => import('./games/little-chef/HomePage'));
 const ChefGame     = lazy(() => import('./games/little-chef/Game'));
-const DJHome       = lazy(() => import('./games/little-mixer/HomePage'));    // Little DJ
-const DJGame       = lazy(() => import('./games/little-mixer/Game'));
+const DJHome       = lazy(() => import('./games/little-dj/HomePage'));
+const DJGame       = lazy(() => import('./games/little-dj/Game'));
 
 export default function App() {
   return (
@@ -53,7 +53,7 @@ export default function App() {
           <Route path="/games/little-chef"         element={<ProtectedRoute><ChefHome /></ProtectedRoute>} />
           <Route path="/games/little-chef/play"    element={<ProtectedRoute><ChefGame /></ProtectedRoute>} />
 
-          {/* Little DJ (folder: little-mixer) */}
+          {/* Little DJ */}
           <Route path="/games/little-dj"           element={<ProtectedRoute><DJHome /></ProtectedRoute>} />
           <Route path="/games/little-dj/play"      element={<ProtectedRoute><DJGame /></ProtectedRoute>} />
           {/* Redirect old little-mixer URL */}

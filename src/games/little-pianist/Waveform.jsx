@@ -5,11 +5,11 @@ const BAR_COUNT = 10;
 const IDLE_MIN = 4;
 const IDLE_MAX = 10;
 
-/* Interpolate between blueberryLight (#CFD9F4) and blueberryDark (#3A6CE5) */
+/* Interpolate between coral (#E8AAAA) and dark red (#C23C3C) */
 function barColor(t) {
-  const r = Math.round(207 + (58  - 207) * t);
-  const g = Math.round(217 + (108 - 217) * t);
-  const b = Math.round(244 + (229 - 244) * t);
+  const r = Math.round(255 + (217 - 255) * t);
+  const g = Math.round(107 + (38 - 107) * t);
+  const b = Math.round(107 + (38 - 107) * t);
   return `rgb(${r},${g},${b})`;
 }
 
@@ -30,6 +30,7 @@ export default function Waveform({ height = 48 }) {
       const node = analyser.getNode();
 
       if (node) {
+        /* Active: frequency bars with coral gradient */
         const bufLen = node.frequencyBinCount;
         const data = new Uint8Array(bufLen);
         node.getByteFrequencyData(data);
@@ -41,6 +42,7 @@ export default function Waveform({ height = 48 }) {
           c.fillRect(i * barW, H / 2 - barH / 2, barW - 1, barH || 2);
         }
       } else {
+        /* Idle: breathing bars with staggered sine animation */
         const t = Date.now() / 1000;
         const gap = W * 0.02;
         const totalGap = gap * (BAR_COUNT - 1);
@@ -82,12 +84,17 @@ export default function Waveform({ height = 48 }) {
     };
   }, []);
 
+  const containerStyle = {
+    width: '100%',
+    height,
+    background: 'rgba(0,0,0,0.03)',
+    borderRadius: 18,
+    overflow: 'hidden',
+    flexShrink: 0,
+  };
+
   return (
-    <div style={{
-      width: '100%', height,
-      background: 'rgba(0,0,0,0.03)',
-      borderRadius: 18, overflow: 'hidden', flexShrink: 0,
-    }}>
+    <div style={containerStyle}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );
