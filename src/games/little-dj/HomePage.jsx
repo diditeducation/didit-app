@@ -136,20 +136,20 @@ export default function HomePage() {
       <GameHomeLayout
         heroVisual={<HeroVisual />}
         title="Pianist"
-        tagline="Tap the keys, follow the melody — your toddler's first piano lesson."
+        tagline="Do Re Mi, then real songs — tap the notes and make music."
         illustration="/game%20illustrations/Music.png"
-        tag="🎹 Piano & Melody"
-        description="Do Re Mi, then real songs. Tap the right notes in order and hear the melody come alive."
-        skillPills={[{ label: 'Pitch & tone' }, { label: 'Tempo & rhythm' }, { label: 'Sound layering' }]}
+        tag="🎹 Piano & Solfège"
+        description="Start with the seven solfège notes, then play real songs note by note. Tap the coloured keys in the right order and hear the melody come alive."
+        skillPills={[{ label: 'Solfège' }, { label: 'Note sequences' }, { label: 'Pitch & tone' }]}
         onPlay={() => navigate('/games/little-dj/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         shareButton
         parentTipBody={
           <span>
-            Sit with your little one and explore sounds together. Ask <em>&quot;can you feel the beat?&quot;</em> or <em>&quot;is that sound high or low?&quot;</em>
+            Sing along as they tap! <em>&quot;Do Re Mi&quot;</em> out loud, then hum the song when they get to it.
             <br /><br />
-            Let them tap, slide and mix at their own pace. 🎧
+            If they tap the wrong note, just encourage them to try again — the tune will click. 🎹
           </span>
         }
       />

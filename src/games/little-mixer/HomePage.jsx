@@ -161,22 +161,22 @@ export default function HomePage() {
       <GameHomeLayout
         heroVisual={<HeroVisual />}
         title="DJ"
-        tagline="Build beats, layer sounds — your toddler's first DJ set."
+        tagline="Tap a cell, hear it loop — layer up a beat from scratch."
         illustration="/game%20illustrations/Music.png"
-        tag="🎛️ DJing & Beat Making"
-        description="Five instruments, four beats, endless grooves. Tap to activate tracks and mix your own rhythm."
-        skillPills={[{ label: 'Beat making' }, { label: 'Layering' }, { label: 'Rhythm' }]}
+        tag="🎛️ Beat Making"
+        description="Five instruments across four beats — tap any cell to switch it on and hear it loop. Stack up drums, bass, melody and more until you've got your own groove going."
+        skillPills={[{ label: 'Layering sounds' }, { label: 'Rhythm' }, { label: 'Creativity' }]}
         onPlay={() => navigate('/games/little-mixer/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         shareButton
         parentTipBody={
           <span>
-            Tap along with the beat and move your body! Ask{' '}
-            <em>&quot;can you hear the drum?&quot;</em> or{' '}
-            <em>&quot;what happens when you add the bass?&quot;</em>
+            Move your body to the beat and add layers together! Ask{' '}
+            <em>&quot;what does the drum sound like?&quot;</em> then{' '}
+            <em>&quot;what happens when we add the bass?&quot;</em>
             <br /><br />
-            Let them experiment freely — every combo sounds good. 🎶
+            Every combination sounds musical — there are no wrong answers. 🥁
           </span>
         }
       />
