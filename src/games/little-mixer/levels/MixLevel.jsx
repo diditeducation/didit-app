@@ -11,7 +11,7 @@ const ALL_LAYERS = [
   { id: 'drum',  emoji: '🥁', name: 'Drum',   color: colors.sunDark,       play: ()    => sound.kick()    },
   { id: 'hihat', emoji: '🎩', name: 'Hi-Hat', color: colors.blueberryDark, play: ()    => sound.hihat()   },
   { id: 'snare', emoji: '🪘', name: 'Snare',  color: colors.blueberryMid,  play: ()    => sound.snare()   },
-  { id: 'bass',  emoji: '🎸', name: 'Bass',   color: colors.grassMid,      play: ()    => sound.bass(0)   },
+  { id: 'bass',  emoji: '🎈', name: 'Boing',  color: colors.grassMid,      play: ()    => sound.boing()  },
 ];
 
 const LEVEL_LAYERS = {

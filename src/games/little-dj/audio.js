@@ -267,6 +267,23 @@ export const sound = {
     osc.stop(audioCtx.currentTime + 0.55);
   },
 
+  boing: () => {
+    if (!audioCtx) return;
+    if (isGlobalMuted()) return;
+    // Sine wave that bends sharply down — classic cartoon boing
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.4);
+    gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.5);
+  },
+
   chime: () => {
     if (!audioCtx) return;
     if (isGlobalMuted()) return;

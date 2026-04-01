@@ -32,7 +32,7 @@ const ALL_ITEMS = [
   { emoji: '🥁', name: 'Drum' },
   { emoji: '🎩', name: 'Hi-Hat' },
   { emoji: '🪘', name: 'Snare' },
-  { emoji: '🎸', name: 'Bass' },
+  { emoji: '🎈', name: 'Boing' },
 ];
 
 export default function Game() {
@@ -143,7 +143,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little DJ"
-        learnedText="to mix 5 different sounds — piano, chime, drum, snare & bass"
+        learnedText="to mix 5 different sounds — piano, chime, drum, snare & boing"
         onPlayAgain={() => {
           setShowSuccess(false);
           setActiveLevel(1);
