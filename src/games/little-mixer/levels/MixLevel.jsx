@@ -188,11 +188,7 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
                       background: on
                         ? layer.color
                         : 'rgba(0,0,0,0.07)',
-                      boxShadow: on && isCurrent
-                        ? `0 0 20px ${layer.color}cc`
-                        : on
-                          ? `0 0 10px ${layer.color}66`
-                          : 'none',
+                      boxShadow: on && !isCurrent ? `0 0 10px ${layer.color}66` : 'none',
                       opacity: on && isCurrent ? 0.85 : 1,
                       transition: 'background 0.08s, box-shadow 0.08s, opacity 0.06s',
                     }} />
