@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { initAudio, sound } from '../audio';
+import { colors } from '../../../design-system/tokens';
 
 // C4 → E4 → G4 → C5 — sounds musical in any combination
 const MELODY_NOTES = [261.63, 329.63, 392.00, 523.25];
 
 const LAYERS = [
-  { id: 'melody', emoji: '🎹', color: '#CF4A4A', play: (col) => sound.melodyNote(MELODY_NOTES[col]) },
-  { id: 'kick',   emoji: '🥁', color: '#E8C840', play: ()    => sound.kick()   },
-  { id: 'hihat',  emoji: '🎩', color: '#54A0FF', play: ()    => sound.hihat()  },
-  { id: 'snare',  emoji: '🪘', color: '#1DD1A1', play: ()    => sound.snare()  },
-  { id: 'bass',   emoji: '🎸', color: '#C8A2FF', play: ()    => sound.bass(0)  },
+  { id: 'melody', emoji: '🎹', color: colors.coralMid,      play: (col) => sound.melodyNote(MELODY_NOTES[col]) },
+  { id: 'kick',   emoji: '🥁', color: colors.sunDark,       play: ()    => sound.kick()   },
+  { id: 'hihat',  emoji: '🎩', color: colors.blueberryDark, play: ()    => sound.hihat()  },
+  { id: 'snare',  emoji: '🪘', color: colors.grassMid,      play: ()    => sound.snare()  },
+  { id: 'bass',   emoji: '🎸', color: colors.sky,           play: ()    => sound.bass(0)  },
 ];
 
 const BEATS   = 4;
@@ -125,8 +126,8 @@ export default function MixLevel({ onMilestone }) {
           }}>
             <div style={{
               width: 8, height: 8, borderRadius: '50%',
-              background: playing ? '#1DD1A1' : 'rgba(0,0,0,0.18)',
-              boxShadow: playing ? '0 0 7px #1DD1A1' : 'none',
+              background: playing ? colors.grassMid : 'rgba(0,0,0,0.18)',
+              boxShadow: playing ? `0 0 7px ${colors.grassMid}` : 'none',
               transition: 'background 0.3s, box-shadow 0.3s',
             }} />
             <span style={{
@@ -183,7 +184,7 @@ export default function MixLevel({ onMilestone }) {
                     onPointerDown={() => toggleCell(li, col)}
                     style={{
                       flex: 1,
-                      aspectRatio: '4 / 3',
+                      aspectRatio: '1 / 1',
                       borderRadius: '50%',
                       border: 'none',
                       cursor: 'pointer',
