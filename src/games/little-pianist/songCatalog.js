@@ -48,15 +48,6 @@ export const SONG_CATALOG = [
     toast: 'Old MacDonald! 🐄',
   },
   {
-    id: 'happyhappy',
-    title: "If You're Happy",
-    short: 'Happy',
-    emoji: '😊',
-    // Sol Sol Sol Mi Sol Fa Mi Do | Sol Sol
-    melody: [4, 4, 4, 2, 4, 3, 2, 0, 4, 4],
-    toast: "If You're Happy! 😊",
-  },
-  {
     id: 'wheels',
     title: 'Wheels on the Bus',
     short: 'Wheels',
