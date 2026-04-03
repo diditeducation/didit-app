@@ -7,6 +7,9 @@ import SignIn from './pages/SignIn';
 import CheckEmail from './pages/CheckEmail';
 import AuthCallback from './pages/AuthCallback';
 import { useAuth } from './context/AuthContext';
+// Little DJ — direct imports to avoid stale lazy-module cache
+import DJHome from './games/little-dj/HomePage';
+import DJGame from './games/little-dj/Game';
 
 function HomePage() {
   const { user } = useAuth();
@@ -22,8 +25,6 @@ const ShopperHome  = lazy(() => import('./games/little-shopper/HomePage'));
 const ShopperGame  = lazy(() => import('./games/little-shopper/Game'));
 const ChefHome     = lazy(() => import('./games/little-chef/HomePage'));
 const ChefGame     = lazy(() => import('./games/little-chef/Game'));
-const DJHome       = lazy(() => import('./games/little-dj/HomePage'));
-const DJGame       = lazy(() => import('./games/little-dj/Game'));
 
 export default function App() {
   return (
@@ -41,7 +42,7 @@ export default function App() {
           <Route path="/games/little-engineer"      element={<ProtectedRoute><EngineerHome /></ProtectedRoute>} />
           <Route path="/games/little-engineer/play" element={<ProtectedRoute><EngineerGame /></ProtectedRoute>} />
 
-          {/* Little Pianist (folder: little-dj) */}
+          {/* Little Pianist */}
           <Route path="/games/little-pianist"      element={<ProtectedRoute><PianistHome /></ProtectedRoute>} />
           <Route path="/games/little-pianist/play" element={<ProtectedRoute><PianistGame /></ProtectedRoute>} />
 
