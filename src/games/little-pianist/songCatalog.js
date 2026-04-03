@@ -48,6 +48,15 @@ export const SONG_CATALOG = [
     toast: 'Old MacDonald! 🐄',
   },
   {
+    id: 'headshoulder',
+    title: 'Head Shoulders Knees and Toes',
+    short: 'Head & Toes',
+    emoji: '🙆',
+    // Sol Sol Sol Mi Sol Sol Sol Mi
+    melody: [4, 4, 4, 2, 4, 4, 4, 2],
+    toast: 'Head Shoulders Knees and Toes! 🙆',
+  },
+  {
     id: 'wheels',
     title: 'Wheels on the Bus',
     short: 'Wheels',
