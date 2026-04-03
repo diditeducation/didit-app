@@ -51,7 +51,7 @@ function HeroVisual() {
     display: 'flex',
     flexDirection: 'column',
     gap: 8,
-    boxShadow: '0 8px 32px rgba(3,178,146,0.25), 0 2px 8px rgba(0,0,0,0.3)',
+    boxShadow: '0 8px 32px rgba(207,74,74,0.25), 0 2px 8px rgba(0,0,0,0.3)',
     animation: `mixerFloat 3s ${easing.out} infinite`,
     position: 'relative',
   };
@@ -60,14 +60,14 @@ function HeroVisual() {
   const screenStyle = {
     width: '100%',
     height: 22,
-    background: 'rgba(3,178,146,0.12)',
+    background: 'rgba(207,74,74,0.12)',
     borderRadius: 6,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 3,
     overflow: 'hidden',
-    border: '1px solid rgba(3,178,146,0.25)',
+    border: '1px solid rgba(207,74,74,0.25)',
   };
 
   const fadersRowStyle = {
@@ -88,7 +88,7 @@ function HeroVisual() {
         position: 'absolute',
         width: 175, height: 140,
         borderRadius: 24,
-        background: 'radial-gradient(circle, rgba(3,178,146,0.12) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(207,74,74,0.12) 0%, transparent 70%)',
         animation: `mixerGlow 2.5s ${easing.out} infinite`,
       }} />
 
@@ -100,7 +100,7 @@ function HeroVisual() {
               width: 4,
               height: `${h * 14}px`,
               borderRadius: 2,
-              background: `rgba(3,178,146,${0.5 + h * 0.5})`,
+              background: `rgba(207,74,74,${0.5 + h * 0.5})`,
               animation: `mixerPulse ${1.2 + i * 0.1}s ${easing.out} ${i * 0.08}s infinite`,
             }} />
           ))}
