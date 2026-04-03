@@ -48,16 +48,6 @@ export const SONG_CATALOG = [
     toast: 'Old MacDonald! 🐄',
   },
   {
-    id: 'headshoulder',
-    title: 'Head Shoulders Knees and Toes',
-    short: 'Head & Toes',
-    emoji: '🙆',
-    // Head shoulders knees and toes, knees and toes
-    // Do Sol Sol Mi Re Do | Re Mi Fa Mi Re Do
-    melody: [0, 4, 4, 2, 1, 0, 1, 2, 3, 2, 1, 0],
-    toast: 'Head Shoulders Knees and Toes! 🙆',
-  },
-  {
     id: 'happyhappy',
     title: "If You're Happy",
     short: 'Happy',
