@@ -40,3 +40,13 @@ export function trackGameComplete(gameId) {
 export function trackShareClick(gameId = null) {
   return write({ event: 'share_click', gameId });
 }
+
+/** Called when the landing/marketing page loads */
+export function trackPageView(page) {
+  return write({ event: 'page_view', page });
+}
+
+/** Called when any button on the landing page is clicked */
+export function trackLandingClick(buttonId) {
+  return write({ event: 'landing_click', buttonId });
+}

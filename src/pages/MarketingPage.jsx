@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { trackPageView, trackLandingClick } from '../analytics';
 
 export default function MarketingPage() {
   const [email, setEmail] = useState('');
@@ -8,13 +9,16 @@ export default function MarketingPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleGameClick = (gamePath) => {
+  const handleGameClick = (gamePath, buttonId) => {
+    trackLandingClick(buttonId);
     if (user) {
       navigate(gamePath);
     } else {
       navigate('/signin');
     }
   };
+
+  useEffect(() => { trackPageView('landing'); }, []);
 
   useEffect(() => {
     const handleScroll = () => setNavScrolled(window.scrollY > 40);
@@ -39,6 +43,7 @@ export default function MarketingPage() {
   }, []);
 
   const scrollTo = (id) => {
+    trackLandingClick(`nav_${id}`);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
@@ -244,13 +249,13 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
       `}</style>
 
       <nav className={`mp-nav${navScrolled ? ' scrolled' : ''}`}>
-        <span className="mp-nav-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} /></span>
+        <span className="mp-nav-logo" onClick={() => { trackLandingClick('nav_logo'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} /></span>
         <div className="mp-nav-links">
           <a onClick={() => scrollTo('problem')}>Why</a>
           <a onClick={() => scrollTo('games')}>Our Games</a>
           <a onClick={() => scrollTo('how')}>Our Philosophy</a>
           <a onClick={() => scrollTo('ourstory')}>Our Story</a>
-          <a className="mp-nav-cta" onClick={() => navigate('/signin')}>Log in</a>
+          <a className="mp-nav-cta" onClick={() => { trackLandingClick('nav_login'); navigate('/signin'); }}>Log in</a>
         </div>
       </nav>
 
@@ -267,7 +272,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           <h1>Kids learning<br /><span className="mp-rotating-wrapper"><span className="mp-rotating-words"><span style={{ color: '#CF4A4A' }}>algorithms</span><span style={{ color: '#CF4A4A' }}>finance</span><span style={{ color: '#CF4A4A' }}>engineering</span><span style={{ color: '#CF4A4A' }}>DJ-ing</span><span style={{ color: '#CF4A4A' }}>algorithms</span></span></span><br />through <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>play.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h1>
           <p className="mp-hero-sub">What if your child could explore the concepts most grown-ups only encounter later in life — just by playing?</p>
           <div className="mp-hero-actions">
-            <button className="mp-btn-primary" onClick={() => navigate(user ? '/hub' : '/signin')}>Try the games{' '}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button>
+            <button className="mp-btn-primary" onClick={() => { trackLandingClick('hero_try_games'); navigate(user ? '/hub' : '/signin'); }}>Try the games{' '}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button>
           </div>
         </div>
       </section>
@@ -306,7 +311,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         <div className="mp-float-dot" style={{ width: 14, height: 14, background: 'var(--didit-grass)', bottom: '30%', left: '1%', opacity: 0.4, animationDelay: '5s', animationDuration: '18s' }} />
         <div className="mp-float-dot" style={{ width: 8, height: 8, background: 'var(--didit-sun-mid)', bottom: '10%', right: '5%', opacity: 0.45, animationDelay: '2s', animationDuration: '12s' }} />
         {/* Little Shopper */}
-        <div className="mp-game-card-v mp-game-shopper reveal" onClick={() => handleGameClick('/games/little-shopper')}>
+        <div className="mp-game-card-v mp-game-shopper reveal" onClick={() => handleGameClick('/games/little-shopper', 'game_card_little-shopper')}>
           <div className="mp-game-arch-header">
             <div className="mp-game-arch-circle"><img src="/game%20illustrations/Bank.png" alt="Little Shopper" /></div>
           </div>
@@ -315,12 +320,12 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
             <div className="mp-game-tag">{'\uD83D\uDCB0'} Financial Literacy</div>
             <div className="mp-game-desc" style={{ color: '#2D2A26' }}>They earn coins, choose what to buy, decide what to save, and figure out what things are worth.</div>
             <div className="mp-game-skills"><span className="mp-game-skill">Budgeting</span><span className="mp-game-skill">Saving</span><span className="mp-game-skill">Decisions</span></div>
-            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-shopper'); }}>Explore {'\u2192'}</button>
+            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-shopper', 'game_explore_little-shopper'); }}>Explore {'\u2192'}</button>
           </div>
         </div>
 
         {/* Little DJ */}
-        <div className="mp-game-card-v mp-game-dj reveal" onClick={() => handleGameClick('/games/little-dj')}>
+        <div className="mp-game-card-v mp-game-dj reveal" onClick={() => handleGameClick('/games/little-dj', 'game_card_little-dj')}>
           <div className="mp-game-arch-header">
             <div className="mp-game-arch-circle"><img src="/game%20illustrations/Music.png" alt="Little DJ" /></div>
           </div>
@@ -329,12 +334,12 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
             <div className="mp-game-tag">{'\uD83C\uDF9B\uFE0F'} Beat Making</div>
             <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Tap a cell, hear it loop. Stack drums, bass, melody and more across four beats to build your own groove.</div>
             <div className="mp-game-skills"><span className="mp-game-skill">Layering</span><span className="mp-game-skill">Rhythm</span><span className="mp-game-skill">Creativity</span></div>
-            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-dj'); }}>Explore {'\u2192'}</button>
+            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-dj', 'game_explore_little-dj'); }}>Explore {'\u2192'}</button>
           </div>
         </div>
 
         {/* Little Engineer */}
-        <div className="mp-game-card-v mp-game-engineer reveal" onClick={() => handleGameClick('/games/little-engineer')}>
+        <div className="mp-game-card-v mp-game-engineer reveal" onClick={() => handleGameClick('/games/little-engineer', 'game_card_little-engineer')}>
           <div className="mp-game-arch-header">
             <div className="mp-game-arch-circle"><img src="/game%20illustrations/Bulb.png" alt="Little Engineer" /></div>
           </div>
@@ -343,12 +348,12 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
             <div className="mp-game-tag">{'\uD83D\uDD27'} Electrical Engineering</div>
             <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Switches to flip, wires to connect, circuits to complete. Binary logic and systems thinking.</div>
             <div className="mp-game-skills"><span className="mp-game-skill">Circuits</span><span className="mp-game-skill">Logic</span><span className="mp-game-skill">Systems</span></div>
-            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-engineer'); }}>Explore {'\u2192'}</button>
+            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-engineer', 'game_explore_little-engineer'); }}>Explore {'\u2192'}</button>
           </div>
         </div>
 
         {/* Little Chef */}
-        <div className="mp-game-card-v mp-game-chef reveal" onClick={() => handleGameClick('/games/little-chef')}>
+        <div className="mp-game-card-v mp-game-chef reveal" onClick={() => handleGameClick('/games/little-chef', 'game_card_little-chef')}>
           <div className="mp-game-arch-header">
             <div className="mp-game-arch-circle"><img src="/game%20illustrations/Pizza.png" alt="Little Chef" /></div>
           </div>
@@ -357,7 +362,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
             <div className="mp-game-tag">{'\uD83E\uDD58'} Cooking & Sequencing</div>
             <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Crack the egg. Pour the flour. Mix. The order matters. Change a step, change the result.</div>
             <div className="mp-game-skills"><span className="mp-game-skill">Sequencing</span><span className="mp-game-skill">Planning</span><span className="mp-game-skill">Process</span></div>
-            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-chef'); }}>Explore {'\u2192'}</button>
+            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-chef', 'game_explore_little-chef'); }}>Explore {'\u2192'}</button>
           </div>
         </div>
       </div>
@@ -376,7 +381,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         <div className="mp-cta-inner" style={{ position: 'relative', zIndex: 2 }}>
           <h2 className="reveal">Get early access and try the games before everyone else</h2>
           <p className="mp-cta-desc reveal">Also connect with a community of parents who are helping their kids unlock extraordinary things</p>
-          <div className="reveal"><button style={{ padding: '16px 40px', background: 'var(--didit-text)', color: '#fff', border: 'none', borderRadius: '9999px', fontFamily: "'Nunito', sans-serif", fontSize: '15px', fontWeight: 800, cursor: 'pointer', transition: 'all .3s' }} onClick={() => navigate(user ? '/hub' : '/signin')}>Get started free →</button></div>
+          <div className="reveal"><button style={{ padding: '16px 40px', background: 'var(--didit-text)', color: '#fff', border: 'none', borderRadius: '9999px', fontFamily: "'Nunito', sans-serif", fontSize: '15px', fontWeight: 800, cursor: 'pointer', transition: 'all .3s' }} onClick={() => { trackLandingClick('cta_get_started'); navigate(user ? '/hub' : '/signin'); }}>Get started free →</button></div>
         </div>
       </section>
 
