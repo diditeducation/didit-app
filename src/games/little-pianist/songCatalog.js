@@ -52,8 +52,8 @@ export const SONG_CATALOG = [
     title: 'Alphabet Song',
     short: 'ABC',
     emoji: '🔤',
-    // Re Re La La Ti Ti La | Sol Sol Fa Fa Mi Mi Mi Mi Re
-    melody: [1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 2, 2, 1],
+    // Do Do Sol Sol La La Sol Fa Fa Mi Mi Re Re Do
+    melody: [0, 0, 4, 4, 5, 5, 4, 3, 3, 2, 2, 1, 1, 0],
     toast: 'A B C! 🔤',
   },
   {
