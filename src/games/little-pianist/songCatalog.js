@@ -47,4 +47,13 @@ export const SONG_CATALOG = [
     melody: [4, 4, 4, 1, 2, 2, 1, 6, 6, 5, 5, 4],
     toast: 'Old MacDonald! 🐄',
   },
+  {
+    id: 'wheels',
+    title: 'Wheels on the Bus',
+    short: 'Wheels',
+    emoji: '🚌',
+    // Sol Do Do Do Do Mi Sol Mi Do
+    melody: [4, 0, 0, 0, 0, 2, 4, 2, 0],
+    toast: 'Wheels on the Bus! 🚌',
+  },
 ];
