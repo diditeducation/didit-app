@@ -48,13 +48,13 @@ export const SONG_CATALOG = [
     toast: 'Old MacDonald! 🐄',
   },
   {
-    id: 'headshoulder',
-    title: 'Head Shoulders Knees and Toes',
-    short: 'Head & Toes',
-    emoji: '🙆',
-    // Sol Mi-Re-Do Sol-Sol-Mi Re-Re-Sol
-    melody: [4, 2, 1, 0, 4, 4, 2, 1, 1, 4],
-    toast: 'Head Shoulders Knees and Toes! 🙆',
+    id: 'alphabet',
+    title: 'Alphabet Song',
+    short: 'ABC',
+    emoji: '🔤',
+    // Re Re La La Ti Ti La | Sol Sol Fa Fa Mi Mi Mi Mi Re
+    melody: [1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 2, 2, 2, 2, 1],
+    toast: 'A B C! 🔤',
   },
   {
     id: 'wheels',
