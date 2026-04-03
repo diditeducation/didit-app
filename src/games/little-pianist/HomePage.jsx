@@ -141,6 +141,7 @@ export default function HomePage() {
         tag="🎹 Piano & Solfège"
         description="Start with the seven solfège notes, then play real songs note by note. Tap the coloured keys in the right order and hear the melody come alive."
         skillPills={[{ label: 'Solfège' }, { label: 'Note sequences' }, { label: 'Pitch & tone' }]}
+        gameId="little-pianist"
         onPlay={() => navigate('/games/little-pianist/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}

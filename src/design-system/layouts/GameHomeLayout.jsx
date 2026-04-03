@@ -80,6 +80,7 @@ export default function GameHomeLayout({
   illustration,
   onFeedback,
   shareButton = false,
+  gameId = null,
 }) {
   const { muted, toggleMute } = useSoundManager();
   const nav = useNavigate();
@@ -441,6 +442,26 @@ export default function GameHomeLayout({
               <button style={guideLinkTextStyle} onClick={() => setGuideOpen(true)}>
                 👋 Parent's Guide
               </button>
+            </div>
+          )}
+
+          {/* Share + Feedback links */}
+          {(shareButton || onFeedback) && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexShrink: 0, ...slotAnimation(7) }}>
+              {shareButton && (
+                <ShareButton gameId={gameId} label="Share with a friend 🔗" style={{ fontSize: '0.8rem', opacity: 0.6 }} />
+              )}
+              {shareButton && onFeedback && (
+                <span style={{ color: 'var(--game-text-muted)', opacity: 0.35, fontSize: '0.8rem', userSelect: 'none' }}>•</span>
+              )}
+              {onFeedback && (
+                <button
+                  onClick={onFeedback}
+                  style={{ ...guideLinkTextStyle, textDecorationStyle: 'dotted', fontSize: '0.8rem', opacity: 0.6 }}
+                >
+                  💬 Feedback
+                </button>
+              )}
             </div>
           )}
 

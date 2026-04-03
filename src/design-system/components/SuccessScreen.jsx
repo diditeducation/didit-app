@@ -124,7 +124,7 @@ function EmptySlot() {
   );
 }
 
-export default function SuccessScreen({ visible, gameName, learnedText, onPlayAgain, onBack, savedCoins = null, boughtItems = null, boughtLabel = 'You bought', onFeedback, showShare = false }) {
+export default function SuccessScreen({ visible, gameName, learnedText, onPlayAgain, onBack, savedCoins = null, boughtItems = null, boughtLabel = 'You bought', onFeedback, showShare = false, gameId = null }) {
   const [confettiActive, setConfettiActive] = useState(false);
   const [savingsConfetti, setSavingsConfetti] = useState(false);
 
@@ -399,6 +399,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 4, flexShrink: 0 }}>
           {showShare && (
             <ShareButton
+              gameId={gameId}
               label="Share with a friend"
               style={{
                 background: 'none', border: 'none', padding: 0,

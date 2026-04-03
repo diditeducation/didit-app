@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
@@ -9,6 +9,7 @@ import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
 import ChefGame from './ChefGame';
+import { trackGameOpen, trackGameComplete } from '../../analytics';
 
 export default function Game() {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ export default function Game() {
   const chefResetRef = useRef(null);
   const { toast, showToast } = useToast();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+
+  useEffect(() => { trackGameOpen('little-chef'); }, []);
 
   const triggerMilestone = (originX, originY, nextFn, message, toastTop) => {
     setMilestone({ active: true, originX, originY });
@@ -79,6 +82,7 @@ export default function Game() {
           onGameEnd={({ cooked, total }) => {
             setChefResult({ cooked, total });
             setShowNext(true);
+            trackGameComplete('little-chef');
             setShowSuccess(true);
           }}
         />
@@ -129,6 +133,8 @@ export default function Game() {
         }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
+        showShare
+        gameId="little-chef"
       />
       <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} gameName="Little Chef" />
     </div>

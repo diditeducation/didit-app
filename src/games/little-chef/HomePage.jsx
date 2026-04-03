@@ -111,6 +111,7 @@ export default function HomePage() {
         tag="🍳 Cooking & Sequencing"
         description="Crack the egg. Pour the flour. Mix. The order matters. Change a step, change the result."
         skillPills={[{ label: 'Sequencing' }, { label: 'Planning' }, { label: 'Process' }]}
+        gameId="little-chef"
         onPlay={() => navigate('/games/little-chef/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}

@@ -117,6 +117,7 @@ export default function HomePage() {
         tag="💰 Financial Literacy"
         description="They earn coins, choose what to buy, decide what to save, and figure out what things are worth."
         skillPills={[{ label: 'Budgeting' }, { label: 'Saving vs spending' }, { label: 'Price comparison' }]}
+        gameId="little-shopper"
         onPlay={() => navigate('/games/little-shopper/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}

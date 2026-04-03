@@ -117,6 +117,7 @@ export default function HomePage() {
         tag="🔧 Electrical Engineering"
         description="Follow the coloured wire back to the right switch, press it, and light up the bulb — collect all the animals!"
         skillPills={[{ label: 'Cause & effect' }, { label: 'Binary logic' }, { label: 'Systems thinking' }]}
+        gameId="little-engineer"
         onPlay={() => navigate('/games/little-engineer/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}

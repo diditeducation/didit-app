@@ -166,6 +166,7 @@ export default function HomePage() {
         tag="🎛️ Beat Making"
         description="Five instruments across four beats — tap any cell to switch it on and hear it loop. Stack up drums, bass, melody and more until you've got your own groove going."
         skillPills={[{ label: 'Layering sounds' }, { label: 'Rhythm' }, { label: 'Creativity' }]}
+        gameId="little-dj"
         onPlay={() => navigate('/games/little-dj/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}

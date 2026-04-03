@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react';
+import { trackShareClick } from '../../analytics';
 
 // Text and URL kept separate — iOS iMessage combines them into one bubble correctly.
 // Embedding the URL inside the text string causes iOS to split it into two message bubbles.
 const SHARE_TEXT = "Hey! Just discovered Did·It. These games pack in real life concepts such as finance, engineering, music production into simple games little kids enjoy. Give it a go! ✨";
 const SHARE_URL  = "https://didit.games";
 
-export default function ShareButton({ label = 'Share with a friend 🔗', style = {} }) {
+export default function ShareButton({ label = 'Share with a friend 🔗', style = {}, gameId = null }) {
   const [copied, setCopied] = useState(false);
   const busy = useRef(false);
 
@@ -13,6 +14,7 @@ export default function ShareButton({ label = 'Share with a friend 🔗', style 
     e.stopPropagation();
     if (busy.current) return;
     busy.current = true;
+    trackShareClick(gameId);
     try {
       if (navigator.share) {
         await navigator.share({ text: SHARE_TEXT, url: SHARE_URL });

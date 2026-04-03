@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
@@ -10,6 +10,7 @@ import { initAudio, sound } from './audio';
 import theme from './theme';
 import Waveform from './Waveform';
 import MixLevel from './levels/MixLevel';
+import { trackGameOpen, trackLevelComplete, trackGameComplete } from '../../analytics';
 
 const levels = [
   { id: 1, label: '🥁 Duo' },
@@ -47,10 +48,14 @@ export default function Game() {
   const emojiTimer = useRef(null);
   const emojiKey = useRef(0);
 
+  useEffect(() => { trackGameOpen('little-dj'); }, []);
+
   const handleComplete = (levelId) => {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels((prev) => new Set(prev).add(levelId));
+    trackLevelComplete('little-dj', levelId);
     if (levelId === levels.length) {
+      trackGameComplete('little-dj');
       setShowSuccess(true);
     } else {
       setActiveLevel(levelId + 1);
@@ -151,6 +156,8 @@ export default function Game() {
         }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
+        showShare
+        gameId="little-dj"
         boughtItems={ALL_ITEMS}
         boughtLabel="Instruments"
       />

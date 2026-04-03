@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
@@ -12,6 +12,7 @@ import Waveform from './Waveform';
 import SolfegLevel from './levels/SolfegLevel';
 import MelodyLevel from './levels/MelodyLevel';
 import { SONG_CATALOG } from './songCatalog';
+import { trackGameOpen, trackLevelComplete, trackGameComplete } from '../../analytics';
 
 // Pick 3 random songs from the catalog (called once per module load so it
 // stays stable across re-renders but changes on full page refresh)
@@ -42,10 +43,14 @@ export default function Game() {
     { id: 4, label: `${selectedSongs[2].emoji} ${selectedSongs[2].short}` },
   ];
 
+  useEffect(() => { trackGameOpen('little-pianist'); }, []);
+
   const handleComplete = (levelId) => {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels((prev) => new Set(prev).add(levelId));
+    trackLevelComplete('little-pianist', levelId);
     if (levelId === levels.length) {
+      trackGameComplete('little-pianist');
       setTimeout(() => setShowSuccess(true), 1500);
     } else {
       setActiveLevel(levelId + 1);
@@ -181,6 +186,8 @@ export default function Game() {
         }}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
+        showShare
+        gameId="little-pianist"
         boughtItems={allSongs}
         boughtLabel="Songs & skills"
       />
