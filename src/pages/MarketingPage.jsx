@@ -326,9 +326,9 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           </div>
           <div className="mp-game-body">
             <div className="mp-game-title">Little DJ</div>
-            <div className="mp-game-tag">{'\uD83C\uDFB5'} Music Fundamentals</div>
-            <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Sliders for tempo, notes to stretch, and tracks to play with. Rhythm, pitch, and composition.</div>
-            <div className="mp-game-skills"><span className="mp-game-skill">Pitch & tone</span><span className="mp-game-skill">Rhythm</span><span className="mp-game-skill">Mixing</span></div>
+            <div className="mp-game-tag">{'\uD83C\uDF9B\uFE0F'} Beat Making</div>
+            <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Tap a cell, hear it loop. Stack drums, bass, melody and more across four beats to build your own groove.</div>
+            <div className="mp-game-skills"><span className="mp-game-skill">Layering</span><span className="mp-game-skill">Rhythm</span><span className="mp-game-skill">Creativity</span></div>
             <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-dj'); }}>Explore {'\u2192'}</button>
           </div>
         </div>
