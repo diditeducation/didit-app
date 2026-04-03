@@ -61,8 +61,8 @@ export const SONG_CATALOG = [
     title: 'Wheels on the Bus',
     short: 'Wheels',
     emoji: '🚌',
-    // Do Do Do Do Mi Sol Mi Do Re Ti Sol Sol Mi Do
-    melody: [0, 0, 0, 0, 2, 4, 2, 0, 1, 6, 4, 4, 2, 0],
+    // Do Do Do Do Mi Sol Mi Do Sol Mi Do Sol Mi Do
+    melody: [0, 0, 0, 0, 2, 4, 2, 0, 4, 2, 0, 4, 2, 0],
     toast: 'Wheels on the Bus! 🚌',
   },
 ];
