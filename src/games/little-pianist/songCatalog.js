@@ -52,8 +52,8 @@ export const SONG_CATALOG = [
     title: 'Head Shoulders Knees and Toes',
     short: 'Head & Toes',
     emoji: '🙆',
-    // Sol Sol Sol Mi Sol Sol Sol Mi
-    melody: [4, 4, 4, 2, 4, 4, 4, 2],
+    // Sol Mi-Re-Do Sol-Sol-Mi Re-Re-Sol
+    melody: [4, 2, 1, 0, 4, 4, 2, 1, 1, 4],
     toast: 'Head Shoulders Knees and Toes! 🙆',
   },
   {
