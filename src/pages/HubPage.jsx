@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors } from '../design-system/tokens';
+import ChemistHeroVisual from '../games/little-chemist/HeroVisual';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
@@ -72,6 +73,33 @@ const GAMES = [
     light: colors.blueberryLight,
     path: '/games/little-pianist',
   },
+  {
+    key: 'coder',
+    title: 'Little Coder',
+    tag: '💻 Coding & Logic',
+    desc: 'Tap UP, DOWN, LEFT, RIGHT to move a rat to find cheese. A gentle intro to directional thinking.',
+    skills: ['Directions', 'Logic', 'Sequencing'],
+    img: '/game%20illustrations/Code.png',
+    bgImage: '/backgrounds/background-yellow.png',
+    primary: colors.sunMid,
+    dark: colors.sunDark,
+    light: colors.sunLight,
+    path: '/games/little-coder',
+  },
+  {
+    key: 'chemist',
+    title: 'Little Chemist',
+    tag: '⚗️ Chemistry',
+    desc: 'Balance atoms on a seesaw. Tap to match the left side and discover the elements — Hydrogen, Oxygen, and more.',
+    skills: ['Counting', 'Balancing', 'Elements'],
+    img: '/game%20illustrations/Atom.png',
+    heroVisual: <ChemistHeroVisual />,
+    bgImage: '/backgrounds/background-green.png',
+    primary: colors.grassMid,
+    dark: colors.grassDark,
+    light: colors.grassLight,
+    path: '/games/little-chemist',
+  },
 ];
 
 const css = `
@@ -87,9 +115,9 @@ const css = `
 .hub-arch-circle img{width:90px;height:90px;object-fit:contain}
 .hub-body{padding:12px 16px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;flex:1}
 .hub-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.35rem;margin:-10px 0 0;letter-spacing:-0.02em;white-space:nowrap}
-.hub-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:0.58rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap}
+.hub-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.02em;white-space:nowrap}
 .hub-desc{font-size:0.78rem;color:#2D2A26;line-height:1.5;margin:0;font-family:'Nunito',sans-serif}
-.hub-skills{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:auto;padding-top:4px;width:100%}
+.hub-skills{display:flex;flex-wrap:nowrap;gap:5px;justify-content:center;margin-top:auto;padding-top:4px;width:100%;overflow:hidden}
 .hub-skill{padding:4px 10px;border-radius:9999px;font-size:0.6rem;font-weight:700;font-family:'Nunito',sans-serif;white-space:nowrap}
 .hub-play-btn{padding:10px 28px;border-radius:9999px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all .25s;color:#fff;margin-top:auto;width:100%}
 .hub-play-btn:hover{filter:brightness(1.1)}
@@ -253,7 +281,10 @@ export default function HubPage() {
                 style={{ background: game.primary, backgroundImage: `url('${game.bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
                 <div className="hub-arch-circle">
-                  <img src={game.img} alt={game.title} />
+                  {game.heroVisual
+                    ? <div style={{ transform: 'scale(0.52)', transformOrigin: 'center', pointerEvents: 'none' }}>{game.heroVisual}</div>
+                    : <img src={game.img} alt={game.title} />
+                  }
                 </div>
               </div>
               <div className="hub-body">

@@ -356,7 +356,10 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
                   boxSizing: 'border-box',
                 }}
               >
-                <span style={{ fontSize: '2rem', lineHeight: 1 }}>{item.emoji}</span>
+                {item.node
+                  ? item.node
+                  : <span style={{ fontSize: '2rem', lineHeight: 1 }}>{item.emoji}</span>
+                }
                 <span
                   style={{
                     fontSize: '0.75rem',
