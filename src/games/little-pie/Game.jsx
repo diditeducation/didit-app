@@ -37,15 +37,15 @@ function makePiePath(cx, cy, r, a1, a2) {
   return `M ${cx.toFixed(1)} ${cy.toFixed(1)} L ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 ${span > 180 ? 1 : 0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z`;
 }
 
-function PieSliceIcon({ levelDef, size = 48 }) {
+// Full pie icon for the success screen
+function PieIcon({ levelDef, size = 48 }) {
   const cx = size / 2, cy = size / 2, r = size * 0.42;
   let cursor = 0;
   const slices = levelDef.spans.map((span, i) => {
-    const s = { start: cursor, end: cursor + span, color: PIE_COLORS[i % PIE_COLORS.length], isGap: i === levelDef.gap };
+    const s = { start: cursor, end: cursor + span, color: PIE_COLORS[i % PIE_COLORS.length] };
     cursor += span;
     return s;
   });
-  const gap = slices[levelDef.gap];
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       <circle cx={cx} cy={cy} r={r + 2} fill="rgba(194,60,60,0.08)" />
@@ -53,7 +53,7 @@ function PieSliceIcon({ levelDef, size = 48 }) {
         <path
           key={i}
           d={makePiePath(cx, cy, r, s.start, s.end)}
-          fill={s.isGap ? 'rgba(194,60,60,0.18)' : s.color}
+          fill={s.color}
           stroke="white"
           strokeWidth={1.5}
         />
@@ -63,9 +63,10 @@ function PieSliceIcon({ levelDef, size = 48 }) {
   );
 }
 
+const LEVEL_NAMES = ['2 halves', '3 thirds', 'Big & small', '3 pieces', '4 pieces', '5 pieces'];
 const BOUGHT_ITEMS = LEVEL_DEFS.map((def, i) => ({
-  node: <PieSliceIcon levelDef={def} size={48} />,
-  name: `Level ${i + 1}`,
+  node: <PieIcon levelDef={def} size={48} />,
+  name: LEVEL_NAMES[i],
 }));
 
 export default function Game() {

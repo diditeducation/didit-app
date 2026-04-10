@@ -1,23 +1,27 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { initAudio, sound } from './audio';
 
-const SVG_W = 280, SVG_H = 280, CX = 140, CY = 140, R = 108;
-const CHIP_SIZE = 92, CHIP_R = 34;
-const SNAP_R = 80;
+// ── Constants ─────────────────────────────────────────────────
+const SVG_W = 260, SVG_H = 260, CX = 130, CY = 130, R = 100;
+const CHIP_SIZE = 76;   // tray chip outer box size
+const CHIP_R   = 28;    // radius of arc inside chip
+const SNAP_R   = 56;    // snap-to-slot tolerance (screen px)
 const FONT = "'Nunito', sans-serif";
-const PIE_COLORS = ['#CF4A4A', '#F2C4BE', '#E8AAAA', '#C23C3C', '#F9D4CF'];
 
-// ── Level definitions ─────────────────────────────────────────────
+const PIE_COLORS = ['#CF4A4A', '#E8AAAA', '#C23C3C', '#F2C4BE', '#D05050', '#F9D4CF'];
+
+// ── Level defs — ALL spans, no "gap" index ────────────────────
+// Every slice is a piece the child must place.
 export const LEVEL_DEFS = [
-  { spans: [180, 180], gap: 1 },
-  { spans: [90, 90, 90, 90], gap: 2 },
-  { spans: [270, 90], gap: 1 },
-  { spans: [130, 110, 120], gap: 0 },
-  { spans: [100, 120, 80, 60], gap: 2 },
-  { spans: [72, 90, 108, 50, 40], gap: 3 },
+  { spans: [180, 180] },           // L1: 2 halves
+  { spans: [120, 120, 120] },      // L2: 3 thirds
+  { spans: [240, 120] },           // L3: big + small
+  { spans: [150, 120, 90] },       // L4: 3 unequal
+  { spans: [130, 100, 80, 50] },   // L5: 4 pieces
+  { spans: [110, 90, 72, 52, 36] },// L6: 5 pieces (110+90+72+52+36=360)
 ];
 
-// ── Helpers ──────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────
 function ptOnCircle(cx, cy, r, deg) {
   const rad = (deg - 90) * Math.PI / 180;
   return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
@@ -26,12 +30,22 @@ function ptOnCircle(cx, cy, r, deg) {
 function makePiePath(cx, cy, r, a1, a2) {
   const [x1, y1] = ptOnCircle(cx, cy, r, a1);
   const [x2, y2] = ptOnCircle(cx, cy, r, a2);
-  const span = a2 - a1;
-  return `M ${cx.toFixed(1)} ${cy.toFixed(1)} L ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 ${span > 180 ? 1 : 0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z`;
+  const large = (a2 - a1) > 180 ? 1 : 0;
+  return `M ${cx.toFixed(1)} ${cy.toFixed(1)} L ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z`;
 }
 
+// Chip path — same formula but centered in CHIP_SIZE box
 function makeChipPath(a1, a2) {
   return makePiePath(CHIP_SIZE / 2, CHIP_SIZE / 2, CHIP_R, a1, a2);
+}
+
+function buildSlices(def) {
+  let cursor = 0;
+  return def.spans.map((span, i) => {
+    const s = { id: i, start: cursor, end: cursor + span, span, color: PIE_COLORS[i % PIE_COLORS.length] };
+    cursor += span;
+    return s;
+  });
 }
 
 function shuffle(arr) {
@@ -43,294 +57,295 @@ function shuffle(arr) {
   return a;
 }
 
-// ── Build slices from level def ──────────────────────────────────
-function buildSlices(def) {
-  const slices = [];
-  let cursor = 0;
-  def.spans.forEach((span, i) => {
-    slices.push({
-      start: cursor,
-      end: cursor + span,
-      color: PIE_COLORS[i % PIE_COLORS.length],
-      isGap: i === def.gap,
-    });
-    cursor += span;
-  });
-  return slices;
-}
-
-// ── Build 3 options (correct + 2 distractors) ────────────────────
-function makeOptions(slices, gapIdx) {
-  const gap = slices[gapIdx];
-  const gapSpan = gap.end - gap.start;
-
-  const correct = {
-    start: gap.start,
-    end: gap.end,
-    isCorrect: true,
-    color: gap.color,
-  };
-
-  const d1Span = Math.max(15, Math.round(gapSpan * 0.5));
-  const d1 = {
-    start: 0,
-    end: d1Span,
-    isCorrect: false,
-    color: '#E8AAAA',
-  };
-
-  const d2Span = Math.min(320, Math.round(gapSpan * 1.6));
-  const d2 = {
-    start: 0,
-    end: d2Span,
-    isCorrect: false,
-    color: '#E8AAAA',
-  };
-
-  return shuffle([correct, d1, d2]);
-}
-
-// ── Keyframes injected once ──────────────────────────────────────
-const KEYFRAMES_ID = 'didit-pie-game-keyframes';
+// ── Keyframes ─────────────────────────────────────────────────
+const KF_ID = 'didit-pie-kf';
 function injectKeyframes() {
   if (typeof document === 'undefined') return;
-  if (document.getElementById(KEYFRAMES_ID)) return;
-  const style = document.createElement('style');
-  style.id = KEYFRAMES_ID;
-  style.textContent = `
-    @keyframes pieShake {
-      0%   { transform: translateX(0) rotate(0deg); }
-      15%  { transform: translateX(-8px) rotate(-5deg); }
-      30%  { transform: translateX(8px) rotate(5deg); }
-      45%  { transform: translateX(-6px) rotate(-3deg); }
-      60%  { transform: translateX(6px) rotate(3deg); }
-      75%  { transform: translateX(-3px) rotate(-2deg); }
-      90%  { transform: translateX(3px) rotate(2deg); }
-      100% { transform: translateX(0) rotate(0deg); }
+  if (document.getElementById(KF_ID)) return;
+  const el = document.createElement('style');
+  el.id = KF_ID;
+  el.textContent = `
+    @keyframes pieSnapIn {
+      0%   { transform: scale(1.25); opacity: 0.6; }
+      55%  { transform: scale(0.9); }
+      75%  { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
     }
     @keyframes piePulse {
       0%   { filter: drop-shadow(0 0 0px rgba(194,60,60,0)); }
-      30%  { filter: drop-shadow(0 0 12px rgba(194,60,60,0.7)); }
-      60%  { filter: drop-shadow(0 0 8px rgba(194,60,60,0.5)); }
-      100% { filter: drop-shadow(0 0 4px rgba(194,60,60,0.3)); }
+      40%  { filter: drop-shadow(0 0 18px rgba(194,60,60,0.9)); }
+      100% { filter: drop-shadow(0 0 6px rgba(194,60,60,0.3)); }
+    }
+    @keyframes chipIdle {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-5px); }
     }
   `;
-  document.head.appendChild(style);
+  document.head.appendChild(el);
 }
 
-// ── Component ────────────────────────────────────────────────────
+// ── Component ─────────────────────────────────────────────────
 export default function LittlePieGame({ levelDef, onMilestone }) {
   injectKeyframes();
 
   const svgRef = useRef(null);
+  const completeFired = useRef(false);
 
-  const slices = buildSlices(levelDef);
-  const gapIdx = levelDef.gap;
+  // Build slices once per levelDef
+  const slices = useMemo(() => buildSlices(levelDef), [levelDef]);
 
-  const [options] = useState(() => makeOptions(slices, gapIdx));
-  const [dragging, setDragging] = useState(null);
-  const [dragPos, setDragPos] = useState({ x: 0, y: 0 });
-  const [snapped, setSnapped] = useState(false);
-  const [shaking, setShaking] = useState(null);
-  const [pulsing, setPulsing] = useState(false);
+  // Pieces in the tray — same data as slices but shuffled
+  const [pieces] = useState(() => shuffle(slices.map(s => ({ ...s }))));
 
-  const gapSlice = slices[gapIdx];
+  // placedMap: { [slotId]: color } — which slots are filled and with what color
+  const [placedMap, setPlacedMap] = useState({});
+  // usedPieceIds: which pieces have been dragged out of the tray
+  const [usedPieceIds, setUsedPieceIds] = useState(new Set());
 
-  // Get screen position of gap center
-  function getGapCenter() {
+  const [dragging, setDragging]       = useState(null); // index into `pieces`
+  const [dragPos,   setDragPos]       = useState({ x: 0, y: 0 });
+  const [pulsing,   setPulsing]       = useState(false);
+  const [justSnapped, setJustSnapped] = useState(null); // slotId that just snapped (for pop anim)
+
+  const placedCount = Object.keys(placedMap).length;
+  const allPlaced   = placedCount === slices.length;
+
+  // ── Slot center in screen coords ──────────────────────────
+  function getSlotCenter(sliceId) {
     if (!svgRef.current) return { x: 0, y: 0 };
-    const rect = svgRef.current.getBoundingClientRect();
+    const rect  = svgRef.current.getBoundingClientRect();
     const scale = rect.width / SVG_W;
-    const midAngle = (gapSlice.start + gapSlice.end) / 2;
-    const [svgX, svgY] = ptOnCircle(CX, CY, R * 0.6, midAngle);
-    return {
-      x: rect.left + svgX * scale,
-      y: rect.top + svgY * scale,
-    };
+    const s     = slices[sliceId];
+    const mid   = (s.start + s.end) / 2;
+    const [sx, sy] = ptOnCircle(CX, CY, R * 0.6, mid);
+    return { x: rect.left + sx * scale, y: rect.top + sy * scale };
   }
 
-  function startDrag(e, idx) {
+  // ── Start drag ────────────────────────────────────────────
+  function startDrag(e, pieceIdx) {
     e.preventDefault();
     initAudio();
     sound.pickup();
-    setDragging(idx);
-    setDragPos({ x: e.clientX, y: e.clientY });
+    setDragging(pieceIdx);
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    const cy = e.touches ? e.touches[0].clientY : e.clientY;
+    setDragPos({ x: cx, y: cy });
   }
 
+  // ── Drop ─────────────────────────────────────────────────
   function handleDrop(px, py) {
     if (dragging === null) return;
-    const center = getGapCenter();
-    const dist = Math.hypot(px - center.x, py - center.y);
-    const opt = options[dragging];
+    const piece = pieces[dragging];
 
-    if (dist < SNAP_R) {
-      if (opt.isCorrect) {
-        sound.snap();
-        setSnapped(true);
+    // Find nearest empty slot within SNAP_R
+    let bestSlot = null, bestDist = Infinity;
+    slices.forEach(s => {
+      if (placedMap[s.id] !== undefined) return; // already filled
+      const c = getSlotCenter(s.id);
+      const d = Math.hypot(px - c.x, py - c.y);
+      if (d < SNAP_R && d < bestDist) {
+        bestDist = d;
+        bestSlot = s.id;
+      }
+    });
+
+    if (bestSlot !== null) {
+      sound.snap();
+      setJustSnapped(bestSlot);
+      setTimeout(() => setJustSnapped(null), 450);
+
+      const newPlacedMap    = { ...placedMap, [bestSlot]: piece.color };
+      const newUsedPieceIds = new Set(usedPieceIds);
+      newUsedPieceIds.add(piece.id);
+
+      setPlacedMap(newPlacedMap);
+      setUsedPieceIds(newUsedPieceIds);
+
+      // All placed?
+      if (Object.keys(newPlacedMap).length === slices.length && !completeFired.current) {
+        completeFired.current = true;
         setPulsing(true);
-        const capturedDragging = dragging;
         setTimeout(() => {
           sound.chime();
           if (svgRef.current) {
             const rect = svgRef.current.getBoundingClientRect();
-            const xPct = ((center.x - rect.left) / rect.width) * 100;
-            const yPct = ((center.y - rect.top) / rect.height) * 100;
+            const xPct = ((rect.left + rect.width  * 0.5) / window.innerWidth)  * 100;
+            const yPct = ((rect.top  + rect.height * 0.5) / window.innerHeight) * 100;
             onMilestone && onMilestone(xPct, yPct);
           } else {
-            onMilestone && onMilestone(50, 50);
+            onMilestone && onMilestone(50, 45);
           }
-        }, 350);
-      } else {
-        sound.boing();
-        const idx = dragging;
-        setShaking(idx);
-        setTimeout(() => setShaking(null), 550);
+        }, 600);
       }
     }
 
     setDragging(null);
   }
 
+  // ── Pointer listeners ─────────────────────────────────────
   useEffect(() => {
     if (dragging === null) return;
-
     function onMove(e) {
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      setDragPos({ x: clientX, y: clientY });
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const y = e.touches ? e.touches[0].clientY : e.clientY;
+      setDragPos({ x, y });
     }
-
     function onUp(e) {
-      const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-      const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-      handleDrop(clientX, clientY);
+      const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+      const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+      handleDrop(x, y);
     }
-
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerup',   onUp);
     return () => {
       window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointerup',   onUp);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dragging]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dragging, placedMap, usedPieceIds]);
 
-  // Gap dashed arc path (outline only, no fill)
-  const [gx1, gy1] = ptOnCircle(CX, CY, R, gapSlice.start);
-  const [gx2, gy2] = ptOnCircle(CX, CY, R, gapSlice.end);
-  const gapSpan = gapSlice.end - gapSlice.start;
-  const gapArcPath = `M ${gx1.toFixed(1)} ${gy1.toFixed(1)} A ${R} ${R} 0 ${gapSpan > 180 ? 1 : 0} 1 ${gx2.toFixed(1)} ${gy2.toFixed(1)}`;
-
+  // ── Render ────────────────────────────────────────────────
   return (
     <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: 24,
-      padding: '16px 0 8px',
-      userSelect: 'none',
-      touchAction: 'none',
+      display:        'flex',
+      flexDirection:  'column',
+      alignItems:     'center',
+      gap:            20,
+      padding:        '12px 0 8px',
+      userSelect:     'none',
+      touchAction:    'none',
+      width:          '100%',
     }}>
-      {/* Pie SVG */}
+
+      {/* ── Pie SVG ──────────────────────────────────────── */}
       <svg
         ref={svgRef}
         width={SVG_W}
         height={SVG_H}
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}
         style={{
-          maxWidth: '90vw',
-          maxHeight: '55vw',
-          display: 'block',
-          animation: pulsing ? 'piePulse 0.8s ease-out 2' : 'none',
+          maxWidth:  'min(88vw, 300px)',
+          maxHeight: 'min(88vw, 300px)',
+          display:   'block',
+          animation: pulsing ? 'piePulse 0.9s ease-out forwards' : 'none',
         }}
       >
         <defs>
-          <radialGradient id="pieShine" cx="40%" cy="30%" r="60%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
+          <radialGradient id="pieShine" cx="38%" cy="28%" r="55%">
+            <stop offset="0%"   stopColor="rgba(255,255,255,0.18)" />
             <stop offset="100%" stopColor="rgba(255,255,255,0)" />
           </radialGradient>
         </defs>
 
-        {/* Background circle */}
+        {/* Outer glow ring */}
         <circle
-          cx={CX} cy={CY} r={R + 6}
-          fill="rgba(194,60,60,0.06)"
-          stroke="rgba(194,60,60,0.2)"
+          cx={CX} cy={CY} r={R + 8}
+          fill="rgba(194,60,60,0.05)"
+          stroke="rgba(194,60,60,0.15)"
           strokeWidth={1.5}
         />
 
-        {/* Non-gap slices; gap slice rendered when snapped */}
-        {slices.map((s, i) => {
-          if (s.isGap && !snapped) return null;
+        {/* Each slice: filled if placed, otherwise dashed outline */}
+        {slices.map(s => {
+          const filled = placedMap[s.id] !== undefined;
+          const color  = placedMap[s.id] || null;
+          const d      = makePiePath(CX, CY, R, s.start, s.end);
+
+          if (filled) {
+            return (
+              <path
+                key={s.id}
+                d={d}
+                fill={color}
+                stroke="white"
+                strokeWidth={2}
+                style={{
+                  animation: justSnapped === s.id ? 'pieSnapIn 0.45s cubic-bezier(0.34,1.56,0.64,1)' : 'none',
+                  transformOrigin: `${CX}px ${CY}px`,
+                }}
+              />
+            );
+          }
+
+          // Empty slot — dashed arc outline only (no fill, so child sees the gap)
+          const [x1, y1] = ptOnCircle(CX, CY, R, s.start);
+          const [x2, y2] = ptOnCircle(CX, CY, R, s.end);
+          const large = s.span > 180 ? 1 : 0;
+          // Two radial lines + arc
           return (
-            <path
-              key={i}
-              d={makePiePath(CX, CY, R, s.start, s.end)}
-              fill={s.color}
-              stroke="white"
-              strokeWidth={2}
-            />
+            <g key={s.id}>
+              {/* Radial edges */}
+              <line
+                x1={CX} y1={CY} x2={x1} y2={y1}
+                stroke="rgba(194,60,60,0.28)" strokeWidth={1.5} strokeDasharray="5 4"
+              />
+              <line
+                x1={CX} y1={CY} x2={x2} y2={y2}
+                stroke="rgba(194,60,60,0.28)" strokeWidth={1.5} strokeDasharray="5 4"
+              />
+              {/* Arc */}
+              <path
+                d={`M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${R} ${R} 0 ${large} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`}
+                fill="none"
+                stroke="rgba(194,60,60,0.28)"
+                strokeWidth={1.5}
+                strokeDasharray="5 4"
+              />
+              {/* Light fill hint */}
+              <path
+                d={d}
+                fill="rgba(194,60,60,0.04)"
+              />
+            </g>
           );
         })}
 
-        {/* Gap dashed outline (only when not snapped) */}
-        {!snapped && (
-          <path
-            d={gapArcPath}
-            fill="none"
-            stroke="rgba(194,60,60,0.35)"
-            strokeWidth={2}
-            strokeDasharray="8 5"
-          />
-        )}
+        {/* Shine overlay */}
+        <circle cx={CX} cy={CY - R * 0.18} r={R * 0.32} fill="url(#pieShine)" style={{ pointerEvents: 'none' }} />
 
-        {/* White center dot */}
+        {/* Center dot */}
         <circle cx={CX} cy={CY} r={5} fill="white" />
-
-        {/* Radial shine overlay */}
-        <circle
-          cx={CX}
-          cy={CY - R * 0.2}
-          r={R * 0.35}
-          fill="url(#pieShine)"
-          style={{ pointerEvents: 'none' }}
-        />
       </svg>
 
-      {/* Chip tray */}
-      {!snapped && (
+      {/* ── Tray ─────────────────────────────────────────── */}
+      {!allPlaced && (
         <div style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 16,
-          alignItems: 'center',
+          display:        'flex',
+          flexWrap:       'wrap',
+          gap:            10,
           justifyContent: 'center',
-          padding: '8px 0',
+          padding:        '6px 16px 4px',
+          maxWidth:       '100%',
         }}>
-          {options.map((opt, idx) => {
-            const isBeingDragged = dragging === idx;
+          {pieces.map((piece, idx) => {
+            const isPlaced   = usedPieceIds.has(piece.id);
+            const isDragging = dragging === idx;
+
+            if (isPlaced) return null; // disappears once placed
 
             return (
               <div
-                key={idx}
-                onPointerDown={(!snapped && dragging === null) ? (e) => startDrag(e, idx) : undefined}
+                key={piece.id}
+                onPointerDown={dragging === null ? (e) => startDrag(e, idx) : undefined}
                 style={{
-                  width: CHIP_SIZE,
-                  height: CHIP_SIZE,
-                  borderRadius: 16,
-                  border: '2px solid rgba(194,60,60,0.3)',
-                  background: 'rgba(255,251,245,0.95)',
-                  boxShadow: '0 2px 8px rgba(194,60,60,0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
+                  width:       CHIP_SIZE,
+                  height:      CHIP_SIZE,
+                  borderRadius: 14,
+                  border:      '2px solid rgba(194,60,60,0.25)',
+                  background:  'rgba(255,251,245,0.95)',
+                  boxShadow:   '0 3px 10px rgba(194,60,60,0.12)',
+                  display:     'flex',
+                  alignItems:  'center',
                   justifyContent: 'center',
-                  cursor: snapped ? 'default' : 'grab',
-                  opacity: isBeingDragged ? 0.35 : 1,
-                  transition: 'opacity 0.2s',
-                  animation: shaking === idx ? 'pieShake 0.5s ease-out' : 'none',
+                  cursor:      'grab',
+                  opacity:     isDragging ? 0.2 : 1,
+                  transition:  'opacity 0.15s',
                   touchAction: 'none',
-                  userSelect: 'none',
-                  flexShrink: 0,
+                  flexShrink:  0,
+                  // gentle idle float on pieces not yet dragged
+                  animation:   dragging === null
+                    ? `chipIdle ${2.2 + (piece.id * 0.35)}s ease-in-out ${piece.id * 0.18}s infinite`
+                    : 'none',
                 }}
               >
                 <svg
@@ -338,11 +353,21 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
                   height={CHIP_SIZE}
                   viewBox={`0 0 ${CHIP_SIZE} ${CHIP_SIZE}`}
                 >
+                  <defs>
+                    <radialGradient id={`cs${piece.id}`} cx="38%" cy="30%" r="55%">
+                      <stop offset="0%"   stopColor="rgba(255,255,255,0.25)" />
+                      <stop offset="100%" stopColor="rgba(0,0,0,0.08)" />
+                    </radialGradient>
+                  </defs>
                   <path
-                    d={makeChipPath(opt.start, opt.end)}
-                    fill={opt.color}
+                    d={makeChipPath(piece.start, piece.end)}
+                    fill={piece.color}
                     stroke="white"
                     strokeWidth={1.5}
+                  />
+                  <path
+                    d={makeChipPath(piece.start, piece.end)}
+                    fill={`url(#cs${piece.id})`}
                   />
                 </svg>
               </div>
@@ -351,32 +376,32 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
         </div>
       )}
 
-      {/* Drag ghost */}
-      {dragging !== null && (
-        <div style={{
-          position: 'fixed',
-          left: dragPos.x - CHIP_SIZE * 0.75,
-          top: dragPos.y - CHIP_SIZE * 0.75,
-          width: CHIP_SIZE * 1.5,
-          height: CHIP_SIZE * 1.5,
-          pointerEvents: 'none',
-          zIndex: 500,
-        }}>
-          <svg
-            width={CHIP_SIZE * 1.5}
-            height={CHIP_SIZE * 1.5}
-            viewBox={`0 0 ${CHIP_SIZE} ${CHIP_SIZE}`}
-          >
-            <path
-              d={makeChipPath(options[dragging].start, options[dragging].end)}
-              fill={options[dragging].color}
-              stroke="white"
-              strokeWidth={1.5}
-              style={{ filter: 'drop-shadow(0 4px 12px rgba(194,60,60,0.35))' }}
-            />
-          </svg>
-        </div>
-      )}
+      {/* ── Drag ghost ───────────────────────────────────── */}
+      {dragging !== null && (() => {
+        const piece    = pieces[dragging];
+        const ghostSz  = CHIP_SIZE * 1.45;
+        return (
+          <div style={{
+            position:      'fixed',
+            left:          dragPos.x - ghostSz / 2,
+            top:           dragPos.y - ghostSz / 2,
+            width:         ghostSz,
+            height:        ghostSz,
+            pointerEvents: 'none',
+            zIndex:        500,
+          }}>
+            <svg width={ghostSz} height={ghostSz} viewBox={`0 0 ${CHIP_SIZE} ${CHIP_SIZE}`}>
+              <path
+                d={makeChipPath(piece.start, piece.end)}
+                fill={piece.color}
+                stroke="white"
+                strokeWidth={1.5}
+                style={{ filter: 'drop-shadow(0 5px 14px rgba(194,60,60,0.4))' }}
+              />
+            </svg>
+          </div>
+        );
+      })()}
     </div>
   );
 }
