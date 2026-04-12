@@ -135,9 +135,9 @@ export default function GameHomeLayout({
     width: '36px',
     height: '36px',
     borderRadius: '50%',
-    background: 'rgba(0,0,0,0.06)',
+    background: 'color-mix(in srgb, var(--game-primary) 12%, transparent)',
     border: 'none',
-    color: 'var(--game-text-muted)',
+    color: 'var(--game-primary)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -294,7 +294,7 @@ export default function GameHomeLayout({
   const guideLinkTextStyle = {
     fontFamily: fonts.body,
     fontSize: '0.9rem',
-    color: 'var(--game-text-muted)',
+    color: 'var(--game-primary)',
     opacity: 0.6,
     textDecoration: 'underline',
     textDecorationStyle: 'dotted',
@@ -445,23 +445,15 @@ export default function GameHomeLayout({
             </div>
           )}
 
-          {/* Share + Feedback links */}
-          {(shareButton || onFeedback) && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexShrink: 0, ...slotAnimation(7) }}>
-              {shareButton && (
-                <ShareButton gameId={gameId} label="Share with a friend 🔗" style={{ fontSize: '0.8rem', opacity: 0.6 }} />
-              )}
-              {shareButton && onFeedback && (
-                <span style={{ color: 'var(--game-text-muted)', opacity: 0.35, fontSize: '0.8rem', userSelect: 'none' }}>•</span>
-              )}
-              {onFeedback && (
-                <button
-                  onClick={onFeedback}
-                  style={{ ...guideLinkTextStyle, textDecorationStyle: 'dotted', fontSize: '0.8rem', opacity: 0.6 }}
-                >
-                  💬 Feedback
-                </button>
-              )}
+          {/* Feedback link */}
+          {onFeedback && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, ...slotAnimation(7) }}>
+              <button
+                onClick={onFeedback}
+                style={{ ...guideLinkTextStyle, textDecorationStyle: 'dotted', fontSize: '0.8rem', opacity: 0.6 }}
+              >
+                💬 Feedback
+              </button>
             </div>
           )}
 

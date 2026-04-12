@@ -198,20 +198,20 @@ export default function HomePage() {
       <GameHomeLayout
         heroVisual={<HeroVisual />}
         title="Astronomer"
-        tagline="Match the planet to its silhouette."
-        tag="🪐 Space & Planets"
-        description="A mystery planet silhouette appears in the stars. Tap the right planet to match it and light up the sky!"
+        tagline="Tap the stars to draw a constellation!"
+        tag="🌟 Stars & Constellations"
+        description="Six glowing stars are hidden in the night sky. Tap them in order to connect the dots and reveal a secret animal!"
         skillPills={[
-          { label: 'Planets' },
-          { label: 'Shapes' },
-          { label: 'Matching' },
+          { label: 'Constellations' },
+          { label: 'Stars' },
+          { label: 'Sequences' },
         ]}
         gameId="little-astronomer"
         onPlay={() => navigate('/games/little-astronomer/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         shareButton
-        parentTipBody="Point at the silhouette and ask 'what planet could this be?' Talk about Saturn's rings, Jupiter's size, or Earth's colours. Space is endless fun! 🚀"
+        parentTipBody="Point to each glowing star and count them together! After the animal appears, name it and look it up in a real star map. Constellations are how ancient people told stories through the night sky 🌙"
       />
       <FeedbackModal
         isOpen={feedbackOpen}

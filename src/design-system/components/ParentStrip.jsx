@@ -22,7 +22,8 @@ export default function ParentStrip({ showTagline = true }) {
   const labelStyle = {
     fontFamily: fonts.body,
     fontSize: '0.72rem',
-    color: 'var(--game-text-muted)',
+    color: 'var(--game-primary)',
+    opacity: 0.5,
     textAlign: 'center',
     flex: 1,
     padding: '0 8px',

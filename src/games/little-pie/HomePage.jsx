@@ -144,10 +144,10 @@ export default function HomePage() {
       <GameHomeLayout
         heroVisual={<HeroVisual />}
         title="Analyst"
-        tagline="Fill the missing piece to complete the chart."
-        tag="🥧 Fractions & Patterns"
-        description="A pie chart appears with one piece missing. Drag the right slice to complete it — discovering how parts fit into a whole."
-        skillPills={[{ label: 'Fractions' }, { label: 'Shapes' }, { label: 'Matching' }]}
+        tagline="Fill the missing pieces to complete the chart."
+        tag="🥧 Data visualisation"
+        description="A pie chart appears with pieces missing. Drag the right slice to complete it — discovering how parts fit into a whole and form 100%."
+        skillPills={[{ label: 'Percentages' }, { label: 'Shapes' }, { label: 'Spatial recognition' }]}
         gameId="little-pie"
         onPlay={() => navigate('/games/little-pie/play')}
         onBack={() => navigate('/hub')}

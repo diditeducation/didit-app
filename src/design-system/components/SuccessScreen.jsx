@@ -116,7 +116,7 @@ function EmptySlot() {
         width: 32,
         height: 32,
         borderRadius: '50%',
-        border: '2px dashed rgba(255,255,255,0.15)',
+        border: '2px dashed color-mix(in srgb, var(--game-text) 15%, transparent)',
         background: 'transparent',
         flexShrink: 0,
       }}
@@ -251,7 +251,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
         <div style={{
           background: 'color-mix(in srgb, var(--game-text) 6%, transparent)',
           borderRadius: 16,
-          border: '1.5px solid rgba(255,255,255,0.25)',
+          border: '1.5px solid color-mix(in srgb, var(--game-text) 18%, transparent)',
           padding: '10px 16px',
           width: 'calc(100% - 32px)',
           maxWidth: '320px',
@@ -310,7 +310,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
         <div
           style={{
             background: 'color-mix(in srgb, var(--game-text) 6%, transparent)',
-            border: '1.5px solid rgba(255,255,255,0.25)',
+            border: '1.5px solid color-mix(in srgb, var(--game-text) 18%, transparent)',
             borderRadius: 16,
             padding: '14px 16px',
             width: 'calc(100% - 32px)',
@@ -350,7 +350,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
                   alignItems: 'center',
                   gap: 2,
                   padding: '10px 8px',
-                  background: 'rgba(255,255,255,0.1)',
+                  background: 'color-mix(in srgb, var(--game-text) 7%, transparent)',
                   borderRadius: 12,
                   width: 'calc(50% - 2px)',
                   boxSizing: 'border-box',

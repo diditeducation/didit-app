@@ -29,12 +29,12 @@ const ChemistHome   = lazy(() => import('./games/little-chemist/HomePage'));
 const ChemistGame   = lazy(() => import('./games/little-chemist/Game'));
 const CoderHome     = lazy(() => import('./games/little-coder/HomePage'));
 const CoderGame     = lazy(() => import('./games/little-coder/Game'));
-const PourHome         = lazy(() => import('./games/little-pour/HomePage'));
-const PourGame         = lazy(() => import('./games/little-pour/Game'));
 const AstronomerHome   = lazy(() => import('./games/little-astronomer/HomePage'));
 const AstronomerGame   = lazy(() => import('./games/little-astronomer/Game'));
-const PieHome          = lazy(() => import('./games/little-pie/HomePage'));
-const PieGame          = lazy(() => import('./games/little-pie/Game'));
+const PieHome           = lazy(() => import('./games/little-pie/HomePage'));
+const PieGame           = lazy(() => import('./games/little-pie/Game'));
+const ArchitectHome     = lazy(() => import('./games/little-architect/HomePage'));
+const ArchitectGame     = lazy(() => import('./games/little-architect/Game'));
 
 export default function App() {
   return (
@@ -72,9 +72,6 @@ export default function App() {
           <Route path="/games/little-coder"      element={<ProtectedRoute><CoderHome /></ProtectedRoute>} />
           <Route path="/games/little-coder/play" element={<ProtectedRoute><CoderGame /></ProtectedRoute>} />
 
-          {/* Little Pour (Mathematician) */}
-          <Route path="/games/little-pour"      element={<ProtectedRoute><PourHome /></ProtectedRoute>} />
-          <Route path="/games/little-pour/play" element={<ProtectedRoute><PourGame /></ProtectedRoute>} />
 
           {/* Little Astronomer */}
           <Route path="/games/little-astronomer"      element={<ProtectedRoute><AstronomerHome /></ProtectedRoute>} />
@@ -83,6 +80,10 @@ export default function App() {
           {/* Little Analyst (Pie) */}
           <Route path="/games/little-pie"      element={<ProtectedRoute><PieHome /></ProtectedRoute>} />
           <Route path="/games/little-pie/play" element={<ProtectedRoute><PieGame /></ProtectedRoute>} />
+
+          {/* Little Architect */}
+          <Route path="/games/little-architect"      element={<ProtectedRoute><ArchitectHome /></ProtectedRoute>} />
+          <Route path="/games/little-architect/play" element={<ProtectedRoute><ArchitectGame /></ProtectedRoute>} />
 
           {/* Little DJ */}
           <Route path="/games/little-dj"           element={<ProtectedRoute><DJHome /></ProtectedRoute>} />

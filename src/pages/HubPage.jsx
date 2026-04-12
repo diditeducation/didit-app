@@ -1,11 +1,36 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors } from '../design-system/tokens';
-import ChemistHeroVisual from '../games/little-chemist/HeroVisual';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import ShareButton from '../design-system/components/ShareButton';
+import {
+  ShopperIllustration,
+  DJIllustration,
+  EngineerIllustration,
+  ChefIllustration,
+  PianistIllustration,
+  CoderIllustration,
+  ChemistIllustration,
+  AstronomerIllustration,
+  AnalystIllustration,
+  ArchitectIllustration,
+} from './GameIllustrations';
+
+// Map game key → illustration component (follows ILLUSTRATIONS.md)
+const GAME_ILLUSTRATIONS = {
+  shopper:    ShopperIllustration,
+  mixer:      DJIllustration,
+  engineer:   EngineerIllustration,
+  chef:       ChefIllustration,
+  dj:         PianistIllustration,
+  coder:      CoderIllustration,
+  chemist:    ChemistIllustration,
+  astronomer: AstronomerIllustration,
+  pie:        AnalystIllustration,
+  architect:  ArchitectIllustration,
+};
 
 const GAMES = [
   {
@@ -14,7 +39,6 @@ const GAMES = [
     tag: '\uD83D\uDCB0 Financial Literacy',
     desc: 'They earn coins, choose what to buy, decide what to save, and figure out what things are worth.',
     skills: ['Budgeting', 'Saving', 'Decisions'],
-    img: '/game%20illustrations/Bank.png',
     bgImage: '/backgrounds/background-green.png',
     primary: colors.grassMid,
     dark: colors.grassDark,
@@ -27,7 +51,6 @@ const GAMES = [
     tag: '\uD83C\uDF9B\uFE0F Beat Making',
     desc: 'Tap a cell, hear it loop. Stack drums, bass, melody and more across four beats to build your own groove.',
     skills: ['Layering', 'Rhythm', 'Creativity'],
-    img: '/game%20illustrations/Music.png',
     bgImage: '/backgrounds/background-red.png',
     primary: colors.coralMid,
     dark: colors.coralDark,
@@ -40,7 +63,6 @@ const GAMES = [
     tag: '\uD83D\uDD27 Electrical Engineering',
     desc: 'Switches to flip, wires to connect, circuits to complete. Binary logic and systems thinking.',
     skills: ['Circuits', 'Logic', 'Systems'],
-    img: '/game%20illustrations/Bulb.png',
     bgImage: '/backgrounds/background-blue.png',
     primary: colors.blueberryMid,
     dark: colors.blueberryDark,
@@ -53,7 +75,6 @@ const GAMES = [
     tag: '\uD83E\uDD58 Cooking & Sequencing',
     desc: 'Crack the egg. Pour the flour. Mix. The order matters. Change a step, change the result.',
     skills: ['Sequencing', 'Planning', 'Process'],
-    img: '/game%20illustrations/Pizza.png',
     bgImage: '/backgrounds/background-yellow.png',
     primary: colors.sunMid,
     dark: colors.sunDark,
@@ -66,7 +87,6 @@ const GAMES = [
     tag: '\uD83C\uDFB9 Piano & Solfège',
     desc: 'Learn Do Re Mi, then play real songs note by note. Tap the coloured keys in order and hear the melody come alive.',
     skills: ['Solfège', 'Melody', 'Pitch'],
-    img: '/game%20illustrations/Music.png',
     bgImage: '/backgrounds/background-blue.png',
     primary: colors.blueberryMid,
     dark: colors.blueberryDark,
@@ -79,7 +99,6 @@ const GAMES = [
     tag: '💻 Coding & Logic',
     desc: 'Tap UP, DOWN, LEFT, RIGHT to move a rat to find cheese. A gentle intro to directional thinking.',
     skills: ['Directions', 'Logic', 'Sequencing'],
-    img: '/game%20illustrations/Code.png',
     bgImage: '/backgrounds/background-yellow.png',
     primary: colors.sunMid,
     dark: colors.sunDark,
@@ -92,8 +111,6 @@ const GAMES = [
     tag: '⚗️ Chemistry',
     desc: 'Balance atoms on a seesaw. Tap to match the left side and discover the elements — Hydrogen, Oxygen, and more.',
     skills: ['Counting', 'Balancing', 'Elements'],
-    img: '/game%20illustrations/Atom.png',
-    heroVisual: <ChemistHeroVisual />,
     bgImage: '/backgrounds/background-green.png',
     primary: colors.grassMid,
     dark: colors.grassDark,
@@ -101,25 +118,11 @@ const GAMES = [
     path: '/games/little-chemist',
   },
   {
-    key: 'pour',
-    title: 'Little Mathematician',
-    tag: '🔢 Number Bonds & Addition',
-    desc: 'Two small jars, one big jar. Tap to pour — and discover that the total is always the same, no matter how it\'s split!',
-    skills: ['Addition', 'Number bonds', 'Counting'],
-    img: '/game%20illustrations/Atom.png',
-    bgImage: '/backgrounds/background-blue.png',
-    primary: colors.blueberryMid,
-    dark: colors.blueberryDark,
-    light: colors.blueberryLight,
-    path: '/games/little-pour',
-  },
-  {
     key: 'astronomer',
     title: 'Little Astronomer',
     tag: '🪐 Space & Planets',
     desc: 'A mystery planet silhouette appears in the stars. Tap the right planet to match it and light up the sky!',
     skills: ['Planets', 'Shapes', 'Matching'],
-    img: '/game%20illustrations/Atom.png',
     bgImage: '/backgrounds/background-yellow.png',
     primary: colors.sunMid,
     dark: colors.sunDark,
@@ -129,15 +132,26 @@ const GAMES = [
   {
     key: 'pie',
     title: 'Little Analyst',
-    tag: '🥧 Fractions & Patterns',
-    desc: 'A pie chart appears with one piece missing. Drag the right slice to complete it and discover how parts make a whole.',
-    skills: ['Fractions', 'Shapes', 'Matching'],
-    img: '/game%20illustrations/Atom.png',
+    tag: '🥧 Data visualisation',
+    desc: 'A pie chart appears with pieces missing. Drag the right slice to complete it — discovering how parts fit into a whole and form 100%.',
+    skills: ['Percentages', 'Shapes', 'Spatial recognition'],
     bgImage: '/backgrounds/background-red.png',
     primary: colors.coralMid,
     dark: colors.coralDark,
     light: colors.coralLight,
     path: '/games/little-pie',
+  },
+  {
+    key: 'architect',
+    title: 'Little Architect',
+    tag: '🏗️ Spatial building',
+    desc: 'A building silhouette appears on screen. Drag the chunky shape pieces from the tray to fill it in and bring the building to life.',
+    skills: ['Shapes', 'Spatial reasoning', 'Building'],
+    bgImage: '/backgrounds/background-blue.png',
+    primary: colors.blueberryMid,
+    dark: colors.blueberryDark,
+    light: colors.blueberryLight,
+    path: '/games/little-architect',
   },
 ];
 
@@ -152,6 +166,7 @@ const css = `
 .hub-arch-header::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:160%;height:64px;background:white;border-radius:50% 50% 0 0}
 .hub-arch-circle{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:110px;height:110px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;z-index:2}
 .hub-arch-circle img{width:90px;height:90px;object-fit:contain}
+.hub-arch-circle svg{width:90px;height:90px;display:block}
 .hub-body{padding:12px 16px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;flex:1}
 .hub-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.35rem;margin:-10px 0 0;letter-spacing:-0.02em;white-space:nowrap}
 .hub-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.02em;white-space:nowrap}
@@ -320,10 +335,7 @@ export default function HubPage() {
                 style={{ background: game.primary, backgroundImage: `url('${game.bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
                 <div className="hub-arch-circle">
-                  {game.heroVisual
-                    ? <div style={{ transform: 'scale(0.52)', transformOrigin: 'center', pointerEvents: 'none' }}>{game.heroVisual}</div>
-                    : <img src={game.img} alt={game.title} />
-                  }
+                  {(() => { const I = GAME_ILLUSTRATIONS[game.key]; return I ? <I /> : null; })()}
                 </div>
               </div>
               <div className="hub-body">
