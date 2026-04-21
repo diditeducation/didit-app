@@ -251,7 +251,15 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
           : <div style={emojiStyle}>🎉</div>;
       })()}
       <div style={headingStyle}><span style={{ color: '#2D2A26' }}>You </span><span style={{ color: 'var(--game-primary)', position: 'relative', display: 'inline-block' }}>did it!<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="var(--game-warm)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span></div>
-      <div style={subheadingStyle}>You've learnt about {learnedText}</div>
+      <div style={subheadingStyle}>{(() => {
+        if (!learnedText) return null;
+        const items = learnedText.split(',').map(s => s.trim()).filter(Boolean);
+        let sentence;
+        if (items.length === 1) sentence = items[0];
+        else if (items.length === 2) sentence = `${items[0]} and ${items[1]}`;
+        else sentence = `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+        return `You've learnt about ${sentence}.`;
+      })()}</div>
 
       {/* Optional featured content slot (e.g. artwork recap) */}
       {featuredContent}
