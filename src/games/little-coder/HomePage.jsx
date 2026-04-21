@@ -16,7 +16,6 @@ export default function HomePage() {
         heroVisual={<div style={{ width: 160, height: 160 }}><CoderIllustration /></div>}
         title="Coder"
         tag="💻 Coding & Logic"
-        hookLine="Guide the rat to the cheese!"
         description="The rat is hungry! Tap the arrows to move it one step at a time — up, down, left, right. Can you find the way to the cheese?"
         skillPills={['Directions', 'Logic', 'Sequencing']}
         gameId="little-coder"
