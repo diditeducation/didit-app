@@ -148,7 +148,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Analyst"
-        learnedText="percentages, pie charts, and how pieces make a whole 🥧"
+        learnedText="percentages, pie charts, and how pieces make a whole"
         onPlayAgain={() => {
           setShowSuccess(false);
           setActiveLevel(1);

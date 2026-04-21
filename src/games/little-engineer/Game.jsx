@@ -55,7 +55,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Engineer"
-        learnedText="wires and circuits ⚡"
+        learnedText="wires and circuits"
         boughtItems={collectedAnimals.map(emoji => ({ emoji, name: ANIMAL_NAMES[emoji] ?? '' }))}
         boughtLabel="Animals you found"
         onPlayAgain={handlePlayAgain}

@@ -151,7 +151,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Architect"
-        learnedText="about shapes, space, and how buildings come together 🏗️"
+        learnedText="shapes, space, and how buildings come together"
         onPlayAgain={() => {
           setShowSuccess(false);
           setActiveLevel(1);

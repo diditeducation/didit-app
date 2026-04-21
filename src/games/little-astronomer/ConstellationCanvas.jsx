@@ -1,6 +1,9 @@
 import { useState, useRef, useCallback } from 'react';
 import { initAudio, sound } from './audio';
 
+// Star size → visual radii
+const SIZE_MAP = { lg: { dot: 10, glow: 18 }, md: { dot: 8, glow: 15 }, sm: { dot: 6, glow: 12 } };
+
 // Deterministic pseudo-random background stars per level
 function makeBgStars(seed) {
   const out = [];
@@ -78,8 +81,8 @@ export default function ConstellationCanvas({
     <div
       style={{
         width: '100%',
-        maxWidth: 380,
-        aspectRatio: '1 / 1',
+        maxWidth: 390,
+        aspectRatio: '390 / 700',
         position: 'relative',
         borderRadius: 24,
         background: 'radial-gradient(ellipse at 50% 35%, #1c2040 0%, #0a0e1a 68%)',
@@ -158,27 +161,33 @@ export default function ConstellationCanvas({
               key={i}
               x1={a.x} y1={a.y}
               x2={b.x} y2={b.y}
-              stroke="rgba(232,184,64,0.65)"
-              strokeWidth="0.9"
+              stroke={complete ? 'rgba(255,224,128,0.75)' : 'rgba(160,196,255,0.55)'}
+              strokeWidth="0.6"
               strokeLinecap="round"
-              style={{ animation: 'lineIn 0.35s ease-out forwards' }}
+              style={{
+                animation: 'lineIn 0.35s ease-out forwards',
+                transition: 'stroke 0.4s ease',
+              }}
             />
           );
         })}
       </svg>
 
-      {/* Constellation stars — 64px tap target, smaller visual dot */}
+      {/* Constellation stars — 64px tap target, sized visual dot */}
       {stars.map((star) => {
         const isActivated = activated.has(star.index);
         const isNext      = nextExpected === star.index;
         const isWrong     = wrongIdx === star.index;
 
-        const dotSize = isNext ? 22 : isActivated ? 18 : 14;
+        const sizeInfo = SIZE_MAP[star.size] || SIZE_MAP.md;
+        const dotSize = isNext ? sizeInfo.dot + 4 : isActivated ? sizeInfo.dot + 2 : sizeInfo.dot;
+        const starColor = star.color || '#ffffff';
+
         const glowColor = isActivated || isNext
-          ? 'rgba(232,184,64,0.75)'
+          ? `${starColor}bb`
           : 'rgba(130,160,220,0.35)';
         const dotBg = isActivated || isNext
-          ? 'radial-gradient(circle at 38% 35%, #FFF8E0, #E8B840)'
+          ? `radial-gradient(circle at 38% 35%, #ffffff, ${starColor})`
           : 'radial-gradient(circle at 38% 35%, #c0cce8, #7088c0)';
 
         return (

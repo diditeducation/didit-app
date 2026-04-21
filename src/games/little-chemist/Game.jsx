@@ -221,7 +221,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Chemist"
-        learnedText="atomic balance and the elements ⚗️"
+        learnedText="atomic balance and the elements"
         onPlayAgain={() => {
           setShowSuccess(false);
           setActiveLevel(1);

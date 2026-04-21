@@ -1,0 +1,291 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { colors, fonts, radii, shadows } from '../design-system/tokens';
+import { CATEGORIES } from '../data/games';
+import {
+  ShopperIllustration,
+  DJIllustration,
+  EngineerIllustration,
+  ChefIllustration,
+  PianistIllustration,
+  CoderIllustration,
+  ChemistIllustration,
+  AstronomerIllustration,
+  AnalystIllustration,
+  ArchitectIllustration,
+  MatisseIllustration,
+} from '../pages/GameIllustrations';
+
+const GAME_ILLUSTRATIONS = {
+  shopper:    ShopperIllustration,
+  mixer:      DJIllustration,
+  engineer:   EngineerIllustration,
+  chef:       ChefIllustration,
+  dj:         PianistIllustration,
+  coder:      CoderIllustration,
+  chemist:    ChemistIllustration,
+  astronomer: AstronomerIllustration,
+  pie:        AnalystIllustration,
+  architect:  ArchitectIllustration,
+  matisse:    MatisseIllustration,
+};
+
+const cardCss = `
+.gg-card{display:flex;flex-direction:column;overflow:visible;transition:transform .2s ease;cursor:pointer;background:white;position:relative;border-radius:16px;border:1px solid ${colors.border};width:100%}
+.gg-card:hover{transform:translateY(-4px)}
+.gg-arch-header{position:relative;height:160px;border-radius:16px 16px 0 0;overflow:hidden;background-size:cover;background-position:center;flex-shrink:0}
+.gg-arch-header::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:160%;height:64px;background:white;border-radius:50% 50% 0 0}
+.gg-arch-circle{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:110px;height:110px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;z-index:2}
+.gg-arch-circle svg{width:90px;height:90px;display:block}
+.gg-body{padding:12px 16px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;flex:1}
+.gg-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.35rem;margin:-10px 0 0;letter-spacing:-0.02em;white-space:nowrap}
+.gg-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-family:'Nunito',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.02em;white-space:nowrap}
+.gg-desc{font-size:0.78rem;color:#2D2A26;line-height:1.5;margin:0;font-family:'Nunito',sans-serif}
+
+.gg-play-btn{padding:10px 28px;border-radius:9999px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all .25s;color:#fff;margin-top:auto;width:100%}
+.gg-play-btn:hover{filter:brightness(1.1)}
+.gg-pills::-webkit-scrollbar{display:none}
+`;
+
+function SurpriseCard({ onSurprise, onRandomPlay }) {
+  return (
+    <div
+      className="gg-card"
+      onClick={onRandomPlay}
+      style={{
+        cursor: 'pointer',
+        background: colors.sunMid,
+        backgroundImage: `url('/backgrounds/background-yellow.png')`,
+        backgroundSize: '240px',
+        backgroundRepeat: 'repeat',
+        border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '32px 20px',
+        gap: 10,
+        textAlign: 'center',
+        minHeight: 280,
+      }}
+    >
+      <span style={{ fontSize: 64, lineHeight: 1, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))' }}>🎲</span>
+
+      <div style={{
+        fontSize: '1.5rem',
+        fontWeight: 900,
+        color: colors.coralDark,
+        fontFamily: fonts.display,
+        letterSpacing: '-0.02em',
+        marginTop: 4,
+      }}>
+        Can't pick?
+      </div>
+
+      <div style={{
+        fontSize: '0.8rem',
+        color: colors.coralDark,
+        fontFamily: fonts.display,
+        fontWeight: 600,
+        lineHeight: 1.5,
+        maxWidth: 190,
+      }}>
+        We'll pick a random game for you!
+      </div>
+
+      <button
+        style={{
+          marginTop: 8,
+          padding: '11px 28px',
+          borderRadius: 9999,
+          border: 'none',
+          background: 'white',
+          color: colors.sunDark,
+          fontFamily: fonts.display,
+          fontWeight: 800,
+          fontSize: '0.9rem',
+          cursor: 'pointer',
+          boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+          letterSpacing: '-0.01em',
+        }}
+        onClick={e => { e.stopPropagation(); onRandomPlay(); }}
+      >
+        Let's go! →
+      </button>
+
+    </div>
+  );
+}
+
+export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
+  const [filter, setFilter] = useState('All');
+
+  const filtered = filter === 'All'
+    ? games
+    : games.filter(g => g.category === filter);
+
+  return (
+    <div>
+      <style>{cardCss}</style>
+
+      {/* Header row */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 14,
+      }}>
+        <span style={{
+          fontSize: 18,
+          fontWeight: 900,
+          color: colors.text,
+          fontFamily: fonts.display,
+          letterSpacing: '-0.01em',
+        }}>
+          All games
+        </span>
+      </div>
+
+      {/* Filter pills — horizontal scroll */}
+      <div className="gg-pills" style={{
+        display: 'flex',
+        gap: 8,
+        overflowX: 'scroll',
+        paddingBottom: 6,
+        marginBottom: 14,
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+        WebkitOverflowScrolling: 'touch',
+      }}>
+        {CATEGORIES.map(cat => (
+          <button
+            key={cat}
+            onClick={() => setFilter(cat)}
+            style={{
+              flexShrink: 0,
+              padding: '7px 16px',
+              borderRadius: radii.pill,
+              border: 'none',
+              background: filter === cat ? colors.text : 'white',
+              color: filter === cat ? 'white' : colors.text,
+              fontFamily: fonts.display,
+              fontWeight: 700,
+              fontSize: 13,
+              cursor: 'pointer',
+              transition: 'background 0.18s ease, color 0.18s ease',
+              boxShadow: shadows.sm,
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Cards grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        gap: 20,
+      }}>
+        {(() => {
+          const items = [];
+          filtered.forEach((game, i) => {
+            const Illustration = GAME_ILLUSTRATIONS[game.illustrationKey];
+            items.push(
+              <div
+                key={game.id}
+                className="gg-card"
+                onClick={() => onNavigate(game.path)}
+              >
+                {/* Today badge */}
+                {game.id === todayId && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 8, right: 8, zIndex: 10,
+                    background: 'rgba(255,255,255,0.92)',
+                    borderRadius: radii.pill,
+                    padding: '2px 10px',
+                    fontSize: 10, fontWeight: 800,
+                    color: game.colorDark,
+                    fontFamily: fonts.display,
+                    letterSpacing: '0.02em',
+                  }}>
+                    Today
+                  </div>
+                )}
+                {/* Arch header */}
+                <div
+                  className="gg-arch-header"
+                  style={{
+                    background: game.color,
+                    backgroundImage: game.bgImage ? `url('${game.bgImage}')` : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <div className="gg-arch-circle">
+                    {Illustration ? <Illustration /> : null}
+                  </div>
+                </div>
+                {/* Body */}
+                <div className="gg-body">
+                  <div className="gg-title" style={{ color: game.colorDark }}>{game.title}</div>
+                  <div className="gg-tag" style={{ background: game.colorLight, color: game.colorDark }}>{game.tag}</div>
+                  <div className="gg-desc">{game.desc}</div>
+                  <button
+                    className="gg-play-btn"
+                    style={{ background: game.colorDark }}
+                    onClick={e => { e.stopPropagation(); onNavigate(game.path); }}
+                  >
+                    Play →
+                  </button>
+                </div>
+              </div>
+            );
+
+            // Inject surprise card after position 6 (slot #7)
+            if (onSurprise && i === 5) {
+              const randomGame = games[Math.floor(Math.random() * games.length)];
+              items.push(
+                <SurpriseCard
+                  key="surprise-7"
+                  onSurprise={onSurprise}
+                  onRandomPlay={() => onNavigate(randomGame.path)}
+                />
+              );
+            }
+          });
+
+          // Append at end if list has 6 or fewer items (surprise never inserted mid-list)
+          if (onSurprise && filtered.length <= 6) {
+            const randomGame = games[Math.floor(Math.random() * games.length)];
+            items.push(
+              <SurpriseCard
+                key="surprise-end"
+                onSurprise={onSurprise}
+                onRandomPlay={() => onNavigate(randomGame.path)}
+              />
+            );
+          }
+
+          return items;
+        })()}
+
+        {/* Empty state */}
+        {filtered.length === 0 && (
+          <div style={{
+            gridColumn: '1 / -1',
+            textAlign: 'center',
+            padding: '48px 20px',
+            color: colors.muted,
+            fontFamily: fonts.display,
+            fontSize: 14,
+            fontWeight: 600,
+          }}>
+            No {filter} games yet — coming soon!
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

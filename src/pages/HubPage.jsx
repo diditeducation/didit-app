@@ -16,6 +16,7 @@ import {
   AstronomerIllustration,
   AnalystIllustration,
   ArchitectIllustration,
+  MatisseIllustration,
 } from './GameIllustrations';
 
 // Map game key → illustration component (follows ILLUSTRATIONS.md)
@@ -30,6 +31,7 @@ const GAME_ILLUSTRATIONS = {
   astronomer: AstronomerIllustration,
   pie:        AnalystIllustration,
   architect:  ArchitectIllustration,
+  matisse:    MatisseIllustration,
 };
 
 const GAMES = [
@@ -97,7 +99,7 @@ const GAMES = [
     key: 'coder',
     title: 'Little Coder',
     tag: '💻 Coding & Logic',
-    desc: 'Tap UP, DOWN, LEFT, RIGHT to move a rat to find cheese. A gentle intro to directional thinking.',
+    desc: 'Tap Up, Down, Left, Right to move a rat to find cheese. A gentle intro to directional thinking.',
     skills: ['Directions', 'Logic', 'Sequencing'],
     bgImage: '/backgrounds/background-yellow.png',
     primary: colors.sunMid,
@@ -140,6 +142,18 @@ const GAMES = [
     dark: colors.coralDark,
     light: colors.coralLight,
     path: '/games/little-pie',
+  },
+  {
+    key: 'matisse',
+    title: 'Little Matisse',
+    tag: '🎨 Art & Collage',
+    desc: 'Drag colourful Matisse-style cutouts onto a canvas to make your own collage. Every composition is a masterpiece!',
+    skills: ['Creativity', 'Shapes', 'Composition'],
+    bgImage: '/backgrounds/background-red.png',
+    primary: colors.coralMid,
+    dark: colors.coralDark,
+    light: colors.coralLight,
+    path: '/games/little-matisse',
   },
   {
     key: 'architect',

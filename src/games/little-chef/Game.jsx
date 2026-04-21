@@ -120,7 +120,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Chef"
-        learnedText="cooking and sequencing 👨‍🍳"
+        learnedText="cooking and sequencing"
         savedCoins={null}
         boughtItems={chefResult.cooked.map(c => ({ emoji: c.emoji, name: c.name, price: null }))}
         boughtLabel="You prepared"

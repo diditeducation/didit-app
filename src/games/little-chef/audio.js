@@ -1,24 +1,21 @@
 import { isGlobalMuted } from '../../design-system/useSoundManager';
+import { getAudioContext, ensureAudioRunning } from '../../design-system/audioContext';
 
-let audioCtx;
-
-export const initAudio = () => {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-};
+export const initAudio = () => ensureAudioRunning();
 
 const playTone = (freq, duration, type = 'sine', volume = 0.15) => {
-  if (!audioCtx) return;
   if (isGlobalMuted()) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
+  const ac = getAudioContext();
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
   osc.type = type;
   osc.frequency.value = freq;
   gain.gain.value = volume;
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
   osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(ac.destination);
   osc.start();
-  osc.stop(audioCtx.currentTime + duration);
+  osc.stop(ac.currentTime + duration);
 };
 
 export const sound = {
@@ -44,37 +41,37 @@ export const sound = {
   },
   sizzle: () => {
     if (isGlobalMuted()) return;
-    if (!audioCtx) return;
-    const bufferSize = audioCtx.sampleRate * 0.3;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const ac = getAudioContext();
+    const bufferSize = ac.sampleRate * 0.3;
+    const buffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
-    const noise = audioCtx.createBufferSource();
+    const noise = ac.createBufferSource();
     noise.buffer = buffer;
-    const filter = audioCtx.createBiquadFilter();
+    const filter = ac.createBiquadFilter();
     filter.type = 'highpass';
     filter.frequency.value = 3000;
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    const gain = ac.createGain();
+    gain.gain.setValueAtTime(0.15, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.3);
     noise.connect(filter);
     filter.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(ac.destination);
     noise.start();
   },
   chop: () => {
     if (isGlobalMuted()) return;
-    if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+    const ac = getAudioContext();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
     osc.type = 'square';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
-    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+    osc.frequency.setValueAtTime(800, ac.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(200, ac.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.4, ac.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.05);
     osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(ac.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.05);
+    osc.stop(ac.currentTime + 0.05);
   },
 };

@@ -1,40 +1,35 @@
 import { isGlobalMuted } from '../../design-system/useSoundManager';
-
-let ctx = null;
+import { getAudioContext, ensureAudioRunning } from '../../design-system/audioContext';
 
 export function initAudio() {
-  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-  if (ctx.state === 'suspended') ctx.resume();
+  ensureAudioRunning();
 }
 
-function getCtx() {
-  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-  if (ctx.state === 'suspended') ctx.resume();
-  return ctx;
-}
+// Pentatonic scale: C4, D4, E4, G4, A4
+const PENTATONIC = [261, 294, 330, 392, 440];
+let noteIndex = 0;
 
 export const sound = {
-  // Short rising ping for each correct star tap
   tap() {
     if (isGlobalMuted()) return;
-    const c = getCtx();
+    const c = getAudioContext();
+    const freq = PENTATONIC[noteIndex % PENTATONIC.length];
+    noteIndex++;
     const osc = c.createOscillator();
     const gain = c.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(660, c.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(990, c.currentTime + 0.12);
-    gain.gain.setValueAtTime(0.12, c.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.18);
+    osc.frequency.setValueAtTime(freq, c.currentTime);
+    gain.gain.setValueAtTime(0.14, c.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.2);
     osc.connect(gain);
     gain.connect(c.destination);
     osc.start();
-    osc.stop(c.currentTime + 0.20);
+    osc.stop(c.currentTime + 0.22);
   },
 
-  // Gentle low tone for wrong tap — 220Hz, 0.3s
   wrong() {
     if (isGlobalMuted()) return;
-    const c = getCtx();
+    const c = getAudioContext();
     const osc = c.createOscillator();
     const gain = c.createGain();
     osc.type = 'sine';
@@ -47,23 +42,25 @@ export const sound = {
     osc.stop(c.currentTime + 0.32);
   },
 
-  // Ascending cosmic chime — all stars connected
   chime() {
     if (isGlobalMuted()) return;
-    const c = getCtx();
-    const notes = [392, 523, 659, 784, 1047, 1319];
+    const c = getAudioContext();
+    // Rising C4-E4-G4-C5 arpeggio
+    const notes = [261, 330, 392, 523];
     notes.forEach((freq, i) => {
-      const t = c.currentTime + i * 0.08;
+      const t = c.currentTime + i * 0.1;
       const osc = c.createOscillator();
       const gain = c.createGain();
       osc.type = 'sine';
       osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.13, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+      gain.gain.setValueAtTime(0.15, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
       osc.connect(gain);
       gain.connect(c.destination);
       osc.start(t);
-      osc.stop(t + 0.42);
+      osc.stop(t + 0.52);
     });
+    // Reset pentatonic cycle for next constellation
+    noteIndex = 0;
   },
 };

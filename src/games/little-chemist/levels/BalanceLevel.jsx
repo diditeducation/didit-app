@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { getAudioContext } from '../../../design-system/audioContext';
 
 const PLANK_W  = 340;
 const PLANK_H  = 18;
@@ -11,7 +12,7 @@ function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
 function playDrop() {
   try {
-    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const ac = getAudioContext();
     const o = ac.createOscillator(); const g = ac.createGain();
     o.type = 'sine'; o.frequency.value = 520;
     g.gain.setValueAtTime(0.3, ac.currentTime);
@@ -23,7 +24,7 @@ function playDrop() {
 
 function playCelebration() {
   try {
-    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const ac = getAudioContext();
     [523, 659, 784, 1047, 1319].forEach((freq, i) => {
       const o = ac.createOscillator(); const g = ac.createGain();
       o.type = 'sine'; o.frequency.value = freq;

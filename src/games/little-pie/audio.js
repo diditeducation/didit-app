@@ -1,18 +1,15 @@
-let ctx = null;
-
-function getCtx() {
-  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-  return ctx;
-}
+import { getAudioContext, ensureAudioRunning } from '../../design-system/audioContext';
+import { isGlobalMuted } from '../../design-system/useSoundManager';
 
 export function initAudio() {
-  getCtx();
+  ensureAudioRunning();
 }
 
 export const sound = {
   pickup() {
+    if (isGlobalMuted()) return;
     try {
-      const c = getCtx();
+      const c = getAudioContext();
       const osc = c.createOscillator();
       const gain = c.createGain();
       osc.connect(gain);
@@ -29,11 +26,10 @@ export const sound = {
   },
 
   snap() {
+    if (isGlobalMuted()) return;
     try {
-      const c = getCtx();
+      const c = getAudioContext();
       const now = c.currentTime;
-
-      // White noise click
       const bufLen = Math.floor(c.sampleRate * 0.04);
       const buf = c.createBuffer(1, bufLen, c.sampleRate);
       const data = buf.getChannelData(0);
@@ -47,8 +43,6 @@ export const sound = {
       noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
       noise.start(now);
       noise.stop(now + 0.04);
-
-      // Low pop
       const osc = c.createOscillator();
       const oscGain = c.createGain();
       osc.connect(oscGain);
@@ -64,8 +58,9 @@ export const sound = {
   },
 
   boing() {
+    if (isGlobalMuted()) return;
     try {
-      const c = getCtx();
+      const c = getAudioContext();
       const osc = c.createOscillator();
       const gain = c.createGain();
       osc.connect(gain);
@@ -82,8 +77,9 @@ export const sound = {
   },
 
   chime() {
+    if (isGlobalMuted()) return;
     try {
-      const c = getCtx();
+      const c = getAudioContext();
       const notes = [523, 659, 784, 988, 1319];
       notes.forEach((freq, i) => {
         const osc = c.createOscillator();

@@ -1,13 +1,8 @@
-let ctx = null;
-
-function getCtx() {
-  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-  return ctx;
-}
+import { getAudioContext } from '../../design-system/audioContext';
 
 function play(type, freq, duration, gain = 0.18, detune = 0) {
   try {
-    const ac  = getCtx();
+    const ac = getAudioContext();
     const osc = ac.createOscillator();
     const g   = ac.createGain();
     osc.type = type;
@@ -24,18 +19,15 @@ function play(type, freq, duration, gain = 0.18, detune = 0) {
 }
 
 export const sound = {
-  /** Soft tick on each valid rat step */
   step() {
     play('sine', 520, 0.09, 0.14);
     play('sine', 780, 0.06, 0.06);
   },
 
-  /** Dull thud when rat hits a wall */
   bump() {
     play('square', 140, 0.12, 0.10);
   },
 
-  /** Rising chime on level win */
   win() {
     const notes = [523, 659, 784, 1047, 1319];
     notes.forEach((freq, i) => {

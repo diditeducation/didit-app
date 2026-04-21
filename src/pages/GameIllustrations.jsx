@@ -20,29 +20,38 @@ function Sparkle({ x, y, large = false }) {
 }
 
 // ── Little Shopper ───────────────────────────────────────────
-// Hero: open shopping basket. 6 core shapes.
+// Hero: open shopping basket (trapezoid with weave slots). 6 core shapes.
 export function ShopperIllustration() {
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
-      {/* 1 — Basket body */}
-      <rect x="118" y="248" width="264" height="196" rx="26" fill="#F26419"/>
+      {/* 1 — Basket body (trapezoid — wider at top, narrower at bottom) */}
+      <path d="M108,240 L392,240 L362,440 Q358,454 344,454 L156,454 Q142,454 138,440 Z" rx="18" fill="#2E6FE0"/>
 
-      {/* 2 — Handle outer */}
-      <rect x="148" y="174" width="204" height="86" rx="43" fill="#F5A623"/>
-      {/* 3 — Handle inner cutout */}
-      <rect x="178" y="196" width="144" height="42" rx="21" fill="#fffef9"/>
+      {/* 2 — Handle arch */}
+      <path d="M178,240 Q178,148 250,148 Q322,148 322,240" fill="none" stroke="#F5A623" strokeWidth="28" strokeLinecap="round"/>
 
-      {/* 4 — Apple inside basket */}
-      <circle cx="250" cy="268" r="40" fill="#E03535"/>
-      {/* Leaf */}
-      <ellipse cx="268" cy="232" rx="14" ry="8" transform="rotate(-30,268,232)" fill="#3aA845"/>
+      {/* 3 — Weave slot left */}
+      <rect x="158" y="296" width="52" height="14" rx="7" fill="#2E6FE0"/>
+      {/* 4 — Weave slot centre */}
+      <rect x="224" y="296" width="52" height="14" rx="7" fill="#2E6FE0"/>
+      {/* 5 — Weave slot right */}
+      <rect x="290" y="296" width="52" height="14" rx="7" fill="#2E6FE0"/>
+      {/* Lower weave slots */}
+      <rect x="172" y="348" width="52" height="14" rx="7" fill="#2E6FE0"/>
+      <rect x="248" y="348" width="52" height="14" rx="7" fill="#2E6FE0"/>
 
-      {/* 5 — Banknote leaning behind basket-right */}
-      <g transform="translate(358,298) rotate(-18)">
-        <rect x="-56" y="-34" width="112" height="68" rx="12" fill="#2E6FE0"/>
-        {/* 6 — Banknote centre */}
-        <circle cx="0" cy="0" r="17" fill="#F5C842"/>
+      {/* 6 — Apple sitting at basket base — 80% size, shifted left 30px */}
+      <g transform="translate(-50,0) translate(250,365) scale(0.8) translate(-250,-365)">
+        <path d="M250,260 C180,260 130,310 140,380 C148,435 195,470 250,470 C305,470 352,435 360,380 C370,310 320,260 250,260Z" fill="#E03535"/>
+        {/* Apple top indent */}
+        <path d="M228,268 Q250,285 272,268" fill="#E03535" stroke="#E03535" strokeWidth="4"/>
+        {/* Apple shine */}
+        <circle cx="210" cy="340" r="24" fill="#fffef9"/>
+        {/* Stem */}
+        <path d="M250,268 Q260,238 268,252" fill="none" stroke="#2E6FE0" strokeWidth="12" strokeLinecap="round"/>
+        {/* Leaf */}
+        <path d="M262,250 Q300,220 304,260 Q278,266 262,250Z" fill="#3aA845"/>
       </g>
 
       {/* Accent dots */}
@@ -59,27 +68,27 @@ export function ShopperIllustration() {
 // Hero: DJ deck with two turntable platters. 6 core shapes.
 export function DJIllustration() {
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
       {/* 1 — Deck body */}
       <rect x="52" y="218" width="396" height="196" rx="28" fill="#F5A623"/>
 
       {/* Left platter — 2 circles = 2 shapes */}
       {/* 2 — Outer ring */}
-      <circle cx="158" cy="315" r="88" fill="#7a4e00"/>
+      <circle cx="158" cy="315" r="88" fill="#2E6FE0"/>
       {/* 3 — Inner record */}
       <circle cx="158" cy="315" r="60" fill="#2E6FE0"/>
       <circle cx="158" cy="315" r="18" fill="#F5C842"/>
 
       {/* Right platter */}
       {/* 4 — Outer ring */}
-      <circle cx="342" cy="315" r="88" fill="#7a4e00"/>
+      <circle cx="342" cy="315" r="88" fill="#2E6FE0"/>
       {/* 5 — Inner record */}
       <circle cx="342" cy="315" r="60" fill="#E03535"/>
       <circle cx="342" cy="315" r="18" fill="#F5C842"/>
 
       {/* 6 — Crossfader */}
-      <rect x="196" y="384" width="108" height="20" rx="10" fill="#C47A1E"/>
+      <rect x="196" y="384" width="108" height="20" rx="10" fill="#2E6FE0"/>
       <rect x="234" y="374" width="32" height="40" rx="10" fill="#fffef9"/>
 
       {/* Accent dots */}
@@ -93,89 +102,129 @@ export function DJIllustration() {
 }
 
 // ── Little Engineer ──────────────────────────────────────────
-// Hero: lightbulb only. 5 core shapes.
+// Hero: lightbulb with screw base + light switch. 6 core shapes.
 export function EngineerIllustration() {
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
-      {/* 1 — Bulb dome (pear shape) */}
+      {/* 1 — Bulb glass — proper lightbulb: round top, tapered bottom sides */}
       <path
-        d="M252,102 C350,102 408,166 408,248 C408,316 362,360 320,374 L184,374 C142,360 96,316 96,248 C96,166 154,102 252,102 Z"
+        d="M250,70
+           C358,70 418,148 418,248
+           C418,308 392,346 364,370
+           C352,380 344,388 340,398
+           L160,398
+           C156,388 148,380 136,370
+           C108,346 82,308 82,248
+           C82,148 142,70 250,70 Z"
         fill="#F5C842"
       />
-      {/* 2 — Neck */}
-      <rect x="216" y="368" width="72" height="58" rx="14" fill="#F5C842"/>
-      {/* 3 — Base cap */}
-      <rect x="200" y="416" width="104" height="24" rx="12" fill="#F26419"/>
+      {/* Bulb inner shine */}
+      <ellipse cx="192" cy="178" rx="28" ry="42" fill="#fffef9" transform="rotate(-20 192 178)"/>
 
-      {/* 4 — Light ray left */}
-      <g transform="translate(138,192) rotate(300)">
-        <rect x="-7" y="-26" width="14" height="52" rx="7" fill="#F5A623"/>
+      {/* 2 — Base band 1 (widest) */}
+      <rect x="162" y="396" width="176" height="26" rx="13" fill="#F5A623"/>
+      {/* 3 — Base band 2 */}
+      <rect x="176" y="418" width="148" height="22" rx="11" fill="#2E6FE0"/>
+      {/* 4 — Base band 3 (tip) */}
+      <rect x="196" y="436" width="108" height="20" rx="10" fill="#F5A623"/>
+      {/* Flat bottom cap */}
+      <rect x="214" y="452" width="72" height="14" rx="7" fill="#2E6FE0"/>
+
+      {/* 5 — Light switch plate (2x size) */}
+      <g transform="translate(400,340) rotate(8) scale(2)">
+        {/* Plate */}
+        <rect x="-34" y="-52" width="68" height="104" rx="14" fill="#4ECDC4"/>
+        {/* Toggle rocker — up (ON) */}
+        <rect x="-16" y="-40" width="32" height="44" rx="12" fill="#fffef9"/>
+        {/* Toggle bottom half (off side) — dimmer */}
+        <rect x="-16" y="8" width="32" height="30" rx="10" fill="#fffef9"/>
+        {/* ON indicator dot */}
+        <circle cx="0" cy="-20" r="5" fill="#4ECDC4"/>
       </g>
-      {/* 5 — Light ray right */}
-      <g transform="translate(366,192) rotate(60)">
-        <rect x="-7" y="-26" width="14" height="52" rx="7" fill="#F5A623"/>
-      </g>
 
-      {/* Accent dots */}
-      <circle cx="155" cy="448" r="9"  fill="#4ECDC4"/>
-      <circle cx="460" cy="165" r="8"  fill="#E03535"/>
+      {/* Accent dot */}
+      <circle cx="148" cy="452" r="9" fill="#E03535"/>
 
-      <Sparkle x={458} y={148} />
-      <Sparkle x={162} y={452} large/>
+      <Sparkle x={462} y={135} />
+      <Sparkle x={156} y={458} large/>
     </svg>
   );
 }
 
 // ── Little Chef ──────────────────────────────────────────────
-// Hero: pizza slice. 5 core shapes.
+// Hero: frying pan with sunny side up egg. 6 core shapes.
 export function ChefIllustration() {
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
-      {/* 1 — Slice body (cheese) */}
-      <path d="M252,88 L96,392 L408,392 Z" fill="#F5A623"/>
+      {/* 1 — Pan handle (behind pan body) */}
+      <rect x="340" y="244" width="140" height="36" rx="18" fill="#2E6FE0"/>
 
-      {/* 2 — Thick crust */}
-      <path d="M96,338 Q88,400 112,412 L392,412 Q416,400 408,338 Q340,430 252,430 Q164,430 96,338 Z" fill="#F26419"/>
+      {/* 2 — Pan body */}
+      <circle cx="230" cy="262" r="155" fill="#4ECDC4"/>
 
-      {/* 3 — Pepperoni top */}
-      <circle cx="252" cy="210" r="26" fill="#E03535"/>
-      {/* 4 — Pepperoni left */}
-      <circle cx="178" cy="320" r="22" fill="#E03535"/>
-      {/* 5 — Pepperoni right */}
-      <circle cx="326" cy="320" r="22" fill="#E03535"/>
+      {/* 3 — Pan inner cooking surface */}
+      <circle cx="230" cy="262" r="128" fill="#4ECDC4"/>
+
+      {/* 4 — Egg white (organic blob) */}
+      <path d="M230,175 C300,160 345,205 340,262 C343,328 295,365 238,362 C168,368 120,318 124,262 C118,205 165,162 230,175Z" fill="#fffef9"/>
+
+      {/* 5 — Egg yolk */}
+      <circle cx="238" cy="258" r="52" fill="#F5A623"/>
+      {/* Yolk highlight */}
+      <circle cx="224" cy="242" r="14" fill="#F5C842"/>
+
+      {/* 6 — Handle rivet */}
+      <circle cx="348" cy="262" r="8" fill="#F5A623"/>
 
       {/* Accent dots */}
-      <circle cx="148" cy="148" r="9"  fill="#4ECDC4"/>
-      <circle cx="460" cy="435" r="7"  fill="#3aA845"/>
+      <circle cx="120" cy="120" r="9" fill="#E03535"/>
+      <circle cx="458" cy="440" r="7" fill="#3aA845"/>
 
-      <Sparkle x={458} y={130} />
-      <Sparkle x={158} y={458} large/>
+      <Sparkle x={462} y={128} />
+      <Sparkle x={148} y={462} large/>
     </svg>
   );
 }
 
 // ── Little Pianist ───────────────────────────────────────────
-// Hero: piano with 5 chunky colourful keys. 6 core shapes.
+// Hero: piano keyboard with white & black key pattern using brand colours. 6 core shapes.
 export function PianistIllustration() {
-  const keys = [
-    { x: 108, color: '#E03535' },
-    { x: 168, color: '#2E6FE0' },
-    { x: 228, color: '#4ECDC4' },
-    { x: 288, color: '#3aA845' },
-    { x: 348, color: '#F26419' },
+  // White keys (7) — use cream/light brand colours
+  const whiteKeys = [
+    { x: 72,  color: '#fffef9' },
+    { x: 124, color: '#fffef9' },
+    { x: 176, color: '#fffef9' },
+    { x: 228, color: '#fffef9' },
+    { x: 280, color: '#fffef9' },
+    { x: 332, color: '#fffef9' },
+    { x: 384, color: '#fffef9' },
+  ];
+
+  // Black keys (5) — use brand accent colours instead of black
+  const blackKeys = [
+    { x: 106, color: '#2E6FE0' },
+    { x: 158, color: '#E03535' },
+    { x: 262, color: '#4ECDC4' },
+    { x: 314, color: '#F26419' },
+    { x: 366, color: '#3aA845' },
   ];
 
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
       {/* 1 — Piano body */}
-      <rect x="92" y="205" width="316" height="214" rx="24" fill="#7a4e00"/>
+      <rect x="58" y="195" width="384" height="234" rx="20" fill="#2E6FE0"/>
 
-      {/* 2-6 — Five chunky coloured keys */}
-      {keys.map(({ x, color }, i) => (
-        <rect key={i} x={x} y="225" width="48" height="154" rx="12" fill={color}/>
+      {/* 2 — White keys row */}
+      {whiteKeys.map(({ x, color }, i) => (
+        <rect key={`w${i}`} x={x} y="215" width="48" height="194" rx="8" fill={color}/>
+      ))}
+
+      {/* 3-6 — Black keys (shorter, overlapping white keys) */}
+      {blackKeys.map(({ x, color }, i) => (
+        <rect key={`b${i}`} x={x} y="215" width="34" height="120" rx="8" fill={color}/>
       ))}
 
       {/* Accent dots */}
@@ -192,7 +241,7 @@ export function PianistIllustration() {
 // Hero: computer monitor with code lines. 6 core shapes.
 export function CoderIllustration() {
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
       {/* 1 — Monitor frame */}
       <rect x="92" y="128" width="316" height="228" rx="22" fill="#2E6FE0"/>
@@ -222,76 +271,112 @@ export function CoderIllustration() {
 }
 
 // ── Little Chemist ───────────────────────────────────────────
-// Hero: H₂O molecule — red O + two blue H atoms + amber bonds. 5 core shapes.
+// Hero: NH₃ ammonia molecule — blue N + three teal H atoms + amber bonds. 5 core shapes.
 export function ChemistIllustration() {
-  const ox = 252, oy = 302;
-  const h1x = 142, h1y = 168;
-  const h2x = 362, h2y = 168;
+  // Nitrogen centre
+  const nx = 250, ny = 280;
+  // Three hydrogen atoms arranged in trigonal pattern
+  const h1x = 140, h1y = 160; // top-left
+  const h2x = 360, h2y = 160; // top-right
+  const h3x = 250, h3y = 420; // bottom
 
-  const b1cx = (ox + h1x) / 2;
-  const b1cy = (oy + h1y) / 2;
-  const b1len = Math.sqrt((ox - h1x) ** 2 + (oy - h1y) ** 2);
-  const b1ang = Math.atan2(h1y - oy, h1x - ox) * 180 / Math.PI;
+  // Bond helper
+  function bond(ax, ay, bx, by) {
+    const cx = (ax + bx) / 2;
+    const cy = (ay + by) / 2;
+    const len = Math.sqrt((ax - bx) ** 2 + (ay - by) ** 2);
+    const ang = Math.atan2(by - ay, bx - ax) * 180 / Math.PI;
+    return { cx, cy, len, ang };
+  }
 
-  const b2cx = (ox + h2x) / 2;
-  const b2cy = (oy + h2y) / 2;
-  const b2ang = Math.atan2(h2y - oy, h2x - ox) * 180 / Math.PI;
+  const b1 = bond(nx, ny, h1x, h1y);
+  const b2 = bond(nx, ny, h2x, h2y);
+  const b3 = bond(nx, ny, h3x, h3y);
 
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
+      <g transform="rotate(45 250 250)">
+        {/* 1 — Bond to H top-left */}
+        <g transform={`translate(${b1.cx.toFixed(1)},${b1.cy.toFixed(1)}) rotate(${b1.ang.toFixed(1)})`}>
+          <rect x={(-b1.len / 2).toFixed(1)} y="-12" width={b1.len.toFixed(1)} height="24" rx="12" fill="#F5A623"/>
+        </g>
+        {/* 2 — Bond to H top-right */}
+        <g transform={`translate(${b2.cx.toFixed(1)},${b2.cy.toFixed(1)}) rotate(${b2.ang.toFixed(1)})`}>
+          <rect x={(-b2.len / 2).toFixed(1)} y="-12" width={b2.len.toFixed(1)} height="24" rx="12" fill="#F5A623"/>
+        </g>
+        {/* Bond to H bottom */}
+        <g transform={`translate(${b3.cx.toFixed(1)},${b3.cy.toFixed(1)}) rotate(${b3.ang.toFixed(1)})`}>
+          <rect x={(-b3.len / 2).toFixed(1)} y="-12" width={b3.len.toFixed(1)} height="24" rx="12" fill="#F5A623"/>
+        </g>
 
-      {/* 1 — Bond left */}
-      <g transform={`translate(${b1cx.toFixed(1)},${b1cy.toFixed(1)}) rotate(${b1ang.toFixed(1)})`}>
-        <rect x={(-b1len / 2).toFixed(1)} y="-13" width={b1len.toFixed(1)} height="26" rx="13" fill="#F5A623"/>
+        {/* 3 — H atom top-left */}
+        <circle cx={h1x} cy={h1y} r="50" fill="#4ECDC4"/>
+        {/* 4 — H atom top-right */}
+        <circle cx={h2x} cy={h2y} r="50" fill="#4ECDC4"/>
+        {/* H atom bottom */}
+        <circle cx={h3x} cy={h3y} r="50" fill="#4ECDC4"/>
+        {/* 5 — N atom (large, centre, front) */}
+        <circle cx={nx} cy={ny} r="72" fill="#2E6FE0"/>
+
+        {/* Accent dots */}
+        <circle cx="155" cy="448" r="8"  fill="#3aA845"/>
+        <circle cx="462" cy="118" r="7"  fill="#E03535"/>
+
+        <Sparkle x={455} y={138} />
+        <Sparkle x={162} y={458} large/>
       </g>
-      {/* 2 — Bond right */}
-      <g transform={`translate(${b2cx.toFixed(1)},${b2cy.toFixed(1)}) rotate(${b2ang.toFixed(1)})`}>
-        <rect x={(-b1len / 2).toFixed(1)} y="-13" width={b1len.toFixed(1)} height="26" rx="13" fill="#F5A623"/>
-      </g>
-
-      {/* 3 — H atom left */}
-      <circle cx={h1x} cy={h1y} r="58" fill="#2E6FE0"/>
-      {/* 4 — H atom right */}
-      <circle cx={h2x} cy={h2y} r="58" fill="#2E6FE0"/>
-      {/* 5 — O atom (large, front) */}
-      <circle cx={ox} cy={oy} r="84" fill="#E03535"/>
-
-      {/* Accent dots */}
-      <circle cx="155" cy="448" r="8"  fill="#3aA845"/>
-      <circle cx="462" cy="348" r="7"  fill="#4ECDC4"/>
-
-      <Sparkle x={455} y={138} />
-      <Sparkle x={162} y={458} large/>
     </svg>
   );
 }
 
 // ── Little Astronomer ────────────────────────────────────────
-// Hero: ringed planet. 4 core shapes.
+// Hero: Aries constellation — ram's horn shape with stars. 5 core shapes.
 export function AstronomerIllustration() {
+  // Aries constellation star positions (classic ram horn pattern)
+  const stars = [
+    { x: 120, y: 310, r: 20 },  // α Ari (Hamal) — brightest, bottom-left
+    { x: 205, y: 265, r: 18 },  // β Ari (Sheratan)
+    { x: 285, y: 240, r: 16 },  // γ Ari (Mesarthim)
+    { x: 365, y: 190, r: 18 },  // 41 Ari — horn tip top-right
+  ];
+
+  // Connection lines between stars
+  const lines = [
+    [0, 1], [1, 2], [2, 3],
+  ];
+
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
-      {/* Background stars */}
-      <circle cx="162" cy="168" r="6" fill="#F5C842"/>
-      <circle cx="448" cy="318" r="5" fill="#F5C842"/>
-      <circle cx="148" cy="355" r="4" fill="#F5C842"/>
-      <circle cx="432" cy="428" r="5" fill="#F5C842"/>
+      {/* Background tiny stars */}
+      <circle cx="442" cy="128" r="5" fill="#F5C842"/>
+      <circle cx="88" cy="178" r="4" fill="#F5C842"/>
+      <circle cx="432" cy="388" r="5" fill="#F5C842"/>
+      <circle cx="158" cy="408" r="3" fill="#F5C842"/>
+      <circle cx="340" cy="380" r="3" fill="#F5C842"/>
+      <circle cx="190" cy="140" r="4" fill="#F5C842"/>
 
-      {/* 1 — Ring back half */}
-      <ellipse cx="258" cy="272" rx="165" ry="38" fill="#F5A623" transform="rotate(-10,258,272)"/>
+      {/* Constellation connection lines */}
+      {lines.map(([a, b], i) => (
+        <line
+          key={i}
+          x1={stars[a].x} y1={stars[a].y}
+          x2={stars[b].x} y2={stars[b].y}
+          stroke="#F5A623" strokeWidth="8" strokeLinecap="round"
+        />
+      ))}
 
-      {/* 2 — Planet sphere */}
-      <circle cx="258" cy="272" r="108" fill="#2E6FE0"/>
-
-      {/* 3 — Small secondary planet */}
-      <circle cx="412" cy="172" r="46" fill="#F26419"/>
+      {/* Constellation stars */}
+      {stars.map(({ x, y, r }, i) => (
+        <circle key={i} cx={x} cy={y} r={r} fill={i === 0 ? '#F26419' : i % 2 === 0 ? '#2E6FE0' : '#4ECDC4'}/>
+      ))}
 
       {/* Accent dots */}
-      <circle cx="155" cy="448" r="8" fill="#4ECDC4"/>
+      <circle cx="448" cy="308" r="8" fill="#E03535"/>
+      <circle cx="78" cy="268" r="7" fill="#3aA845"/>
 
-      <Sparkle x={165} y={158} large/>
-      <Sparkle x={448} y={448} />
+      <Sparkle x={165} y={438} large/>
+      <Sparkle x={448} y={158} />
     </svg>
   );
 }
@@ -315,7 +400,7 @@ export function AnalystIllustration() {
   const floatPath = `M ${cx+ox} ${cy+oy} L ${(yx+ox).toFixed(1)} ${(yy+oy).toFixed(1)} A ${r} ${r} 0 0 1 ${(bx+ox).toFixed(1)} ${(by+oy).toFixed(1)} Z`;
 
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
       <path d={bluePath}  fill="#2E6FE0"/>
       <path d={redPath}   fill="#E03535"/>
@@ -338,7 +423,7 @@ export function AnalystIllustration() {
 // Hero: house (wall + roof + chimney + door + window) + floating shape pieces.
 export function ArchitectIllustration() {
   return (
-    <svg width="90" height="90" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
 
       {/* Chimney — amber, drawn first so roof overlaps its base */}
       <rect x="294" y="152" width="40" height="96" rx="14" fill="#F5A623"/>
@@ -368,6 +453,45 @@ export function ArchitectIllustration() {
 
       <Sparkle x={460} y={148} />
       <Sparkle x={158} y={460} large/>
+    </svg>
+  );
+}
+
+export function MatisseIllustration() {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 680 500">
+      {/* Torn square — red, main hero, slight tilt */}
+      <g transform="translate(280, 220) rotate(-4)">
+        <path d="M-110,-100 L110,-106 L116,96 L-104,104 Z" fill="#E03535" />
+      </g>
+
+      {/* Torn slab — blue, overlapping upper-right */}
+      <g transform="translate(400, 160) rotate(8)">
+        <path d="M-70,-60 L60,-68 L66,58 L-64,66 Z" fill="#2E6FE0" />
+      </g>
+
+      {/* Torn brick — amber, overlapping bottom */}
+      <g transform="translate(310, 370) rotate(3)">
+        <path d="M-120,-22 L110,-26 L106,22 L-116,26 Z" fill="#F5A623" />
+      </g>
+
+      {/* Small torn square — orange, lower-right accent */}
+      <g transform="translate(460, 340) rotate(-12)">
+        <path d="M-40,-36 L40,-38 L42,34 L-38,38 Z" fill="#F26419" />
+      </g>
+
+      {/* Algae — teal, iconic Matisse botanical, in front of everything */}
+      <g transform="translate(195, 260) rotate(-8) scale(2.4)">
+        <path d="M48,6 C46,14 52,20 50,30 C40,28 32,22 26,28 C30,36 40,36 46,42 C36,44 26,42 22,52 C32,56 44,52 50,58 C42,66 30,68 28,78 C38,80 48,72 52,80 C54,72 62,72 70,76 C70,66 60,62 54,58 C62,54 72,56 78,50 C70,44 60,48 54,42 C62,38 72,36 74,28 C66,24 58,30 52,30 C52,20 56,14 54,6 C52,4 50,4 48,6 Z" fill="#4ECDC4" />
+      </g>
+
+      {/* Accent dots */}
+      <circle cx="500" cy="130" r="10" fill="#3aA845" />
+      <circle cx="185" cy="420" r="8"  fill="#E03535" />
+
+      {/* Sparkles — exactly 2, yellow, 4-point rounded star */}
+      <Sparkle x={200} y={90} />
+      <Sparkle x={510} y={420} large />
     </svg>
   );
 }

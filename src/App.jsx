@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import MarketingPage from './pages/MarketingPage';
 import HubPage from './pages/HubPage';
+import Hub from './pages/Hub';
+import GameScreen from './pages/GameScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignIn from './pages/SignIn';
 import CheckEmail from './pages/CheckEmail';
@@ -35,6 +37,8 @@ const PieHome           = lazy(() => import('./games/little-pie/HomePage'));
 const PieGame           = lazy(() => import('./games/little-pie/Game'));
 const ArchitectHome     = lazy(() => import('./games/little-architect/HomePage'));
 const ArchitectGame     = lazy(() => import('./games/little-architect/Game'));
+const MatisseHome        = lazy(() => import('./games/little-matisse/HomePage'));
+const MatisseGame        = lazy(() => import('./games/little-matisse/Game'));
 
 export default function App() {
   return (
@@ -46,7 +50,8 @@ export default function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/hub" element={<HubPage />} />
+          <Route path="/hub" element={<Hub />} />
+          <Route path="/hub/classic" element={<HubPage />} />
 
           {/* Little Engineer ✓ name matches folder */}
           <Route path="/games/little-engineer"      element={<ProtectedRoute><EngineerHome /></ProtectedRoute>} />
@@ -85,12 +90,19 @@ export default function App() {
           <Route path="/games/little-architect"      element={<ProtectedRoute><ArchitectHome /></ProtectedRoute>} />
           <Route path="/games/little-architect/play" element={<ProtectedRoute><ArchitectGame /></ProtectedRoute>} />
 
+          {/* Little Matisse */}
+          <Route path="/games/little-matisse"      element={<ProtectedRoute><MatisseHome /></ProtectedRoute>} />
+          <Route path="/games/little-matisse/play" element={<ProtectedRoute><MatisseGame /></ProtectedRoute>} />
+
           {/* Little DJ */}
           <Route path="/games/little-dj"           element={<ProtectedRoute><DJHome /></ProtectedRoute>} />
           <Route path="/games/little-dj/play"      element={<ProtectedRoute><DJGame /></ProtectedRoute>} />
           {/* Redirect old little-mixer URL */}
           <Route path="/games/little-mixer"         element={<Navigate to="/games/little-dj" replace />} />
           <Route path="/games/little-mixer/play"    element={<Navigate to="/games/little-dj/play" replace />} />
+
+          {/* Fallback for unknown /games/:id — shows placeholder card */}
+          <Route path="/games/:id" element={<GameScreen />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

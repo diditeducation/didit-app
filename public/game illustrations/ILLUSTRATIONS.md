@@ -73,16 +73,13 @@ Only these colours are permitted. No other hex values.
 
 | Name | Hex | Notes |
 |---|---|---|
-| Amber | `#F5A623` | Basket handle, keyboard body |
-| Amber dark | `#C47A1E` | Basket detail, weave shadow |
+| Amber | `#F5A623` | Basket handle, keyboard body, yolk |
 | Yellow | `#F5C842` | Sparkles always, banknote centre, accent |
-| Yellow dark | `#C49A10` | Yellow shadow detail |
-| Red | `#E03535` | Keys, pepperoni, accent dot, battery stripe |
-| Orange | `#F26419` | Basket body, pizza crust |
-| Blue | `#2E6FE0` | Music note, battery, banknote body, spatula |
-| Green | `#3aA845` | Accent dot only |
-| Teal / Mint | `#4ECDC4` | Pan, plug, teal bolt, accent |
-| Brown | `#7a4e00` | Basket slot detail |
+| Red | `#E03535` | Apple, accent dot |
+| Orange | `#F26419` | Warm secondary fills |
+| Blue | `#2E6FE0` | Primary blue — turntable rims, bulb base, pan handle, stems, banknote body |
+| Green | `#3aA845` | Accent dot, leaves |
+| Teal / Mint | `#4ECDC4` | Pan, plug, teal bolt, switch, accent |
 | Cream white | `#fffef9` | Background, egg white, cutout fill |
 
 **Rules:**

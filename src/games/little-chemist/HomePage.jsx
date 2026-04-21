@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameHomeLayout from '../../design-system/layouts/GameHomeLayout';
 import FeedbackModal from '../../components/FeedbackModal';
+import { ChemistIllustration } from '../../pages/GameIllustrations';
 import theme from './theme';
-import ChemistHeroVisual from './HeroVisual';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -12,11 +12,12 @@ export default function HomePage() {
   return (
     <div style={theme}>
       <GameHomeLayout
-        heroVisual={<ChemistHeroVisual />}
+        illustrationComponent={<ChemistIllustration />}
+        heroVisual={<div style={{ width: 160, height: 160 }}><ChemistIllustration /></div>}
         title="Chemist"
         tagline="Balance atoms on a seesaw — your little one's first chemistry lesson."
         tag="⚗️ Chemistry & Balance"
-        description="They see atoms on one side and tap to match the other. Counting, balancing, and the wonder of elements."
+        description="The seesaw is tipping! Tap to add atoms until both sides balance. Count them up, match the elements, and watch it level out."
         skillPills={[{ label: 'Counting' }, { label: 'Balancing' }, { label: 'Elements' }]}
         gameId="little-chemist"
         onPlay={() => navigate('/games/little-chemist/play')}

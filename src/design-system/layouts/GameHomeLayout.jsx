@@ -7,28 +7,8 @@ import ParentStrip from '../components/ParentStrip';
 import ShareButton from '../components/ShareButton';
 import Confetti from '../components/Confetti';
 import { useSoundManager } from '../useSoundManager';
+import { playWelcomeChime } from '../sharedSounds';
 import { useNavigate } from 'react-router-dom';
-
-function playStartChime() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [523.25, 659.25, 783.99]; // C5, E5, G5 — quick ascending flourish
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      const t = ctx.currentTime + i * 0.09;
-      gain.gain.setValueAtTime(0, t);
-      gain.gain.linearRampToValueAtTime(0.22, t + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.25);
-    });
-  } catch (e) { /* fail silently */ }
-}
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
 
@@ -68,6 +48,7 @@ const slotAnimation = (delayIndex) => ({
 
 export default function GameHomeLayout({
   heroVisual,
+  illustrationComponent,
   title,
   tagline,
   tag,
@@ -88,7 +69,7 @@ export default function GameHomeLayout({
   const [playConfetti, setPlayConfetti] = useState(false);
 
   const handlePlay = () => {
-    playStartChime();
+    playWelcomeChime();
     setPlayConfetti(true);
     setTimeout(() => onPlay(), 550);
   };
@@ -123,9 +104,8 @@ export default function GameHomeLayout({
   /* ── TopBar ── */
   const topBarStyle = {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: '8px',
     padding: '12px 24px 0',
     flexShrink: 0,
     ...slotAnimation(0),
@@ -375,21 +355,38 @@ export default function GameHomeLayout({
       <div style={pageStyle}>
         {/* TopBar */}
         <div style={topBarStyle}>
-          <button style={iconBtnStyle} onClick={() => nav('/hub')} aria-label="Games hub">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </button>
-          <button style={iconBtnStyle} onClick={toggleMute} aria-label="Toggle sound">
-            {muted ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-            )}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <img src="/logo.png" alt="Did It!" style={{ height: 28, objectFit: 'contain', cursor: 'pointer' }} onClick={() => nav('/hub')} />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button style={iconBtnStyle} onClick={() => nav('/hub')} aria-label="Games hub">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button style={iconBtnStyle} onClick={toggleMute} aria-label="Toggle sound">
+              {muted ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Illustration */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px 0 0', flexShrink: 0, ...slotAnimation(1) }}>
-          {illustration ? (
+          {illustrationComponent ? (
+            <div style={{
+              width: 160, height: 160, borderRadius: '50%',
+              background: 'white',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              border: '3px solid color-mix(in srgb, var(--game-primary) 14%, transparent)',
+            }}>
+              <div style={{ width: 124, height: 124, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {illustrationComponent}
+              </div>
+            </div>
+          ) : illustration ? (
             <img src={illustration} alt={title} style={{ width: '180px', height: '180px', objectFit: 'contain' }} />
           ) : heroVisual ? (
             <div style={{ width: '180px', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

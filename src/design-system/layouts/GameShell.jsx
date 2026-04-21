@@ -20,7 +20,8 @@ export default function GameShell({
   const nav = useNavigate();
 
   const outerStyle = {
-    minHeight: '100vh',
+    height: '100vh',
+    overflow: 'hidden',
     background: 'var(--game-bg)',
     color: 'var(--game-text)',
   };
@@ -28,10 +29,11 @@ export default function GameShell({
   const innerStyle = {
     maxWidth: `${PAGE_MAX_WIDTH}px`,
     margin: '0 auto',
-    minHeight: '100vh',
+    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     paddingBottom: `${BOTTOM_STRIP_HEIGHT}px`,
+    boxSizing: 'border-box',
   };
 
   const topBarStyle = {
@@ -129,8 +131,12 @@ export default function GameShell({
       `}</style>
 
       {/* Top Bar */}
-      <div style={topBarStyle}>
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+      <div style={{ padding: '8px 16px 0', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <img src="/logo.png" alt="Did It!" style={{ height: 28, objectFit: 'contain', cursor: 'pointer' }} onClick={() => nav('/hub')} />
+            <span style={{ fontFamily: fonts.display, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{title}</span>
+          </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button style={iconBtnStyle} onClick={() => nav('/hub')} aria-label="Games hub">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -142,8 +148,6 @@ export default function GameShell({
               }
             </button>
           </div>
-          <span onClick={onBack} style={{ fontFamily: fonts.display, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-text)', position: 'absolute', left: '50%', transform: 'translateX(-50%)', cursor: 'pointer' }}>{title}</span>
-          <div style={{ width: '72px' }} />
         </div>
       </div>
 

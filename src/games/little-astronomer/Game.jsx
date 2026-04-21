@@ -185,7 +185,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Astronomer"
-        learnedText="6 amazing constellations 🌟"
+        learnedText="6 amazing constellations"
         onPlayAgain={() => {
           setLevels(pickLevels());
           setShowSuccess(false);
