@@ -13,7 +13,6 @@ import {
   ChemistIllustration,
   AstronomerIllustration,
   AnalystIllustration,
-  ArchitectIllustration,
   MatisseIllustration,
 } from '../pages/GameIllustrations';
 
@@ -27,7 +26,6 @@ const GAME_ILLUSTRATIONS = {
   chemist:    ChemistIllustration,
   astronomer: AstronomerIllustration,
   pie:        AnalystIllustration,
-  architect:  ArchitectIllustration,
   matisse:    MatisseIllustration,
 };
 

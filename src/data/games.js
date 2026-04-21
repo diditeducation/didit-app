@@ -386,43 +386,6 @@ export const GAMES = [
       },
     },
   },
-  {
-    id: 'little-architect',
-    illustrationKey: 'architect',
-    title: 'Little Architect',
-    emoji: '🏗️',
-    tag: '🏗️ Spatial building',
-    category: 'STEM',
-    hook: 'Drag chunky shapes to fill the building silhouette.',
-    desc: 'Drag chunky shapes to fill the building silhouette.',
-    skills: ['Shapes', 'Spatial reasoning', 'Building'],
-    bgImage: '/backgrounds/background-blue.png',
-    path: '/games/little-architect',
-    gradient: `linear-gradient(135deg, ${colors.blueberryMid} 0%, ${colors.blueberryDark} 100%)`,
-    color: colors.blueberryMid,
-    colorDark: colors.blueberryDark,
-    colorLight: colors.blueberryLight,
-    parentGuide: {
-      concept: '🧱 Shapes & Spatial Reasoning',
-      conceptColor: colors.blueberryDark,
-      explanation:
-        "Your toddler is fitting shapes into a building silhouette — triangles for roofs, rectangles for walls. This is spatial reasoning in action: understanding how shapes fit together to make something bigger.",
-      science: {
-        text: "Preschoolers' spatial assembly performance — copying block structures — independently predicts early mathematical skills, making it one of the strongest early indicators of STEM aptitude.",
-        citation: 'Verdine et al., "Deconstructing Building Blocks," Child Development, 2014',
-        url: 'https://doi.org/10.1111/cdev.12165',
-      },
-      ladder: [
-        { label: 'Playing now', title: 'Shape fitting', desc: 'Matching pieces to a silhouette.', color: colors.blueberryMid },
-        { label: 'Builds toward', title: 'Spatial assembly', desc: 'Understanding how parts create structures.', color: colors.grassMid },
-        { label: 'Big concept', title: 'Architectural thinking', desc: 'Designing and building with intention.', color: colors.sunMid },
-      ],
-      tip: {
-        text: "After playing, grab real blocks or cardboard boxes and build together. Name the shapes as you stack: 'This rectangle is the wall, this triangle goes on top for the roof!'",
-        question: "'Where does this shape go?'",
-      },
-    },
-  },
 ];
 
 // Rotate the featured game daily based on the date
