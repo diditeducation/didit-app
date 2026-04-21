@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { initAudio, sound } from './audio';
+import { fonts } from '../../design-system/tokens';
 
 // Star size → visual radii
 const SIZE_MAP = { lg: { dot: 10, glow: 18 }, md: { dot: 8, glow: 15 }, sm: { dot: 6, glow: 12 } };
@@ -29,6 +30,8 @@ export default function ConstellationCanvas({
   stars,
   sequence,
   animal,
+  animalName,
+  toastText,
   onMilestone,
 }) {
   const bgStars = useRef(makeBgStars(levelId * 137 + 42));
@@ -252,6 +255,50 @@ export default function ConstellationCanvas({
           }}
         >
           {animal}
+        </div>
+      )}
+
+      {/* Info pill — overlaid at bottom of canvas */}
+      {animalName && (
+        <div style={{
+          position: 'absolute',
+          bottom: 14,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(10, 14, 26, 0.78)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          borderRadius: 999,
+          padding: '7px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          whiteSpace: 'nowrap',
+          pointerEvents: 'none',
+          zIndex: 5,
+          border: '1px solid rgba(255,255,255,0.1)',
+        }}>
+          <span style={{
+            fontFamily: fonts.display,
+            fontWeight: 800,
+            fontSize: '0.78rem',
+            color: 'var(--game-primary)',
+            letterSpacing: '0.04em',
+          }}>
+            {animalName}
+          </span>
+          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.6rem' }}>•</span>
+          <span style={{
+            fontFamily: fonts.display,
+            fontWeight: 500,
+            fontSize: '0.72rem',
+            color: 'rgba(255,255,255,0.65)',
+            maxWidth: 200,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}>
+            {toastText}
+          </span>
         </div>
       )}
     </div>

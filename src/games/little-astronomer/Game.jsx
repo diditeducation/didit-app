@@ -6,7 +6,6 @@ import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
-import { fonts } from '../../design-system/tokens';
 import { initAudio, sound } from './audio';
 import theme from './theme';
 import ConstellationCanvas from './ConstellationCanvas';
@@ -110,62 +109,16 @@ export default function Game() {
           </div>
 
           {!showSuccess && (
-            <>
-              {/* Canvas wrapper — positions the info pill as an overlay */}
-              <div style={{ position: 'relative', flexShrink: 0 }}>
-                <ConstellationCanvas
-                  key={activeLevel}
-                  levelId={activeLevel}
-                  stars={currentLevel.stars}
-                  sequence={currentLevel.sequence}
-                  animal={currentLevel.animal}
-                  animalName={currentLevel.animalName}
-                  onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
-                />
-
-                {/* Info pill — overlaid at bottom of canvas */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: 14,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: 'rgba(10, 14, 26, 0.78)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  borderRadius: 999,
-                  padding: '7px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  whiteSpace: 'nowrap',
-                  pointerEvents: 'none',
-                  zIndex: 5,
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}>
-                  <span style={{
-                    fontFamily: fonts.display,
-                    fontWeight: 800,
-                    fontSize: '0.78rem',
-                    color: 'var(--game-primary)',
-                    letterSpacing: '0.04em',
-                  }}>
-                    {currentLevel.animalName}
-                  </span>
-                  <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.6rem' }}>•</span>
-                  <span style={{
-                    fontFamily: fonts.display,
-                    fontWeight: 500,
-                    fontSize: '0.72rem',
-                    color: 'rgba(255,255,255,0.65)',
-                    maxWidth: 200,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}>
-                    {currentLevel.toast}
-                  </span>
-                </div>
-              </div>
-            </>
+            <ConstellationCanvas
+              key={activeLevel}
+              levelId={activeLevel}
+              stars={currentLevel.stars}
+              sequence={currentLevel.sequence}
+              animal={currentLevel.animal}
+              animalName={currentLevel.animalName}
+              toastText={currentLevel.toast}
+              onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
+            />
           )}
         </div>
       </GameShell>
