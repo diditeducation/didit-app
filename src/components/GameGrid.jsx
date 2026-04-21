@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { playWelcomeChime } from '../design-system/sharedSounds';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { CATEGORIES } from '../data/games';
 import {
@@ -217,7 +218,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
               <div
                 key={game.id}
                 className="gg-card"
-                onClick={() => onNavigate(game.path)}
+                onClick={() => { playWelcomeChime(); onNavigate(game.path); }}
               >
                 {/* Today badge */}
                 {game.id === todayId && (
@@ -257,7 +258,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
                   <button
                     className="gg-play-btn"
                     style={{ background: game.colorDark }}
-                    onClick={e => { e.stopPropagation(); onNavigate(game.path); }}
+                    onClick={e => { e.stopPropagation(); playWelcomeChime(); onNavigate(game.path); }}
                   >
                     Play →
                   </button>
