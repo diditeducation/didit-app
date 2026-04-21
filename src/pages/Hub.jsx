@@ -31,7 +31,7 @@ export default function Hub() {
         minHeight: '100vh',
         fontFamily: fonts.display,
         padding: '0 24px 88px',
-        maxWidth: 520,
+        maxWidth: 680,
         margin: '0 auto',
       }}>
 
