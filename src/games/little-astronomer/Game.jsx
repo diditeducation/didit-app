@@ -83,77 +83,86 @@ export default function Game() {
         hideTabs
         onBack={() => navigate('/hub')}
       >
-        {/* Landscape layout: canvas left, progress sidebar right */}
         <div style={{
           flex: 1,
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 16,
+          gap: 10,
           overflow: 'hidden',
-          padding: '0 8px',
         }}>
+          {/* Level pips — horizontal row above canvas */}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
+            {levels.map((_, i) => {
+              const id     = i + 1;
+              const active = id === activeLevel;
+              const done   = completedLevels.has(id);
+              return (
+                <div key={id} style={{
+                  width: active ? 22 : 10, height: 10, borderRadius: 999,
+                  background: done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
+                  opacity: done ? 0.45 : 1, transition: 'all 0.3s ease', flexShrink: 0,
+                }} />
+              );
+            })}
+          </div>
+
           {!showSuccess && (
             <>
-              <ConstellationCanvas
-                key={activeLevel}
-                levelId={activeLevel}
-                stars={currentLevel.stars}
-                sequence={currentLevel.sequence}
-                animal={currentLevel.animal}
-                animalName={currentLevel.animalName}
-                onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
-              />
+              {/* Canvas wrapper — positions the info pill as an overlay */}
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <ConstellationCanvas
+                  key={activeLevel}
+                  levelId={activeLevel}
+                  stars={currentLevel.stars}
+                  sequence={currentLevel.sequence}
+                  animal={currentLevel.animal}
+                  animalName={currentLevel.animalName}
+                  onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
+                />
 
-              {/* Vertical sidebar: constellation name + level pips */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 24,
-                flexShrink: 0,
-                width: 52,
-              }}>
-                {/* Constellation name — rotated vertically */}
+                {/* Info pill — overlaid at bottom of canvas */}
                 <div style={{
-                  fontFamily: fonts.display,
-                  fontWeight: 700,
-                  fontSize: '0.72rem',
-                  color: 'var(--game-text-muted)',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  writingMode: 'vertical-rl',
-                  textOrientation: 'mixed',
-                  transform: 'rotate(180deg)',
+                  position: 'absolute',
+                  bottom: 14,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: 'rgba(10, 14, 26, 0.78)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  borderRadius: 999,
+                  padding: '7px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
                   whiteSpace: 'nowrap',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                  border: '1px solid rgba(255,255,255,0.1)',
                 }}>
-                  {currentLevel.animalName}
-                </div>
-
-                {/* Level pips — stacked vertically */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-                  {levels.map((_, i) => {
-                    const id     = i + 1;
-                    const active = id === activeLevel;
-                    const done   = completedLevels.has(id);
-                    return (
-                      <div
-                        key={id}
-                        style={{
-                          width:        10,
-                          height:       active ? 22 : 10,
-                          borderRadius: 999,
-                          background:   done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
-                          opacity:      done ? 0.45 : 1,
-                          transition:   'all 0.3s ease',
-                          flexShrink:   0,
-                        }}
-                      />
-                    );
-                  })}
+                  <span style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 800,
+                    fontSize: '0.78rem',
+                    color: 'var(--game-primary)',
+                    letterSpacing: '0.04em',
+                  }}>
+                    {currentLevel.animalName}
+                  </span>
+                  <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.6rem' }}>•</span>
+                  <span style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 500,
+                    fontSize: '0.72rem',
+                    color: 'rgba(255,255,255,0.65)',
+                    maxWidth: 200,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}>
+                    {currentLevel.toast}
+                  </span>
                 </div>
               </div>
             </>
