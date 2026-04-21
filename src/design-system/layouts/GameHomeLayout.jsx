@@ -96,16 +96,8 @@ function RichGuideSheet({ guide, onClose, closeBtnStyle }) {
         {/* ── The science ── */}
         <AccordionSection title="🔬 The science">
           <div style={{ background:'#F3F0FA', borderRadius:12, padding:'12px 14px', borderLeft:'3px solid #9B8DD4' }}>
-            <p style={{ fontSize:12, lineHeight:1.65, color:'#3D2E72', margin:'0 0 8px', fontFamily:fonts.display, fontWeight:500 }}>
+            <p style={{ fontSize:12, lineHeight:1.65, color:'#3D2E72', margin:0, fontFamily:fonts.display, fontWeight:500 }}>
               {guide.science.text}
-            </p>
-            <p style={{ fontSize:11, color:'#7B6BB0', margin:0, fontFamily:fonts.display, fontWeight:700 }}>
-              — {guide.science.url ? (
-                <a href={guide.science.url} target="_blank" rel="noopener noreferrer"
-                  style={{ color:'#7B6BB0', textDecoration:'underline', textDecorationStyle:'dashed', textUnderlineOffset:'3px' }}>
-                  {guide.science.citation}
-                </a>
-              ) : guide.science.citation}
             </p>
           </div>
         </AccordionSection>
