@@ -119,8 +119,8 @@ export default function Hub() {
           </div>
         </div>
 
-        {/* ── Today + Surprise Me — constrained column ── */}
-        <div style={{ width: '75%', margin: '0 auto 36px' }}>
+        {/* ── Today + Surprise Me ── */}
+        <div style={{ marginBottom: 36 }}>
           {/* ── Today heading ── */}
           <div style={{ textAlign: 'center', marginBottom: 14 }}>
             <div style={{
@@ -152,7 +152,7 @@ export default function Hub() {
         </div>
 
         {/* ── All Games catalog ── */}
-        <div style={{ width: '75%', margin: '0 auto' }}>
+        <div>
           <GameGrid
             games={GAMES}
             todayId={TODAY_GAME_ID}
