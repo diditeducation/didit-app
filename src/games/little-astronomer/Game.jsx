@@ -82,43 +82,18 @@ export default function Game() {
         title="Little Astronomer"
         hideTabs
         onBack={() => navigate('/hub')}
-        topSlot={
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 8,
-            paddingBottom: 10,
-          }}>
-            {levels.map((_, i) => {
-              const id     = i + 1;
-              const active = id === activeLevel;
-              const done   = completedLevels.has(id);
-              return (
-                <div
-                  key={id}
-                  style={{
-                    width:        active ? 22 : 10,
-                    height:       10,
-                    borderRadius: 999,
-                    background:   done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
-                    opacity:      done ? 0.45 : 1,
-                    transition:   'all 0.3s ease',
-                    flexShrink:   0,
-                  }}
-                />
-              );
-            })}
-          </div>
-        }
       >
+        {/* Landscape layout: canvas left, progress sidebar right */}
         <div style={{
           flex: 1,
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           width: '100%',
           alignItems: 'center',
-          gap: 14,
+          justifyContent: 'center',
+          gap: 16,
+          overflow: 'hidden',
+          padding: '0 8px',
         }}>
           {!showSuccess && (
             <>
@@ -132,16 +107,54 @@ export default function Game() {
                 onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
               />
 
-              {/* Level name label */}
+              {/* Vertical sidebar: constellation name + level pips */}
               <div style={{
-                fontFamily: fonts.display,
-                fontWeight: 700,
-                fontSize: '0.85rem',
-                color: 'var(--game-text-muted)',
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 24,
+                flexShrink: 0,
+                width: 52,
               }}>
-                {currentLevel.animalName}
+                {/* Constellation name — rotated vertically */}
+                <div style={{
+                  fontFamily: fonts.display,
+                  fontWeight: 700,
+                  fontSize: '0.72rem',
+                  color: 'var(--game-text-muted)',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  writingMode: 'vertical-rl',
+                  textOrientation: 'mixed',
+                  transform: 'rotate(180deg)',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {currentLevel.animalName}
+                </div>
+
+                {/* Level pips — stacked vertically */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+                  {levels.map((_, i) => {
+                    const id     = i + 1;
+                    const active = id === activeLevel;
+                    const done   = completedLevels.has(id);
+                    return (
+                      <div
+                        key={id}
+                        style={{
+                          width:        10,
+                          height:       active ? 22 : 10,
+                          borderRadius: 999,
+                          background:   done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
+                          opacity:      done ? 0.45 : 1,
+                          transition:   'all 0.3s ease',
+                          flexShrink:   0,
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </>
           )}

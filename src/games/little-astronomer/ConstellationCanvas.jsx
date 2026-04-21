@@ -80,9 +80,12 @@ export default function ConstellationCanvas({
   return (
     <div
       style={{
-        width: '100%',
-        maxWidth: 390,
+        /* Height-driven: fills viewport minus top bar + bottom strip (~130px).
+           Width follows from the 390:700 ratio automatically. */
+        height: 'min(calc(100dvh - 130px), 680px)',
+        width: 'auto',
         aspectRatio: '390 / 700',
+        maxWidth: 'calc(100% - 68px)', /* leave room for sidebar */
         position: 'relative',
         borderRadius: 24,
         background: 'radial-gradient(ellipse at 50% 35%, #1c2040 0%, #0a0e1a 68%)',
