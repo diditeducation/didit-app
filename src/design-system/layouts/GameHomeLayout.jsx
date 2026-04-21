@@ -73,7 +73,7 @@ function RichGuideSheet({ guide, onClose, closeBtnStyle }) {
 
         {/* Header */}
         <div style={{ fontFamily:fonts.display, fontWeight:900, fontSize:17, color:colors.text, marginBottom:4 }}>
-          📖 Parent's Guide
+          💡 Grown-up Guide
         </div>
         <div style={{ fontFamily:fonts.display, fontSize:12, color:colors.muted, fontWeight:600, marginBottom:8 }}>
           What your child is learning — and how to make the most of it.
@@ -544,7 +544,7 @@ export default function GameHomeLayout({
           {parentTipBody && (
             <div style={guideLinkStyle}>
               <button style={guideLinkTextStyle} onClick={() => setGuideOpen(true)}>
-                👋 Parent's Guide
+                💡 Grown-up Guide
               </button>
             </div>
           )}

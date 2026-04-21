@@ -45,7 +45,7 @@ export default function ParentGuide({ guide }) {
           textAlign: 'left',
         }}
       >
-        <span>📖 Parent guide</span>
+        <span>💡 Grown-up Guide</span>
         <span style={{
           display: 'inline-flex',
           alignItems: 'center',
