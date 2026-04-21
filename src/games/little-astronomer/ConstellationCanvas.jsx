@@ -113,6 +113,10 @@ export default function ConstellationCanvas({
           from { opacity: 0; }
           to   { opacity: 1; }
         }
+        @keyframes nextRing {
+          0%, 100% { box-shadow: 0 0 0 4px rgba(255,224,75,0.95), 0 0 16px 6px rgba(255,224,75,0.45); }
+          50%       { box-shadow: 0 0 0 10px rgba(255,224,75,0.25), 0 0 28px 12px rgba(255,224,75,0.2); }
+        }
         @keyframes animalIn {
           0%   { transform: translate(-50%,-50%) scale(0.1); opacity: 0; }
           55%  { transform: translate(-50%,-50%) scale(1.18); opacity: 1; }
@@ -180,13 +184,13 @@ export default function ConstellationCanvas({
         const isWrong     = wrongIdx === star.index;
 
         const sizeInfo = SIZE_MAP[star.size] || SIZE_MAP.md;
-        const dotSize = isNext ? sizeInfo.dot + 4 : isActivated ? sizeInfo.dot + 2 : sizeInfo.dot;
+        const dotSize = isNext ? sizeInfo.dot + 6 : isActivated ? sizeInfo.dot + 2 : sizeInfo.dot;
         const starColor = star.color || '#ffffff';
 
-        const glowColor = isActivated || isNext
-          ? `${starColor}bb`
-          : 'rgba(130,160,220,0.35)';
-        const dotBg = isActivated || isNext
+        const glowColor = isActivated ? `${starColor}bb` : 'rgba(130,160,220,0.35)';
+        const dotBg = isNext
+          ? 'radial-gradient(circle at 38% 35%, #ffffff, #FFE04B)'
+          : isActivated
           ? `radial-gradient(circle at 38% 35%, #ffffff, ${starColor})`
           : 'radial-gradient(circle at 38% 35%, #c0cce8, #7088c0)';
 
@@ -209,8 +213,6 @@ export default function ConstellationCanvas({
               zIndex: isNext ? 3 : 2,
               animation: isWrong
                 ? 'starShake 0.5s ease'
-                : isNext && !complete
-                ? 'starPulse 1.6s ease-in-out infinite'
                 : 'none',
             }}
           >
@@ -220,13 +222,12 @@ export default function ConstellationCanvas({
                 height: dotSize,
                 borderRadius: '50%',
                 background: dotBg,
-                boxShadow: isNext
-                  ? `0 0 14px 5px ${glowColor}`
-                  : isActivated
+                boxShadow: isActivated
                   ? `0 0 10px 3px ${glowColor}`
-                  : `0 0 5px 1px ${glowColor}`,
+                  : !isNext ? `0 0 5px 1px ${glowColor}` : undefined,
+                animation: isNext && !complete ? 'nextRing 1.4s ease-in-out infinite' : 'none',
                 pointerEvents: 'none',
-                transition: 'width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease',
+                transition: 'width 0.25s ease, height 0.25s ease',
               }}
             />
           </div>
