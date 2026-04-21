@@ -162,67 +162,6 @@ export default function Hub() {
         </div>
       </div>
 
-      {/* ── Footer with wavy green separator ── */}
-      <div style={{ background: 'transparent', marginTop: 40 }}>
-        {/* Wavy SVG separator */}
-        <svg
-          viewBox="0 0 1440 120"
-          preserveAspectRatio="none"
-          style={{ display: 'block', width: '100%', height: 60 }}
-        >
-          <path
-            d="M0,40 C240,100 480,0 720,50 C960,100 1200,10 1440,60 L1440,120 L0,120 Z"
-            fill={colors.grassLight}
-          />
-        </svg>
-        <div style={{ background: colors.grassLight, padding: '0 24px 20px' }}>
-          {/* Second wave into white */}
-          <svg
-            viewBox="0 0 1440 100"
-            preserveAspectRatio="none"
-            style={{ display: 'block', width: '100%', height: 50 }}
-          >
-            <path
-              d="M0,30 C360,80 720,-10 1080,40 C1260,60 1380,20 1440,30 L1440,100 L0,100 Z"
-              fill="#FFFFFF"
-            />
-          </svg>
-        </div>
-        <footer style={{
-          background: '#FFFFFF',
-          padding: '20px 40px 40px',
-          fontFamily: fonts.display,
-        }}>
-          <div style={{
-            maxWidth: 1000,
-            margin: '0 auto',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: 20,
-          }}>
-            <div>
-              <img src="/logo.png" alt="did it!" style={{ height: 32, width: 'auto' }} />
-              <div style={{
-                fontFamily: fonts.display,
-                fontSize: 14,
-                color: colors.text,
-                marginTop: 4,
-              }}>
-                Real-world concepts for tiny humans.
-              </div>
-            </div>
-            <div style={{
-              fontFamily: fonts.display,
-              fontSize: 13,
-              color: colors.text,
-            }}>
-              &copy; 2026 did*it. All rights reserved.
-            </div>
-          </div>
-        </footer>
-      </div>
 
       {/* ── Surprise bottom sheet ── */}
       <SurpriseSheet
