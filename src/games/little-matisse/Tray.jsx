@@ -21,7 +21,7 @@ export default function Tray({
         justifyContent: 'space-around',
         alignItems: 'center',
         padding: '12px 8px',
-        minHeight: 140,
+        minHeight: 210,
         flexShrink: 0,
       }}
     >

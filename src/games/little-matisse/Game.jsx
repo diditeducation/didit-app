@@ -18,7 +18,7 @@ import { trackGameOpen, trackLevelComplete, trackGameComplete } from '../../anal
 
 const TILE_COUNT = 4;
 const LEVEL_COUNT = 6;
-const TILE_SIZES = [80, 96, 112, 128];
+const TILE_SIZES = [120, 144, 168, 192];
 
 const LEVEL_TOASTS = [
   'Beautiful! 🎨',
