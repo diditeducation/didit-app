@@ -120,14 +120,26 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
 export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
   const [filter, setFilter] = useState('All');
 
-  // Shuffle once per mount so order is random on each hub load
+  // Shuffle once per mount, then reorder so no two adjacent cards share a color.
+  // In a 2-col grid, "adjacent" means i±1 (same row) and i±2 (column neighbor).
   const shuffled = useMemo(() => {
+    // 1. Fisher-Yates shuffle
     const arr = [...games];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    return arr;
+    // 2. Greedy reorder: pick next card that avoids the last 2 colors placed
+    const result = [];
+    const pool = [...arr];
+    while (pool.length > 0) {
+      const c1 = result.length >= 1 ? result[result.length - 1].color : null;
+      const c2 = result.length >= 2 ? result[result.length - 2].color : null;
+      let idx = pool.findIndex(g => g.color !== c1 && g.color !== c2);
+      if (idx === -1) idx = 0; // fallback if no non-conflicting card exists
+      result.push(pool.splice(idx, 1)[0]);
+    }
+    return result;
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filtered = filter === 'All'
