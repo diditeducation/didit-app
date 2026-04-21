@@ -258,44 +258,46 @@ export default function ConstellationCanvas({
         </div>
       )}
 
-      {/* Info pill — overlaid at bottom of canvas */}
+      {/* Info pill — overlaid at bottom of canvas, 2-line vertical */}
       {animalName && (
         <div style={{
           position: 'absolute',
           bottom: 14,
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'rgba(10, 14, 26, 0.78)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          borderRadius: 999,
-          padding: '7px 16px',
+          background: 'rgba(10, 14, 26, 0.82)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          borderRadius: 16,
+          padding: '10px 18px',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          gap: 8,
-          whiteSpace: 'nowrap',
+          gap: 3,
           pointerEvents: 'none',
           zIndex: 5,
           border: '1px solid rgba(255,255,255,0.1)',
+          maxWidth: 'calc(100% - 28px)',
+          boxSizing: 'border-box',
         }}>
           <span style={{
             fontFamily: fonts.display,
             fontWeight: 800,
-            fontSize: '0.78rem',
+            fontSize: '0.82rem',
             color: 'var(--game-primary)',
-            letterSpacing: '0.04em',
+            letterSpacing: '0.05em',
+            whiteSpace: 'nowrap',
           }}>
             {animalName}
           </span>
-          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.6rem' }}>•</span>
           <span style={{
             fontFamily: fonts.display,
             fontWeight: 500,
-            fontSize: '0.72rem',
-            color: 'rgba(255,255,255,0.65)',
-            maxWidth: 200,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            fontSize: '0.7rem',
+            color: 'rgba(255,255,255,0.6)',
+            textAlign: 'center',
+            lineHeight: 1.4,
+            maxWidth: 260,
           }}>
             {toastText}
           </span>

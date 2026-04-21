@@ -51,22 +51,56 @@ function buildSequence(constellation) {
  * Convert a raw constellation object into the game format expected by
  * ConstellationCanvas and Game.
  *
- * Stars get x/y as percentages of the 390×700 canvas dimensions.
+ * Stars get x/y as percentages of the 390×700 canvas dimensions,
+ * then normalised so every constellation fills the same padded area.
  */
 function adaptConstellation(c) {
+  const rawStars = c.stars.map((s, i) => ({
+    index: i,
+    name: s.name,
+    x: (s.x / CANVAS_DIMS.w) * 100,
+    y: (s.y / CANVAS_DIMS.h) * 100,
+    size: s.size || 'md',
+    color: s.color || '#ffffff',
+  }));
+
+  // Normalize so every constellation fills a consistent padded region.
+  // Horizontal padding: 12% each side. Vertical: 12% top, 22% bottom (room for pill).
+  const PAD_X  = 12;
+  const PAD_YT = 12;
+  const PAD_YB = 22;
+
+  const xs = rawStars.map(s => s.x);
+  const ys = rawStars.map(s => s.y);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const rangeX = maxX - minX || 1;
+  const rangeY = maxY - minY || 1;
+
+  const availW = 100 - 2 * PAD_X;
+  const availH = 100 - PAD_YT - PAD_YB;
+
+  // Keep constellation's aspect ratio — fit inside the available box
+  const scale = Math.min(availW / rangeX, availH / rangeY);
+  const scaledW = rangeX * scale;
+  const scaledH = rangeY * scale;
+
+  // Centre horizontally; centre vertically within the top region
+  const offsetX = (100 - scaledW) / 2;
+  const offsetY = PAD_YT + (availH - scaledH) / 2;
+
+  const stars = rawStars.map(s => ({
+    ...s,
+    x: offsetX + (s.x - minX) * scale,
+    y: offsetY + (s.y - minY) * scale,
+  }));
+
   return {
     id: c.id,
     animal: EMOJI_MAP[c.id] || '⭐',
     animalName: c.name,
     toast: c.funFact,
-    stars: c.stars.map((s, i) => ({
-      index: i,
-      name: s.name,
-      x: (s.x / CANVAS_DIMS.w) * 100,
-      y: (s.y / CANVAS_DIMS.h) * 100,
-      size: s.size || 'md',
-      color: s.color || '#ffffff',
-    })),
+    stars,
     sequence: buildSequence(c),
   };
 }
