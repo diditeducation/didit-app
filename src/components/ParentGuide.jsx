@@ -125,7 +125,16 @@ export default function ParentGuide({ guide }) {
                 fontFamily: fonts.display,
                 fontWeight: 700,
               }}>
-                — {guide.science.citation}
+                — {guide.science.url ? (
+                  <a
+                    href={guide.science.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#7B6BB0', textDecoration: 'underline', textDecorationStyle: 'dashed', textUnderlineOffset: '3px' }}
+                  >
+                    {guide.science.citation}
+                  </a>
+                ) : guide.science.citation}
               </p>
             </div>
           </Section>

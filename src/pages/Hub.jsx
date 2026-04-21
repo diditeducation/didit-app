@@ -31,6 +31,8 @@ export default function Hub() {
         minHeight: '100vh',
         fontFamily: fonts.display,
         padding: '0 24px 88px',
+        maxWidth: 520,
+        margin: '0 auto',
       }}>
 
         {/* ── Top nav ── */}
@@ -63,59 +65,57 @@ export default function Hub() {
                 cursor: 'pointer', textDecoration: 'none', padding: 0,
               }}
             />
-            {isLoggedIn && (
-              <div style={{ position: 'relative' }}>
-                <div
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  style={{
-                    width: 36, height: 36, borderRadius: '50%',
-                    background: colors.blueberryDark, display: 'flex',
-                    alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-                {showUserMenu && (
-                  <>
-                    <div onClick={() => setShowUserMenu(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
-                    <div style={{
-                      position: 'absolute', top: 44, right: 0, zIndex: 99,
-                      background: 'white', borderRadius: 16,
-                      border: `1px solid ${colors.border}`,
-                      padding: '16px 20px', minWidth: 220,
-                      fontFamily: fonts.display,
-                    }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: colors.text, marginBottom: 4 }}>
-                        {user?.displayName || 'Signed in'}
-                      </div>
-                      <div style={{ fontSize: 12, color: colors.muted, marginBottom: 16, wordBreak: 'break-all' }}>
-                        {user?.email}
-                      </div>
-                      <button
-                        onClick={async () => {
-                          await signOut(auth);
-                          setShowUserMenu(false);
-                          navigate('/');
-                        }}
-                        style={{
-                          width: '100%', padding: '10px 16px',
-                          background: 'transparent', border: `1px solid ${colors.border}`,
-                          borderRadius: 9999, fontFamily: fonts.display,
-                          fontSize: 13, fontWeight: 700, color: colors.coralDark,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Sign out
-                      </button>
-                    </div>
-                  </>
-                )}
+            <div style={{ position: 'relative' }}>
+              <div
+                onClick={() => isLoggedIn ? setShowUserMenu(!showUserMenu) : navigate('/signin')}
+                style={{
+                  width: 36, height: 36, borderRadius: '50%',
+                  background: colors.blueberryDark, display: 'flex',
+                  alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
               </div>
-            )}
+              {showUserMenu && isLoggedIn && (
+                <>
+                  <div onClick={() => setShowUserMenu(false)} style={{ position: 'fixed', inset: 0, zIndex: 98 }} />
+                  <div style={{
+                    position: 'absolute', top: 44, right: 0, zIndex: 99,
+                    background: 'white', borderRadius: 16,
+                    border: `1px solid ${colors.border}`,
+                    padding: '16px 20px', minWidth: 220,
+                    fontFamily: fonts.display,
+                  }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: colors.text, marginBottom: 4 }}>
+                      {user?.displayName || 'Signed in'}
+                    </div>
+                    <div style={{ fontSize: 12, color: colors.muted, marginBottom: 16, wordBreak: 'break-all' }}>
+                      {user?.email}
+                    </div>
+                    <button
+                      onClick={async () => {
+                        await signOut(auth);
+                        setShowUserMenu(false);
+                        navigate('/');
+                      }}
+                      style={{
+                        width: '100%', padding: '10px 16px',
+                        background: 'transparent', border: `1px solid ${colors.border}`,
+                        borderRadius: 9999, fontFamily: fonts.display,
+                        fontSize: 13, fontWeight: 700, color: colors.coralDark,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 

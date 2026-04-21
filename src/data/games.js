@@ -24,7 +24,8 @@ export const GAMES = [
         "Your toddler is discovering that things have value — and that you can trade coins for them. Even at this age, understanding exchange (something goes away to get something else) is a real cognitive leap. It lays the foundation for every financial decision they'll ever make.",
       science: {
         text: "Children's money habits and attitudes are largely formed by age 7. Play-based exposure to exchange concepts before age 5 has measurable, lasting impact on financial literacy.",
-        citation: 'Whitebread & Bingham, Cambridge University, 2013',
+        citation: 'Whitebread & Bingham, "Habit Formation and Learning in Young Children," Money Advice Service / Cambridge University, 2013',
+        url: 'https://masassets.blob.core.windows.net/cms/files/000/000/563/original/MAS_Report_Habit_Formation_and_Learning_in_Young_Children_May2013.pdf',
       },
       ladder: [
         {
@@ -58,7 +59,7 @@ export const GAMES = [
     title: 'Little DJ',
     emoji: '🎧',
     tag: '🎛️ Beat Making',
-    category: 'Music',
+    category: 'Creative',
     hook: 'Tap a cell, hear it loop. Stack beats to build your own groove.',
     desc: 'Tap a cell, hear it loop — stack beats to build your own groove.',
     skills: ['Layering', 'Rhythm', 'Creativity'],
@@ -68,6 +69,26 @@ export const GAMES = [
     color: colors.coralMid,
     colorDark: colors.coralDark,
     colorLight: colors.coralLight,
+    parentGuide: {
+      concept: '🎛️ Rhythm & Layering',
+      conceptColor: colors.coralDark,
+      explanation:
+        "Your toddler is learning that music is made of layers — each sound stacks on the last to create something bigger. Understanding that parts combine into a whole is the same thinking behind teamwork, storytelling, and even cooking.",
+      science: {
+        text: 'Early music exposure strengthens auditory processing and pattern recognition. A comprehensive review found that active music-making in childhood enhances cognitive development across multiple domains.',
+        citation: 'Hallam, S., "The power of music," International Journal of Music Education, 2010',
+        url: 'https://doi.org/10.1177/0255761410370658',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Beat layering', desc: 'Stacking sounds to build a groove.', color: colors.coralMid },
+        { label: 'Builds toward', title: 'Pattern recognition', desc: 'Hearing how repeating elements create structure.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Composition', desc: 'Creating something from nothing by combining parts.', color: colors.sunMid },
+      ],
+      tip: {
+        text: "Clap along or hum when your child activates a new layer. Ask 'What happens if we add this one?' Research shows co-play with music doubles engagement time.",
+        question: "'Can you make a beat with just two sounds?'",
+      },
+    },
   },
   {
     id: 'little-engineer',
@@ -85,6 +106,26 @@ export const GAMES = [
     color: colors.blueberryMid,
     colorDark: colors.blueberryDark,
     colorLight: colors.blueberryLight,
+    parentGuide: {
+      concept: '⚡ Circuits & Systems',
+      conceptColor: colors.blueberryDark,
+      explanation:
+        "Your toddler is discovering that things need to be connected to work — a switch needs a wire, a wire needs a bulb. This is cause-and-effect thinking at its most tangible: complete the path and the light turns on.",
+      science: {
+        text: 'Hands-on exploration of simple mechanisms in early childhood strengthens causal reasoning. Children who physically manipulate connected systems develop stronger understanding of cause and effect.',
+        citation: 'Gopnik, A., "The Scientist in the Crib," William Morrow, 1999',
+        url: 'https://doi.org/10.1037/e413802005-377',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Circuits & connections', desc: 'Completing a path to make something happen.', color: colors.blueberryMid },
+        { label: 'Builds toward', title: 'Systems thinking', desc: 'Understanding how parts depend on each other.', color: colors.grassMid },
+        { label: 'Big concept', title: 'Engineering mindset', desc: 'Designing solutions by connecting components.', color: colors.sunMid },
+      ],
+      tip: {
+        text: "Point to each piece and narrate: 'The wire connects here... now flip the switch!' Ask your child to predict what happens before they complete the circuit.",
+        question: "'What do you think will happen when we connect this wire?'",
+      },
+    },
   },
   {
     id: 'little-chef',
@@ -102,6 +143,26 @@ export const GAMES = [
     color: colors.sunMid,
     colorDark: colors.sunDark,
     colorLight: colors.sunLight,
+    parentGuide: {
+      concept: '📋 Sequencing & Process',
+      conceptColor: colors.sunDark,
+      explanation:
+        "Your toddler is learning that order matters — you crack the egg before you stir, you stir before you cook. Following steps in sequence is the foundation of planning, reading instructions, and even writing stories.",
+      science: {
+        text: 'Executive function skills like sequencing and planning develop rapidly in early childhood and predict later academic success across reading and maths.',
+        citation: 'Diamond, A., "Executive Functions," Annual Review of Psychology, 2013',
+        url: 'https://doi.org/10.1146/annurev-psych-113011-143750',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Step-by-step sequencing', desc: 'Following a recipe in the right order.', color: colors.sunMid },
+        { label: 'Builds toward', title: 'Planning', desc: 'Thinking ahead about what comes next.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Procedural thinking', desc: 'Breaking complex tasks into ordered steps.', color: colors.grassMid },
+      ],
+      tip: {
+        text: "Cook something simple together after playing — even just toast with butter. Point out the steps: 'First we get the bread, then we put it in...' Your child will recognise the pattern from the game.",
+        question: "'What do we do first?'",
+      },
+    },
   },
   {
     id: 'little-pianist',
@@ -109,7 +170,7 @@ export const GAMES = [
     title: 'Little Pianist',
     emoji: '🎹',
     tag: '🎹 Piano & Solfège',
-    category: 'Music',
+    category: 'Creative',
     hook: 'Learn Do Re Mi, then play real songs note by note.',
     desc: 'Learn Do Re Mi, then play real songs note by note.',
     skills: ['Solfège', 'Melody', 'Pitch'],
@@ -119,6 +180,26 @@ export const GAMES = [
     color: colors.blueberryMid,
     colorDark: colors.blueberryDark,
     colorLight: colors.blueberryLight,
+    parentGuide: {
+      concept: '🎵 Pitch & Melody',
+      conceptColor: colors.blueberryDark,
+      explanation:
+        "Your toddler is learning that sounds have height — some are high, some are low, and they can be arranged into tunes. Understanding pitch is the building block of language, music, and pattern recognition.",
+      science: {
+        text: 'Music perception skills in preschoolers are related to phonological awareness and early reading ability, suggesting shared auditory processing mechanisms.',
+        citation: 'Anvari et al., "Relations among musical skills, phonological processing, and early reading," Journal of Experimental Child Psychology, 2002',
+        url: 'https://doi.org/10.1016/S0022-0965(02)00124-8',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Pitch & solfège', desc: 'Hearing the difference between Do, Re, Mi.', color: colors.blueberryMid },
+        { label: 'Builds toward', title: 'Melody recognition', desc: 'Following a tune note by note.', color: colors.sunMid },
+        { label: 'Big concept', title: 'Musical literacy', desc: 'Reading and creating music.', color: colors.coralMid },
+      ],
+      tip: {
+        text: "Sing the Do Re Mi notes together while your child plays. Exaggerate high and low with your voice and body — reach up for high notes, crouch for low ones.",
+        question: "'Can you play the notes going up like a staircase?'",
+      },
+    },
   },
   {
     id: 'little-coder',
@@ -136,6 +217,26 @@ export const GAMES = [
     color: colors.sunMid,
     colorDark: colors.sunDark,
     colorLight: colors.sunLight,
+    parentGuide: {
+      concept: '🧭 Directions & Logic',
+      conceptColor: colors.sunDark,
+      explanation:
+        "Your toddler is giving instructions to a character — up, down, left, right. This is the very beginning of programming: telling something exactly what to do, step by step. It builds spatial awareness and logical thinking.",
+      science: {
+        text: 'Coding activities in early childhood develop computational thinking — including sequencing, debugging, and problem-solving — skills that transfer to mathematics and literacy.',
+        citation: 'Bers, M., "Coding as a Playground," MIT Press, 2018',
+        url: 'https://doi.org/10.7551/mitpress/11375.001.0001',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Directional commands', desc: 'Telling a character which way to go.', color: colors.sunMid },
+        { label: 'Builds toward', title: 'Sequential programming', desc: 'Chaining instructions to solve a puzzle.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Computational thinking', desc: 'Breaking problems into logical steps.', color: colors.grassMid },
+      ],
+      tip: {
+        text: "Play a real-life version — have your child give you directions to walk across the room. 'Tell me: left, right, or forward!' They'll love being the programmer.",
+        question: "'Which way should the rat go to find the cheese?'",
+      },
+    },
   },
   {
     id: 'little-chemist',
@@ -153,6 +254,26 @@ export const GAMES = [
     color: colors.grassMid,
     colorDark: colors.grassDark,
     colorLight: colors.grassLight,
+    parentGuide: {
+      concept: '⚖️ Balancing & Elements',
+      conceptColor: colors.grassDark,
+      explanation:
+        "Your toddler is discovering that things can be equal — put the same amount on each side and the seesaw balances. Along the way they're meeting real elements like Hydrogen and Oxygen. It's counting with a purpose.",
+      science: {
+        text: "Children's understanding of mathematical equivalence develops through hands-on balance tasks. Early grasp of 'equal' as 'the same amount on both sides' predicts later algebraic reasoning.",
+        citation: 'McNeil, N., "Limitations to Teaching Children 2+2=4," Child Development, 2008',
+        url: 'https://doi.org/10.1111/j.1467-8624.2007.01117.x',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Counting & balancing', desc: 'Making both sides equal.', color: colors.grassMid },
+        { label: 'Builds toward', title: 'Equivalence', desc: "Understanding that = means 'the same as.'", color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Chemical thinking', desc: 'Atoms combine in balanced ratios.', color: colors.sunMid },
+      ],
+      tip: {
+        text: "Use a real kitchen scale or build a simple seesaw with a ruler and pencil. Let your child balance small toys: 'How many blocks on this side to make it level?'",
+        question: "'How many atoms do we need on this side?'",
+      },
+    },
   },
   {
     id: 'little-pie',
@@ -160,7 +281,7 @@ export const GAMES = [
     title: 'Little Analyst',
     emoji: '🥧',
     tag: '🥧 Data visualisation',
-    category: 'STEM',
+    category: 'Finance',
     hook: 'Drag the right slice to complete the pie and discover percentages.',
     desc: 'Drag the right slice to complete the pie and discover percentages.',
     skills: ['Percentages', 'Shapes', 'Spatial recognition'],
@@ -170,6 +291,26 @@ export const GAMES = [
     color: colors.coralMid,
     colorDark: colors.coralDark,
     colorLight: colors.coralLight,
+    parentGuide: {
+      concept: '📊 Parts & Wholes',
+      conceptColor: colors.coralDark,
+      explanation:
+        "Your toddler is learning that a whole can be split into parts — and that the parts fit back together to make 100%. This is the beginning of fractions, percentages, and data literacy.",
+      science: {
+        text: 'Spatial reasoning skills like fitting parts into wholes are a stronger predictor of later maths achievement than early counting ability, particularly for understanding fractions and proportions.',
+        citation: 'Mix & Cheng, "Space and Math," Advances in Child Development and Behavior, 2012',
+        url: 'https://doi.org/10.1016/B978-0-12-394388-0.00006-X',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Spatial matching', desc: 'Fitting the right slice into the gap.', color: colors.coralMid },
+        { label: 'Builds toward', title: 'Fractions & proportions', desc: 'Understanding how parts relate to wholes.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Data literacy', desc: 'Reading charts and making sense of numbers.', color: colors.sunMid },
+      ],
+      tip: {
+        text: "At snack time, cut an apple or pizza into pieces. 'Look — four pieces make one whole! What if we eat one piece — how many are left?'",
+        question: "'Which piece fits in the gap?'",
+      },
+    },
   },
   {
     id: 'little-astronomer',
@@ -187,6 +328,26 @@ export const GAMES = [
     color: colors.sunMid,
     colorDark: colors.sunDark,
     colorLight: colors.sunLight,
+    parentGuide: {
+      concept: '✨ Stars & Patterns',
+      conceptColor: colors.sunDark,
+      explanation:
+        "Your toddler is connecting stars to form constellations — real patterns that people have seen in the night sky for thousands of years. It's dot-to-dot with a cosmic twist, building sequence-following and spatial awareness.",
+      science: {
+        text: 'Patterning ability in preschool — recognising and extending repeating structures — uniquely predicts mathematical knowledge, even after controlling for other cognitive abilities.',
+        citation: 'Rittle-Johnson et al., "Beyond numeracy in preschool: Adding patterns to the equation," Early Childhood Research Quarterly, 2015',
+        url: 'https://doi.org/10.1016/j.ecresq.2015.01.005',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Star sequences', desc: 'Tapping stars in order to form shapes.', color: colors.sunMid },
+        { label: 'Builds toward', title: 'Pattern recognition', desc: 'Seeing structure in scattered information.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Spatial reasoning', desc: 'Understanding maps, geometry, and the world around us.', color: colors.grassMid },
+      ],
+      tip: {
+        text: "On a clear night, go outside and look up together. Point out that the stars make shapes — just like in the game. Name the constellations you played today.",
+        question: "'Can you find the next star?'",
+      },
+    },
   },
   {
     id: 'little-matisse',
@@ -204,6 +365,26 @@ export const GAMES = [
     color: colors.coralMid,
     colorDark: colors.coralDark,
     colorLight: colors.coralLight,
+    parentGuide: {
+      concept: '🖼️ Art & Composition',
+      conceptColor: colors.coralDark,
+      explanation:
+        "Your toddler is creating art — placing colourful shapes wherever they like to make their own collage. There's no wrong answer. This is creative expression at its purest, inspired by Henri Matisse's famous paper cutouts.",
+      science: {
+        text: 'Open-ended visual arts activities develop cognitive habits of mind including observation, reflection, and persistence. Studio-based art education builds transferable thinking skills.',
+        citation: 'Hetland, Winner, Veenema & Sheridan, "Studio Thinking," Teachers College Press, 2007',
+        url: 'https://www.pz.harvard.edu/projects/studio-thinking',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Free composition', desc: 'Placing shapes to create something beautiful.', color: colors.coralMid },
+        { label: 'Builds toward', title: 'Design thinking', desc: 'Making intentional choices about colour and placement.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Creative expression', desc: 'Communicating ideas through visual art.', color: colors.sunMid },
+      ],
+      tip: {
+        text: "Let your child place every shape — resist the urge to 'help.' When they're done, ask 'Tell me about your picture!' Describing their own art builds vocabulary and confidence.",
+        question: "'What does your collage look like to you?'",
+      },
+    },
   },
   {
     id: 'little-architect',
@@ -221,9 +402,36 @@ export const GAMES = [
     color: colors.blueberryMid,
     colorDark: colors.blueberryDark,
     colorLight: colors.blueberryLight,
+    parentGuide: {
+      concept: '🧱 Shapes & Spatial Reasoning',
+      conceptColor: colors.blueberryDark,
+      explanation:
+        "Your toddler is fitting shapes into a building silhouette — triangles for roofs, rectangles for walls. This is spatial reasoning in action: understanding how shapes fit together to make something bigger.",
+      science: {
+        text: "Preschoolers' spatial assembly performance — copying block structures — independently predicts early mathematical skills, making it one of the strongest early indicators of STEM aptitude.",
+        citation: 'Verdine et al., "Deconstructing Building Blocks," Child Development, 2014',
+        url: 'https://doi.org/10.1111/cdev.12165',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Shape fitting', desc: 'Matching pieces to a silhouette.', color: colors.blueberryMid },
+        { label: 'Builds toward', title: 'Spatial assembly', desc: 'Understanding how parts create structures.', color: colors.grassMid },
+        { label: 'Big concept', title: 'Architectural thinking', desc: 'Designing and building with intention.', color: colors.sunMid },
+      ],
+      tip: {
+        text: "After playing, grab real blocks or cardboard boxes and build together. Name the shapes as you stack: 'This rectangle is the wall, this triangle goes on top for the roof!'",
+        question: "'Where does this shape go?'",
+      },
+    },
   },
 ];
 
-export const TODAY_GAME_ID = 'little-shopper';
+// Rotate the featured game daily based on the date
+function getTodayGameId() {
+  const now = new Date();
+  const daysSinceEpoch = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
+  return GAMES[daysSinceEpoch % GAMES.length].id;
+}
 
-export const CATEGORIES = ['All', 'STEM', 'Music', 'Finance', 'Creative', 'Language'];
+export const TODAY_GAME_ID = getTodayGameId();
+
+export const CATEGORIES = ['All', 'STEM', 'Creative', 'Finance'];

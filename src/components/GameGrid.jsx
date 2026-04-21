@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { CATEGORIES } from '../data/games';
@@ -120,9 +120,19 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
 export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
   const [filter, setFilter] = useState('All');
 
+  // Shuffle once per mount so order is random on each hub load
+  const shuffled = useMemo(() => {
+    const arr = [...games];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const filtered = filter === 'All'
-    ? games
-    : games.filter(g => g.category === filter);
+    ? shuffled
+    : shuffled.filter(g => g.category === filter);
 
   return (
     <div>
@@ -243,8 +253,8 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
               </div>
             );
 
-            // Inject surprise card after position 6 (slot #7)
-            if (onSurprise && i === 5) {
+            // Inject surprise card after position 6 (slot #7) — only when "All" is selected
+            if (onSurprise && filter === 'All' && i === 5) {
               const randomGame = games[Math.floor(Math.random() * games.length)];
               items.push(
                 <SurpriseCard
@@ -256,8 +266,8 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
             }
           });
 
-          // Append at end if list has 6 or fewer items (surprise never inserted mid-list)
-          if (onSurprise && filtered.length <= 6) {
+          // Append at end if "All" selected and list has 6 or fewer items
+          if (onSurprise && filter === 'All' && filtered.length <= 6) {
             const randomGame = games[Math.floor(Math.random() * games.length)];
             items.push(
               <SurpriseCard

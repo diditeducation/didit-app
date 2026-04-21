@@ -24,6 +24,8 @@ export default function GameShell({
     overflow: 'hidden',
     background: 'var(--game-bg)',
     color: 'var(--game-text)',
+    maxWidth: `${PAGE_MAX_WIDTH}px`,
+    margin: '0 auto',
   };
 
   const innerStyle = {

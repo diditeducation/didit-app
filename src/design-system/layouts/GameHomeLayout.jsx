@@ -9,8 +9,155 @@ import Confetti from '../components/Confetti';
 import { useSoundManager } from '../useSoundManager';
 import { playWelcomeChime } from '../sharedSounds';
 import { useNavigate } from 'react-router-dom';
+import { GAMES } from '../../data/games';
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
+
+/* ── Rich parent guide bottom-sheet ── */
+function AccordionSection({ title, children, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div style={{ borderTop: `1px solid ${colors.border}`, marginTop: 0 }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          width: '100%', padding: '12px 0', background: 'transparent', border: 'none',
+          fontFamily: fonts.display, fontWeight: 800, fontSize: 13,
+          color: colors.text, cursor: 'pointer', textAlign: 'left',
+        }}
+      >
+        <span>{title}</span>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          width: 22, height: 22, borderRadius: '50%', background: colors.border,
+          fontSize: 9, fontWeight: 800, flexShrink: 0,
+          transition: 'transform 0.25s ease',
+          transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+        }}>↓</span>
+      </button>
+      <div style={{
+        maxHeight: open ? '600px' : '0',
+        overflow: 'hidden',
+        transition: 'max-height 0.4s ease',
+      }}>
+        <div style={{ paddingBottom: 16 }}>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function RichGuideSheet({ guide, onClose, closeBtnStyle }) {
+  return (
+    <div
+      style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.55)',zIndex:400,display:'flex',alignItems:'flex-end',justifyContent:'center' }}
+      onClick={onClose}
+    >
+      {/* Injected keyframes for sheet slide-up */}
+      <style>{`@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
+      <div
+        style={{
+          background:'#FFFFFF', borderRadius:'20px 20px 0 0',
+          width:'100%', maxWidth:`${PAGE_MAX_WIDTH}px`,
+          maxHeight:'85vh', overflowY:'auto',
+          padding:'0 20px 32px',
+          boxSizing:'border-box',
+          animation:'slideUp 0.35s ease',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Handle */}
+        <div style={{ display:'flex', justifyContent:'center', padding:'12px 0 8px' }}>
+          <div style={{ width:40, height:4, borderRadius:9999, background:colors.border }} />
+        </div>
+
+        {/* Header */}
+        <div style={{ fontFamily:fonts.display, fontWeight:900, fontSize:17, color:colors.text, marginBottom:4 }}>
+          📖 Parent's Guide
+        </div>
+        <div style={{ fontFamily:fonts.display, fontSize:12, color:colors.muted, fontWeight:600, marginBottom:8 }}>
+          What your child is learning — and how to make the most of it.
+        </div>
+
+        {/* ── What they're learning ── */}
+        <AccordionSection title="✏️ What they're learning" defaultOpen={true}>
+          <div style={{
+            display:'inline-flex', alignItems:'center',
+            padding:'4px 12px', borderRadius:9999,
+            background:`color-mix(in srgb, ${guide.conceptColor} 12%, transparent)`,
+            color:guide.conceptColor, fontSize:12, fontWeight:800,
+            fontFamily:fonts.display, marginBottom:10,
+          }}>{guide.concept}</div>
+          <p style={{ fontSize:13, lineHeight:1.65, color:colors.text, margin:0, fontFamily:fonts.display, fontWeight:500 }}>
+            {guide.explanation}
+          </p>
+        </AccordionSection>
+
+        {/* ── The science ── */}
+        <AccordionSection title="🔬 The science">
+          <div style={{ background:'#F3F0FA', borderRadius:12, padding:'12px 14px', borderLeft:'3px solid #9B8DD4' }}>
+            <p style={{ fontSize:12, lineHeight:1.65, color:'#3D2E72', margin:'0 0 8px', fontFamily:fonts.display, fontWeight:500 }}>
+              {guide.science.text}
+            </p>
+            <p style={{ fontSize:11, color:'#7B6BB0', margin:0, fontFamily:fonts.display, fontWeight:700 }}>
+              — {guide.science.url ? (
+                <a href={guide.science.url} target="_blank" rel="noopener noreferrer"
+                  style={{ color:'#7B6BB0', textDecoration:'underline', textDecorationStyle:'dashed', textUnderlineOffset:'3px' }}>
+                  {guide.science.citation}
+                </a>
+              ) : guide.science.citation}
+            </p>
+          </div>
+        </AccordionSection>
+
+        {/* ── Skill ladder ── */}
+        <AccordionSection title="🪜 Skill building blocks">
+          <div style={{ position:'relative', paddingLeft:28 }}>
+            <div style={{
+              position:'absolute', left:7, top:14, bottom:14, width:2,
+              background:`linear-gradient(to bottom, ${guide.ladder[0].color}, ${guide.ladder[2].color})`,
+              borderRadius:9999, opacity:0.4,
+            }} />
+            {guide.ladder.map((step, i) => (
+              <div key={i} style={{ position:'relative', marginBottom: i < guide.ladder.length - 1 ? 18 : 0 }}>
+                <div style={{
+                  position:'absolute', left:-28, top:1,
+                  width:16, height:16, borderRadius:'50%',
+                  background:step.color, display:'flex',
+                  alignItems:'center', justifyContent:'center',
+                  fontSize: i === 2 ? 9 : 0, zIndex:1,
+                  boxShadow:`0 0 0 2px white, 0 0 0 3px ${step.color}33`,
+                }}>
+                  {i === 2 ? '🏆' : ''}
+                </div>
+                <div style={{ fontSize:9, fontWeight:800, color:step.color, textTransform:'uppercase', letterSpacing:'0.07em', marginBottom:2, fontFamily:fonts.display }}>{step.label}</div>
+                <div style={{ fontSize:13, fontWeight:800, color:colors.text, marginBottom:2, fontFamily:fonts.display }}>{step.title}</div>
+                <div style={{ fontSize:11, color:colors.muted, lineHeight:1.5, fontFamily:fonts.display }}>{step.desc}</div>
+              </div>
+            ))}
+          </div>
+        </AccordionSection>
+
+        {/* ── How to play together ── */}
+        <AccordionSection title="🤝 How to play together">
+          <div style={{ background:'#FFF7EB', borderRadius:12, padding:'12px 14px', borderLeft:'3px solid #F5A623' }}>
+            <p style={{ fontSize:12, lineHeight:1.65, color:'#5C3D08', margin:'0 0 10px', fontFamily:fonts.display, fontWeight:500 }}>
+              {guide.tip.text}
+            </p>
+            <div style={{ background:'white', borderRadius:8, padding:'9px 12px', fontSize:12, fontWeight:700, color:'#7A5010', fontFamily:fonts.display, borderLeft:'2px solid #F5A623' }}>
+              Ask: {guide.tip.question}
+            </div>
+          </div>
+        </AccordionSection>
+
+        {/* Close button */}
+        <div style={{ marginTop:20 }}>
+          <button style={closeBtnStyle} onClick={onClose}>Got it! ✓</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const keyframesCSS = `
 @keyframes fadeUp {
@@ -87,6 +234,8 @@ export default function GameHomeLayout({
     background: '#FFFFFF',
     color: 'var(--game-text)',
     position: 'relative',
+    maxWidth: `${PAGE_MAX_WIDTH}px`,
+    margin: '0 auto',
   };
 
   const pageStyle = {
@@ -290,42 +439,8 @@ export default function GameHomeLayout({
     paddingBottom: 'env(safe-area-inset-bottom, 8px)',
   };
 
-  /* ── Modal styles ── */
-  const modalBackdropStyle = {
-    position: 'fixed',
-    inset: 0,
-    background: 'rgba(0,0,0,0.5)',
-    zIndex: 400,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '24px',
-  };
-
-  const modalCardStyle = {
-    background: '#FFFFFF',
-    borderRadius: '18px',
-    padding: '2rem',
-    maxWidth: '340px',
-    width: '100%',
-    boxSizing: 'border-box',
-  };
-
-  const modalHeadingStyle = {
-    fontFamily: fonts.display,
-    fontWeight: 800,
-    fontSize: '1.1rem',
-    color: colors.text,
-    marginBottom: '1rem',
-  };
-
-  const modalBodyStyle = {
-    fontFamily: fonts.body,
-    fontSize: '0.88rem',
-    color: colors.muted,
-    lineHeight: 1.7,
-    marginBottom: '1.5rem',
-  };
+  // Rich parent guide from games.js (looked up by gameId)
+  const richGuide = gameId ? GAMES.find(g => g.id === gameId)?.parentGuide : null;
 
   const modalCloseBtnStyle = {
     width: '100%',
@@ -461,17 +576,22 @@ export default function GameHomeLayout({
           <ParentStrip />
         </div>
 
-        {/* Parent Guide Modal */}
+        {/* Parent Guide — rich bottom sheet or simple modal */}
         {guideOpen && (
-          <div style={modalBackdropStyle} onClick={() => setGuideOpen(false)}>
-            <div style={modalCardStyle} onClick={(e) => e.stopPropagation()}>
-              <div style={modalHeadingStyle}>👋 Hey grown-up!</div>
-              <div style={modalBodyStyle}>{parentTipBody}</div>
-              <button style={modalCloseBtnStyle} onClick={() => setGuideOpen(false)}>
-                Got it! ✓
-              </button>
-            </div>
-          </div>
+          richGuide
+            ? <RichGuideSheet guide={richGuide} onClose={() => setGuideOpen(false)} closeBtnStyle={modalCloseBtnStyle} />
+            : (
+              <div
+                style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:400,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px' }}
+                onClick={() => setGuideOpen(false)}
+              >
+                <div style={{ background:'#FFFFFF',borderRadius:'18px',padding:'2rem',maxWidth:'340px',width:'100%',boxSizing:'border-box' }} onClick={e => e.stopPropagation()}>
+                  <div style={{ fontFamily:fonts.display,fontWeight:800,fontSize:'1.1rem',color:colors.text,marginBottom:'1rem' }}>👋 Hey grown-up!</div>
+                  <div style={{ fontFamily:fonts.body,fontSize:'0.88rem',color:colors.muted,lineHeight:1.7,marginBottom:'1.5rem' }}>{parentTipBody}</div>
+                  <button style={modalCloseBtnStyle} onClick={() => setGuideOpen(false)}>Got it! ✓</button>
+                </div>
+              </div>
+            )
         )}
       </div>
     </div>
