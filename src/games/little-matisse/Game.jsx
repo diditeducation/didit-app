@@ -460,7 +460,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Matisse"
-        learnedText="6 beautiful collages"
+        learnedSentence="You've made 6 beautiful artworks and learnt composition."
         onPlayAgain={resetGame}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
