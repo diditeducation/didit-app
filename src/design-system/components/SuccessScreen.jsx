@@ -340,46 +340,61 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
           }}>
             {boughtLabel}
           </div>
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: 12,
-          }}>
-            {boughtItems.map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 4,
-                }}
-              >
-                <span style={{ fontSize: '2rem', lineHeight: 1 }}>
-                  {item.node ? item.node : item.emoji}
-                </span>
-                <span style={{
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  color: 'var(--game-primary)',
-                  fontFamily: FONT,
-                }}>
-                  {item.name}
-                </span>
-                {item.price != null && (
-                  <span style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    color: '#2D2A26',
-                    fontFamily: FONT,
-                  }}>
-                    {`$${item.price}`}
-                  </span>
-                )}
+          {(() => {
+            const n = boughtItems.length;
+            // Pick columns so rows are always full
+            const cols = n <= 3 ? n : n === 4 ? 2 : 3;
+            // Pad with nulls to fill the last row
+            const padded = [...boughtItems];
+            while (padded.length % cols !== 0) padded.push(null);
+            return (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                gap: 12,
+                width: '100%',
+              }}>
+                {padded.map((item, i) => (
+                  item === null ? (
+                    <div key={`pad-${i}`} aria-hidden="true" />
+                  ) : (
+                    <div
+                      key={i}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 4,
+                      }}
+                    >
+                      <span style={{ fontSize: '2rem', lineHeight: 1 }}>
+                        {item.node ? item.node : item.emoji}
+                      </span>
+                      <span style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        color: 'var(--game-primary)',
+                        fontFamily: FONT,
+                        textAlign: 'center',
+                      }}>
+                        {item.name}
+                      </span>
+                      {item.price != null && (
+                        <span style={{
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          color: '#2D2A26',
+                          fontFamily: FONT,
+                        }}>
+                          {`$${item.price}`}
+                        </span>
+                      )}
+                    </div>
+                  )
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
       )}
 
