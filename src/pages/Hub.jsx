@@ -128,10 +128,20 @@ export default function Hub() {
               fontWeight: 900,
               fontFamily: fonts.display,
               letterSpacing: '-0.02em',
+              marginBottom: 6,
             }}>
               <span style={{ color: colors.coralDark }}>Ready </span>
               <span style={{ color: colors.blueberryDark }}>to </span>
               <span style={{ color: colors.sunMid }}>play?</span>
+            </div>
+            <div style={{
+              fontSize: 13,
+              fontWeight: 600,
+              fontFamily: fonts.display,
+              color: colors.muted,
+              letterSpacing: '0.01em',
+            }}>
+              Science agrees: play is how children develop best.
             </div>
           </div>
 
