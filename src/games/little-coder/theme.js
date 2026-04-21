@@ -1,7 +1,7 @@
 import { colors } from '../../design-system/tokens';
 
 const theme = {
-  '--game-bg':         colors.bg,
+  '--game-bg':         '#FFFFFF',
   '--game-primary':    colors.sunDark,
   '--game-accent':     colors.sun,
   '--game-warm':       colors.sunMid,
