@@ -208,7 +208,7 @@ export const GAMES = [
     emoji: '💻',
     tag: '💻 Coding & Logic',
     category: 'STEM',
-    hook: 'Tap UP DOWN LEFT RIGHT to guide a rat to the cheese.',
+    hook: 'Tap up, down, left, right to guide a rat to the cheese.',
     desc: 'Tap Up, Down, Left, Right to guide a rat to the cheese.',
     skills: ['Directions', 'Logic', 'Sequencing'],
     bgImage: '/backgrounds/background-yellow.png',
