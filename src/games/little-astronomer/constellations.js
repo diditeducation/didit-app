@@ -419,46 +419,34 @@ export const orion = {
 
 // ─── Master export ────────────────────────────────────────────────────────────
 
+// Ordered from simplest to most complex; each playthrough walks the full list.
+export const ALL_CONSTELLATIONS = [
+  triangulum,
+  aries,
+  equuleus,
+  southernCross,
+  cassiopeia,
+  corvus,
+  sagitta,
+  cancer,
+  delphinus,
+  lyra,
+  libra,
+  coronaBorealis,
+  crater,
+  littleDipper,
+  bigDipper,
+  orion,
+];
+
 export const LEVELS = [
   {
     level: 1,
-    title: 'Cross shapes',
+    title: 'Constellations',
     description: 'Tap each star in order — they snap into place!',
-    constellations: [triangulum, aries, equuleus],
-  },
-  {
-    level: 2,
-    title: 'Zigzag shapes',
-    description: 'Tap from star to star to draw the lines.',
-    constellations: [southernCross, cassiopeia, corvus, sagitta, cancer],
-  },
-  {
-    level: 3,
-    title: 'Diamond & kite shapes',
-    description: 'Tap from star to star to draw the lines.',
-    constellations: [delphinus, lyra, libra],
-  },
-  {
-    level: 4,
-    title: 'Curved & arc shapes',
-    description: 'Follow the curve of stars across the sky.',
-    constellations: [coronaBorealis, crater],
-  },
-  {
-    level: 5,
-    title: 'Complex shapes',
-    description: 'More stars, bigger shapes — you can do it!',
-    constellations: [littleDipper],
-  },
-  {
-    level: 6,
-    title: 'Big shapes',
-    description: 'The biggest constellations in the sky!',
-    constellations: [bigDipper, orion],
+    constellations: ALL_CONSTELLATIONS,
   },
 ];
-
-export const ALL_CONSTELLATIONS = LEVELS.flatMap(l => l.constellations);
 
 export const CANVAS_DIMS = { w: CANVAS_W, h: CANVAS_H };
 

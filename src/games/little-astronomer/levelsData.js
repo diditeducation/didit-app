@@ -1,9 +1,9 @@
 // Adapts constellation data into the format used by Game.jsx and ConstellationCanvas.
 // Each playthrough picks 1 random constellation from each of the 6 level groups.
 
-import { LEVELS, CANVAS_DIMS } from './constellations';
+import { ALL_CONSTELLATIONS, CANVAS_DIMS } from './constellations';
 
-export const LEVEL_COUNT = 6;
+export const LEVEL_COUNT = ALL_CONSTELLATIONS.length;
 
 // Emoji assigned per constellation for the completion reveal
 const EMOJI_MAP = {
@@ -104,13 +104,9 @@ function adaptConstellation(c) {
 }
 
 /**
- * Pick 6 constellations — one random pick from each level group.
- * Returns adapted game-format objects.
+ * Return every constellation adapted into game format, in canonical order.
+ * A playthrough walks the full list from first to last.
  */
 export function pickLevels() {
-  return LEVELS.map(levelGroup => {
-    const pool = levelGroup.constellations;
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    return adaptConstellation(pick);
-  });
+  return ALL_CONSTELLATIONS.map(adaptConstellation);
 }
