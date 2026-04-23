@@ -187,8 +187,8 @@ export const delphinus = {
     // γ Del — left of diamond
     { id: 'gamma', name: 'Gamma Del',  x:   0, y:   0, size: 'sm', color: '#b0c8e8' },
   ],
-  // Diamond: Gamma→Sualocin→Rotanev→DeltaDel→Gamma, then Rotanev→EpsDel tail
-  connectOrder: [4, 1, 0, 3, 4, 0, 2],
+  // Tail first, then closed quad: EpsDel→Rotanev→Sualocin→Gamma→DeltaDel→Rotanev
+  connectOrder: [2, 0, 1, 4, 3, 0],
   funFact: 'A dolphin jumping out of the sea! Look for its cute little tail star.',
 };
 
@@ -245,20 +245,20 @@ export const coronaBorealis = {
   starCount: 6,
   close: false,
   stars: [
-    // β CrB (Nusakan) — far right of arc
-    { id: 'beta',  name: 'Nusakan',     x: 390, y: 242, size: 'sm', color: '#8aadcc' },
-    // θ CrB — right, peak of crown
-    { id: 'theta', name: 'Theta CrB',   x: 323, y:   0, size: 'sm', color: '#b0c8e8' },
+    // β CrB (Nusakan) — far left of arc (West = left orientation)
+    { id: 'beta',  name: 'Nusakan',     x:   0, y: 242, size: 'sm', color: '#8aadcc' },
+    // θ CrB — left, peak of crown
+    { id: 'theta', name: 'Theta CrB',   x:  67, y:   0, size: 'sm', color: '#b0c8e8' },
     // γ CrB — lower-centre
-    { id: 'gamma', name: 'Gamma CrB',   x: 206, y: 543, size: 'sm', color: '#b0c8e8' },
-    // α CrB (Alphecca) — brightest, centre-right
-    { id: 'alpha', name: 'Alphecca',    x: 300, y: 498, size: 'lg', color: '#ffe080' },
-    // δ CrB — lower-left
-    { id: 'delta', name: 'Delta CrB',   x: 105, y: 568, size: 'sm', color: '#b0c8e8' },
-    // ε CrB — far left
-    { id: 'eps',   name: 'Eps CrB',     x:   0, y: 481, size: 'sm', color: '#8aadcc' },
+    { id: 'gamma', name: 'Gamma CrB',   x: 184, y: 543, size: 'sm', color: '#b0c8e8' },
+    // α CrB (Alphecca) — brightest, centre-left
+    { id: 'alpha', name: 'Alphecca',    x:  90, y: 498, size: 'lg', color: '#ffe080' },
+    // δ CrB — lower-right
+    { id: 'delta', name: 'Delta CrB',   x: 285, y: 568, size: 'sm', color: '#b0c8e8' },
+    // ε CrB — far right
+    { id: 'eps',   name: 'Eps CrB',     x: 390, y: 481, size: 'sm', color: '#8aadcc' },
   ],
-  // Arc right → left: Nusakan→Theta→Alphecca→Gamma→Delta→Epsilon
+  // Arc left → right: Nusakan→Theta→Alphecca→Gamma→Delta→Epsilon
   connectOrder: [0, 1, 3, 2, 4, 5],
   funFact: 'A sparkly crown floating in the sky! Like a tiara for the whole universe.',
 };
