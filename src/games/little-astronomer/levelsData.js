@@ -13,18 +13,16 @@ const EMOJI_MAP = {
   'cassiopeia':     '👑',
   'corvus':         '🐦‍⬛',
   'sagitta':        '🏹',
+  'cancer':         '🦀',
   'delphinus':      '🐬',
   'lyra':           '🎵',
   'equuleus':       '🐴',
+  'libra':          '⚖️',
   'corona-borealis':'👑',
-  'cygnus':         '🦢',
   'crater':         '🏆',
   'little-dipper':  '⭐',
-  'gemini':         '👯',
-  'perseus':        '🦸',
   'big-dipper':     '🐻',
   'orion':          '🏹',
-  'scorpius':       '🦂',
 };
 
 /**

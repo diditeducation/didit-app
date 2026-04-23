@@ -40,7 +40,7 @@ const CANVAS_H = 700;
 export const southernCross = {
   id: 'southern-cross',
   name: 'Southern Cross',
-  level: 1,
+  level: 2,
   starCount: 5,
   close: false,
   stars: [
@@ -123,6 +123,29 @@ export const cassiopeia = {
   funFact: 'A queen sitting on her throne! Can you see the big W she draws in the sky?',
 };
 
+export const cancer = {
+  id: 'cancer',
+  name: 'Cancer',
+  level: 2,
+  starCount: 5,
+  close: false,
+  stars: [
+    // ι Cnc — top star (head)
+    { id: 'iota',  name: 'Iota Cnc', x:  70, y:  25, size: 'lg', color: '#fff9c4' },
+    // γ Cnc (Asellus Borealis) — neck, upper-middle
+    { id: 'gamma', name: 'Asellus Borealis', x: 92, y: 140, size: 'md', color: '#d0e4ff' },
+    // δ Cnc (Asellus Australis) — body junction
+    { id: 'delta', name: 'Asellus Australis', x: 82, y: 200, size: 'md', color: '#d0e4ff' },
+    // β Cnc (Altarf) — bottom-left leg tip (brightest)
+    { id: 'beta',  name: 'Altarf',  x:  28, y: 320, size: 'lg', color: '#ffe080' },
+    // α Cnc (Acubens) — bottom-right leg tip
+    { id: 'alpha', name: 'Acubens', x: 195, y: 330, size: 'md', color: '#d0e4ff' },
+  ],
+  // Y-shape: head → neck → junction → left leg, then junction → right leg
+  connectOrder: [0, 1, 2, 3, 2, 4],
+  funFact: 'A friendly crab doing a happy wave! His cute pincers stretch down below.',
+};
+
 export const corvus = {
   id: 'corvus',
   name: 'Corvus',
@@ -190,6 +213,31 @@ export const delphinus = {
   funFact: 'A dolphin jumping out of the sea! Look for its cute little tail star.',
 };
 
+export const libra = {
+  id: 'libra',
+  name: 'Libra',
+  level: 3,
+  starCount: 6,
+  close: false,
+  stars: [
+    // β Lib (Zubeneschamali) — top apex of triangle
+    { id: 'beta',  name: 'Zubeneschamali', x: 215, y:  50, size: 'lg', color: '#fff9c4' },
+    // α² Lib (Zubenelgenubi) — mid-left of triangle
+    { id: 'alpha', name: 'Zubenelgenubi',  x: 135, y: 150, size: 'md', color: '#d0e4ff' },
+    // γ Lib (Zubenelhakrabi) — mid-right of triangle
+    { id: 'gamma', name: 'Zubenelhakrabi', x: 290, y: 165, size: 'md', color: '#d0e4ff' },
+    // upper-pair star — hanging below α²
+    { id: 'ups',   name: 'Upsilon Lib',    x: 115, y: 310, size: 'sm', color: '#b0c8e8' },
+    // lower-pair star — just below upper pair
+    { id: 'tau',   name: 'Tau Lib',        x: 122, y: 345, size: 'sm', color: '#b0c8e8' },
+    // σ Lib (Brachium) — hanging below γ
+    { id: 'sigma', name: 'Brachium',       x: 245, y: 295, size: 'md', color: '#d0e4ff' },
+  ],
+  // Bottom-left pair → up to left corner → bottom of triangle → right-stem → back → close triangle via top
+  connectOrder: [4, 3, 1, 2, 5, 2, 0, 1],
+  funFact: 'A magical balance scale weighing up the stars! Everything stays perfectly fair.',
+};
+
 export const lyra = {
   id: 'lyra',
   name: 'Lyra',
@@ -216,21 +264,19 @@ export const lyra = {
 export const equuleus = {
   id: 'equuleus',
   name: 'Equuleus',
-  level: 3,
-  starCount: 4,
+  level: 1,
+  starCount: 3,
   close: false,
   stars: [
-    // α Equ (Kitalpha) — bottom
-    { id: 'alpha', name: 'Kitalpha',  x: 139, y: 700, size: 'md', color: '#d0e4ff' },
-    // β Equ — left
-    { id: 'beta',  name: 'Beta Equ',  x:   0, y: 476, size: 'sm', color: '#b0c8e8' },
-    // γ Equ — top-left
-    { id: 'gamma', name: 'Gamma Equ', x: 247, y:   0, size: 'lg', color: '#fff9c4' },
-    // δ Equ — top-right
-    { id: 'delta', name: 'Delta Equ', x: 166, y:  18, size: 'sm', color: '#8aadcc' },
+    // γ Equ — top-right tip, rightmost of top pair
+    { id: 'gamma', name: 'Gamma Equ', x: 310, y:  70, size: 'md', color: '#d0e4ff' },
+    // δ Equ — top, just left of γ
+    { id: 'delta', name: 'Delta Equ', x: 275, y:  85, size: 'md', color: '#d0e4ff' },
+    // α Equ (Kitalpha) — bottom, brightest
+    { id: 'alpha', name: 'Kitalpha',  x: 280, y: 260, size: 'lg', color: '#ffe080' },
   ],
-  // Small quad: Gamma→Delta→Kitalpha→Beta→Gamma
-  connectOrder: [2, 3, 0, 1, 2],
+  // Horizontal pair then vertical drop: γ → δ → Kitalpha
+  connectOrder: [0, 1, 2],
   funFact: 'A teeny tiny horse! It\'s one of the smallest constellations of them all.',
 };
 
@@ -240,48 +286,27 @@ export const coronaBorealis = {
   id: 'corona-borealis',
   name: 'Corona Borealis',
   level: 4,
-  starCount: 6,
+  starCount: 7,
   close: false,
   stars: [
-    // β CrB (Nusakan) — far left of arc (West = left orientation)
-    { id: 'beta',  name: 'Nusakan',     x:   0, y: 242, size: 'sm', color: '#8aadcc' },
-    // θ CrB — left, peak of crown
-    { id: 'theta', name: 'Theta CrB',   x:  67, y:   0, size: 'sm', color: '#b0c8e8' },
-    // γ CrB — lower-centre
-    { id: 'gamma', name: 'Gamma CrB',   x: 184, y: 543, size: 'sm', color: '#b0c8e8' },
-    // α CrB (Alphecca) — brightest, centre-left
-    { id: 'alpha', name: 'Alphecca',    x:  90, y: 498, size: 'lg', color: '#ffe080' },
-    // δ CrB — lower-right
-    { id: 'delta', name: 'Delta CrB',   x: 285, y: 568, size: 'sm', color: '#b0c8e8' },
-    // ε CrB — far right
-    { id: 'eps',   name: 'Eps CrB',     x: 390, y: 481, size: 'sm', color: '#8aadcc' },
+    // θ CrB — upper-left tip (highest on left)
+    { id: 'theta', name: 'Theta CrB',  x:  55, y:  55, size: 'md', color: '#b0c8e8' },
+    // β CrB (Nusakan) — descending, mid-left
+    { id: 'beta',  name: 'Nusakan',    x: 100, y: 130, size: 'md', color: '#d0e4ff' },
+    // α CrB (Alphecca) — brightest, lower-left of bowl
+    { id: 'alpha', name: 'Alphecca',   x:  78, y: 200, size: 'lg', color: '#ffe080' },
+    // γ CrB — bottom-left-centre
+    { id: 'gamma', name: 'Gamma CrB',  x: 130, y: 225, size: 'md', color: '#d0e4ff' },
+    // δ CrB — bottom-right-centre
+    { id: 'delta', name: 'Delta CrB',  x: 172, y: 220, size: 'md', color: '#d0e4ff' },
+    // ε CrB — rising on right
+    { id: 'eps',   name: 'Eps CrB',    x: 213, y: 185, size: 'md', color: '#d0e4ff' },
+    // ι CrB — upper-right tip
+    { id: 'iota',  name: 'Iota CrB',   x: 248, y:  55, size: 'md', color: '#b0c8e8' },
   ],
-  // Arc left → right: Nusakan→Theta→Alphecca→Gamma→Delta→Epsilon
-  connectOrder: [0, 1, 3, 2, 4, 5],
+  // Arc left → right following the smile curve
+  connectOrder: [0, 1, 2, 3, 4, 5, 6],
   funFact: 'A sparkly crown floating in the sky! Like a tiara for the whole universe.',
-};
-
-export const cygnus = {
-  id: 'cygnus',
-  name: 'Cygnus',
-  level: 4,
-  starCount: 5,
-  close: false,
-  stars: [
-    // α Cyg (Deneb) — top of cross, one of the farthest naked-eye stars
-    { id: 'alpha',   name: 'Deneb',       x:  25, y:   0, size: 'lg', color: '#d0e4ff' },
-    // γ Cyg (Sadr) — centre of cross
-    { id: 'gamma',   name: 'Sadr',        x: 124, y: 203, size: 'lg', color: '#ffffff' },
-    // β Cyg (Albireo) — bottom of cross, famous golden double star
-    { id: 'beta',    name: 'Albireo',     x: 390, y: 700, size: 'md', color: '#ffd080' },
-    // δ Cyg — right wing
-    { id: 'delta',   name: 'Delta Cyg',   x: 318, y:   6, size: 'sm', color: '#b0c8e8' },
-    // ε Cyg (Gienah) — left wing
-    { id: 'eps',     name: 'Gienah',      x:   0, y: 457, size: 'sm', color: '#8aadcc' },
-  ],
-  // Northern Cross: left-wing→centre→right-wing→centre→top→bottom
-  connectOrder: [4, 1, 3, 1, 0, 2],
-  funFact: 'A swan flying through the Milky Way! It\'s also called the Northern Cross. Bright Deneb is one of the farthest stars you can see!',
 };
 
 export const crater = {
@@ -334,57 +359,6 @@ export const littleDipper = {
   // Bowl: Kochab→Pherkad→Eta→Zeta→Kochab, then handle: Zeta→Eps→Yildun→Polaris
   connectOrder: [0, 1, 2, 3, 0, 3, 4, 5, 6],
   funFact: 'A tiny ladle scooping stardust! Its handle points to Polaris — the star that never moves.',
-};
-
-export const gemini = {
-  id: 'gemini',
-  name: 'Gemini',
-  level: 5,
-  starCount: 6,
-  close: false,
-  stars: [
-    // α Gem (Castor) — head of left twin
-    { id: 'alpha', name: 'Castor',  x:  46, y:   0, size: 'md', color: '#d0e4ff' },
-    // β Gem (Pollux) — head of right twin, brightest
-    { id: 'beta',  name: 'Pollux',  x:   0, y: 130, size: 'lg', color: '#ffe090' },
-    // μ Gem (Tejat) — foot of Castor twin, far right
-    { id: 'mu',    name: 'Tejat',   x: 354, y: 315, size: 'sm', color: '#b0c8e8' },
-    // δ Gem (Wasat) — body / waist centre
-    { id: 'delta', name: 'Wasat',   x: 108, y: 329, size: 'sm', color: '#b0c8e8' },
-    // η Gem (Propus) — foot far right
-    { id: 'eta',   name: 'Propus',  x: 390, y: 315, size: 'sm', color: '#ffddaa' },
-    // ξ Gem (Alzirr) — foot of Pollux twin
-    { id: 'xi',    name: 'Alzirr',  x: 258, y: 637, size: 'sm', color: '#b0c8e8' },
-  ],
-  // Two parallel twin chains joined at head:
-  // Castor→Wasat→Tejat→Propus (left chain), Propus→Wasat→Alzirr→Pollux→Castor (right chain)
-  connectOrder: [0, 3, 2, 4, 3, 5, 1, 0],
-  funFact: 'Two best friends standing side by side! Castor and Pollux are twin stars.',
-};
-
-export const perseus = {
-  id: 'perseus',
-  name: 'Perseus',
-  level: 5,
-  starCount: 6,
-  close: false,
-  stars: [
-    // α Per (Mirfak) — centre, brightest
-    { id: 'alpha', name: 'Mirfak',    x: 137, y: 266, size: 'lg', color: '#fff9c4' },
-    // γ Per — upper arm
-    { id: 'gamma', name: 'Gamma Per', x: 218, y: 105, size: 'md', color: '#d0e4ff' },
-    // η Per — upper tip
-    { id: 'eta',   name: 'Eta Per',   x: 276, y:   0, size: 'md', color: '#d0e4ff' },
-    // β Per (Algol) — lower body, famous variable star
-    { id: 'beta',  name: 'Algol',     x: 204, y: 658, size: 'md', color: '#d0e4ff' },
-    // δ Per — lower-left arm
-    { id: 'delta', name: 'Delta Per', x:  61, y: 358, size: 'sm', color: '#b0c8e8' },
-    // ε Per — foot / lower-left tip
-    { id: 'eps',   name: 'Eps Per',   x:   0, y: 700, size: 'sm', color: '#b0c8e8' },
-  ],
-  // Y-shape: Eta→Gamma→Mirfak→Algol (spine), Mirfak→Delta→Eps (arm)
-  connectOrder: [2, 1, 0, 3, 0, 4, 5],
-  funFact: 'A brave hero in the sky! Algol is a winking star — it\'s really two stars hugging each other.',
 };
 
 // ─── Level 6 — Big shapes ─────────────────────────────────────────────────────
@@ -443,35 +417,6 @@ export const orion = {
   funFact: 'A giant hunter with a sparkly belt! His three belt stars are the easiest to spot at night.',
 };
 
-export const scorpius = {
-  id: 'scorpius',
-  name: 'Scorpius',
-  level: 6,
-  starCount: 8,
-  close: false,
-  stars: [
-    // α Sco (Antares) — heart, red supergiant
-    { id: 'alpha',  name: 'Antares',  x: 246, y: 200, size: 'lg', color: '#ff7040' },
-    // σ Sco (Alniyat) — upper body
-    { id: 'sigma',  name: 'Alniyat',  x: 273, y: 175, size: 'sm', color: '#b0c8e8' },
-    // δ Sco (Dschubba) — forehead / head
-    { id: 'delta',  name: 'Dschubba', x: 348, y:  84, size: 'md', color: '#d0e4ff' },
-    // β Sco (Graffias) — upper claw
-    { id: 'beta',   name: 'Graffias', x: 330, y:   0, size: 'md', color: '#d0e4ff' },
-    // τ Sco — lower body
-    { id: 'tau',    name: 'Tau Sco',  x: 221, y: 254, size: 'sm', color: '#b0c8e8' },
-    // ε Sco (Wei) — tail segment 1
-    { id: 'eps',    name: 'Wei',      x: 169, y: 438, size: 'md', color: '#d0e4ff' },
-    // θ Sco (Sargas) — tail tip
-    { id: 'theta',  name: 'Sargas',   x:   0, y: 700, size: 'md', color: '#fff9c4' },
-    // λ Sco (Shaula) — stinger
-    { id: 'lambda', name: 'Shaula',   x:  13, y: 522, size: 'lg', color: '#cce0ff' },
-  ],
-  // Head cluster → Antares → curling tail
-  connectOrder: [3, 2, 1, 0, 4, 5, 7, 6],
-  funFact: 'A scorpion curling its tail in the sky! Red Antares glows like a little fire.',
-};
-
 // ─── Master export ────────────────────────────────────────────────────────────
 
 export const LEVELS = [
@@ -479,37 +424,37 @@ export const LEVELS = [
     level: 1,
     title: 'Cross shapes',
     description: 'Tap each star in order — they snap into place!',
-    constellations: [southernCross, triangulum, aries],
+    constellations: [triangulum, aries, equuleus],
   },
   {
     level: 2,
     title: 'Zigzag shapes',
     description: 'Tap from star to star to draw the lines.',
-    constellations: [cassiopeia, corvus, sagitta],
+    constellations: [southernCross, cassiopeia, corvus, sagitta, cancer],
   },
   {
     level: 3,
     title: 'Diamond & kite shapes',
     description: 'Tap from star to star to draw the lines.',
-    constellations: [delphinus, lyra, equuleus],
+    constellations: [delphinus, lyra, libra],
   },
   {
     level: 4,
     title: 'Curved & arc shapes',
     description: 'Follow the curve of stars across the sky.',
-    constellations: [coronaBorealis, cygnus, crater],
+    constellations: [coronaBorealis, crater],
   },
   {
     level: 5,
     title: 'Complex shapes',
     description: 'More stars, bigger shapes — you can do it!',
-    constellations: [littleDipper, gemini, perseus],
+    constellations: [littleDipper],
   },
   {
     level: 6,
     title: 'Big shapes',
     description: 'The biggest constellations in the sky!',
-    constellations: [bigDipper, orion, scorpius],
+    constellations: [bigDipper, orion],
   },
 ];
 
