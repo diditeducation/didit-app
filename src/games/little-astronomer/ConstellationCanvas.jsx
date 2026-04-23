@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
 import { initAudio, sound } from './audio';
-import { fonts } from '../../design-system/tokens';
 
 // Star size → visual radii
 const SIZE_MAP = { lg: { dot: 10, glow: 18 }, md: { dot: 8, glow: 15 }, sm: { dot: 6, glow: 12 } };
@@ -30,8 +29,6 @@ export default function ConstellationCanvas({
   stars,
   sequence,
   animal,
-  animalName,
-  toastText,
   onMilestone,
 }) {
   const bgStars = useRef(makeBgStars(levelId * 137 + 42));
@@ -83,9 +80,8 @@ export default function ConstellationCanvas({
   return (
     <div
       style={{
-        /* Height-driven: fills viewport minus top bar + bottom strip (~130px).
-           Width follows from the 390:700 ratio automatically. */
-        height: 'min(calc(100dvh - 130px), 680px)',
+        /* Height-driven: leaves room for top bar, pips, and label below. */
+        height: 'min(calc(100dvh - 230px), 460px)',
         width: 'auto',
         aspectRatio: '390 / 700',
         maxWidth: 'calc(100% - 68px)', /* leave room for sidebar */
@@ -258,51 +254,6 @@ export default function ConstellationCanvas({
         </div>
       )}
 
-      {/* Info pill — overlaid at bottom of canvas, 2-line vertical */}
-      {animalName && (
-        <div style={{
-          position: 'absolute',
-          bottom: 14,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'rgba(10, 14, 26, 0.82)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          borderRadius: 16,
-          padding: '10px 18px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 3,
-          pointerEvents: 'none',
-          zIndex: 5,
-          border: '1px solid rgba(255,255,255,0.1)',
-          maxWidth: 'calc(100% - 28px)',
-          boxSizing: 'border-box',
-        }}>
-          <span style={{
-            fontFamily: fonts.display,
-            fontWeight: 800,
-            fontSize: '0.82rem',
-            color: 'var(--game-primary)',
-            letterSpacing: '0.05em',
-            whiteSpace: 'nowrap',
-          }}>
-            {animalName}
-          </span>
-          <span style={{
-            fontFamily: fonts.display,
-            fontWeight: 500,
-            fontSize: '0.7rem',
-            color: 'rgba(255,255,255,0.6)',
-            textAlign: 'center',
-            lineHeight: 1.4,
-            maxWidth: 260,
-          }}>
-            {toastText}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

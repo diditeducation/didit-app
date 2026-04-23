@@ -57,7 +57,7 @@ export const southernCross = {
   ],
   // Draw cross: right-arm → centre → left-arm, then centre → top → bottom
   connectOrder: [3, 4, 1, 4, 0, 2],
-  funFact: 'Four bright stars make a cross in the sky — and it\'s on Australia\'s flag!',
+  funFact: 'These stars make a giant cross! You can find it on Australia\'s flag! 🇦🇺',
 };
 
 export const triangulum = {
@@ -74,7 +74,7 @@ export const triangulum = {
     // γ Tri — left, upper-mid
     { id: 'gamma', name: 'Gamma Tri', x:   0, y: 148, size: 'sm', color: '#d0e4ff' },
   ],
-  funFact: 'Three stars, three lines — the simplest shape in the sky!',
+  funFact: 'Just three stars make a triangle — the easiest shape in the whole sky!',
 };
 
 export const aries = {
@@ -95,7 +95,7 @@ export const aries = {
   ],
   // Tap left-to-right: Botein → Hamal → Sheratan → Mesarthim
   connectOrder: [3, 0, 1, 2],
-  funFact: 'Aries is the ram — these four stars are its head, gently nodding!',
+  funFact: 'Aries is a fluffy ram! These stars draw its head looking right at you.',
 };
 
 // ─── Level 2 — Zigzag shapes ─────────────────────────────────────────────────
@@ -120,7 +120,7 @@ export const cassiopeia = {
   ],
   // W shape right → left
   connectOrder: [0, 1, 2, 3, 4],
-  funFact: 'Queen Cassiopeia sits in her throne making a big letter W in the sky!',
+  funFact: 'A queen sitting on her throne! Can you see the big W she draws in the sky?',
 };
 
 export const corvus = {
@@ -141,7 +141,7 @@ export const corvus = {
   ],
   // Quadrilateral: Kraz→Minkar→Gienah→Algorab→Kraz, then diagonal Kraz→Minkar
   connectOrder: [0, 3, 1, 2, 0, 3],
-  funFact: 'Corvus the crow — four stars make its little body flying through the sky!',
+  funFact: 'A crow flapping its wings! Four stars draw its tiny flying body.',
 };
 
 export const sagitta = {
@@ -164,7 +164,7 @@ export const sagitta = {
   ],
   // Arrow: tail → shaft → Gamma → tip, then notch branch back to shaft
   connectOrder: [0, 3, 2, 4, 1, 3],
-  funFact: 'Sagitta is a tiny arrow flying across the sky — can you draw it?',
+  funFact: 'A tiny arrow zooming across the sky! Can you draw it star by star?',
 };
 
 // ─── Level 3 — Diamond & kite shapes ─────────────────────────────────────────
@@ -189,7 +189,7 @@ export const delphinus = {
   ],
   // Diamond: Gamma→Sualocin→Rotanev→DeltaDel→Gamma, then Rotanev→EpsDel tail
   connectOrder: [4, 1, 0, 3, 4, 0, 2],
-  funFact: 'Delphinus is a dolphin leaping out of the sea — spot its little tail!',
+  funFact: 'A dolphin jumping out of the sea! Look for its cute little tail star.',
 };
 
 export const lyra = {
@@ -212,7 +212,7 @@ export const lyra = {
   ],
   // Vega→Zeta→Delta→Sulafat→Sheliak→Zeta (parallelogram), then back to Vega
   connectOrder: [0, 4, 3, 2, 1, 4, 0],
-  funFact: 'Lyra is a tiny harp! Vega is one of the brightest stars in the whole sky.',
+  funFact: 'A magical harp made of stars! Vega is super bright — one of the shiniest in the sky.',
 };
 
 export const equuleus = {
@@ -233,7 +233,7 @@ export const equuleus = {
   ],
   // Small quad: Gamma→Delta→Kitalpha→Beta→Gamma
   connectOrder: [2, 3, 0, 1, 2],
-  funFact: 'Equuleus is the little horse — the second smallest constellation in the sky!',
+  funFact: 'A teeny tiny horse! It\'s one of the smallest constellations of them all.',
 };
 
 // ─── Level 4 — Curved & arc shapes ───────────────────────────────────────────
@@ -260,7 +260,7 @@ export const coronaBorealis = {
   ],
   // Arc right → left: Nusakan→Theta→Alphecca→Gamma→Delta→Epsilon
   connectOrder: [0, 1, 3, 2, 4, 5],
-  funFact: 'Corona Borealis is a crown made of stars — a halo in the night sky!',
+  funFact: 'A sparkly crown floating in the sky! Like a tiara for the whole universe.',
 };
 
 export const aquila = {
@@ -283,7 +283,7 @@ export const aquila = {
   ],
   // Spine: Zeta→Tarazed→Altair→Alshain→Delta
   connectOrder: [4, 2, 0, 1, 3],
-  funFact: 'Aquila is an eagle soaring through the sky, with bright Altair as its heart!',
+  funFact: 'A big eagle soaring through the sky! Bright Altair is its glowing heart.',
 };
 
 export const crater = {
@@ -306,7 +306,7 @@ export const crater = {
   ],
   // Cup: handle→rim→right→bottom→left→rim (bracing Delta)
   connectOrder: [4, 3, 0, 1, 2, 3],
-  funFact: 'Crater is a cup! The ancient Greeks saw it as the goblet of the god Apollo.',
+  funFact: 'A magic cup floating in space! Long ago people imagined a god drinking from it.',
 };
 
 // ─── Level 5 — Complex shapes ─────────────────────────────────────────────────
@@ -335,7 +335,7 @@ export const littleDipper = {
   ],
   // Bowl: Kochab→Pherkad→Eta→Zeta→Kochab, then handle: Zeta→Eps→Yildun→Polaris
   connectOrder: [0, 1, 2, 3, 0, 3, 4, 5, 6],
-  funFact: 'The Little Dipper ends at Polaris — the North Star that never moves!',
+  funFact: 'A tiny ladle scooping stardust! Its handle points to Polaris — the star that never moves.',
 };
 
 export const gemini = {
@@ -361,7 +361,7 @@ export const gemini = {
   // Two parallel twin chains joined at head:
   // Castor→Wasat→Tejat→Propus (left chain), Propus→Wasat→Alzirr→Pollux→Castor (right chain)
   connectOrder: [0, 3, 2, 4, 3, 5, 1, 0],
-  funFact: 'Gemini are the twins! Castor and Pollux are two bright stars right next to each other.',
+  funFact: 'Two best friends standing side by side! Castor and Pollux are twin stars.',
 };
 
 export const perseus = {
@@ -386,7 +386,7 @@ export const perseus = {
   ],
   // Y-shape: Eta→Gamma→Mirfak→Algol (spine), Mirfak→Delta→Eps (arm)
   connectOrder: [2, 1, 0, 3, 0, 4, 5],
-  funFact: 'Perseus the hero! Algol is a star that winks — it\'s actually two stars spinning together.',
+  funFact: 'A brave hero in the sky! Algol is a winking star — it\'s really two stars hugging each other.',
 };
 
 // ─── Level 6 — Big shapes ─────────────────────────────────────────────────────
@@ -415,7 +415,7 @@ export const bigDipper = {
   ],
   // Bowl: Dubhe→Merak→Phecda→Megrez→Dubhe, handle: Megrez→Alioth→Mizar→Alkaid
   connectOrder: [0, 1, 2, 3, 0, 3, 4, 5, 6],
-  funFact: 'The Big Dipper is a giant ladle! The two outer stars always point to the North Star.',
+  funFact: 'A giant spoon scooping up the sky! The two end stars always point to the North Star.',
 };
 
 export const orion = {
@@ -442,7 +442,7 @@ export const orion = {
   ],
   // Shoulders → belt → feet
   connectOrder: [0, 1, 2, 3, 4, 6, 4, 0, 1, 2, 5],
-  funFact: 'Orion the hunter has a belt of three stars — the most famous pattern in the sky!',
+  funFact: 'A giant hunter with a sparkly belt! His three belt stars are the easiest to spot at night.',
 };
 
 export const scorpius = {
@@ -471,7 +471,7 @@ export const scorpius = {
   ],
   // Head cluster → Antares → curling tail
   connectOrder: [3, 2, 1, 0, 4, 5, 7, 6],
-  funFact: 'Scorpius is a scorpion with a curling tail — Antares its red heart glows like Mars!',
+  funFact: 'A scorpion curling its tail in the sky! Red Antares glows like a little fire.',
 };
 
 // ─── Master export ────────────────────────────────────────────────────────────

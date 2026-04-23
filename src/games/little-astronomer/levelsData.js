@@ -65,10 +65,10 @@ function adaptConstellation(c) {
   }));
 
   // Normalize so every constellation fills a consistent padded region.
-  // Horizontal padding: 12% each side. Vertical: 12% top, 22% bottom (room for pill).
+  // Uniform 12% padding on all sides — pill is now outside the canvas.
   const PAD_X  = 12;
   const PAD_YT = 12;
-  const PAD_YB = 22;
+  const PAD_YB = 12;
 
   const xs = rawStars.map(s => s.x);
   const ys = rawStars.map(s => s.y);

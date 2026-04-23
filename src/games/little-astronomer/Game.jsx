@@ -6,6 +6,7 @@ import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
+import { fonts } from '../../design-system/tokens';
 import { initAudio, sound } from './audio';
 import theme from './theme';
 import ConstellationCanvas from './ConstellationCanvas';
@@ -109,16 +110,47 @@ export default function Game() {
           </div>
 
           {!showSuccess && (
-            <ConstellationCanvas
-              key={activeLevel}
-              levelId={activeLevel}
-              stars={currentLevel.stars}
-              sequence={currentLevel.sequence}
-              animal={currentLevel.animal}
-              animalName={currentLevel.animalName}
-              toastText={currentLevel.toast}
-              onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
-            />
+            <>
+              <ConstellationCanvas
+                key={activeLevel}
+                levelId={activeLevel}
+                stars={currentLevel.stars}
+                sequence={currentLevel.sequence}
+                animal={currentLevel.animal}
+                onMilestone={(x, y) => triggerMilestone(x, y, currentLevel)}
+              />
+
+              {/* Name + fun fact — plain text below the canvas, no background */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 4,
+                paddingHorizontal: 20,
+                flexShrink: 0,
+                maxWidth: 320,
+                textAlign: 'center',
+              }}>
+                <span style={{
+                  fontFamily: fonts.display,
+                  fontWeight: 800,
+                  fontSize: '1rem',
+                  color: 'var(--game-primary)',
+                  letterSpacing: '0.04em',
+                }}>
+                  {currentLevel.animalName}
+                </span>
+                <span style={{
+                  fontFamily: fonts.display,
+                  fontWeight: 500,
+                  fontSize: '0.78rem',
+                  color: 'rgba(255,255,255,0.55)',
+                  lineHeight: 1.45,
+                }}>
+                  {currentLevel.toast}
+                </span>
+              </div>
+            </>
           )}
         </div>
       </GameShell>
