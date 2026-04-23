@@ -162,8 +162,8 @@ export const sagitta = {
     // η Sge — tip (leftmost)
     { id: 'eta',   name: 'Eta Sge',   x:   0, y:   0, size: 'lg', color: '#fff9c4' },
   ],
-  // Arrow: tail → shaft → Gamma → tip, then notch branch back to shaft
-  connectOrder: [0, 3, 2, 4, 1, 3],
+  // Y-arrow: tip(η) → upper-shaft(γ) → junction(δ) → upper-fork(α), back to junction → lower-fork(β)
+  connectOrder: [4, 2, 3, 0, 3, 1],
   funFact: 'A tiny arrow zooming across the sky! Can you draw it star by star?',
 };
 

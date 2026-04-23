@@ -2,10 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
-import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
 import FeedbackModal from '../../components/FeedbackModal';
-import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import { initAudio, sound } from './audio';
 import theme from './theme';
@@ -23,7 +21,6 @@ export default function Game() {
   const [completedLevels, setCompletedLevels] = useState(new Set());
   const [showSuccess,     setShowSuccess]     = useState(false);
   const [milestone,       setMilestone]       = useState({ active: false, originX: 50, originY: 50 });
-  const { toast, showToast } = useToast();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [emojiPopup,   setEmojiPopup]   = useState(null);
 
@@ -48,8 +45,6 @@ export default function Game() {
     initAudio();
     sound.chime();
     setMilestone({ active: true, originX, originY });
-
-    setTimeout(() => showToast(levelData.toast, 1500, 22), 500);
 
     const levelId = activeLevel;
     clearTimeout(emojiTimer.current);
@@ -173,14 +168,6 @@ export default function Game() {
           {emojiPopup.emoji}
         </div>
       )}
-
-      <Toast
-        message={toast.message}
-        visible={toast.visible}
-        topPercent={toast.topPercent}
-        duration={toast.duration}
-        color="var(--game-primary)"
-      />
 
       <Confetti
         active={milestone.active}
