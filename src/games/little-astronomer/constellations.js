@@ -148,22 +148,20 @@ export const sagitta = {
   id: 'sagitta',
   name: 'Sagitta',
   level: 2,
-  starCount: 5,
+  starCount: 4,
   close: false,
   stars: [
-    // α Sge — tail end (rightmost)
-    { id: 'alpha', name: 'Alpha Sge', x: 390, y: 223, size: 'sm', color: '#b0c8e8' },
-    // β Sge — tail notch
-    { id: 'beta',  name: 'Beta Sge',  x: 370, y: 284, size: 'md', color: '#d0e4ff' },
-    // γ Sge — upper shaft
-    { id: 'gamma', name: 'Gamma Sge', x: 106, y:  57, size: 'sm', color: '#b0c8e8' },
-    // δ Sge — shaft centre
-    { id: 'delta', name: 'Delta Sge', x: 274, y: 165, size: 'sm', color: '#b0c8e8' },
-    // η Sge — tip (leftmost)
+    // η Sge — tip (far left)
     { id: 'eta',   name: 'Eta Sge',   x:   0, y:   0, size: 'lg', color: '#fff9c4' },
+    // δ Sge — junction (centre, where shaft meets fork)
+    { id: 'delta', name: 'Delta Sge', x: 274, y: 165, size: 'md', color: '#d0e4ff' },
+    // α Sge — upper fork tip (rightmost)
+    { id: 'alpha', name: 'Alpha Sge', x: 390, y: 223, size: 'sm', color: '#b0c8e8' },
+    // β Sge — lower fork tip
+    { id: 'beta',  name: 'Beta Sge',  x: 370, y: 284, size: 'md', color: '#d0e4ff' },
   ],
-  // Y-arrow: tip(η) → upper-shaft(γ) → junction(δ) → upper-fork(α), back to junction → lower-fork(β)
-  connectOrder: [4, 2, 3, 0, 3, 1],
+  // Arrow: tip(η) → junction(δ) → upper-fork(α), back to junction → lower-fork(β)
+  connectOrder: [0, 1, 2, 1, 3],
   funFact: 'A tiny arrow zooming across the sky! Can you draw it star by star?',
 };
 
@@ -440,8 +438,8 @@ export const orion = {
     // κ Ori (Saiph) — lower-left foot
     { id: 'kappa', name: 'Saiph',      x:  42, y: 700, size: 'md', color: '#d0e4ff' },
   ],
-  // Hourglass perimeter: Saiph→Alnitak→Betelgeuse→Bellatrix→Rigel→Mintaka→belt→Alnitak
-  connectOrder: [6, 4, 0, 1, 5, 2, 3, 4],
+  // Left closed triangle (Alnitak→Betelgeuse→Saiph→Alnitak) + belt + right closed quad (Alnilam→Mintaka→Bellatrix→Rigel→Alnilam)
+  connectOrder: [4, 0, 6, 4, 3, 2, 1, 5, 3],
   funFact: 'A giant hunter with a sparkly belt! His three belt stars are the easiest to spot at night.',
 };
 
