@@ -44,18 +44,18 @@ export const southernCross = {
   starCount: 5,
   close: false,
   stars: [
-    // Gacrux (γ Cru) — top of long axis
-    { id: 'gamma', name: 'Gacrux', x: 135, y:   0, size: 'md', color: '#ffddcc' },
+    // Gacrux (γ Cru) — top of long axis, upper-right
+    { id: 'gamma', name: 'Gacrux', x: 300, y:  60, size: 'md', color: '#ffddcc' },
     // Mimosa (β Cru) — left arm
-    { id: 'beta',  name: 'Mimosa', x:   0, y: 301, size: 'lg', color: '#cce0ff' },
-    // Acrux (α Cru) — bottom of long axis
-    { id: 'alpha', name: 'Acrux',  x: 172, y: 700, size: 'lg', color: '#ffffff' },
+    { id: 'beta',  name: 'Mimosa', x:   0, y: 300, size: 'lg', color: '#cce0ff' },
+    // Acrux (α Cru) — bottom of long axis, lower-left
+    { id: 'alpha', name: 'Acrux',  x:  80, y: 700, size: 'lg', color: '#ffffff' },
     // Imai (δ Cru) — right arm
-    { id: 'delta', name: 'Imai',   x: 265, y: 189, size: 'sm', color: '#d0e8ff' },
-    // Ginan (ε Cru) — centre
-    { id: 'eps',   name: 'Ginan',  x: 215, y: 385, size: 'sm', color: '#b0c8e8' },
+    { id: 'delta', name: 'Imai',   x: 320, y: 280, size: 'sm', color: '#d0e8ff' },
+    // Ginan (ε Cru) — intersection centre
+    { id: 'eps',   name: 'Ginan',  x: 222, y: 286, size: 'sm', color: '#b0c8e8' },
   ],
-  // Draw cross: right-arm → centre → left-arm, then centre → top → bottom
+  // Draw cross: right-arm → centre → left-arm, then centre → top-right → bottom-left
   connectOrder: [3, 4, 1, 4, 0, 2],
   funFact: 'These stars make a giant cross! You can find it on Australia\'s flag! 🇦🇺',
 };
@@ -210,8 +210,8 @@ export const lyra = {
     // ζ Lyr — upper-right of parallelogram
     { id: 'zeta',  name: 'Zeta Lyr',  x: 184, y: 135, size: 'sm', color: '#b0c8e8' },
   ],
-  // Vega→Zeta→Delta→Sulafat→Sheliak→Zeta (parallelogram), then back to Vega
-  connectOrder: [0, 4, 3, 2, 1, 4, 0],
+  // Vega (handle) → Zeta → parallelogram: Delta→Sulafat→Sheliak→Zeta (closes the body)
+  connectOrder: [0, 4, 3, 2, 1, 4],
   funFact: 'A magical harp made of stars! Vega is super bright — one of the shiniest in the sky.',
 };
 
@@ -263,27 +263,27 @@ export const coronaBorealis = {
   funFact: 'A sparkly crown floating in the sky! Like a tiara for the whole universe.',
 };
 
-export const aquila = {
-  id: 'aquila',
-  name: 'Aquila',
+export const cygnus = {
+  id: 'cygnus',
+  name: 'Cygnus',
   level: 4,
   starCount: 5,
   close: false,
   stars: [
-    // α Aql (Altair) — centre, brilliant yellow-white
-    { id: 'alpha', name: 'Altair',    x:  35, y: 284, size: 'lg', color: '#ffe090' },
-    // β Aql (Alshain) — lower, below Altair
-    { id: 'beta',  name: 'Alshain',   x:   0, y: 423, size: 'sm', color: '#b0c8e8' },
-    // γ Aql (Tarazed) — upper, above Altair
-    { id: 'gamma', name: 'Tarazed',   x:  71, y: 184, size: 'md', color: '#ffddaa' },
-    // δ Aql — lower tail
-    { id: 'delta', name: 'Delta Aql', x: 233, y: 610, size: 'sm', color: '#b0c8e8' },
-    // ζ Aql — head / top of eagle
-    { id: 'zeta',  name: 'Zeta Aql',  x: 390, y:   0, size: 'sm', color: '#b0c8e8' },
+    // α Cyg (Deneb) — top of cross, one of the farthest naked-eye stars
+    { id: 'alpha',   name: 'Deneb',       x:  25, y:   0, size: 'lg', color: '#d0e4ff' },
+    // γ Cyg (Sadr) — centre of cross
+    { id: 'gamma',   name: 'Sadr',        x: 124, y: 203, size: 'lg', color: '#ffffff' },
+    // β Cyg (Albireo) — bottom of cross, famous golden double star
+    { id: 'beta',    name: 'Albireo',     x: 390, y: 700, size: 'md', color: '#ffd080' },
+    // δ Cyg — right wing
+    { id: 'delta',   name: 'Delta Cyg',   x: 318, y:   6, size: 'sm', color: '#b0c8e8' },
+    // ε Cyg (Gienah) — left wing
+    { id: 'eps',     name: 'Gienah',      x:   0, y: 457, size: 'sm', color: '#8aadcc' },
   ],
-  // Spine: Zeta→Tarazed→Altair→Alshain→Delta
-  connectOrder: [4, 2, 0, 1, 3],
-  funFact: 'A big eagle soaring through the sky! Bright Altair is its glowing heart.',
+  // Northern Cross: left-wing→centre→right-wing→centre→top→bottom
+  connectOrder: [4, 1, 3, 1, 0, 2],
+  funFact: 'A swan flying through the Milky Way! It\'s also called the Northern Cross. Bright Deneb is one of the farthest stars you can see!',
 };
 
 export const crater = {
@@ -440,8 +440,8 @@ export const orion = {
     // κ Ori (Saiph) — lower-left foot
     { id: 'kappa', name: 'Saiph',      x:  42, y: 700, size: 'md', color: '#d0e4ff' },
   ],
-  // Shoulders → belt → feet
-  connectOrder: [0, 1, 2, 3, 4, 6, 4, 0, 1, 2, 5],
+  // Hourglass perimeter: Saiph→Alnitak→Betelgeuse→Bellatrix→Rigel→Mintaka→belt→Alnitak
+  connectOrder: [6, 4, 0, 1, 5, 2, 3, 4],
   funFact: 'A giant hunter with a sparkly belt! His three belt stars are the easiest to spot at night.',
 };
 
@@ -499,7 +499,7 @@ export const LEVELS = [
     level: 4,
     title: 'Curved & arc shapes',
     description: 'Follow the curve of stars across the sky.',
-    constellations: [coronaBorealis, aquila, crater],
+    constellations: [coronaBorealis, cygnus, crater],
   },
   {
     level: 5,

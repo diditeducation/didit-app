@@ -17,7 +17,7 @@ const EMOJI_MAP = {
   'lyra':           '🎵',
   'equuleus':       '🐴',
   'corona-borealis':'👑',
-  'aquila':         '🦅',
+  'cygnus':         '🦢',
   'crater':         '🏆',
   'little-dipper':  '⭐',
   'gemini':         '👯',
