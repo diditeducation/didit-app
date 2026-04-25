@@ -354,25 +354,26 @@ export const orion = {
   starCount: 7,
   close: false,
   stars: [
-    // α Ori (Betelgeuse) — far-left shoulder, red supergiant
-    { id: 'alpha', name: 'Betelgeuse', x:  60, y: 180, size: 'lg', color: '#ffaa60' },
-    // γ Ori (Bellatrix) — upper-right shoulder, highest in the figure
-    { id: 'gamma', name: 'Bellatrix',  x: 280, y:  30, size: 'md', color: '#cce0ff' },
+    // α Ori (Betelgeuse) — upper-left shoulder, red supergiant
+    { id: 'alpha', name: 'Betelgeuse', x:  60, y:  50, size: 'lg', color: '#ffaa60' },
+    // γ Ori (Bellatrix) — upper-right shoulder
+    { id: 'gamma', name: 'Bellatrix',  x: 320, y:  60, size: 'lg', color: '#cce0ff' },
     // δ Ori (Mintaka) — belt-left
-    { id: 'delta', name: 'Mintaka',    x: 178, y: 158, size: 'md', color: '#d0e4ff' },
+    { id: 'delta', name: 'Mintaka',    x: 175, y: 340, size: 'sm', color: '#d0e4ff' },
     // ε Ori (Alnilam) — belt centre
-    { id: 'eps',   name: 'Alnilam',    x: 202, y: 178, size: 'lg', color: '#cce0ff' },
+    { id: 'eps',   name: 'Alnilam',    x: 210, y: 345, size: 'sm', color: '#cce0ff' },
     // ζ Ori (Alnitak) — belt-right
-    { id: 'zeta',  name: 'Alnitak',    x: 226, y: 198, size: 'md', color: '#d0e4ff' },
-    // β Ori (Rigel) — far-right foot, blue-white
-    { id: 'beta',  name: 'Rigel',      x: 325, y: 230, size: 'lg', color: '#b0ccff' },
-    // κ Ori (Saiph) — bottom foot, well below the belt
-    { id: 'kappa', name: 'Saiph',      x: 130, y: 330, size: 'md', color: '#d0e4ff' },
+    { id: 'zeta',  name: 'Alnitak',    x: 245, y: 340, size: 'sm', color: '#d0e4ff' },
+    // β Ori (Rigel) — bottom-right foot, blue-white
+    { id: 'beta',  name: 'Rigel',      x: 340, y: 620, size: 'lg', color: '#b0ccff' },
+    // κ Ori (Saiph) — bottom-left foot
+    { id: 'kappa', name: 'Saiph',      x: 180, y: 680, size: 'md', color: '#d0e4ff' },
   ],
-  // Bowtie: left triangle (Mintaka–Betelgeuse–Saiph) → belt across to right →
-  // right triangle (Alnitak–Bellatrix–Rigel). Eulerian path, no pen-lift needed.
-  // Mintaka→Betelgeuse→Saiph→Mintaka→Alnilam→Alnitak→Bellatrix→Rigel→Alnitak
-  connectOrder: [2, 0, 6, 2, 3, 4, 1, 5, 4],
+  // Hourglass: shoulders linked across the top, feet linked across the bottom,
+  // and a trapezoid side from each shoulder down through belt to the same-side
+  // foot. Eulerian path Mintaka→Betelgeuse→Bellatrix→Alnitak→Alnilam→Mintaka
+  // →Saiph→Rigel→Alnitak draws every edge once with no pen-lift.
+  connectOrder: [2, 0, 1, 4, 3, 2, 6, 5, 4],
   funFact: 'A giant hunter with a sparkly belt! His three belt stars are the easiest to spot at night.',
 };
 
