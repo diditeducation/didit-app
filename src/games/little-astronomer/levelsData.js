@@ -5,7 +5,8 @@ import { LEVELS, ALL_CONSTELLATIONS, CANVAS_DIMS } from './constellations';
 
 export const LEVEL_COUNT = LEVELS.length;
 
-// Emoji assigned per constellation for the completion reveal
+// Emoji assigned per constellation for the completion reveal.
+// Each emoji is unique so the success-screen recap never shows duplicates.
 const EMOJI_MAP = {
   'southern-cross': '✨',
   'triangulum':     '🔺',
@@ -17,10 +18,28 @@ const EMOJI_MAP = {
   'delphinus':      '🐬',
   'equuleus':       '🐴',
   'libra':          '⚖️',
-  'corona-borealis':'👑',
+  'corona-borealis':'💎',
   'little-dipper':  '⭐',
   'big-dipper':     '🐻',
-  'orion':          '🏹',
+  'orion':          '🦸',
+};
+
+// Short caption shown on the success-screen recap, under the constellation name.
+const DESCRIPTION_MAP = {
+  'southern-cross': 'Famous southern cross',
+  'triangulum':     'A small triangle',
+  'aries':          'The fluffy ram',
+  'cassiopeia':     'Queen on her throne',
+  'corvus':         'The clever crow',
+  'sagitta':        'A speeding arrow',
+  'cancer':         'The friendly crab',
+  'delphinus':      'A jumping dolphin',
+  'equuleus':       'The little horse',
+  'libra':          'The balance scales',
+  'corona-borealis':'A crown of stars',
+  'little-dipper':  'A tiny star ladle',
+  'big-dipper':     'A giant star ladle',
+  'orion':          'The brave hunter',
 };
 
 /**
@@ -95,6 +114,7 @@ function adaptConstellation(c) {
     id: c.id,
     animal: EMOJI_MAP[c.id] || '⭐',
     animalName: c.name,
+    description: DESCRIPTION_MAP[c.id] || '',
     toast: c.funFact,
     stars,
     sequence: buildSequence(c),

@@ -342,55 +342,67 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
           </div>
           {(() => {
             const n = boughtItems.length;
-            // Pick columns so rows are always full
+            // Pick a column count for the *full* rows. Partial last rows
+            // stay centered automatically because we use flex-wrap rather
+            // than padding with empty cells.
             const cols = n <= 3 ? n : n === 4 ? 2 : 3;
-            // Pad with nulls to fill the last row
-            const padded = [...boughtItems];
-            while (padded.length % cols !== 0) padded.push(null);
+            const itemBasis = `calc(${100 / cols}% - ${(12 * (cols - 1)) / cols}px)`;
             return (
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(${cols}, 1fr)`,
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
                 gap: 12,
                 width: '100%',
               }}>
-                {padded.map((item, i) => (
-                  item === null ? (
-                    <div key={`pad-${i}`} aria-hidden="true" />
-                  ) : (
-                    <div
-                      key={i}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: 4,
-                      }}
-                    >
-                      <span style={{ fontSize: '2rem', lineHeight: 1 }}>
-                        {item.node ? item.node : item.emoji}
-                      </span>
+                {boughtItems.map((item, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      flexBasis: itemBasis,
+                      maxWidth: itemBasis,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
+                    }}
+                  >
+                    <span style={{ fontSize: '2rem', lineHeight: 1 }}>
+                      {item.node ? item.node : item.emoji}
+                    </span>
+                    <span style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      color: 'var(--game-primary)',
+                      fontFamily: FONT,
+                      textAlign: 'center',
+                    }}>
+                      {item.name}
+                    </span>
+                    {item.description && (
                       <span style={{
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        color: 'var(--game-primary)',
+                        fontSize: '0.68rem',
+                        fontWeight: 500,
+                        color: 'var(--game-text-muted, #2D2A26)',
+                        opacity: 0.75,
                         fontFamily: FONT,
                         textAlign: 'center',
+                        lineHeight: 1.3,
                       }}>
-                        {item.name}
+                        {item.description}
                       </span>
-                      {item.price != null && (
-                        <span style={{
-                          fontSize: '0.7rem',
-                          fontWeight: 700,
-                          color: '#2D2A26',
-                          fontFamily: FONT,
-                        }}>
-                          {`$${item.price}`}
-                        </span>
-                      )}
-                    </div>
-                  )
+                    )}
+                    {item.price != null && (
+                      <span style={{
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        color: '#2D2A26',
+                        fontFamily: FONT,
+                      }}>
+                        {`$${item.price}`}
+                      </span>
+                    )}
+                  </div>
                 ))}
               </div>
             );

@@ -58,7 +58,11 @@ export default function Game() {
 
   const currentLevel = levels[activeLevel - 1];
 
-  const boughtItems = levels.map(l => ({ emoji: l.animal, name: l.animalName }));
+  const boughtItems = levels.map(l => ({
+    emoji: l.animal,
+    name: l.animalName,
+    description: l.description,
+  }));
 
   return (
     <div style={{ ...theme, minHeight: '100dvh', background: theme['--game-bg'] }}>
