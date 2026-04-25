@@ -52,12 +52,20 @@ export default function ConstellationCanvas({
 
     if (starIndex === expected) {
       sound.tap();
-      const newIdx = nextIdx + 1;
-      setNextIdx(newIdx);
 
-      if (nextIdx > 0) {
+      // Only draw a line if the previous sequence entry was a real star
+      // (not a `null` "lift pen" sentinel used to start a new disjoint line).
+      if (nextIdx > 0 && sequence[nextIdx - 1] != null) {
         setLines(prev => [...prev, { from: sequence[nextIdx - 1], to: starIndex }]);
       }
+
+      // Auto-advance past any null sentinels so the user never has to
+      // tap a phantom step.
+      let newIdx = nextIdx + 1;
+      while (newIdx < sequence.length && sequence[newIdx] == null) {
+        newIdx += 1;
+      }
+      setNextIdx(newIdx);
 
       if (newIdx === sequence.length) {
         setComplete(true);

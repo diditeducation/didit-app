@@ -41,22 +41,22 @@ export const southernCross = {
   id: 'southern-cross',
   name: 'Southern Cross',
   level: 2,
-  starCount: 5,
+  starCount: 4,
   close: false,
   stars: [
-    // Gacrux (γ Cru) — top of long axis, upper-right
-    { id: 'gamma', name: 'Gacrux', x: 300, y:  60, size: 'md', color: '#ffddcc' },
-    // Mimosa (β Cru) — left arm
-    { id: 'beta',  name: 'Mimosa', x:   0, y: 300, size: 'lg', color: '#cce0ff' },
-    // Acrux (α Cru) — bottom of long axis, lower-left
-    { id: 'alpha', name: 'Acrux',  x:  80, y: 700, size: 'lg', color: '#ffffff' },
-    // Imai (δ Cru) — right arm
-    { id: 'delta', name: 'Imai',   x: 320, y: 280, size: 'sm', color: '#d0e8ff' },
-    // Ginan (ε Cru) — intersection centre
-    { id: 'eps',   name: 'Ginan',  x: 222, y: 286, size: 'sm', color: '#b0c8e8' },
+    // γ Cru (Gacrux) — upper-right
+    { id: 'gamma', name: 'Gacrux', x: 225, y:  60, size: 'md', color: '#ffddcc' },
+    // β Cru (Mimosa) — upper-left
+    { id: 'beta',  name: 'Mimosa', x:  95, y:  80, size: 'lg', color: '#cce0ff' },
+    // α Cru (Acrux) — lower-left, bottom of long axis
+    { id: 'alpha', name: 'Acrux',  x: 105, y: 270, size: 'lg', color: '#ffffff' },
+    // δ Cru (Imai) — right arm
+    { id: 'delta', name: 'Imai',   x: 235, y: 175, size: 'sm', color: '#d0e8ff' },
   ],
-  // Draw cross: right-arm → centre → left-arm, then centre → top-right → bottom-left
-  connectOrder: [3, 4, 1, 4, 0, 2],
+  // Two crossing lines (no centre star):
+  //   Mimosa → Imai (short axis), then Gacrux → Acrux (long axis).
+  // `null` lifts the pen so no line is drawn between the two segments.
+  connectOrder: [1, 3, null, 0, 2],
   funFact: 'These stars make a giant cross! You can find it on Australia\'s flag! 🇦🇺',
 };
 
@@ -150,20 +150,23 @@ export const corvus = {
   id: 'corvus',
   name: 'Corvus',
   level: 2,
-  starCount: 4,
+  starCount: 5,
   close: false,
   stars: [
-    // β Crv (Kraz) — bottom-left
-    { id: 'beta',  name: 'Kraz',    x:   0, y: 700, size: 'lg', color: '#fff9c4' },
-    // γ Crv (Gienah) — upper-right
-    { id: 'gamma', name: 'Gienah',  x: 248, y: 104, size: 'md', color: '#d0e4ff' },
-    // δ Crv (Algorab) — upper-left
-    { id: 'delta', name: 'Algorab', x:  61, y:   0, size: 'lg', color: '#ffffff' },
-    // ε Crv (Minkar) — bottom-right
-    { id: 'eps',   name: 'Minkar',  x: 324, y: 621, size: 'md', color: '#d0e4ff' },
+    // δ Crv (Algorab) — upper-left of quadrilateral
+    { id: 'delta', name: 'Algorab', x: 140, y:  80, size: 'md', color: '#d0e4ff' },
+    // γ Crv (Gienah) — upper-right, brightest
+    { id: 'gamma', name: 'Gienah',  x: 245, y:  90, size: 'lg', color: '#fff9c4' },
+    // β Crv (Kraz) — lower-right
+    { id: 'beta',  name: 'Kraz',    x: 250, y: 200, size: 'md', color: '#d0e4ff' },
+    // ε Crv (Minkar) — lower-left
+    { id: 'eps',   name: 'Minkar',  x: 125, y: 200, size: 'md', color: '#d0e4ff' },
+    // α Crv (Alchiba) — extra star, below-right of quad
+    { id: 'alpha', name: 'Alchiba', x: 270, y: 240, size: 'sm', color: '#b0c8e8' },
   ],
-  // Quadrilateral: Kraz→Minkar→Gienah→Algorab→Kraz, then diagonal Kraz→Minkar
-  connectOrder: [0, 3, 1, 2, 0, 3],
+  // Closed quad: Algorab→Gienah→Kraz→Minkar→Algorab.
+  // Then pen-lift and extension: Kraz→Alchiba.
+  connectOrder: [0, 1, 2, 3, 0, null, 2, 4],
   funFact: 'A crow flapping its wings! Four stars draw its tiny flying body.',
 };
 
