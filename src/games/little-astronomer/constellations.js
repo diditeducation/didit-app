@@ -354,20 +354,20 @@ export const orion = {
   starCount: 7,
   close: false,
   stars: [
-    // α Ori (Betelgeuse) — left shoulder, red supergiant
-    { id: 'alpha', name: 'Betelgeuse', x: 135, y: 145, size: 'lg', color: '#ffaa60' },
+    // α Ori (Betelgeuse) — far-left shoulder, red supergiant
+    { id: 'alpha', name: 'Betelgeuse', x:  60, y: 180, size: 'lg', color: '#ffaa60' },
     // γ Ori (Bellatrix) — upper-right shoulder, highest in the figure
-    { id: 'gamma', name: 'Bellatrix',  x: 280, y:  45, size: 'md', color: '#cce0ff' },
+    { id: 'gamma', name: 'Bellatrix',  x: 280, y:  30, size: 'md', color: '#cce0ff' },
     // δ Ori (Mintaka) — belt-left
-    { id: 'delta', name: 'Mintaka',    x: 175, y: 130, size: 'md', color: '#d0e4ff' },
+    { id: 'delta', name: 'Mintaka',    x: 178, y: 158, size: 'md', color: '#d0e4ff' },
     // ε Ori (Alnilam) — belt centre
-    { id: 'eps',   name: 'Alnilam',    x: 195, y: 142, size: 'lg', color: '#cce0ff' },
+    { id: 'eps',   name: 'Alnilam',    x: 202, y: 178, size: 'lg', color: '#cce0ff' },
     // ζ Ori (Alnitak) — belt-right
-    { id: 'zeta',  name: 'Alnitak',    x: 218, y: 152, size: 'md', color: '#d0e4ff' },
-    // β Ori (Rigel) — lower-right foot, blue-white
-    { id: 'beta',  name: 'Rigel',      x: 290, y: 175, size: 'lg', color: '#b0ccff' },
-    // κ Ori (Saiph) — lower-left foot
-    { id: 'kappa', name: 'Saiph',      x: 155, y: 270, size: 'md', color: '#d0e4ff' },
+    { id: 'zeta',  name: 'Alnitak',    x: 226, y: 198, size: 'md', color: '#d0e4ff' },
+    // β Ori (Rigel) — far-right foot, blue-white
+    { id: 'beta',  name: 'Rigel',      x: 325, y: 230, size: 'lg', color: '#b0ccff' },
+    // κ Ori (Saiph) — bottom foot, well below the belt
+    { id: 'kappa', name: 'Saiph',      x: 130, y: 330, size: 'md', color: '#d0e4ff' },
   ],
   // Bowtie: left triangle (Mintaka–Betelgeuse–Saiph) → belt across to right →
   // right triangle (Alnitak–Bellatrix–Rigel). Eulerian path, no pen-lift needed.
