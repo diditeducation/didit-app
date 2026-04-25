@@ -241,29 +241,6 @@ export const libra = {
   funFact: 'A magical balance scale weighing up the stars! Everything stays perfectly fair.',
 };
 
-export const lyra = {
-  id: 'lyra',
-  name: 'Lyra',
-  level: 3,
-  starCount: 5,
-  close: false,
-  stars: [
-    // α Lyr (Vega) — top, brilliant yellow-white
-    { id: 'alpha', name: 'Vega',      x: 285, y:   0, size: 'lg', color: '#ffe080' },
-    // β Lyr (Sheliak) — lower-left of parallelogram
-    { id: 'beta',  name: 'Sheliak',   x: 115, y: 622, size: 'sm', color: '#b0c8e8' },
-    // γ Lyr (Sulafat) — bottom-left
-    { id: 'gamma', name: 'Sulafat',   x:   0, y: 700, size: 'sm', color: '#b0c8e8' },
-    // δ Lyr — upper-left of parallelogram
-    { id: 'delta', name: 'Delta Lyr', x:  58, y: 216, size: 'sm', color: '#b0c8e8' },
-    // ζ Lyr — upper-right of parallelogram
-    { id: 'zeta',  name: 'Zeta Lyr',  x: 184, y: 135, size: 'sm', color: '#b0c8e8' },
-  ],
-  // Vega (handle) → Zeta → parallelogram: Delta→Sulafat→Sheliak→Zeta (closes the body)
-  connectOrder: [0, 4, 3, 2, 1, 4],
-  funFact: 'A magical harp made of stars! Vega is super bright — one of the shiniest in the sky.',
-};
-
 export const equuleus = {
   id: 'equuleus',
   name: 'Equuleus',
@@ -433,7 +410,6 @@ export const ALL_CONSTELLATIONS = [
   sagitta,
   cancer,
   delphinus,
-  lyra,
   libra,
   coronaBorealis,
   crater,

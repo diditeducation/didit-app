@@ -15,7 +15,6 @@ const EMOJI_MAP = {
   'sagitta':        '🏹',
   'cancer':         '🦀',
   'delphinus':      '🐬',
-  'lyra':           '🎵',
   'equuleus':       '🐴',
   'libra':          '⚖️',
   'corona-borealis':'👑',
