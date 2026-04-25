@@ -354,23 +354,25 @@ export const orion = {
   starCount: 7,
   close: false,
   stars: [
-    // α Ori (Betelgeuse) — upper-left shoulder, red supergiant
-    { id: 'alpha', name: 'Betelgeuse', x:   0, y:   0, size: 'lg', color: '#ffaa60' },
-    // γ Ori (Bellatrix) — upper-right shoulder
-    { id: 'gamma', name: 'Bellatrix',  x: 172, y:  43, size: 'md', color: '#cce0ff' },
-    // δ Ori (Mintaka) — belt left
-    { id: 'delta', name: 'Mintaka',    x: 132, y: 315, size: 'md', color: '#d0e4ff' },
-    // ε Ori (Alnilam) — belt centre, brightest belt star
-    { id: 'eps',   name: 'Alnilam',    x: 108, y: 353, size: 'lg', color: '#cce0ff' },
-    // ζ Ori (Alnitak) — belt right
-    { id: 'zeta',  name: 'Alnitak',    x:  82, y: 383, size: 'md', color: '#d0e4ff' },
-    // β Ori (Rigel) — lower-right foot, blue-white, very bright
-    { id: 'beta',  name: 'Rigel',      x: 232, y: 640, size: 'lg', color: '#b0ccff' },
+    // α Ori (Betelgeuse) — left shoulder, red supergiant
+    { id: 'alpha', name: 'Betelgeuse', x: 135, y: 145, size: 'lg', color: '#ffaa60' },
+    // γ Ori (Bellatrix) — upper-right shoulder, highest in the figure
+    { id: 'gamma', name: 'Bellatrix',  x: 280, y:  45, size: 'md', color: '#cce0ff' },
+    // δ Ori (Mintaka) — belt-left
+    { id: 'delta', name: 'Mintaka',    x: 175, y: 130, size: 'md', color: '#d0e4ff' },
+    // ε Ori (Alnilam) — belt centre
+    { id: 'eps',   name: 'Alnilam',    x: 195, y: 142, size: 'lg', color: '#cce0ff' },
+    // ζ Ori (Alnitak) — belt-right
+    { id: 'zeta',  name: 'Alnitak',    x: 218, y: 152, size: 'md', color: '#d0e4ff' },
+    // β Ori (Rigel) — lower-right foot, blue-white
+    { id: 'beta',  name: 'Rigel',      x: 290, y: 175, size: 'lg', color: '#b0ccff' },
     // κ Ori (Saiph) — lower-left foot
-    { id: 'kappa', name: 'Saiph',      x:  42, y: 700, size: 'md', color: '#d0e4ff' },
+    { id: 'kappa', name: 'Saiph',      x: 155, y: 270, size: 'md', color: '#d0e4ff' },
   ],
-  // Left closed triangle (Alnitak→Betelgeuse→Saiph→Alnitak) + belt + right closed quad (Alnilam→Mintaka→Bellatrix→Rigel→Alnilam)
-  connectOrder: [4, 0, 6, 4, 3, 2, 1, 5, 3],
+  // Bowtie: left triangle (Mintaka–Betelgeuse–Saiph) → belt across to right →
+  // right triangle (Alnitak–Bellatrix–Rigel). Eulerian path, no pen-lift needed.
+  // Mintaka→Betelgeuse→Saiph→Mintaka→Alnilam→Alnitak→Bellatrix→Rigel→Alnitak
+  connectOrder: [2, 0, 6, 2, 3, 4, 1, 5, 4],
   funFact: 'A giant hunter with a sparkly belt! His three belt stars are the easiest to spot at night.',
 };
 
