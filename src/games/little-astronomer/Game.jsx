@@ -88,18 +88,49 @@ export default function Game() {
           gap: 10,
           overflow: 'hidden',
         }}>
-          {/* Level pips — horizontal row above canvas */}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
-            {levels.map((_, i) => {
+          {/* Level pips — tap to jump to any constellation */}
+          <div style={{
+            display: 'flex',
+            gap: 6,
+            alignItems: 'center',
+            flexShrink: 0,
+            padding: '0 12px',
+            maxWidth: '100%',
+            overflowX: 'auto',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
+          }}>
+            {levels.map((lvl, i) => {
               const id     = i + 1;
               const active = id === activeLevel;
               const done   = completedLevels.has(id);
               return (
-                <div key={id} style={{
-                  width: active ? 22 : 10, height: 10, borderRadius: 999,
-                  background: done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
-                  opacity: done ? 0.45 : 1, transition: 'all 0.3s ease', flexShrink: 0,
-                }} />
+                <button
+                  key={id}
+                  type="button"
+                  aria-label={`Play ${lvl.animalName}`}
+                  onClick={() => {
+                    if (id === activeLevel) return;
+                    setActiveLevel(id);
+                    setMilestone(m => ({ ...m, active: false }));
+                    setEmojiPopup(null);
+                    clearTimeout(emojiTimer.current);
+                  }}
+                  style={{
+                    width: active ? 28 : 14,
+                    height: 14,
+                    minWidth: active ? 28 : 14,
+                    borderRadius: 999,
+                    background: active ? 'var(--game-primary)' : done ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
+                    opacity: done && !active ? 0.45 : 1,
+                    transition: 'all 0.25s ease',
+                    flexShrink: 0,
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    touchAction: 'manipulation',
+                  }}
+                />
               );
             })}
           </div>
