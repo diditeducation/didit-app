@@ -18,7 +18,6 @@ const EMOJI_MAP = {
   'equuleus':       '🐴',
   'libra':          '⚖️',
   'corona-borealis':'👑',
-  'crater':         '🏆',
   'little-dipper':  '⭐',
   'big-dipper':     '🐻',
   'orion':          '🏹',

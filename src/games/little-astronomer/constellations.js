@@ -269,47 +269,24 @@ export const coronaBorealis = {
   starCount: 7,
   close: false,
   stars: [
-    // θ CrB — upper-left tip (highest on left)
-    { id: 'theta', name: 'Theta CrB',  x:  55, y:  55, size: 'md', color: '#b0c8e8' },
-    // β CrB (Nusakan) — descending, mid-left
-    { id: 'beta',  name: 'Nusakan',    x: 100, y: 130, size: 'md', color: '#d0e4ff' },
-    // α CrB (Alphecca) — brightest, lower-left of bowl
-    { id: 'alpha', name: 'Alphecca',   x:  78, y: 200, size: 'lg', color: '#ffe080' },
-    // γ CrB — bottom-left-centre
-    { id: 'gamma', name: 'Gamma CrB',  x: 130, y: 225, size: 'md', color: '#d0e4ff' },
-    // δ CrB — bottom-right-centre
-    { id: 'delta', name: 'Delta CrB',  x: 172, y: 220, size: 'md', color: '#d0e4ff' },
-    // ε CrB — rising on right
-    { id: 'eps',   name: 'Eps CrB',    x: 213, y: 185, size: 'md', color: '#d0e4ff' },
-    // ι CrB — upper-right tip
-    { id: 'iota',  name: 'Iota CrB',   x: 248, y:  55, size: 'md', color: '#b0c8e8' },
+    // θ CrB — upper-left tip
+    { id: 'theta', name: 'Theta CrB',  x:  75, y:  95, size: 'md', color: '#b0c8e8' },
+    // β CrB (Nusakan) — descending
+    { id: 'beta',  name: 'Nusakan',    x: 115, y: 145, size: 'md', color: '#d0e4ff' },
+    // α CrB (Alphecca) — brightest, bottom-left of bowl
+    { id: 'alpha', name: 'Alphecca',   x: 135, y: 200, size: 'lg', color: '#ffe080' },
+    // γ CrB — bottom of curve, just right of Alphecca
+    { id: 'gamma', name: 'Gamma CrB',  x: 168, y: 215, size: 'md', color: '#d0e4ff' },
+    // δ CrB — bottom-centre
+    { id: 'delta', name: 'Delta CrB',  x: 200, y: 215, size: 'md', color: '#d0e4ff' },
+    // ε CrB — rising on right side of bowl
+    { id: 'eps',   name: 'Eps CrB',    x: 228, y: 195, size: 'md', color: '#d0e4ff' },
+    // ι CrB — upper-right tip (highest of the arc)
+    { id: 'iota',  name: 'Iota CrB',   x: 255, y:  75, size: 'md', color: '#b0c8e8' },
   ],
   // Arc left → right following the smile curve
   connectOrder: [0, 1, 2, 3, 4, 5, 6],
   funFact: 'A sparkly crown floating in the sky! Like a tiara for the whole universe.',
-};
-
-export const crater = {
-  id: 'crater',
-  name: 'Crater',
-  level: 4,
-  starCount: 5,
-  close: false,
-  stars: [
-    // α Crt — right side of cup
-    { id: 'alpha', name: 'Alpha Crt',   x: 196, y: 435, size: 'md', color: '#d0e4ff' },
-    // β Crt — bottom of cup (brightest)
-    { id: 'beta',  name: 'Beta Crt',    x: 103, y: 700, size: 'lg', color: '#fff9c4' },
-    // γ Crt — left side of cup
-    { id: 'gamma', name: 'Gamma Crt',   x:   0, y: 399, size: 'md', color: '#d0e4ff' },
-    // δ Crt — upper rim
-    { id: 'delta', name: 'Delta Crt',   x:  44, y: 230, size: 'md', color: '#d0e4ff' },
-    // ε Crt — handle tip (topmost)
-    { id: 'eps',   name: 'Eps Crt',     x:   2, y:   0, size: 'sm', color: '#8aadcc' },
-  ],
-  // Cup: handle→rim→right→bottom→left→rim (bracing Delta)
-  connectOrder: [4, 3, 0, 1, 2, 3],
-  funFact: 'A magic cup floating in space! Long ago people imagined a god drinking from it.',
 };
 
 // ─── Level 5 — Complex shapes ─────────────────────────────────────────────────
@@ -412,7 +389,6 @@ export const ALL_CONSTELLATIONS = [
   delphinus,
   libra,
   coronaBorealis,
-  crater,
   littleDipper,
   bigDipper,
   orion,
