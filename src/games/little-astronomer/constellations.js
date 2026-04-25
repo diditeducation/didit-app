@@ -80,7 +80,7 @@ export const triangulum = {
 export const aries = {
   id: 'aries',
   name: 'Aries',
-  level: 1,
+  level: 2,
   starCount: 4,
   close: false,
   stars: [
@@ -103,7 +103,7 @@ export const aries = {
 export const cassiopeia = {
   id: 'cassiopeia',
   name: 'Cassiopeia',
-  level: 2,
+  level: 3,
   starCount: 5,
   close: false,
   stars: [
@@ -126,7 +126,7 @@ export const cassiopeia = {
 export const cancer = {
   id: 'cancer',
   name: 'Cancer',
-  level: 2,
+  level: 3,
   starCount: 5,
   close: false,
   stars: [
@@ -149,7 +149,7 @@ export const cancer = {
 export const corvus = {
   id: 'corvus',
   name: 'Corvus',
-  level: 2,
+  level: 3,
   starCount: 5,
   close: false,
   stars: [
@@ -219,7 +219,7 @@ export const delphinus = {
 export const libra = {
   id: 'libra',
   name: 'Libra',
-  level: 3,
+  level: 4,
   starCount: 6,
   close: false,
   stars: [
@@ -323,7 +323,7 @@ export const littleDipper = {
 export const bigDipper = {
   id: 'big-dipper',
   name: 'Big Dipper',
-  level: 6,
+  level: 5,
   starCount: 7,
   close: false,
   stars: [
@@ -350,7 +350,7 @@ export const bigDipper = {
 export const orion = {
   id: 'orion',
   name: 'Orion',
-  level: 6,
+  level: 5,
   starCount: 7,
   close: false,
   stars: [
@@ -397,12 +397,38 @@ export const ALL_CONSTELLATIONS = [
   orion,
 ];
 
+// Difficulty buckets — each playthrough picks one constellation from every
+// bucket, giving 5 levels per session that ramp up smoothly.
 export const LEVELS = [
   {
     level: 1,
-    title: 'Constellations',
-    description: 'Tap each star in order — they snap into place!',
-    constellations: ALL_CONSTELLATIONS,
+    title: 'Tiny shapes',
+    description: 'Just three stars — easy to start!',
+    constellations: [triangulum, equuleus],
+  },
+  {
+    level: 2,
+    title: 'Simple shapes',
+    description: 'Four stars in a neat little figure.',
+    constellations: [aries, sagitta, southernCross],
+  },
+  {
+    level: 3,
+    title: 'Five-star shapes',
+    description: 'A few more stars — follow the lines!',
+    constellations: [cassiopeia, cancer, corvus, delphinus],
+  },
+  {
+    level: 4,
+    title: 'Curves & crowns',
+    description: 'Six or seven stars — keep going!',
+    constellations: [libra, coronaBorealis],
+  },
+  {
+    level: 5,
+    title: 'Big constellations',
+    description: 'The most famous shapes in the sky!',
+    constellations: [littleDipper, bigDipper, orion],
   },
 ];
 
