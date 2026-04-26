@@ -400,15 +400,18 @@ export default function Game() {
                   <button
                     onClick={handleNext}
                     style={{
-                      padding: '14px 48px',
+                      padding: '16px 48px',
+                      minHeight: 52,
                       background: 'var(--game-primary)',
                       color: '#FFFFFF',
                       border: 'none',
                       borderRadius: 9999,
                       fontFamily: fonts.display,
                       fontWeight: 800,
-                      fontSize: '1rem',
+                      fontSize: '1.05rem',
                       cursor: 'pointer',
+                      touchAction: 'manipulation',
+                      WebkitTapHighlightColor: 'transparent',
                       animation: 'nextBtnIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
                     }}
                   >

@@ -207,7 +207,16 @@ export default function ConstellationCanvas({
         return (
           <div
             key={star.index}
-            onPointerDown={() => handleStarTap(star.index)}
+            onPointerDown={(e) => {
+              e.preventDefault();
+              handleStarTap(star.index);
+            }}
+            onPointerCancel={() => {
+              // Touch interrupted by the OS — clear the wrong-tap shake
+              // so the star doesn't stay stuck in its red animation.
+              clearTimeout(wrongTimer.current);
+              setWrongIdx(null);
+            }}
             style={{
               position: 'absolute',
               left: `${star.x}%`,
@@ -219,7 +228,7 @@ export default function ConstellationCanvas({
               justifyContent: 'center',
               transform: 'translate(-50%, -50%)',
               cursor: 'pointer',
-              touchAction: 'manipulation',
+              touchAction: 'none',
               zIndex: isNext ? 3 : 2,
               animation: isWrong
                 ? 'starShake 0.5s ease'

@@ -219,7 +219,7 @@ export default function GameHomeLayout({
 
   /* ── Outer container ── */
   const outerStyle = {
-    height: '100vh',
+    height: '100dvh',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',

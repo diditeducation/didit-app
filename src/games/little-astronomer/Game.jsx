@@ -92,13 +92,15 @@ export default function Game() {
           gap: 10,
           overflow: 'hidden',
         }}>
-          {/* Level pips — tap to jump to any constellation */}
+          {/* Level pips — tap to jump to any constellation.
+              Each pip is wrapped in a 44px-tall invisible hit zone so
+              little fingers can land anywhere near the dot. */}
           <div style={{
             display: 'flex',
-            gap: 6,
+            gap: 0,
             alignItems: 'center',
             flexShrink: 0,
-            padding: '0 12px',
+            padding: '0 4px',
             maxWidth: '100%',
             overflowX: 'auto',
             scrollbarWidth: 'none',
@@ -113,28 +115,38 @@ export default function Game() {
                   key={id}
                   type="button"
                   aria-label={`Play ${lvl.animalName}`}
-                  onClick={() => {
+                  onPointerDown={(e) => {
                     if (id === activeLevel) return;
+                    e.preventDefault();
                     setActiveLevel(id);
                     setMilestone(m => ({ ...m, active: false }));
                     setEmojiPopup(null);
                     clearTimeout(emojiTimer.current);
                   }}
                   style={{
-                    width: active ? 28 : 14,
-                    height: 14,
-                    minWidth: active ? 28 : 14,
-                    borderRadius: 999,
-                    background: active ? 'var(--game-primary)' : done ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
-                    opacity: done && !active ? 0.45 : 1,
-                    transition: 'all 0.25s ease',
+                    minWidth: active ? 44 : 28,
+                    height: 44,
                     flexShrink: 0,
                     border: 'none',
                     padding: 0,
+                    background: 'transparent',
                     cursor: 'pointer',
-                    touchAction: 'manipulation',
+                    touchAction: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
-                />
+                >
+                  <span style={{
+                    display: 'block',
+                    width: active ? 28 : 12,
+                    height: 12,
+                    borderRadius: 999,
+                    background: active || done ? 'var(--game-primary)' : 'rgba(0,0,0,0.18)',
+                    opacity: done && !active ? 0.45 : 1,
+                    transition: 'all 0.2s ease',
+                  }} />
+                </button>
               );
             })}
           </div>

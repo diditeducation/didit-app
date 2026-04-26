@@ -19,8 +19,11 @@ export default function GameShell({
   const { muted, toggleMute } = useSoundManager();
   const nav = useNavigate();
 
+  // Use 100dvh (dynamic viewport height) instead of 100vh so the layout
+  // tracks the iOS Safari URL bar instead of being clipped when it
+  // collapses or expands.
   const outerStyle = {
-    height: '100vh',
+    height: '100dvh',
     overflow: 'hidden',
     background: 'var(--game-bg)',
     color: 'var(--game-text)',
@@ -31,7 +34,7 @@ export default function GameShell({
   const innerStyle = {
     maxWidth: `${PAGE_MAX_WIDTH}px`,
     margin: '0 auto',
-    height: '100vh',
+    height: '100dvh',
     display: 'flex',
     flexDirection: 'column',
     paddingBottom: `${BOTTOM_STRIP_HEIGHT}px`,
