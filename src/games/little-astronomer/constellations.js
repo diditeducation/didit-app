@@ -57,7 +57,7 @@ export const southernCross = {
   //   Mimosa → Imai (short axis), then Gacrux → Acrux (long axis).
   // `null` lifts the pen so no line is drawn between the two segments.
   connectOrder: [1, 3, null, 0, 2],
-  funFact: 'These stars make a giant cross! You can find it on Australia\'s flag! 🇦🇺',
+  funFact: 'A starry cross in the southern sky! You can find it on Australia\'s flag! 🇦🇺',
 };
 
 export const triangulum = {
@@ -68,8 +68,8 @@ export const triangulum = {
   close: true,
   stars: [
     // α Tri (Mothallah) — right tip, lowest
-    { id: 'alpha', name: 'Alpha Tri', x: 366, y: 700, size: 'md', color: '#ffffff' },
-    // β Tri — left, top
+    { id: 'alpha', name: 'Mothallah', x: 366, y: 700, size: 'md', color: '#ffffff' },
+    // β Tri — left, top (actually the brightest in Triangulum)
     { id: 'beta',  name: 'Beta Tri',  x: 118, y:   0, size: 'lg', color: '#fff9c4' },
     // γ Tri — left, upper-mid
     { id: 'gamma', name: 'Gamma Tri', x:   0, y: 148, size: 'sm', color: '#d0e4ff' },
@@ -111,8 +111,8 @@ export const cassiopeia = {
     { id: 'beta',  name: 'Caph',    x: 390, y: 241, size: 'md', color: '#d0e4ff' },
     // α Cas (Schedar) — dips down-right
     { id: 'alpha', name: 'Schedar', x: 274, y: 380, size: 'lg', color: '#fff9c4' },
-    // γ Cas — rises to centre peak
-    { id: 'gamma', name: 'Gamma',   x: 214, y: 158, size: 'lg', color: '#ffffff' },
+    // γ Cas (Tsih) — rises to centre peak, a famous variable star
+    { id: 'gamma', name: 'Tsih',    x: 214, y: 158, size: 'lg', color: '#ffffff' },
     // δ Cas (Ruchbah) — dips again
     { id: 'delta', name: 'Ruchbah', x: 106, y: 183, size: 'md', color: '#d0e4ff' },
     // ε Cas (Segin) — far left, top
@@ -167,7 +167,7 @@ export const corvus = {
   // Closed quad: Algorab→Gienah→Kraz→Minkar→Algorab.
   // Then pen-lift and extension: Kraz→Alchiba.
   connectOrder: [0, 1, 2, 3, 0, null, 2, 4],
-  funFact: 'A crow flapping its wings! Four stars draw its tiny flying body.',
+  funFact: 'A crow flapping its wings! Five stars draw its tiny flying body.',
 };
 
 export const sagitta = {
@@ -177,16 +177,16 @@ export const sagitta = {
   starCount: 4,
   close: false,
   stars: [
-    // η Sge — tip (far left)
-    { id: 'eta',   name: 'Eta Sge',   x:   0, y:   0, size: 'lg', color: '#fff9c4' },
+    // γ Sge — arrow head (brightest, far left)
+    { id: 'gamma', name: 'Gamma Sge', x:   0, y:   0, size: 'lg', color: '#fff9c4' },
     // δ Sge — junction (centre, where shaft meets fork)
     { id: 'delta', name: 'Delta Sge', x: 274, y: 165, size: 'md', color: '#d0e4ff' },
-    // α Sge — upper fork tip (rightmost)
-    { id: 'alpha', name: 'Alpha Sge', x: 390, y: 223, size: 'sm', color: '#b0c8e8' },
-    // β Sge — lower fork tip
+    // α Sge (Sham) — upper feather tip (rightmost)
+    { id: 'alpha', name: 'Sham',      x: 390, y: 223, size: 'sm', color: '#b0c8e8' },
+    // β Sge — lower feather tip
     { id: 'beta',  name: 'Beta Sge',  x: 370, y: 284, size: 'md', color: '#d0e4ff' },
   ],
-  // Arrow: tip(η) → junction(δ) → upper-fork(α), back to junction → lower-fork(β)
+  // Arrow: head(γ) → junction(δ) → upper-feather(α), back to junction → lower-feather(β)
   connectOrder: [0, 1, 2, 1, 3],
   funFact: 'A tiny arrow zooming across the sky! Can you draw it star by star?',
 };
@@ -204,8 +204,8 @@ export const delphinus = {
     { id: 'beta',  name: 'Rotanev',    x: 179, y: 222, size: 'lg', color: '#fff9c4' },
     // α Del (Sualocin) — top of diamond
     { id: 'alpha', name: 'Sualocin',   x: 139, y:  31, size: 'md', color: '#d0e4ff' },
-    // ε Del — tail (below diamond)
-    { id: 'eps',   name: 'Eps Del',    x: 265, y: 700, size: 'md', color: '#d0e4ff' },
+    // ε Del (Aldulfin) — tail (below diamond)
+    { id: 'eps',   name: 'Aldulfin',   x: 265, y: 700, size: 'md', color: '#d0e4ff' },
     // δ Del — bottom-left of diamond
     { id: 'delta', name: 'Delta Del',  x:  64, y: 153, size: 'lg', color: '#ffffff' },
     // γ Del — left of diamond
@@ -315,7 +315,7 @@ export const littleDipper = {
   ],
   // Bowl: Kochab→Pherkad→Eta→Zeta→Kochab, then handle: Zeta→Eps→Yildun→Polaris
   connectOrder: [0, 1, 2, 3, 0, 3, 4, 5, 6],
-  funFact: 'A tiny ladle scooping stardust! Its handle points to Polaris — the star that never moves.',
+  funFact: 'A tiny ladle scooping stardust! Polaris is the bright star at the very tip of its handle — the star that never moves.',
 };
 
 // ─── Level 6 — Big shapes ─────────────────────────────────────────────────────
