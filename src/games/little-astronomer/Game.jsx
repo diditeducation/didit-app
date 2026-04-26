@@ -170,11 +170,23 @@ export default function Game() {
                 }}>
                   {currentLevel.animalName}
                 </span>
+                {currentLevel.description && (
+                  <span style={{
+                    fontFamily: fonts.display,
+                    fontWeight: 600,
+                    fontSize: '0.82rem',
+                    color: 'var(--game-text)',
+                    opacity: 0.75,
+                    letterSpacing: '0.02em',
+                  }}>
+                    {currentLevel.description}
+                  </span>
+                )}
                 <span style={{
                   fontFamily: fonts.display,
                   fontWeight: 500,
-                  fontSize: '0.78rem',
-                  color: 'rgba(255,255,255,0.55)',
+                  fontSize: '0.72rem',
+                  color: 'var(--game-text-muted)',
                   lineHeight: 1.45,
                 }}>
                   {currentLevel.toast}

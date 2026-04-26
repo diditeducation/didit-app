@@ -244,23 +244,9 @@ export default function ConstellationCanvas({
         );
       })}
 
-      {/* Animal emoji reveal on completion */}
-      {complete && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            fontSize: '5.5rem',
-            lineHeight: 1,
-            zIndex: 10,
-            pointerEvents: 'none',
-            animation: 'animalIn 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-          }}
-        >
-          {animal}
-        </div>
-      )}
+      {/* The completion emoji lives at the page level (Game.jsx) so it
+          can pop centred over the whole screen. We intentionally do not
+          render a second one inside the canvas. */}
 
     </div>
   );

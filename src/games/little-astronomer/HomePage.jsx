@@ -17,7 +17,7 @@ export default function HomePage() {
         title="Astronomer"
         tagline="Tap the stars to draw a constellation!"
         tag="🌟 Stars & Constellations"
-        description="Look — glowing stars in the night sky! Tap them one by one to connect the dots. What animal is hiding up there? Only one way to find out!"
+        description="Look — glowing stars in the night sky! Tap them one by one to connect the dots. What animal or symbol is hiding up there? Only one way to find out!"
         skillPills={[
           { label: 'Constellations' },
           { label: 'Stars' },
@@ -28,7 +28,7 @@ export default function HomePage() {
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         shareButton
-        parentTipBody="Point to each glowing star and count them together! After the animal appears, name it and look it up in a real star map. Constellations are how ancient people told stories through the night sky 🌙"
+        parentTipBody="Point to each glowing star and count them together! After the constellation appears, name it and look it up in a real star map. Constellations are how ancient people told stories through the night sky 🌙"
       />
       <FeedbackModal
         isOpen={feedbackOpen}
