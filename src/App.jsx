@@ -37,6 +37,8 @@ const PieHome           = lazy(() => import('./games/little-pie/HomePage'));
 const PieGame           = lazy(() => import('./games/little-pie/Game'));
 const MatisseHome        = lazy(() => import('./games/little-matisse/HomePage'));
 const MatisseGame        = lazy(() => import('./games/little-matisse/Game'));
+const TraderHome         = lazy(() => import('./games/little-trader/HomePage'));
+const TraderGame         = lazy(() => import('./games/little-trader/Game'));
 
 export default function App() {
   return (
@@ -88,6 +90,10 @@ export default function App() {
           {/* Little Matisse */}
           <Route path="/games/little-matisse"      element={<ProtectedRoute><MatisseHome /></ProtectedRoute>} />
           <Route path="/games/little-matisse/play" element={<ProtectedRoute><MatisseGame /></ProtectedRoute>} />
+
+          {/* Little Trader */}
+          <Route path="/games/little-trader"      element={<ProtectedRoute><TraderHome /></ProtectedRoute>} />
+          <Route path="/games/little-trader/play" element={<ProtectedRoute><TraderGame /></ProtectedRoute>} />
 
           {/* Little DJ */}
           <Route path="/games/little-dj"           element={<ProtectedRoute><DJHome /></ProtectedRoute>} />

@@ -386,6 +386,43 @@ export const GAMES = [
       },
     },
   },
+  {
+    id: 'little-trader',
+    illustrationKey: 'trader',     // no SVG yet — SuccessScreen falls back to 🎉
+    title: 'Little Trader',
+    emoji: '🃏',
+    tag: '🃏 Trade-offs & Choices',
+    category: 'Finance',
+    hook: 'A new card every round — keep it or skip it?',
+    desc: 'A new card flips up each round. Keep it in your docket or let it go.',
+    skills: ['Decisions', 'Trade-offs', 'Memory'],
+    bgImage: '/backgrounds/background-yellow.png',
+    path: '/games/little-trader',
+    gradient: `linear-gradient(135deg, ${colors.sunMid} 0%, ${colors.coralMid} 100%)`,
+    color: colors.sunMid,
+    colorDark: colors.sunDark,
+    colorLight: colors.sunLight,
+    parentGuide: {
+      concept: '🃏 Trade-offs & Choices',
+      conceptColor: colors.sunDark,
+      explanation:
+        "Your child collects cards by dragging them down — but the docket only fits a few. To keep a new card, an old one has to go. Every choice has a cost, and that's the heart of every real-world decision.",
+      science: {
+        text: 'Children who practise simple opportunity-cost choices in play develop stronger executive function and better delayed-gratification skills, which predict academic and social outcomes years later.',
+        citation: 'Mischel, W., "The Marshmallow Test: Mastering Self-Control," Little, Brown, 2014',
+        url: 'https://doi.org/10.1037/h0032198',
+      },
+      ladder: [
+        { label: 'Playing now', title: 'Choosing what matters', desc: 'Picking which cards are worth keeping.', color: colors.sunMid },
+        { label: 'Builds toward', title: 'Opportunity cost', desc: 'Understanding that every yes is also a no.', color: colors.blueberryMid },
+        { label: 'Big concept', title: 'Decision-making', desc: 'Weighing trade-offs across a whole life.', color: colors.coralMid },
+      ],
+      tip: {
+        text: "Sit beside your child and ask 'keep or skip?' as each card appears. When the docket fills, the choices get real — narrate the trade-off out loud.",
+        question: "'Which card would you swap out?'",
+      },
+    },
+  },
 ];
 
 // Rotate the featured game daily based on the date
