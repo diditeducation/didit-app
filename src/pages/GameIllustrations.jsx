@@ -495,3 +495,51 @@ export function MatisseIllustration() {
     </svg>
   );
 }
+
+// ── Little Trader ────────────────────────────────────────────
+// Mechanic: each round flips up a new card; keep it (drag down) or skip it.
+// The docket caps at 5 — keeping a new card later means swapping out an old.
+//
+// Hero shapes (5, under the 6-shape cap):
+//   1. amber back card        — bottom of fan
+//   2. red  back card         — middle of fan
+//   3. blue front card body   — the "new" card
+//   4. cream face panel       — top portion of front card (icon area)
+//   5. cream label strip      — bottom portion of front card (label area)
+// Plus a yellow circle "icon" on the face (counts as ornament, mirrors the
+// docket card's emoji area). Accent dots + sparkles on top per Section 0.1.
+export function TraderIllustration() {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
+      {/* Back card — amber, peeks behind right */}
+      <g transform="translate(348, 264) rotate(15)">
+        <rect x="-95" y="-130" width="190" height="260" rx="20" fill="#F5A623" />
+      </g>
+
+      {/* Back card — red, peeks behind left, overlaps amber */}
+      <g transform="translate(154, 260) rotate(-16)">
+        <rect x="-95" y="-130" width="190" height="260" rx="20" fill="#E03535" />
+      </g>
+
+      {/* Front card — blue, the hero, slight tilt */}
+      <g transform="translate(252, 240) rotate(-3)">
+        {/* Card body */}
+        <rect x="-115" y="-150" width="230" height="300" rx="24" fill="#2E6FE0" />
+        {/* Cream face panel (icon area) */}
+        <rect x="-86" y="-118" width="172" height="186" rx="14" fill="#fffef9" />
+        {/* Cream label strip — gives the front card a real "trading card" feel */}
+        <rect x="-86" y="86" width="172" height="36" rx="10" fill="#fffef9" />
+        {/* Yellow icon on the face panel */}
+        <circle cx="0" cy="-26" r="46" fill="#F5C842" />
+      </g>
+
+      {/* Accent dots — 2 floats */}
+      <circle cx="436" cy="120" r="10" fill="#4ECDC4" />
+      <circle cx="74"  cy="416" r="12" fill="#3aA845" />
+
+      {/* Sparkles — exactly 2, yellow */}
+      <Sparkle x={104} y={120} />
+      <Sparkle x={420} y={444} large />
+    </svg>
+  );
+}

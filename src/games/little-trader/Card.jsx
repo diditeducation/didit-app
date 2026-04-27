@@ -1,6 +1,9 @@
 import { fonts } from '../../design-system/tokens';
-import { TIER_BORDERS } from './cards';
 import { CARD_SIZES, EMOJI_FONT_STACK } from './styles';
+
+// Single neutral ring around every card — kid-friendly, no tier-specific
+// colours. (Previously tier-coloured via TIER_BORDERS.)
+const CARD_RING_COLOR = '#D8D2C4';
 
 /**
  * Single card component — renders at three sizes ('intro' | 'new' | 'docket').
@@ -30,15 +33,9 @@ export default function Card({
 }) {
   if (!card) return null;
   const dims = CARD_SIZES[size] || CARD_SIZES.docket;
-  const tierColor = TIER_BORDERS[card.tier] || null;
 
-  const ringShadow = tierColor
-    ? `0 0 0 2px #fff, 0 0 0 4px ${tierColor}`
-    : '0 0 0 1px rgba(0,0,0,0.05)';
-
-  const dashedHighlight = highlight
-    ? ', 0 0 0 6px rgba(232,184,64,0.0)'  // outer halo placeholder
-    : '';
+  // Consistent grey ring on every card regardless of tier.
+  const ringShadow = `0 0 0 2px ${CARD_RING_COLOR}`;
 
   const outerStyle = {
     width: dims.w,
@@ -50,7 +47,7 @@ export default function Card({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    boxShadow: `${ringShadow}${dashedHighlight}, 0 4px 12px rgba(0,0,0,0.08)`,
+    boxShadow: `${ringShadow}, 0 4px 12px rgba(0,0,0,0.08)`,
     transform: `rotate(${rotation}deg) scale(${scale})`,
     transformOrigin: 'center center',
     transition: 'transform 0.18s ease, box-shadow 0.18s ease',
@@ -63,23 +60,9 @@ export default function Card({
     ...extraStyle,
   };
 
-  // Dashed amber outline (swap mode) drawn as an extra absolute layer so we
-  // don't fight the tier ring shadows.
-  const dashOverlay = highlight ? (
-    <div
-      style={{
-        position: 'absolute',
-        inset: -8,
-        borderRadius: dims.radius + 6,
-        border: '3px dashed #E8B840',
-        pointerEvents: 'none',
-      }}
-    />
-  ) : null;
-
   return (
     <div style={outerStyle} onPointerDown={onPointerDown}>
-      {dashOverlay}
+      {/* (Dashed swap-mode outline removed — hover scale-up gives the feedback now.) */}
       <div
         style={{
           flex: 1,
@@ -103,7 +86,6 @@ export default function Card({
         >
           {card.emoji}
         </span>
-        {card.tier === 'treasure' && <SparkleCorners />}
       </div>
       <div
         style={{
@@ -114,7 +96,6 @@ export default function Card({
           textAlign: 'center',
           paddingTop: 6,
           letterSpacing: '0.01em',
-          textTransform: 'lowercase',
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -126,36 +107,6 @@ export default function Card({
   );
 }
 
-function SparkleCorners() {
-  // Three small amber dots at the tinted-area corners, gently pulsing.
-  const positions = [
-    { top: 6,  left: 6 },
-    { top: 6,  right: 6 },
-    { bottom: 6, left: '50%', transform: 'translateX(-50%)' },
-  ];
-  return (
-    <>
-      <style>{`
-        @keyframes traderSparkle {
-          0%, 100% { opacity: 0.55; transform: scale(0.95); }
-          50%      { opacity: 1;    transform: scale(1.15); }
-        }
-      `}</style>
-      {positions.map((p, i) => (
-        <span
-          key={i}
-          style={{
-            position: 'absolute',
-            width: 7,
-            height: 7,
-            borderRadius: '50%',
-            background: '#F2C246',
-            boxShadow: '0 0 6px rgba(242,194,70,0.7)',
-            animation: `traderSparkle 1.5s ease-in-out ${i * 0.3}s infinite`,
-            ...p,
-          }}
-        />
-      ))}
-    </>
-  );
-}
+// (Previously: SparkleCorners — three amber dots on rare cards. Removed
+// because they read as a defect rather than decoration. The tier ring
+// around the card already signals rarity.)

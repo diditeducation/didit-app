@@ -6,70 +6,90 @@ import SuccessScreen from '../../design-system/components/SuccessScreen';
 import FeedbackModal from '../../components/FeedbackModal';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
-import IntroScreen from './IntroScreen';
 import NewCardArea from './NewCardArea';
 import Docket from './Docket';
 import ProgressBar from './ProgressBar';
 import { initAudio, sound, playCardSound } from './audio';
-import { getStarterCards, getRoundCard, ROUNDS } from './deckLogic';
-import { DOCKET_CAP } from './cards';
+import { getStarterCards, getRoundCard, pickTheme, ROUNDS } from './deckLogic';
+import { DOCKET_CAP, THEME_TINT } from './cards';
 import { trackGameOpen, trackGameComplete } from '../../analytics';
 
 /**
  * State machine
- *   intro        — title + 3 fanned cards + "tap to begin"
- *   transition   — title fades, starters slide into docket, first card flips in
+ *   intro        — Your Cards docket sits up near the middle, "Start Trading"
+ *                  pill below it. The new-card slot above is empty.
+ *   transition   — pill fades out, docket animates DOWN to its play position,
+ *                  first card flips in above it.
  *   round        — main loop, the kid keeps or skips
  *   celebration  — short on-stage pause then SuccessScreen takes over
+ *
+ * A single playthrough is bounded by THEME (Animals / Food / Toys) — every
+ * card surfaced this game comes from the chosen theme, and the whole UI
+ * tints itself to match the theme's accent colour.
  */
+
+const INTRO_DOCKET_OFFSET_PX = 220;
+
+// Build the first playthrough's data deterministically inside one helper so
+// "Play Again" and the initial mount both use identical setup logic.
+function buildPlaythrough() {
+  const themeId = pickTheme();
+  const starters = getStarterCards(themeId);
+  return { themeId, starters };
+}
 
 export default function Game() {
   const navigate = useNavigate();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
-  // Initial draw — three random foods.
-  const [starters] = useState(() => getStarterCards());
+  // Pick this playthrough's theme + starter docket once per mount.
+  const initial = useState(buildPlaythrough)[0];
+  const [themeId, setThemeId] = useState(initial.themeId);
+  const [docket, setDocket] = useState(initial.starters);
 
-  const [phase, setPhase] = useState('intro');           // 'intro' | 'transition' | 'round' | 'celebration'
-  const [docket, setDocket] = useState([]);              // grows from 3 → up to 5
+  const [phase, setPhase] = useState('intro');
   const [roundIndex, setRoundIndex] = useState(0);
   const [completedRounds, setCompletedRounds] = useState(0);
   const [newCard, setNewCard] = useState(null);
-  const drawnIds = useRef(new Set());                    // every card the deck has surfaced
+  // Track every card already shown so cards never repeat — including the
+  // starter trio so round 1 can't surface a duplicate.
+  const drawnIds = useRef(new Set(initial.starters.map((c) => c.id)));
 
   const [pulseSlotIdx, setPulseSlotIdx] = useState(null);
+  const [hoveredSlotIdx, setHoveredSlotIdx] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [milestone, setMilestone] = useState({ active: false, originX: 50, originY: 50 });
   const [showFlip, setShowFlip] = useState(false);
   const [swapHint, setSwapHint] = useState(false);
 
   const docketRef = useRef(null);
-  const docketCardRefs = useRef([]);                     // [el, el, ...] per slot
+  const docketCardRefs = useRef([]);
   const setDocketSlotRef = useCallback((idx, el) => {
     docketCardRefs.current[idx] = el;
   }, []);
 
   useEffect(() => { trackGameOpen('little-trader'); }, []);
 
+  // Per-theme metadata is still used for the SuccessScreen label, but the
+  // in-game UI keeps a single yellow/amber scheme regardless of theme so
+  // the player isn't confused by the docket changing colour every game.
+  const tintMeta = THEME_TINT[themeId] || THEME_TINT.food;
+
   // ── Intro → Transition ─────────────────────────────────────
   const beginGame = () => {
     initAudio();
     sound.cardFlip();
     setPhase('transition');
-    // Starters land in the docket while title fades.
-    setTimeout(() => setDocket(starters.slice(0, 3)), 250);
-    // First round card flips in.
     setTimeout(() => {
-      const card = getRoundCard(0, drawnIds.current);
+      const card = getRoundCard(0, themeId, drawnIds.current);
       if (card) drawnIds.current.add(card.id);
       setNewCard(card);
       setShowFlip(true);
       sound.cardFlip();
       sound.progressTick();
       setPhase('round');
-    }, 900);
-    // Reset flip animation flag so subsequent rounds re-trigger.
-    setTimeout(() => setShowFlip(false), 1500);
+    }, 700);
+    setTimeout(() => setShowFlip(false), 1300);
   };
 
   // ── Round resolution helpers ────────────────────────────────
@@ -77,19 +97,15 @@ export default function Game() {
     const next = roundIndex + 1;
     setCompletedRounds(next);
     if (next >= ROUNDS) {
-      // → celebration
-      setPhase('celebration');
+      // Last selection made — go straight to SuccessScreen.
+      // SuccessScreen has its own confetti + chime so we don't gate on a
+      // local "celebration" pause.
       sound.celebration();
-      // After a beat, fire confetti + open SuccessScreen.
-      setTimeout(() => {
-        setMilestone({ active: true, originX: 50, originY: 55 });
-        trackGameComplete('little-trader');
-      }, 700);
-      setTimeout(() => setShowSuccess(true), 1400);
+      trackGameComplete('little-trader');
+      setShowSuccess(true);
       return;
     }
-    // Draw next card.
-    const card = getRoundCard(next, drawnIds.current);
+    const card = getRoundCard(next, themeId, drawnIds.current);
     if (card) drawnIds.current.add(card.id);
     setRoundIndex(next);
     setNewCard(card);
@@ -98,9 +114,11 @@ export default function Game() {
     setTimeout(() => setShowFlip(false), 600);
     sound.cardFlip();
     sound.progressTick();
-  }, [roundIndex]);
+  }, [roundIndex, themeId]);
 
-  // ── Drag hit-testing for NewCardArea ────────────────────────
+  // ── Drag hit-testing ───────────────────────────────────────
+  // Always reports which slot the pointer is over (even when the docket
+  // isn't full) so the parent can scale that slot for hover feedback.
   const hitTest = (clientX, clientY) => {
     const drect = docketRef.current?.getBoundingClientRect();
     if (!drect) return { zone: 'outside' };
@@ -111,40 +129,62 @@ export default function Game() {
       clientY <= drect.bottom;
     if (!insideDocket) return { zone: 'outside' };
 
-    // If full, look for a specific slot under the pointer for swap.
-    if (docket.length >= DOCKET_CAP) {
-      for (let i = 0; i < docketCardRefs.current.length; i++) {
-        const el = docketCardRefs.current[i];
-        if (!el) continue;
-        const r = el.getBoundingClientRect();
-        if (clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom) {
-          return { zone: 'docket-card', slotIndex: i };
-        }
+    let overSlotIdx = null;
+    for (let i = 0; i < docketCardRefs.current.length; i++) {
+      const el = docketCardRefs.current[i];
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom) {
+        overSlotIdx = i;
+        break;
       }
-      // Inside docket but not on a card → no-op (return to centre).
-      return { zone: 'outside' };
     }
 
-    return { zone: 'docket' };
+    if (docket.length >= DOCKET_CAP) {
+      // Full → only a swap onto a specific card resolves; report the slot
+      // whether for resolve or hover (caller decides).
+      if (overSlotIdx != null) return { zone: 'docket-card', slotIndex: overSlotIdx };
+      return { zone: 'outside' };
+    }
+    return { zone: 'docket', slotIndex: overSlotIdx };
   };
 
-  // ── Resolve drag (keep / swap / cancel) ─────────────────────
+  const handleHoverChange = (hit) => {
+    if (!hit || hit.zone === 'outside') {
+      setHoveredSlotIdx(null);
+      return;
+    }
+    if (hit.zone === 'docket-card') {
+      setHoveredSlotIdx(hit.slotIndex);
+      return;
+    }
+    if (hit.zone === 'docket') {
+      // Not full — highlight either the slot under pointer (if any) or the
+      // next empty slot the card would land in.
+      setHoveredSlotIdx(hit.slotIndex != null ? hit.slotIndex : docket.length);
+      return;
+    }
+    setHoveredSlotIdx(null);
+  };
+
   const handleResolve = (result) => {
+    setHoveredSlotIdx(null);
     if (!newCard) return;
+    // On the last round we skip the small "card landing" pause so the
+    // SuccessScreen comes up the instant the kid drops the card.
+    const isLastRound = roundIndex >= ROUNDS - 1;
+    const advanceDelay = isLastRound ? 0 : 350;
     if (result.zone === 'docket' && docket.length < DOCKET_CAP) {
-      // Keep: append to next empty slot.
       const slotIdx = docket.length;
       setDocket((d) => [...d, newCard]);
       sound.cardThunk();
       pulseSlot(slotIdx);
       setNewCard(null);
-      // Brief gap before flipping in the next card so the kid sees the
-      // landing animation finish.
-      setTimeout(() => advanceRound(), 350);
+      if (advanceDelay) setTimeout(() => advanceRound(), advanceDelay);
+      else advanceRound();
       return;
     }
     if (result.zone === 'docket-card' && docket.length >= DOCKET_CAP) {
-      // Swap.
       const swapIdx = result.slotIndex;
       const incoming = newCard;
       setDocket((d) => d.map((c, i) => (i === swapIdx ? incoming : c)));
@@ -152,18 +192,19 @@ export default function Game() {
       sound.cardThunk();
       pulseSlot(swapIdx);
       setNewCard(null);
-      setTimeout(() => advanceRound(), 350);
+      if (advanceDelay) setTimeout(() => advanceRound(), advanceDelay);
+      else advanceRound();
       return;
     }
-    // Outside / cancel — just unset drag state so card springs back.
-    // (NewCardArea already animates the spring via its internal state reset.)
   };
 
   const handleSkip = () => {
     if (!newCard) return;
     sound.cardWhoosh();
     setNewCard(null);
-    setTimeout(() => advanceRound(), 250);
+    const isLastRound = roundIndex >= ROUNDS - 1;
+    if (isLastRound) advanceRound();
+    else setTimeout(() => advanceRound(), 250);
   };
 
   const pulseSlot = (idx) => {
@@ -171,7 +212,6 @@ export default function Game() {
     setTimeout(() => setPulseSlotIdx(null), 350);
   };
 
-  // ── Tap-to-hear on docket cards (idle interaction) ──────────
   const onTapDocketCard = (card) => {
     if (phase !== 'round') return;
     initAudio();
@@ -179,34 +219,26 @@ export default function Game() {
   };
 
   const showSwapMode = phase === 'round' && docket.length >= DOCKET_CAP && (newCard != null);
-
-  // Track swap hint glow once docket fills up so the kid sees the dashed
-  // outlines as soon as the next card arrives — not only mid-drag.
   useEffect(() => { setSwapHint(showSwapMode); }, [showSwapMode]);
 
   // ── Reset for "Play again" ──────────────────────────────────
   const handlePlayAgain = () => {
-    drawnIds.current = new Set();
-    const fresh = getStarterCards();
-    setDocket([]);
+    const fresh = buildPlaythrough();
+    drawnIds.current = new Set(fresh.starters.map((c) => c.id));
+    setThemeId(fresh.themeId);
+    setDocket(fresh.starters);
     setRoundIndex(0);
     setCompletedRounds(0);
     setNewCard(null);
+    setHoveredSlotIdx(null);
     setMilestone({ active: false, originX: 50, originY: 50 });
     setShowSuccess(false);
     setPhase('intro');
-    // Stash the new starters by remounting the IntroScreen with a fresh key.
-    // Since `starters` is held in useState(initial), we can't easily refresh
-    // it without resetting the component; for simplicity we re-init via
-    // effect below.
-    setStartersKey((k) => k + 1);
-    setStartersOverride(fresh);
   };
 
-  // Allow Play Again to inject a fresh starter trio.
-  const [startersKey, setStartersKey] = useState(0);
-  const [startersOverride, setStartersOverride] = useState(null);
-  const activeStarters = startersOverride || starters;
+  const isIntro     = phase === 'intro';
+  const showCTA     = phase === 'intro' || phase === 'transition';
+  const showNewCard = phase === 'transition' || phase === 'round' || phase === 'celebration';
 
   return (
     <div style={theme}>
@@ -221,67 +253,121 @@ export default function Game() {
             justifyContent: 'space-between',
             gap: 6,
             paddingTop: 4,
+            position: 'relative',
           }}
         >
-          {/* Progress bar — hidden on intro, visible from transition onward. */}
-          {phase !== 'intro' && (
-            <ProgressBar completed={completedRounds} active={roundIndex} />
-          )}
-
-          {/* Stage area */}
-          {phase === 'intro' && (
-            <IntroScreen
-              key={startersKey}
-              starters={activeStarters}
-              onBegin={beginGame}
-              phase="idle"
+          {!isIntro && (
+            <ProgressBar
+              completed={completedRounds}
+              active={roundIndex}
+              accentColor="var(--game-primary)"
             />
           )}
 
-          {(phase === 'transition' || phase === 'round' || phase === 'celebration') && (
-            <NewCardArea
-              key={newCard?.id ?? `empty-${roundIndex}`}
-              card={newCard}
-              showFlip={showFlip}
-              isFull={docket.length >= DOCKET_CAP}
-              onResolve={handleResolve}
-              onSkip={handleSkip}
-              hitTest={hitTest}
-            />
-          )}
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0,
+              opacity: showNewCard ? 1 : 0,
+              transition: 'opacity 0.35s ease',
+            }}
+          >
+            {showNewCard && (
+              <NewCardArea
+                key={newCard?.id ?? `empty-${roundIndex}`}
+                card={newCard}
+                showFlip={showFlip}
+                // Match the docket header colour for visual consistency.
+                accentColor="var(--trader-docket-text)"
+                onResolve={handleResolve}
+                onSkip={handleSkip}
+                hitTest={hitTest}
+                onHoverChange={handleHoverChange}
+              />
+            )}
+          </div>
 
-          {/* Docket — fades in once transition is underway. */}
-          {(phase === 'transition' || phase === 'round' || phase === 'celebration') && (
+          <div
+            style={{
+              position: 'relative',
+              transform: isIntro
+                ? `translateY(-${INTRO_DOCKET_OFFSET_PX}px)`
+                : 'translateY(0)',
+              transition: 'transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            }}
+          >
             <Docket
               ref={docketRef}
               cards={docket}
               swapMode={swapHint}
               pulseSlotIdx={pulseSlotIdx}
+              hoveredSlotIdx={hoveredSlotIdx}
               setSlotRef={setDocketSlotRef}
               onTapCard={onTapDocketCard}
             />
-          )}
+
+            {/* Drag instruction — sits BELOW the docket panel, centred */}
+            {!isIntro && (
+              <div
+                style={{
+                  textAlign: 'center',
+                  fontFamily: fonts.display,
+                  fontWeight: 600,
+                  fontSize: 12,
+                  color: 'var(--game-text-muted)',
+                  padding: '0 16px',
+                  marginTop: 4,
+                }}
+              >
+                Drop the new card on any slot to keep it, or click next to skip
+              </div>
+            )}
+
+            <div
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                marginTop: 24,
+                display: 'flex',
+                justifyContent: 'center',
+                opacity: showCTA && isIntro ? 1 : 0,
+                transition: 'opacity 0.3s ease',
+                pointerEvents: showCTA && isIntro ? 'auto' : 'none',
+              }}
+            >
+              <button
+                type="button"
+                onClick={beginGame}
+                style={{
+                  background: 'var(--game-primary)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: 9999,
+                  padding: '16px 40px',
+                  minHeight: 56,
+                  fontFamily: fonts.display,
+                  fontWeight: 800,
+                  fontSize: '1.05rem',
+                  cursor: 'pointer',
+                  boxShadow: 'none',
+                  touchAction: 'manipulation',
+                  WebkitTapHighlightColor: 'transparent',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  letterSpacing: '0.02em',
+                }}
+              >
+                Start Trading <span style={{ fontSize: '1.1rem' }}>→</span>
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* End-of-game footnote: tiny text under the docket */}
-        {phase === 'celebration' && (
-          <div
-            style={{
-              position: 'fixed',
-              bottom: 96,
-              left: 0,
-              right: 0,
-              textAlign: 'center',
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              fontSize: 14,
-              color: 'var(--game-primary)',
-              pointerEvents: 'none',
-            }}
-          >
-            your treasure!
-          </div>
-        )}
       </GameShell>
 
       <Confetti
@@ -294,7 +380,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Trader"
-        learnedText="trade-offs and choosing what to keep"
+        learnedText={`trade-offs and choosing what to keep — ${tintMeta.label.toLowerCase()} edition`}
         onPlayAgain={handlePlayAgain}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
@@ -304,7 +390,7 @@ export default function Game() {
           emoji: c.emoji,
           name: c.label,
         }))}
-        boughtLabel="Your docket"
+        boughtLabel={`Your ${tintMeta.label}`}
       />
 
       <FeedbackModal

@@ -1,60 +1,79 @@
 // Little Trader — card catalogue
 //
-// 25 cards across 5 tiers. The tier controls draw weight (see deckLogic.js)
-// and visual treatment (see TIER_BORDERS + Card.jsx). Background colours are
-// kept light/pastel so the central emoji reads cleanly at every size.
+// Cards are organised into THREE THEMES (Animals, Food, Toys). Each
+// playthrough randomly picks one theme; every card surfaced that game
+// comes from that theme. Within a theme, cards are split across three
+// RARITY TIERS (common / medium / rare) which drive the round-by-round
+// difficulty ramp and the visual border treatment.
 
-export const CARDS = [
-  // Foods — common, no special border
-  { id: 'apple',      emoji: '🍎', label: 'apple',      tier: 'food',     bg: '#FCEBEB', sound: 'munch' },
-  { id: 'banana',     emoji: '🍌', label: 'banana',     tier: 'food',     bg: '#FAEEDA', sound: 'munch' },
-  { id: 'bread',      emoji: '🍞', label: 'bread',      tier: 'food',     bg: '#FAECE7', sound: 'munch' },
-  { id: 'strawberry', emoji: '🍓', label: 'strawberry', tier: 'food',     bg: '#FBEAF0', sound: 'munch' },
-  { id: 'carrot',     emoji: '🥕', label: 'carrot',     tier: 'food',     bg: '#FAEEDA', sound: 'munch' },
+export const THEMES = ['animals', 'food', 'toys'];
 
-  // Animals — teal border, iconic sound on tap
-  { id: 'lion',     emoji: '🦁', label: 'lion',     tier: 'animal',   bg: '#FAEEDA', sound: 'roar' },
-  { id: 'elephant', emoji: '🐘', label: 'elephant', tier: 'animal',   bg: '#F1EFE8', sound: 'trumpet' },
-  { id: 'monkey',   emoji: '🐵', label: 'monkey',   tier: 'animal',   bg: '#FAEEDA', sound: 'monkey' },
-  { id: 'croc',     emoji: '🐊', label: 'croc',     tier: 'animal',   bg: '#E1F5EE', sound: 'snap' },
-  { id: 'giraffe',  emoji: '🦒', label: 'giraffe',  tier: 'animal',   bg: '#FAEEDA', sound: 'pop' },
-  { id: 'octopus',  emoji: '🐙', label: 'octopus',  tier: 'animal',   bg: '#FAECE7', sound: 'splash' },
-
-  // Vehicles — blue border, motion sound on tap
-  { id: 'racecar',  emoji: '🏎️', label: 'race car', tier: 'vehicle',  bg: '#FCEBEB', sound: 'vroom' },
-  { id: 'airplane', emoji: '✈️',  label: 'airplane', tier: 'vehicle',  bg: '#E6F1FB', sound: 'whoosh' },
-  { id: 'boat',     emoji: '⛵',  label: 'boat',     tier: 'vehicle',  bg: '#E1F5EE', sound: 'horn' },
-  { id: 'scooter',  emoji: '🛴',  label: 'scooter',  tier: 'vehicle',  bg: '#FAEEDA', sound: 'zoom' },
-  { id: 'train',    emoji: '🚂',  label: 'train',    tier: 'vehicle',  bg: '#FAEEDA', sound: 'choochoo' },
-
-  // Music — purple border, instrument note on tap
-  { id: 'drums',   emoji: '🥁', label: 'drums',   tier: 'music',    bg: '#EEEDFE', sound: 'drum' },
-  { id: 'guitar',  emoji: '🎸', label: 'guitar',  tier: 'music',    bg: '#EEEDFE', sound: 'guitar' },
-  { id: 'trumpet', emoji: '🎺', label: 'trumpet', tier: 'music',    bg: '#EEEDFE', sound: 'trumpetnote' },
-
-  // Treasures — gold border + sparkles, fanfare sound
-  { id: 'cake',     emoji: '🎂', label: 'cake',      tier: 'treasure', bg: '#FAEEDA', sound: 'sparkle' },
-  { id: 'cupcake',  emoji: '🧁', label: 'cupcake',   tier: 'treasure', bg: '#FBEAF0', sound: 'sparkle' },
-  { id: 'icecream', emoji: '🍦', label: 'ice cream', tier: 'treasure', bg: '#FBEAF0', sound: 'sparkle' },
-  { id: 'lollipop', emoji: '🍭', label: 'lollipop',  tier: 'treasure', bg: '#FCEBEB', sound: 'sparkle' },
-  { id: 'balloon',  emoji: '🎈', label: 'balloon',   tier: 'treasure', bg: '#FCEBEB', sound: 'sparkle' },
-  { id: 'rocket',   emoji: '🚀', label: 'rocket',    tier: 'treasure', bg: '#FAEEDA', sound: 'sparkle' },
-];
-
-// Tier border colours. `null` means no special border (food).
-// The hex values come straight from the design spec; they don't map cleanly
-// to existing tokens but they're tier-semantic — kept as is.
-export const TIER_BORDERS = {
-  food:     null,
-  animal:   '#5DCAA5',
-  vehicle:  '#378ADD',
-  music:    '#7F77DD',
-  treasure: '#EF9F27',
+// Per-theme UI colour scheme. The whole stage tints itself to match
+// the theme: docket panel bg, "New Card" label, and progress bar.
+export const THEME_TINT = {
+  animals: { primary: '#3FA985', bg: '#D1F0E4', label: 'Animals' },
+  food:    { primary: '#E8780C', bg: '#FBE0CB', label: 'Food'    },
+  toys:    { primary: '#2E70C8', bg: '#CFE0F4', label: 'Toys'    },
 };
 
+// Tier border on the card itself. Common cards have no special ring;
+// medium cards get a teal ring; rare cards get a gold ring + sparkles.
+export const TIER_BORDERS = {
+  common: null,
+  medium: '#5DCAA5',
+  rare:   '#EF9F27',
+};
+
+export const CARDS = [
+  // ── Animals ──────────────────────────────────────────────
+  { id: 'cat',      emoji: '🐱', label: 'Cat',      theme: 'animals', tier: 'common', bg: '#FAEEDA', sound: 'pop' },
+  { id: 'dog',      emoji: '🐶', label: 'Dog',      theme: 'animals', tier: 'common', bg: '#F1EFE8', sound: 'pop' },
+  { id: 'rabbit',   emoji: '🐰', label: 'Rabbit',   theme: 'animals', tier: 'common', bg: '#FBEAF0', sound: 'pop' },
+  { id: 'frog',     emoji: '🐸', label: 'Frog',     theme: 'animals', tier: 'common', bg: '#E1F5EE', sound: 'pop' },
+  { id: 'monkey',   emoji: '🐵', label: 'Monkey',   theme: 'animals', tier: 'medium', bg: '#FAEEDA', sound: 'monkey' },
+  { id: 'panda',    emoji: '🐼', label: 'Panda',    theme: 'animals', tier: 'medium', bg: '#F1EFE8', sound: 'pop' },
+  { id: 'octopus',  emoji: '🐙', label: 'Octopus',  theme: 'animals', tier: 'medium', bg: '#FAECE7', sound: 'splash' },
+  { id: 'penguin',  emoji: '🐧', label: 'Penguin',  theme: 'animals', tier: 'medium', bg: '#E6F1FB', sound: 'pop' },
+  { id: 'lion',     emoji: '🦁', label: 'Lion',     theme: 'animals', tier: 'rare',   bg: '#FAEEDA', sound: 'roar' },
+  { id: 'elephant', emoji: '🐘', label: 'Elephant', theme: 'animals', tier: 'rare',   bg: '#F1EFE8', sound: 'trumpet' },
+  { id: 'giraffe',  emoji: '🦒', label: 'Giraffe',  theme: 'animals', tier: 'rare',   bg: '#FAEEDA', sound: 'sparkle' },
+  { id: 'unicorn',  emoji: '🦄', label: 'Unicorn',  theme: 'animals', tier: 'rare',   bg: '#FBEAF0', sound: 'sparkle' },
+
+  // ── Food ─────────────────────────────────────────────────
+  { id: 'apple',      emoji: '🍎', label: 'Apple',      theme: 'food', tier: 'common', bg: '#FCEBEB', sound: 'munch' },
+  { id: 'banana',     emoji: '🍌', label: 'Banana',     theme: 'food', tier: 'common', bg: '#FAEEDA', sound: 'munch' },
+  { id: 'bread',      emoji: '🍞', label: 'Bread',      theme: 'food', tier: 'common', bg: '#FAECE7', sound: 'munch' },
+  { id: 'carrot',     emoji: '🥕', label: 'Carrot',     theme: 'food', tier: 'common', bg: '#FAEEDA', sound: 'munch' },
+  { id: 'strawberry', emoji: '🍓', label: 'Strawberry', theme: 'food', tier: 'medium', bg: '#FBEAF0', sound: 'munch' },
+  { id: 'pizza',      emoji: '🍕', label: 'Pizza',      theme: 'food', tier: 'medium', bg: '#FCEBEB', sound: 'munch' },
+  { id: 'sandwich',   emoji: '🥪', label: 'Sandwich',   theme: 'food', tier: 'medium', bg: '#FAEEDA', sound: 'munch' },
+  { id: 'cookie',     emoji: '🍪', label: 'Cookie',     theme: 'food', tier: 'medium', bg: '#FAEEDA', sound: 'munch' },
+  { id: 'cake',       emoji: '🎂', label: 'Cake',       theme: 'food', tier: 'rare',   bg: '#FAEEDA', sound: 'sparkle' },
+  { id: 'cupcake',    emoji: '🧁', label: 'Cupcake',    theme: 'food', tier: 'rare',   bg: '#FBEAF0', sound: 'sparkle' },
+  { id: 'icecream',   emoji: '🍦', label: 'Ice Cream',  theme: 'food', tier: 'rare',   bg: '#FBEAF0', sound: 'sparkle' },
+  { id: 'lollipop',   emoji: '🍭', label: 'Lollipop',   theme: 'food', tier: 'rare',   bg: '#FCEBEB', sound: 'sparkle' },
+
+  // ── Toys ─────────────────────────────────────────────────
+  { id: 'ball',     emoji: '⚽',  label: 'Ball',     theme: 'toys', tier: 'common', bg: '#E6F1FB', sound: 'pop' },
+  { id: 'teddy',    emoji: '🧸', label: 'Teddy',     theme: 'toys', tier: 'common', bg: '#FAEEDA', sound: 'pop' },
+  { id: 'blocks',   emoji: '🧱', label: 'Blocks',    theme: 'toys', tier: 'common', bg: '#FCEBEB', sound: 'pop' },
+  { id: 'crayon',   emoji: '🖍️', label: 'Crayon',   theme: 'toys', tier: 'common', bg: '#FAEEDA', sound: 'pop' },
+  { id: 'drums',    emoji: '🥁', label: 'Drums',     theme: 'toys', tier: 'medium', bg: '#EEEDFE', sound: 'drum' },
+  { id: 'guitar',   emoji: '🎸', label: 'Guitar',    theme: 'toys', tier: 'medium', bg: '#EEEDFE', sound: 'guitar' },
+  { id: 'scooter',  emoji: '🛴', label: 'Scooter',   theme: 'toys', tier: 'medium', bg: '#FAEEDA', sound: 'zoom' },
+  { id: 'train',    emoji: '🚂', label: 'Train',     theme: 'toys', tier: 'medium', bg: '#FAEEDA', sound: 'choochoo' },
+  { id: 'racecar',  emoji: '🏎️', label: 'Race Car', theme: 'toys', tier: 'rare',   bg: '#FCEBEB', sound: 'vroom' },
+  { id: 'airplane', emoji: '✈️',  label: 'Airplane', theme: 'toys', tier: 'rare',   bg: '#E6F1FB', sound: 'whoosh' },
+  { id: 'rocket',   emoji: '🚀', label: 'Rocket',    theme: 'toys', tier: 'rare',   bg: '#FAEEDA', sound: 'sparkle' },
+  { id: 'balloon',  emoji: '🎈', label: 'Balloon',   theme: 'toys', tier: 'rare',   bg: '#FCEBEB', sound: 'sparkle' },
+];
+
 export const CARDS_BY_ID = Object.fromEntries(CARDS.map(c => [c.id, c]));
-export const CARDS_BY_TIER = CARDS.reduce((acc, c) => {
-  (acc[c.tier] ||= []).push(c);
+
+// Group: { animals: { common: [...], medium: [...], rare: [...] }, ... }
+export const CARDS_BY_THEME_TIER = CARDS.reduce((acc, c) => {
+  acc[c.theme] ||= {};
+  (acc[c.theme][c.tier] ||= []).push(c);
   return acc;
 }, {});
 

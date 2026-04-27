@@ -10,7 +10,7 @@ import {
   ShopperIllustration, DJIllustration, EngineerIllustration,
   ChefIllustration, PianistIllustration, CoderIllustration,
   ChemistIllustration, AstronomerIllustration, AnalystIllustration,
-  ArchitectIllustration, MatisseIllustration,
+  ArchitectIllustration, MatisseIllustration, TraderIllustration,
 } from '../../pages/GameIllustrations';
 
 const ILLUSTRATIONS = {
@@ -18,7 +18,7 @@ const ILLUSTRATIONS = {
   chef: ChefIllustration, dj: PianistIllustration, coder: CoderIllustration,
   chemist: ChemistIllustration, astronomer: AstronomerIllustration,
   pie: AnalystIllustration, architect: ArchitectIllustration,
-  matisse: MatisseIllustration,
+  matisse: MatisseIllustration, trader: TraderIllustration,
 };
 
 const KEYFRAMES_ID = 'didit-success-screen-keyframes';
@@ -205,8 +205,11 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
 
   const homeBtnStyle = {
     ...btnBase,
-    background: 'color-mix(in srgb, var(--game-text-muted) 10%, transparent)',
-    color: 'var(--game-text-muted)',
+    background: 'color-mix(in srgb, var(--game-text) 8%, transparent)',
+    color: 'var(--game-text)',
+    fontWeight: 700,
+    fontSize: '0.85rem',
+    padding: '14px 0',
   };
 
   return (
@@ -423,6 +426,11 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
             <span>🎲</span><span>Another game</span>
           </button>
         </div>
+        {/* Back to Hub — full-width tertiary button. Was previously only the
+            small house icon in the header, easy to miss on the success screen. */}
+        <button style={homeBtnStyle} onClick={onBack || (() => nav('/hub'))}>
+          <span>🏠</span><span>Back to Hub</span>
+        </button>
       </div>
 
       {/* Share + Feedback — subtle text links */}

@@ -5,24 +5,35 @@ import { DOCKET_CAP } from './cards';
 import { CARD_SIZES, DOCKET_HEIGHT } from './styles';
 
 /**
- * Wooden tan bar holding up to 5 cards. Layout: a horizontal row of slot
- * tiles. The parent passes refs so the drag layer in NewCardArea can
- * hit-test the docket bounds and individual cards (for swap targeting).
+ * Solid-colour panel holding up to 5 card slots. Refs are attached to
+ * every slot wrapper (filled or empty) so the parent can both hit-test
+ * during drag and animate the slot the pointer is currently over.
+ *
+ * Props:
+ *   cards            — array of Card data, length 0..DOCKET_CAP
+ *   bgColor          — panel background colour (theme tint)
+ *   textColor        — header label colour (theme primary)
+ *   swapMode         — true when the docket is full + a card is being dragged
+ *   pulseSlotIdx     — slot index to briefly pulse after a successful keep/swap
+ *   hoveredSlotIdx   — slot index currently under the dragged pointer (scales up)
+ *   setSlotRef       — (idx, el) => void — registers slot DOM nodes for hit-testing
+ *   onTapCard        — (card, idx) => void — tap-to-hear when no drag is active
  */
 const Docket = forwardRef(function Docket(
   {
     cards,
-    swapMode = false,        // dashed amber outlines on existing cards
-    pulseSlotIdx = null,     // briefly highlight a slot (after a successful keep)
-    setSlotRef,              // (idx, el) => void — registers slot DOM nodes for hit-testing
-    onTapCard = () => {},    // tap-to-hear when no drag is active
+    bgColor,
+    textColor,
+    swapMode = false,
+    pulseSlotIdx = null,
+    hoveredSlotIdx = null,
+    setSlotRef,
+    onTapCard = () => {},
   },
   ref,
 ) {
   const slotW = CARD_SIZES.docket.w;
   const slotH = CARD_SIZES.docket.h;
-
-  const filled = cards.length;
   const slots = Array.from({ length: DOCKET_CAP }, (_, i) => i);
 
   return (
@@ -30,13 +41,15 @@ const Docket = forwardRef(function Docket(
       ref={ref}
       style={{
         flexShrink: 0,
-        width: '100%',
-        background: 'linear-gradient(180deg, var(--trader-docket) 0%, #B07A52 100%)',
-        borderTop: '3px solid var(--trader-docket-edge)',
-        boxShadow: 'inset 0 2px 0 rgba(255,255,255,0.18), 0 -6px 18px rgba(0,0,0,0.15)',
-        padding: '10px 12px 16px',
+        width: 'calc(100% - 24px)',
+        margin: '0 12px 12px',
+        background: bgColor || 'var(--trader-docket)',
+        borderRadius: 24,
+        padding: '12px 12px 16px',
         boxSizing: 'border-box',
         minHeight: DOCKET_HEIGHT,
+        boxShadow: '0 6px 18px rgba(0,0,0,0.06)',
+        transition: 'background 0.4s ease',
       }}
     >
       <style>{`
@@ -50,35 +63,35 @@ const Docket = forwardRef(function Docket(
       <div
         style={{
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 4px 6px',
-          gap: 8,
-          color: '#FFFBF0',
+          justifyContent: 'center',
+          padding: '0 6px 10px',
+          gap: 2,
         }}
       >
         <span
           style={{
             fontFamily: fonts.display,
             fontWeight: 800,
-            fontSize: 13,
-            letterSpacing: '0.04em',
-            textTransform: 'lowercase',
-            color: '#FFF7E1',
-            opacity: 0.95,
+            fontSize: 24,
+            letterSpacing: '0.01em',
+            color: textColor || 'var(--trader-docket-text)',
+            lineHeight: 1.1,
           }}
         >
-          your docket
+          Your Cards
         </span>
         <span
           style={{
             fontFamily: fonts.display,
             fontWeight: 700,
             fontSize: 12,
-            color: 'rgba(255,247,225,0.85)',
+            color: textColor || 'var(--trader-docket-text)',
+            opacity: 0.7,
           }}
         >
-          {filled} {filled === 1 ? 'card' : 'cards'}
+          You can have up to 5
         </span>
       </div>
 
@@ -97,26 +110,27 @@ const Docket = forwardRef(function Docket(
       >
         {slots.map((i) => {
           const card = cards[i];
-          const animate = pulseSlotIdx === i ? 'traderSlotPulse 0.28s ease-out' : 'none';
-          if (!card) {
-            return <EmptySlot key={i} w={slotW} h={slotH} />;
-          }
+          const isHovered = hoveredSlotIdx === i;
+          const pulseAnim = pulseSlotIdx === i ? 'traderSlotPulse 0.28s ease-out' : 'none';
+          const transform = isHovered ? 'scale(1.10)' : 'scale(1)';
           return (
             <div
-              key={card.id + ':' + i}
+              key={card ? card.id + ':' + i : 'empty:' + i}
               ref={(el) => { if (setSlotRef) setSlotRef(i, el); }}
               data-docket-slot={i}
+              onClick={card ? () => onTapCard(card, i) : undefined}
               style={{
-                animation: animate,
-                cursor: 'pointer',
+                transform,
+                transition: 'transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                animation: pulseAnim,
+                cursor: card ? 'pointer' : 'default',
               }}
-              onClick={() => onTapCard(card, i)}
             >
-              <Card
-                card={card}
-                size="docket"
-                highlight={swapMode}
-              />
+              {card ? (
+                <Card card={card} size="docket" highlight={swapMode} />
+              ) : (
+                <EmptySlot w={slotW} h={slotH} active={isHovered} />
+              )}
             </div>
           );
         })}
@@ -125,7 +139,7 @@ const Docket = forwardRef(function Docket(
   );
 });
 
-function EmptySlot({ w, h }) {
+function EmptySlot({ w, h, active = false }) {
   return (
     <div
       aria-hidden="true"
@@ -133,9 +147,9 @@ function EmptySlot({ w, h }) {
         width: w,
         height: h,
         borderRadius: 12,
-        border: '2px dashed rgba(255,255,255,0.45)',
-        background: 'rgba(255,255,255,0.10)',
+        background: active ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.25)',
         flexShrink: 0,
+        transition: 'background 0.18s ease',
       }}
     />
   );

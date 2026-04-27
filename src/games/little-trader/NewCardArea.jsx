@@ -18,10 +18,11 @@ import { CARD_SIZES } from './styles';
 export default function NewCardArea({
   card,
   showFlip,                // true on the initial frame after a new round → triggers flip-in animation
-  isFull,                  // docket is full (5 cards) — affects swap UX hint
+  accentColor,             // theme accent — recolours the "New Card" label
   onResolve,               // (result) => void — see below for shape
   onSkip,                  // () => void — for the skip button
   hitTest,                 // (clientX, clientY) → { zone, slotIndex } — provided by Game.jsx
+  onHoverChange,           // (hit) => void — fires on every pointer move during drag
 }) {
   const cardRef = useRef(null);
   const [drag, setDrag] = useState(null); // { dx, dy } pointer offset from origin
@@ -45,6 +46,9 @@ export default function NewCardArea({
       dx: e.clientX - drag.startCx,
       dy: e.clientY - drag.startCy,
     });
+    // Live hover feedback — let the parent know which slot the pointer
+    // is currently over so it can scale that slot up.
+    if (onHoverChange && hitTest) onHoverChange(hitTest(e.clientX, e.clientY));
   };
 
   const endDrag = (e) => {
@@ -52,12 +56,14 @@ export default function NewCardArea({
     try { cardRef.current?.releasePointerCapture?.(e.pointerId); } catch { /* ignore */ }
     const result = hitTest ? hitTest(e.clientX, e.clientY) : { zone: 'outside' };
     setDrag(null);
+    if (onHoverChange) onHoverChange({ zone: 'outside' });
     onResolve?.(result);
   };
 
   const cancelDrag = () => {
     if (!drag) return;
     setDrag(null);
+    if (onHoverChange) onHoverChange({ zone: 'outside' });
     onResolve?.({ zone: 'outside' });
   };
 
@@ -74,7 +80,11 @@ export default function NewCardArea({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        // Anchor the new card toward the bottom of its area so it visually
+        // sits close to the docket. Top whitespace under the progress bar
+        // becomes the breathing room instead.
+        justifyContent: 'flex-end',
+        paddingBottom: 12,
         position: 'relative',
         gap: 10,
       }}
@@ -95,111 +105,107 @@ export default function NewCardArea({
         }
       `}</style>
 
-      {/* "new!" badge */}
+      {/* "New Card" section header — same size + treatment as the docket header */}
       <div
         style={{
-          background: 'var(--game-accent)',
-          color: '#FFFFFF',
           fontFamily: fonts.display,
           fontWeight: 800,
-          fontSize: 13,
-          padding: '6px 14px',
-          borderRadius: 9999,
-          boxShadow: '0 3px 10px rgba(207,74,74,0.35)',
-          animation: 'traderBadgeBob 1.6s ease-in-out infinite',
-          letterSpacing: '0.06em',
+          fontSize: 24,
+          color: accentColor || 'var(--game-text)',
+          letterSpacing: '0.01em',
           opacity: card ? 1 : 0,
-          transition: 'opacity 0.2s ease',
+          transition: 'opacity 0.2s ease, color 0.4s ease',
+          textAlign: 'center',
+          lineHeight: 1.1,
         }}
       >
-        new!
+        New Card
       </div>
 
-      {/* The big card */}
-      <div
-        ref={cardRef}
-        onPointerDown={startDrag}
-        onPointerMove={moveDrag}
-        onPointerUp={endDrag}
-        onPointerCancel={cancelDrag}
-        style={{
-          width: dims.w,
-          height: dims.h,
-          touchAction: 'none',
-          transform: `translate(${tx}px, ${ty}px) scale(${isDragging ? 1.05 : 1})`,
-          transition: isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          willChange: 'transform',
-          zIndex: isDragging ? 50 : 5,
-          animation: showFlip ? 'traderCardFlipIn 0.5s ease-out' : 'none',
-          transformStyle: 'preserve-3d',
-          perspective: 800,
-        }}
-      >
-        {card && <Card card={card} size="new" />}
-      </div>
-
-      {/* Hint row: arrow + "drag down to keep" */}
+      {/* Card + icon Next button on a single horizontal row, both centred
+          vertically. A spacer on the left balances the button on the right
+          so the card stays horizontally centred in the area. */}
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          gap: 2,
-          marginTop: 8,
-          color: 'var(--game-text-muted)',
-          fontFamily: fonts.display,
-          fontWeight: 600,
-          fontSize: 12,
-          textTransform: 'lowercase',
-          opacity: isDragging ? 0 : 0.85,
-          transition: 'opacity 0.2s ease',
-          pointerEvents: 'none',
+          justifyContent: 'center',
+          gap: 14,
         }}
       >
-        <span
+        {/* Left spacer — same width as the Next button so the card stays centred */}
+        <div style={{ width: 48, flexShrink: 0 }} aria-hidden="true" />
+
+        {/* The big card */}
+        <div
+          ref={cardRef}
+          onPointerDown={startDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={endDrag}
+          onPointerCancel={cancelDrag}
           style={{
-            fontSize: 22,
-            lineHeight: 1,
-            animation: 'traderArrowBob 1.4s ease-in-out infinite',
+            width: dims.w,
+            height: dims.h,
+            touchAction: 'none',
+            transform: `translate(${tx}px, ${ty}px) scale(${isDragging ? 1.05 : 1})`,
+            // Dim while dragging so the slot underneath stays visible.
+            opacity: isDragging ? 0.7 : 1,
+            transition: isDragging
+              ? 'opacity 0.15s ease'
+              : 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease',
+            willChange: 'transform, opacity',
+            zIndex: isDragging ? 50 : 5,
+            animation: showFlip ? 'traderCardFlipIn 0.5s ease-out' : 'none',
+            transformStyle: 'preserve-3d',
+            perspective: 800,
+            flexShrink: 0,
           }}
         >
-          ↓
-        </span>
-        <span>{isFull ? 'drop on a card to swap' : 'drag down to keep'}</span>
-      </div>
+          {card && <Card card={card} size="new" />}
+        </div>
 
-      {/* Skip button — pinned to the right edge */}
-      <button
-        type="button"
-        onClick={onSkip}
-        disabled={!card}
-        style={{
-          position: 'absolute',
-          right: 16,
-          top: '50%',
-          transform: 'translateY(-50%)',
-          background: '#FFFFFF',
-          color: 'var(--game-text)',
-          border: '2px solid rgba(0,0,0,0.08)',
-          borderRadius: 9999,
-          padding: '12px 18px',
-          minHeight: 48,
-          fontFamily: fonts.display,
-          fontWeight: 800,
-          fontSize: 14,
-          cursor: card ? 'pointer' : 'default',
-          opacity: card ? 1 : 0.4,
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 6,
-          letterSpacing: '0.04em',
-        }}
-      >
-        skip <span>→</span>
-      </button>
+        {/* Icon Next button — circular, centred to the card's vertical axis */}
+        <button
+          type="button"
+          onClick={onSkip}
+          disabled={!card}
+          aria-label="Skip this card"
+          style={{
+            width: 48,
+            height: 48,
+            flexShrink: 0,
+            background: '#FFFFFF',
+            color: 'var(--game-text)',
+            border: '2px solid rgba(0,0,0,0.08)',
+            borderRadius: '50%',
+            padding: 0,
+            cursor: card ? 'pointer' : 'default',
+            opacity: card ? 1 : 0.35,
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'opacity 0.2s ease, background 0.15s ease',
+          }}
+        >
+          {/* Chevron-right icon — clean SVG so it scales with the button */}
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="9 6 15 12 9 18" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

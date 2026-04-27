@@ -1,18 +1,19 @@
 import { ROUNDS } from './deckLogic';
 
 /**
- * Six horizontal segments. `completed` segments fill in coral (--game-accent),
- * the active segment shows a lighter pulse so the kid sees "we're on this one
- * right now". Segments before `completed + 1` are dim grey.
+ * Eight horizontal segments. `completed` segments fill in the theme's
+ * accent colour (passed by the parent), the active segment shows a
+ * lighter pulse so the kid sees "we're on this one right now".
  */
-export default function ProgressBar({ completed = 0, active = 0 }) {
+export default function ProgressBar({ completed = 0, active = 0, accentColor }) {
+  const fill = accentColor || 'var(--game-accent)';
   return (
     <div
       style={{
         display: 'flex',
         gap: 6,
         width: '100%',
-        maxWidth: 420,
+        maxWidth: 460,
         margin: '0 auto',
         padding: '4px 16px 0',
         boxSizing: 'border-box',
@@ -27,11 +28,7 @@ export default function ProgressBar({ completed = 0, active = 0 }) {
       {Array.from({ length: ROUNDS }, (_, i) => {
         const isDone   = i < completed;
         const isActive = i === active && !isDone;
-        const bg = isDone
-          ? 'var(--game-accent)'
-          : isActive
-          ? 'var(--game-accent)'
-          : 'rgba(0,0,0,0.08)';
+        const bg = isDone || isActive ? fill : 'rgba(0,0,0,0.08)';
         return (
           <div
             key={i}
@@ -42,7 +39,7 @@ export default function ProgressBar({ completed = 0, active = 0 }) {
               background: bg,
               opacity: isActive ? 0.9 : 1,
               animation: isActive ? 'traderSegPulse 1.3s ease-in-out infinite' : 'none',
-              transition: 'background 0.25s ease',
+              transition: 'background 0.4s ease',
             }}
           />
         );

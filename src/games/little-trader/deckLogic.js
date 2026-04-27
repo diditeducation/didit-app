@@ -1,12 +1,15 @@
 // Little Trader — round generation
 //
-// Six rounds with weighted tier draws. Treasures escalate through the game
-// and round 6 is always a treasure for a peak ending. No card repeats within
-// a single playthrough.
+// Each playthrough picks ONE theme (Animals, Food, or Toys). All cards
+// surfaced that game come from the chosen theme. Within the theme, cards
+// are bucketed by RARITY (common / medium / rare); the round-by-round
+// weights ramp difficulty so the kid sees rarer cards toward the end and
+// always closes on a guaranteed rare card. Cards never repeat within a
+// playthrough (starters included).
 
-import { CARDS, CARDS_BY_TIER } from './cards';
+import { CARDS_BY_THEME_TIER, THEMES } from './cards';
 
-export const ROUNDS = 6;
+export const ROUNDS = 8;
 
 function shuffle(array) {
   const out = [...array];
@@ -17,27 +20,33 @@ function shuffle(array) {
   return out;
 }
 
-/**
- * Three random food cards form the starter docket. Foods only — gentle
- * onboarding that lets the kid feel ownership before any real choices.
- */
-export function getStarterCards() {
-  return shuffle(CARDS_BY_TIER.food).slice(0, 3);
+/** Pick a random theme for this playthrough. */
+export function pickTheme() {
+  return THEMES[Math.floor(Math.random() * THEMES.length)];
 }
 
-// Tier weights per round. Rounds get more exciting as we go;
-// round 6 forces a treasure.
+/**
+ * Three random commons from the chosen theme — gentle onboarding.
+ */
+export function getStarterCards(theme) {
+  const pool = CARDS_BY_THEME_TIER[theme]?.common || [];
+  return shuffle(pool).slice(0, 3);
+}
+
+// Rarity weights per round (8 rounds). Ramps from "mostly common" to
+// "guaranteed rare" so the player feels growing excitement.
 const ROUND_WEIGHTS = [
-  { food: 3, animal: 2, vehicle: 1, music: 0, treasure: 0 }, // round 1
-  { food: 2, animal: 2, vehicle: 2, music: 1, treasure: 0 }, // round 2
-  { food: 1, animal: 2, vehicle: 2, music: 1, treasure: 1 }, // round 3
-  { food: 1, animal: 1, vehicle: 2, music: 1, treasure: 2 }, // round 4
-  { food: 0, animal: 1, vehicle: 1, music: 1, treasure: 3 }, // round 5
-  { food: 0, animal: 0, vehicle: 0, music: 0, treasure: 1 }, // round 6 — guaranteed treasure
+  { common: 3, medium: 1, rare: 0 }, // 1
+  { common: 2, medium: 2, rare: 0 }, // 2
+  { common: 2, medium: 2, rare: 1 }, // 3
+  { common: 1, medium: 2, rare: 1 }, // 4
+  { common: 1, medium: 2, rare: 2 }, // 5
+  { common: 0, medium: 2, rare: 2 }, // 6
+  { common: 0, medium: 1, rare: 3 }, // 7
+  { common: 0, medium: 0, rare: 1 }, // 8 — guaranteed rare for the peak
 ];
 
 function pickWeightedTier(weights, availableTiersSet) {
-  // Filter out tiers that have no remaining cards.
   const usable = Object.entries(weights).filter(
     ([tier, w]) => w > 0 && availableTiersSet.has(tier),
   );
@@ -52,16 +61,16 @@ function pickWeightedTier(weights, availableTiersSet) {
 }
 
 /**
- * Pick the new card for the given round (0-indexed).
- * Excludes any id already in `alreadyDrawn` (Set<string>) and any id
- * currently in the docket so a "swap" doesn't surface a duplicate.
+ * Draw the new card for the given round (0-indexed) within `theme`.
+ * Excludes any id already in `alreadyDrawn` (Set<string>) so cards never
+ * repeat in a playthrough.
  */
-export function getRoundCard(roundIndex, alreadyDrawn) {
+export function getRoundCard(roundIndex, theme, alreadyDrawn) {
   const weights = ROUND_WEIGHTS[roundIndex] || ROUND_WEIGHTS[ROUND_WEIGHTS.length - 1];
+  const themePools = CARDS_BY_THEME_TIER[theme] || {};
 
-  // Available cards per tier, after excluding what's already been seen.
   const remainingByTier = {};
-  for (const [tier, list] of Object.entries(CARDS_BY_TIER)) {
+  for (const [tier, list] of Object.entries(themePools)) {
     const left = list.filter(c => !alreadyDrawn.has(c.id));
     if (left.length) remainingByTier[tier] = left;
   }
@@ -69,8 +78,8 @@ export function getRoundCard(roundIndex, alreadyDrawn) {
   const availableTiers = new Set(Object.keys(remainingByTier));
   let tier = pickWeightedTier(weights, availableTiers);
 
-  // Fallback: if the weighted set is exhausted (all preferred tiers empty),
-  // pick from any remaining tier so the round still gets a card.
+  // Fallback: if every preferred tier is exhausted, pick from any tier
+  // that still has cards — round still gets a card.
   if (!tier) {
     const allKeys = [...availableTiers];
     if (!allKeys.length) return null;
