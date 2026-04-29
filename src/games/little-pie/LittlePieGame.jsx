@@ -265,10 +265,11 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
   }, [dragging, placed, gaps.length]);
 
   const CONTAINER_H = SVG_H + 230;
-  // Pie now scales up to 1.25× on screens that have the room (target 125%
-  // size per design tweak). Narrow screens still scale DOWN to fit.
+  // Pie renders at 70 % of its native canvas size — keeps the wedge
+  // pieces compact and gives the surrounding UI room to breathe. Narrow
+  // screens still scale DOWN further to fit the viewport.
   const PIE_SCALE = Math.min(
-    1.25,
+    0.7,
     (typeof window !== 'undefined' ? window.innerWidth - 32 : SVG_W) / SVG_W,
   );
 
