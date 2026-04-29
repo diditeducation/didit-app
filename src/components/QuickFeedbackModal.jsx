@@ -177,14 +177,8 @@ export default function QuickFeedbackModal({ isOpen, onClose, source = 'unknown'
           </button>
           <div style={{
             fontWeight: 900, fontSize: '1.15rem', color: '#3A6CE5',
-            marginBottom: 4,
           }}>
             What would you like us to fix?
-          </div>
-          <div style={{
-            fontWeight: 400, fontSize: '0.78rem', color: '#666',
-          }}>
-            One sentence is plenty.
           </div>
         </div>
 
