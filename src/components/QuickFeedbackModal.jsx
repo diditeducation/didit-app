@@ -138,7 +138,7 @@ export default function QuickFeedbackModal({ isOpen, onClose, source = 'unknown'
             color: '#2D2A26', textAlign: 'center', lineHeight: 1.55,
             margin: 0, maxWidth: 280,
           }}>
-            Thanks — we&apos;ve got it. Every note makes Did·It better.
+            Thank you for helping us make Did·It better. 💛
           </p>
           <button
             onClick={onClose}
