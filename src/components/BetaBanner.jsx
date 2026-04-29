@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { fonts } from '../design-system/tokens';
-import FeedbackModal from './FeedbackModal';
+import QuickFeedbackModal from './QuickFeedbackModal';
 
 /**
  * Top-of-app beta strip. Renders on every page (hub, game, marketing).
@@ -108,10 +108,10 @@ export default function BetaBanner() {
         </button>
       </div>
 
-      <FeedbackModal
+      <QuickFeedbackModal
         isOpen={feedbackOpen}
         onClose={() => setFeedbackOpen(false)}
-        gameName="Beta banner"
+        source="beta-banner"
       />
     </>
   );
