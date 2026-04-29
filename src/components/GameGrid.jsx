@@ -15,6 +15,7 @@ import {
   AnalystIllustration,
   MatisseIllustration,
   TraderIllustration,
+  ConsultantIllustration,
 } from '../pages/GameIllustrations';
 
 const GAME_ILLUSTRATIONS = {
@@ -29,6 +30,7 @@ const GAME_ILLUSTRATIONS = {
   pie:        AnalystIllustration,
   matisse:    MatisseIllustration,
   trader:     TraderIllustration,
+  consultant: ConsultantIllustration,
 };
 
 const cardCss = `

@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import MarketingPage from './pages/MarketingPage';
 import HubPage from './pages/HubPage';
 import Hub from './pages/Hub';
+import AboutPage from './pages/AboutPage';
 import GameScreen from './pages/GameScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignIn from './pages/SignIn';
@@ -39,6 +40,8 @@ const MatisseHome        = lazy(() => import('./games/little-matisse/HomePage'))
 const MatisseGame        = lazy(() => import('./games/little-matisse/Game'));
 const TraderHome         = lazy(() => import('./games/little-trader/HomePage'));
 const TraderGame         = lazy(() => import('./games/little-trader/Game'));
+const ConsultantHome     = lazy(() => import('./games/little-consultant/HomePage'));
+const ConsultantGame     = lazy(() => import('./games/little-consultant/Game'));
 
 export default function App() {
   return (
@@ -52,6 +55,7 @@ export default function App() {
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/hub" element={<Hub />} />
           <Route path="/hub/classic" element={<HubPage />} />
+          <Route path="/about" element={<AboutPage />} />
 
           {/* Little Engineer ✓ name matches folder */}
           <Route path="/games/little-engineer"      element={<ProtectedRoute><EngineerHome /></ProtectedRoute>} />
@@ -94,6 +98,10 @@ export default function App() {
           {/* Little Trader */}
           <Route path="/games/little-trader"      element={<ProtectedRoute><TraderHome /></ProtectedRoute>} />
           <Route path="/games/little-trader/play" element={<ProtectedRoute><TraderGame /></ProtectedRoute>} />
+
+          {/* Little Consultant */}
+          <Route path="/games/little-consultant"      element={<ProtectedRoute><ConsultantHome /></ProtectedRoute>} />
+          <Route path="/games/little-consultant/play" element={<ProtectedRoute><ConsultantGame /></ProtectedRoute>} />
 
           {/* Little DJ */}
           <Route path="/games/little-dj"           element={<ProtectedRoute><DJHome /></ProtectedRoute>} />

@@ -47,7 +47,35 @@ function AccordionSection({ title, children, defaultOpen = false }) {
   );
 }
 
-function RichGuideSheet({ guide, onClose, closeBtnStyle }) {
+/** Small "Read more about Did·It →" link rendered at the bottom of both
+    parent-guide variants. Links to /about. */
+function AboutLink({ onNavigate }) {
+  return (
+    <div style={{ textAlign: 'center', margin: '8px 0 4px' }}>
+      <button
+        type="button"
+        onClick={onNavigate}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          fontFamily: fonts.display,
+          fontWeight: 700,
+          fontSize: 12,
+          color: colors.muted,
+          cursor: 'pointer',
+          textDecoration: 'underline',
+          textDecorationStyle: 'dashed',
+          textUnderlineOffset: '3px',
+        }}
+      >
+        Read more about Did·It →
+      </button>
+    </div>
+  );
+}
+
+function RichGuideSheet({ guide, onClose, onAbout, closeBtnStyle }) {
   return (
     <div
       style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.55)',zIndex:400,display:'flex',alignItems:'flex-end',justifyContent:'center' }}
@@ -142,8 +170,11 @@ function RichGuideSheet({ guide, onClose, closeBtnStyle }) {
           </div>
         </AccordionSection>
 
+        {/* Read-more link to /about */}
+        {onAbout && <AboutLink onNavigate={onAbout} />}
+
         {/* Close button */}
-        <div style={{ marginTop:20 }}>
+        <div style={{ marginTop:14 }}>
           <button style={closeBtnStyle} onClick={onClose}>Got it! ✓</button>
         </div>
       </div>
@@ -571,7 +602,12 @@ export default function GameHomeLayout({
         {/* Parent Guide — rich bottom sheet or simple modal */}
         {guideOpen && (
           richGuide
-            ? <RichGuideSheet guide={richGuide} onClose={() => setGuideOpen(false)} closeBtnStyle={modalCloseBtnStyle} />
+            ? <RichGuideSheet
+                guide={richGuide}
+                onClose={() => setGuideOpen(false)}
+                onAbout={() => { setGuideOpen(false); nav('/about'); }}
+                closeBtnStyle={modalCloseBtnStyle}
+              />
             : (
               <div
                 style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',zIndex:400,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px' }}
@@ -579,8 +615,9 @@ export default function GameHomeLayout({
               >
                 <div style={{ background:'#FFFFFF',borderRadius:'18px',padding:'2rem',maxWidth:'340px',width:'100%',boxSizing:'border-box' }} onClick={e => e.stopPropagation()}>
                   <div style={{ fontFamily:fonts.display,fontWeight:800,fontSize:'1.1rem',color:colors.text,marginBottom:'1rem' }}>👋 Hey grown-up!</div>
-                  <div style={{ fontFamily:fonts.body,fontSize:'0.88rem',color:colors.muted,lineHeight:1.7,marginBottom:'1.5rem' }}>{parentTipBody}</div>
-                  <button style={modalCloseBtnStyle} onClick={() => setGuideOpen(false)}>Got it! ✓</button>
+                  <div style={{ fontFamily:fonts.body,fontSize:'0.88rem',color:colors.muted,lineHeight:1.7,marginBottom:'1rem' }}>{parentTipBody}</div>
+                  <AboutLink onNavigate={() => { setGuideOpen(false); nav('/about'); }} />
+                  <button style={{ ...modalCloseBtnStyle, marginTop: 8 }} onClick={() => setGuideOpen(false)}>Got it! ✓</button>
                 </div>
               </div>
             )

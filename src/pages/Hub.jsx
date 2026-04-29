@@ -6,6 +6,7 @@ import TodayCard from '../components/TodayCard';
 import ParentGuide from '../components/ParentGuide';
 import SurpriseSheet from '../components/SurpriseSheet';
 import GameGrid from '../components/GameGrid';
+import HubFooter from '../components/HubFooter';
 import ShareButton from '../design-system/components/ShareButton';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
@@ -170,6 +171,8 @@ export default function Hub() {
             onSurprise={() => setSheetOpen(true)}
           />
         </div>
+
+        <HubFooter />
       </div>
 
 

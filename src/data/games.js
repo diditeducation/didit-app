@@ -423,6 +423,43 @@ export const GAMES = [
       },
     },
   },
+  {
+    id: 'little-consultant',
+    illustrationKey: 'consultant',     // no SVG yet — SuccessScreen falls back to 🎉
+    title: 'Little Consultant',
+    emoji: '🗂️',
+    tag: '🗂️ Structured Problem Solving',
+    category: 'Finance & Business',
+    hook: 'Same shapes — sort them three different ways.',
+    desc: 'Sort eight shapes into three homes. The question changes each level — colour, then shape, then pattern.',
+    skills: ['Categorisation', 'MECE thinking', 'Flexibility'],
+    bgImage: '/backgrounds/background-blue.png',
+    path: '/games/little-consultant',
+    gradient: `linear-gradient(135deg, ${colors.blueberryMid} 0%, ${colors.blueberryDark} 100%)`,
+    color: colors.blueberryMid,
+    colorDark: colors.blueberryDark,
+    colorLight: colors.blueberryLight,
+    parentGuide: {
+      concept: '🗂️ MECE Categorisation',
+      conceptColor: colors.blueberryDark,
+      explanation:
+        "Your child is learning MECE — Mutually Exclusive, Collectively Exhaustive. In plain words: every item belongs to exactly one bucket (no overlap), and every item has a bucket (nothing missed). It's the foundation of structured problem solving. When you carve a big question into clean buckets, you can't double-count and you can't miss anything — so the answer almost falls out of the structure. This game gives kids the same muscle: sort by colour, then sort the same shapes by shape, then by pattern. Same world, different question, always a clean answer. The red triangle moves homes because the rule moved — and noticing that is the whole skill.",
+      science: {
+        text: 'Cognitive flexibility — switching between different sorting rules — develops rapidly between ages 3–5 and predicts later academic success across maths and reading. Sorting tasks are how researchers literally measure it.',
+        citation: 'Diamond, A., "Executive Functions," Annual Review of Psychology, 2013',
+        url: 'https://doi.org/10.1146/annurev-psych-113011-143750',
+      },
+      ladder: [
+        { label: 'Playing now',   title: 'Sorting by one rule',  desc: 'Putting things in the right group.',                          color: colors.blueberryMid },
+        { label: 'Builds toward', title: 'Switching dimensions', desc: 'Realising the same things can be sorted many ways.',          color: colors.sunMid },
+        { label: 'Big concept',   title: 'MECE thinking',        desc: 'Carving up the world cleanly — no overlap, nothing missed.',  color: colors.coralMid },
+      ],
+      tip: {
+        text: "When level 2 starts, ask: 'where does the red triangle go now?' On level 1 it lived in the Red home; now it has to find a new home. Watching them spot that is the whole MECE lesson in one moment.",
+        question: "'Same shapes — but what's the new question?'",
+      },
+    },
+  },
 ];
 
 // Rotate the featured game daily based on the date

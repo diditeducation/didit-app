@@ -273,58 +273,60 @@ export function CoderIllustration() {
 // ── Little Chemist ───────────────────────────────────────────
 // Hero: NH₃ ammonia molecule — blue N + three teal H atoms + amber bonds. 5 core shapes.
 export function ChemistIllustration() {
-  // Nitrogen centre
-  const nx = 250, ny = 280;
-  // Three hydrogen atoms arranged in trigonal pattern
-  const h1x = 140, h1y = 160; // top-left
-  const h2x = 360, h2y = 160; // top-right
-  const h3x = 250, h3y = 420; // bottom
+  // Methane (CH4) ball-and-stick model. One red carbon at the centre,
+  // four yellow hydrogens at tetrahedral 2D-projection angles, with
+  // a bond connecting carbon to each hydrogen.
+  //
+  // Hero element count: 1 carbon + 4 hydrogens + 4 bonds = 9 elements,
+  // intentionally above the usual 6-shape cap because the methane
+  // motif requires all five atoms to read.
+  const cx = 250, cy = 260;
+  const cR = 72;
+  const hR = 44;
 
-  // Bond helper
+  const hydrogens = [
+    { x: 250, y: 100 },  // top
+    { x: 100, y: 210 },  // upper-left
+    { x: 130, y: 400 },  // lower-left
+    { x: 400, y: 400 },  // lower-right
+  ];
+
   function bond(ax, ay, bx, by) {
-    const cx = (ax + bx) / 2;
-    const cy = (ay + by) / 2;
+    const ccx = (ax + bx) / 2;
+    const ccy = (ay + by) / 2;
     const len = Math.sqrt((ax - bx) ** 2 + (ay - by) ** 2);
     const ang = Math.atan2(by - ay, bx - ax) * 180 / Math.PI;
-    return { cx, cy, len, ang };
+    return { cx: ccx, cy: ccy, len, ang };
   }
-
-  const b1 = bond(nx, ny, h1x, h1y);
-  const b2 = bond(nx, ny, h2x, h2y);
-  const b3 = bond(nx, ny, h3x, h3y);
 
   return (
     <svg width="100%" height="100%" viewBox="0 0 500 500">
-      <g transform="rotate(45 250 250)">
-        {/* 1 — Bond to H top-left */}
-        <g transform={`translate(${b1.cx.toFixed(1)},${b1.cy.toFixed(1)}) rotate(${b1.ang.toFixed(1)})`}>
-          <rect x={(-b1.len / 2).toFixed(1)} y="-12" width={b1.len.toFixed(1)} height="24" rx="12" fill="#F5A623"/>
-        </g>
-        {/* 2 — Bond to H top-right */}
-        <g transform={`translate(${b2.cx.toFixed(1)},${b2.cy.toFixed(1)}) rotate(${b2.ang.toFixed(1)})`}>
-          <rect x={(-b2.len / 2).toFixed(1)} y="-12" width={b2.len.toFixed(1)} height="24" rx="12" fill="#F5A623"/>
-        </g>
-        {/* Bond to H bottom */}
-        <g transform={`translate(${b3.cx.toFixed(1)},${b3.cy.toFixed(1)}) rotate(${b3.ang.toFixed(1)})`}>
-          <rect x={(-b3.len / 2).toFixed(1)} y="-12" width={b3.len.toFixed(1)} height="24" rx="12" fill="#F5A623"/>
-        </g>
+      {/* Bonds — drawn first so the atom circles cover their endpoints */}
+      {hydrogens.map((h, i) => {
+        const b = bond(cx, cy, h.x, h.y);
+        return (
+          <g key={`b${i}`} transform={`translate(${b.cx.toFixed(1)},${b.cy.toFixed(1)}) rotate(${b.ang.toFixed(1)})`}>
+            <rect x={(-b.len / 2).toFixed(1)} y="-10" width={b.len.toFixed(1)} height="20" rx="10" fill="#2E6FE0"/>
+          </g>
+        );
+      })}
 
-        {/* 3 — H atom top-left */}
-        <circle cx={h1x} cy={h1y} r="50" fill="#4ECDC4"/>
-        {/* 4 — H atom top-right */}
-        <circle cx={h2x} cy={h2y} r="50" fill="#4ECDC4"/>
-        {/* H atom bottom */}
-        <circle cx={h3x} cy={h3y} r="50" fill="#4ECDC4"/>
-        {/* 5 — N atom (large, centre, front) */}
-        <circle cx={nx} cy={ny} r="72" fill="#2E6FE0"/>
+      {/* Hydrogens — yellow balls */}
+      {hydrogens.map((h, i) => (
+        <circle key={`h${i}`} cx={h.x} cy={h.y} r={hR} fill="#F5C842"/>
+      ))}
 
-        {/* Accent dots */}
-        <circle cx="155" cy="448" r="8"  fill="#3aA845"/>
-        <circle cx="462" cy="118" r="7"  fill="#E03535"/>
+      {/* Carbon — red, sits in front of the bonds so they look like
+          they emerge from the atom rather than crossing it. */}
+      <circle cx={cx} cy={cy} r={cR} fill="#E03535"/>
 
-        <Sparkle x={455} y={138} />
-        <Sparkle x={162} y={458} large/>
-      </g>
+      {/* Accent dots */}
+      <circle cx="62"  cy="100" r="9" fill="#3aA845"/>
+      <circle cx="448" cy="120" r="7" fill="#4ECDC4"/>
+
+      {/* Sparkles — exactly two, yellow */}
+      <Sparkle x={70}  y={440} />
+      <Sparkle x={448} y={448} large/>
     </svg>
   );
 }
@@ -332,29 +334,37 @@ export function ChemistIllustration() {
 // ── Little Astronomer ────────────────────────────────────────
 // Hero: Aries constellation — ram's horn shape with stars. 5 core shapes.
 export function AstronomerIllustration() {
-  // Aries constellation star positions (classic ram horn pattern)
+  // Big Dipper — the iconic 7-star "saucepan" asterism. Bowl on the left
+  // (a slight trapezoid), handle curving up-right to Alkaid at the tip.
   const stars = [
-    { x: 120, y: 310, r: 20 },  // α Ari (Hamal) — brightest, bottom-left
-    { x: 205, y: 265, r: 18 },  // β Ari (Sheratan)
-    { x: 285, y: 240, r: 16 },  // γ Ari (Mesarthim)
-    { x: 365, y: 190, r: 18 },  // 41 Ari — horn tip top-right
+    // Bowl (clockwise from top-left)
+    { x: 145, y: 308, r: 13, label: 'Megrez' },   // 0 — top-left, where handle joins
+    { x: 230, y: 290, r: 18, label: 'Dubhe'  },   // 1 — top-right (brightest)
+    { x: 245, y: 380, r: 16, label: 'Merak'  },   // 2 — bottom-right
+    { x: 160, y: 400, r: 14, label: 'Phecda' },   // 3 — bottom-left
+    // Handle (curves up-right from Megrez)
+    { x: 240, y: 250, r: 17, label: 'Alioth' },   // 4
+    { x: 330, y: 215, r: 16, label: 'Mizar'  },   // 5
+    { x: 425, y: 175, r: 18, label: 'Alkaid' },   // 6 — handle tip
   ];
 
-  // Connection lines between stars
+  // Bowl is a closed quadrilateral (0→1→2→3→0); handle is a chain
+  // running from the bowl's top-left out to the tip (0→4→5→6).
   const lines = [
-    [0, 1], [1, 2], [2, 3],
+    [0, 1], [1, 2], [2, 3], [3, 0],   // bowl
+    [0, 4], [4, 5], [5, 6],           // handle
   ];
 
   return (
     <svg width="100%" height="100%" viewBox="0 0 500 500">
-
-      {/* Background tiny stars */}
-      <circle cx="442" cy="128" r="5" fill="#F5C842"/>
-      <circle cx="88" cy="178" r="4" fill="#F5C842"/>
-      <circle cx="432" cy="388" r="5" fill="#F5C842"/>
-      <circle cx="158" cy="408" r="3" fill="#F5C842"/>
-      <circle cx="340" cy="380" r="3" fill="#F5C842"/>
-      <circle cx="190" cy="140" r="4" fill="#F5C842"/>
+      {/* Background tiny stars sprinkled around the asterism */}
+      <circle cx="80"  cy="140" r="4" fill="#F5C842"/>
+      <circle cx="190" cy="120" r="3" fill="#F5C842"/>
+      <circle cx="380" cy="100" r="5" fill="#F5C842"/>
+      <circle cx="460" cy="280" r="4" fill="#F5C842"/>
+      <circle cx="100" cy="430" r="3" fill="#F5C842"/>
+      <circle cx="320" cy="445" r="4" fill="#F5C842"/>
+      <circle cx="280" cy="120" r="3" fill="#F5C842"/>
 
       {/* Constellation connection lines */}
       {lines.map(([a, b], i) => (
@@ -366,17 +376,24 @@ export function AstronomerIllustration() {
         />
       ))}
 
-      {/* Constellation stars */}
+      {/* Constellation stars — Dubhe (brightest) orange, the rest alternate
+          blue and teal for cut-paper variety. */}
       {stars.map(({ x, y, r }, i) => (
-        <circle key={i} cx={x} cy={y} r={r} fill={i === 0 ? '#F26419' : i % 2 === 0 ? '#2E6FE0' : '#4ECDC4'}/>
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={r}
+          fill={i === 1 ? '#F26419' : i % 2 === 0 ? '#2E6FE0' : '#4ECDC4'}
+        />
       ))}
 
       {/* Accent dots */}
-      <circle cx="448" cy="308" r="8" fill="#E03535"/>
-      <circle cx="78" cy="268" r="7" fill="#3aA845"/>
+      <circle cx="62"  cy="240" r="8" fill="#3aA845"/>
+      <circle cx="455" cy="395" r="7" fill="#E03535"/>
 
-      <Sparkle x={165} y={438} large/>
-      <Sparkle x={448} y={158} />
+      <Sparkle x={150} y={170} />
+      <Sparkle x={420} y={420} large/>
     </svg>
   );
 }
@@ -492,6 +509,64 @@ export function MatisseIllustration() {
       {/* Sparkles — exactly 2, yellow, 4-point rounded star */}
       <Sparkle x={200} y={90} />
       <Sparkle x={510} y={420} large />
+    </svg>
+  );
+}
+
+// ── Little Consultant ────────────────────────────────────────
+// Mechanic: sort the same shapes into homes by colour, then shape, then
+// pattern. Hero is a classic two-pocket manila filing folder — back
+// panel, tab on top, shorter front pocket, with three iconic shapes
+// tucked inside and popping out the mouth.
+//
+// Hero shape count (at the 6-shape cap):
+//   1. folder tab        — rounded rect peeking above the back panel
+//   2. folder back panel — taller back, defines the folder silhouette
+//   3. red circle        — shape tucked into the pocket, peeking out
+//   4. blue square       — shape tucked, popping highest
+//   5. teal triangle     — shape tucked, mid-height
+//   6. folder front      — lighter pocket panel drawn LAST so it hides
+//                          the bottom of each shape, selling "tucked
+//                          inside the folder"
+// Plus accent dots + sparkles on top per Section 0.1.
+export function ConsultantIllustration() {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 500 500">
+      {/* Tab — drawn first so the back panel can cover its bottom edge */}
+      <rect x="104" y="146" width="172" height="78" rx="14" fill="#E69510" />
+
+      {/* Back panel — taller, deeper amber. The strip visible between
+          the back's top edge and the front pocket's top edge is the
+          folder's lip. */}
+      <rect x="56" y="200" width="388" height="282" rx="20" fill="#E69510" />
+
+      {/* Shapes drawn before the front pocket so the pocket can clip
+          their bottoms. */}
+
+      {/* Red circle — tucked deeper, only the top half peeks out */}
+      <circle cx="160" cy="248" r="60" fill="#E03535" />
+
+      {/* Blue square — popping out the highest, slightly rotated */}
+      <g transform="translate(264, 176) rotate(12)">
+        <rect x="-60" y="-60" width="120" height="120" rx="16" fill="#2E6FE0" />
+      </g>
+
+      {/* Teal triangle — mid height, tilted the other way */}
+      <g transform="translate(388, 230) rotate(-10)">
+        <path d="M0,-72 L78,58 L-78,58 Z" fill="#4ECDC4" />
+      </g>
+
+      {/* Front pocket — lighter manila yellow, drawn LAST so its top
+          edge clips each shape and they read as "inside the folder" */}
+      <rect x="70" y="262" width="360" height="220" rx="18" fill="#F5C842" />
+
+      {/* Accent dots */}
+      <circle cx="46"  cy="116" r="11" fill="#3aA845" />
+      <circle cx="466" cy="402" r="9"  fill="#E03535" />
+
+      {/* Sparkles — exactly two, yellow */}
+      <Sparkle x={94}  y={432} />
+      <Sparkle x={448} y={108} large />
     </svg>
   );
 }

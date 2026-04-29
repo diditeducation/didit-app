@@ -11,6 +11,7 @@ import {
   ChefIllustration, PianistIllustration, CoderIllustration,
   ChemistIllustration, AstronomerIllustration, AnalystIllustration,
   ArchitectIllustration, MatisseIllustration, TraderIllustration,
+  ConsultantIllustration,
 } from '../../pages/GameIllustrations';
 
 const ILLUSTRATIONS = {
@@ -19,6 +20,7 @@ const ILLUSTRATIONS = {
   chemist: ChemistIllustration, astronomer: AstronomerIllustration,
   pie: AnalystIllustration, architect: ArchitectIllustration,
   matisse: MatisseIllustration, trader: TraderIllustration,
+  consultant: ConsultantIllustration,
 };
 
 const KEYFRAMES_ID = 'didit-success-screen-keyframes';

@@ -12,6 +12,7 @@ import {
   AnalystIllustration,
   MatisseIllustration,
   TraderIllustration,
+  ConsultantIllustration,
 } from '../pages/GameIllustrations';
 
 const ILLUSTRATIONS = {
@@ -26,6 +27,7 @@ const ILLUSTRATIONS = {
   pie:        AnalystIllustration,
   matisse:    MatisseIllustration,
   trader:     TraderIllustration,
+  consultant: ConsultantIllustration,
 };
 
 const css = `
