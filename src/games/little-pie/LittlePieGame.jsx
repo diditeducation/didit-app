@@ -265,28 +265,55 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
   }, [dragging, placed, gaps.length]);
 
   const CONTAINER_H = SVG_H + 230;
-  // Pie renders at 70 % of its native canvas size — keeps the wedge
-  // pieces compact and gives the surrounding UI room to breathe. Narrow
-  // screens still scale DOWN further to fit the viewport.
-  const PIE_SCALE = Math.min(
-    0.7,
-    (typeof window !== 'undefined' ? window.innerWidth - 32 : SVG_W) / SVG_W,
-  );
+  // Pie scales dynamically to fit whatever space the game area gives
+  // us — measured live on mount + on resize via ResizeObserver. Capped
+  // at 0.85× native so the artwork never looks oversized on a giant
+  // tablet, and floored at 0.45× so it stays readable on tiny phones.
+  const outerRef = useRef(null);
+  const [pieScale, setPieScale] = useState(0.7);
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    const recalc = () => {
+      const w = el.clientWidth || SVG_W;
+      // Walk up to find the nearest ancestor with a bounded height —
+      // typically the GameShell game area. Falls back to viewport.
+      let h = el.parentElement?.clientHeight || 0;
+      if (!h && typeof window !== 'undefined') {
+        h = window.innerHeight - el.getBoundingClientRect().top - 16;
+      }
+      const widthScale  = (w - 16)  / SVG_W;
+      const heightScale = h ? (h - 16) / CONTAINER_H : widthScale;
+      const next = Math.max(0.45, Math.min(0.85, widthScale, heightScale));
+      setPieScale(Number.isFinite(next) ? next : 0.7);
+    };
+    recalc();
+    const ro = new ResizeObserver(recalc);
+    ro.observe(el);
+    if (el.parentElement) ro.observe(el.parentElement);
+    window.addEventListener('resize', recalc);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', recalc);
+    };
+  }, [CONTAINER_H]);
 
   return (
-    <div style={{
-      display:       'flex',
-      flexDirection: 'column',
-      alignItems:    'center',
-      padding:       '8px 0 4px',
-      width:         '100%',
-      // Reserve enough vertical room for the scaled-up pie + piece area
-      // so the wedges below the pie aren't clipped on screens where the
-      // pie is rendering at >1×.
-      minHeight:     CONTAINER_H * PIE_SCALE,
-      userSelect:    'none',
-      touchAction:   'none',
-    }}>
+    <div
+      ref={outerRef}
+      style={{
+        display:       'flex',
+        flexDirection: 'column',
+        alignItems:    'center',
+        padding:       '8px 0 4px',
+        width:         '100%',
+        // Reserve vertical room for the (scaled) pie + piece area so
+        // wedges below the pie aren't clipped.
+        minHeight:     CONTAINER_H * pieScale,
+        userSelect:    'none',
+        touchAction:   'none',
+      }}
+    >
       {/* ── Outer wrapper — sized to fit pie + piece area ─── */}
       <div
         ref={containerRef}
@@ -294,7 +321,7 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
           position: 'relative',
           width:    SVG_W,
           height:   CONTAINER_H,
-          transform: `scale(${PIE_SCALE})`,
+          transform: `scale(${pieScale})`,
           transformOrigin: 'top center',
         }}
       >
