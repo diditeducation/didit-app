@@ -5,6 +5,7 @@ import HubPage from './pages/HubPage';
 import Hub from './pages/Hub';
 import AboutPage from './pages/AboutPage';
 import GameScreen from './pages/GameScreen';
+import BetaBanner from './components/BetaBanner';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignIn from './pages/SignIn';
 import CheckEmail from './pages/CheckEmail';
@@ -46,6 +47,7 @@ const ConsultantGame     = lazy(() => import('./games/little-consultant/Game'));
 export default function App() {
   return (
     <BrowserRouter>
+      <BetaBanner />
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<HomePage />} />

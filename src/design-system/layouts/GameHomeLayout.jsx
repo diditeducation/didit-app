@@ -250,7 +250,7 @@ export default function GameHomeLayout({
 
   /* ── Outer container ── */
   const outerStyle = {
-    height: '100dvh',
+    height: 'calc(100dvh - var(--app-banner-h, 0px))',
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',

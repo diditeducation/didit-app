@@ -345,7 +345,9 @@ export default function ConsultantCanvas({ level, phase, onLevelComplete, onCorr
       style={{
         flex: 1,
         width: '100%',
-        height: '100%',
+        minHeight: 0,           // critical on iPad Safari — without this,
+                                // flex children with canvas content collapse
+                                // to zero height inside a column-flex parent
         position: 'relative',
         touchAction: 'none',
       }}

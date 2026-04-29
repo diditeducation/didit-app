@@ -98,7 +98,7 @@ export default function Game() {
         hideTabs
         onBack={() => navigate('/hub')}
       >
-        <div style={{ position: 'relative', flex: 1, width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'relative', flex: 1, width: '100%', minHeight: 0, display: 'flex', flexDirection: 'column' }}>
           <ConsultantCanvas
             key={level}
             level={level}

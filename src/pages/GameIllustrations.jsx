@@ -334,25 +334,26 @@ export function ChemistIllustration() {
 // ── Little Astronomer ────────────────────────────────────────
 // Hero: Aries constellation — ram's horn shape with stars. 5 core shapes.
 export function AstronomerIllustration() {
-  // Big Dipper — the iconic 7-star "saucepan" asterism. Bowl on the left
-  // (a slight trapezoid), handle curving up-right to Alkaid at the tip.
+  // Big Dipper — iconic "saucepan" silhouette. Bowl sits on the LEFT
+  // (4 stars forming a slight parallelogram); the 3 handle stars
+  // extend UP-RIGHT from Megrez at the bowl's top-right corner.
   const stars = [
-    // Bowl (clockwise from top-left)
-    { x: 145, y: 308, r: 13, label: 'Megrez' },   // 0 — top-left, where handle joins
-    { x: 230, y: 290, r: 18, label: 'Dubhe'  },   // 1 — top-right (brightest)
-    { x: 245, y: 380, r: 16, label: 'Merak'  },   // 2 — bottom-right
-    { x: 160, y: 400, r: 14, label: 'Phecda' },   // 3 — bottom-left
-    // Handle (curves up-right from Megrez)
-    { x: 240, y: 250, r: 17, label: 'Alioth' },   // 4
-    { x: 330, y: 215, r: 16, label: 'Mizar'  },   // 5
-    { x: 425, y: 175, r: 18, label: 'Alkaid' },   // 6 — handle tip
+    // Bowl
+    { x: 100, y: 268, r: 18, label: 'Dubhe'  },   // 0 — top-left of bowl, brightest
+    { x: 110, y: 372, r: 16, label: 'Merak'  },   // 1 — bottom-left of bowl
+    { x: 215, y: 388, r: 14, label: 'Phecda' },   // 2 — bottom-right of bowl
+    { x: 210, y: 286, r: 13, label: 'Megrez' },   // 3 — top-right of bowl, handle joint
+    // Handle — curves up-right from Megrez out to Alkaid
+    { x: 290, y: 252, r: 16, label: 'Alioth' },   // 4
+    { x: 365, y: 218, r: 16, label: 'Mizar'  },   // 5
+    { x: 440, y: 184, r: 18, label: 'Alkaid' },   // 6 — handle tip
   ];
 
-  // Bowl is a closed quadrilateral (0→1→2→3→0); handle is a chain
-  // running from the bowl's top-left out to the tip (0→4→5→6).
+  // Bowl is a closed quadrilateral (0→1→2→3→0); handle runs from the
+  // bowl's top-right joint out to the tip (3→4→5→6).
   const lines = [
     [0, 1], [1, 2], [2, 3], [3, 0],   // bowl
-    [0, 4], [4, 5], [5, 6],           // handle
+    [3, 4], [4, 5], [5, 6],           // handle
   ];
 
   return (
@@ -376,15 +377,15 @@ export function AstronomerIllustration() {
         />
       ))}
 
-      {/* Constellation stars — Dubhe (brightest) orange, the rest alternate
-          blue and teal for cut-paper variety. */}
+      {/* Constellation stars — Dubhe (brightest, index 0) orange, the
+          rest alternate blue and teal for cut-paper variety. */}
       {stars.map(({ x, y, r }, i) => (
         <circle
           key={i}
           cx={x}
           cy={y}
           r={r}
-          fill={i === 1 ? '#F26419' : i % 2 === 0 ? '#2E6FE0' : '#4ECDC4'}
+          fill={i === 0 ? '#F26419' : i % 2 === 0 ? '#2E6FE0' : '#4ECDC4'}
         />
       ))}
 

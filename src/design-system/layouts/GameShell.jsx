@@ -1,6 +1,7 @@
 import { fonts, easing } from '../tokens';
 import { PAGE_MAX_WIDTH, BOTTOM_STRIP_HEIGHT } from '../layout';
 import ParentStrip from '../components/ParentStrip';
+import DiditLogo from '../../components/DiditLogo';
 import { useSoundManager } from '../useSoundManager';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,10 +21,11 @@ export default function GameShell({
   const nav = useNavigate();
 
   // Use 100dvh (dynamic viewport height) instead of 100vh so the layout
-  // tracks the iOS Safari URL bar instead of being clipped when it
-  // collapses or expands.
+  // tracks the iOS Safari URL bar. Subtracting --app-banner-h means
+  // the BetaBanner doesn't push the game's bottom strip off-screen.
+  const viewportH = 'calc(100dvh - var(--app-banner-h, 0px))';
   const outerStyle = {
-    height: '100dvh',
+    height: viewportH,
     overflow: 'hidden',
     background: 'var(--game-bg)',
     color: 'var(--game-text)',
@@ -34,7 +36,7 @@ export default function GameShell({
   const innerStyle = {
     maxWidth: `${PAGE_MAX_WIDTH}px`,
     margin: '0 auto',
-    height: '100dvh',
+    height: viewportH,
     display: 'flex',
     flexDirection: 'column',
     paddingBottom: `${BOTTOM_STRIP_HEIGHT}px`,
@@ -138,8 +140,8 @@ export default function GameShell({
       {/* Top Bar */}
       <div style={{ padding: '8px 16px 0', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img src="/logo.png" alt="Did It!" style={{ height: 28, objectFit: 'contain', cursor: 'pointer' }} onClick={() => nav('/hub')} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <DiditLogo height={28} />
             <span style={{ fontFamily: fonts.display, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{title}</span>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
