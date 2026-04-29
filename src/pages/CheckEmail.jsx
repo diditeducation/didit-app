@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { sendSignInLinkToEmail } from 'firebase/auth'
+import DiditLogo from '../components/DiditLogo'
 
 const getActionCodeSettings = (email) => ({
   url: `${window.location.origin}/auth/callback?email=${encodeURIComponent(email)}`,
@@ -60,12 +61,9 @@ export default function CheckEmail() {
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
       {/* Logo */}
-      <img
-        src="/logo.png"
-        alt="did it!"
-        style={{ height: '40px', width: 'auto', marginBottom: '32px', cursor: 'pointer' }}
-        onClick={() => navigate('/')}
-      />
+      <div style={{ marginBottom: '32px' }}>
+        <DiditLogo height={40} onNavigate={() => navigate('/')} />
+      </div>
 
       {/* Emoji */}
       <div style={{ fontSize: '3.5rem', marginBottom: '20px' }}>📬</div>

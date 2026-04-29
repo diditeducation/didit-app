@@ -265,6 +265,12 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
   }, [dragging, placed, gaps.length]);
 
   const CONTAINER_H = SVG_H + 230;
+  // Pie now scales up to 1.25× on screens that have the room (target 125%
+  // size per design tweak). Narrow screens still scale DOWN to fit.
+  const PIE_SCALE = Math.min(
+    1.25,
+    (typeof window !== 'undefined' ? window.innerWidth - 32 : SVG_W) / SVG_W,
+  );
 
   return (
     <div style={{
@@ -273,6 +279,10 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
       alignItems:    'center',
       padding:       '8px 0 4px',
       width:         '100%',
+      // Reserve enough vertical room for the scaled-up pie + piece area
+      // so the wedges below the pie aren't clipped on screens where the
+      // pie is rendering at >1×.
+      minHeight:     CONTAINER_H * PIE_SCALE,
       userSelect:    'none',
       touchAction:   'none',
     }}>
@@ -283,8 +293,7 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
           position: 'relative',
           width:    SVG_W,
           height:   CONTAINER_H,
-          // Scale down on very narrow screens
-          transform: `scale(${Math.min(1, (typeof window !== 'undefined' ? window.innerWidth - 32 : SVG_W) / SVG_W)})`,
+          transform: `scale(${PIE_SCALE})`,
           transformOrigin: 'top center',
         }}
       >

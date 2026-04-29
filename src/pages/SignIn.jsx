@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, googleProvider } from '../firebase'
 import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail } from 'firebase/auth'
+import DiditLogo from '../components/DiditLogo'
 
 const getActionCodeSettings = (email) => ({
   url: `${window.location.origin}/auth/callback?email=${encodeURIComponent(email)}`,
@@ -106,12 +107,9 @@ export default function SignIn() {
         textAlign: 'center',
       }}>
         {/* Logo */}
-        <img
-          src="/logo.png"
-          alt="did it!"
-          style={{ height: '48px', width: 'auto', marginBottom: '24px', cursor: 'pointer' }}
-          onClick={() => navigate('/')}
-        />
+        <div style={{ marginBottom: '24px' }}>
+          <DiditLogo height={48} onNavigate={() => navigate('/')} />
+        </div>
 
         <h1 style={{
           fontSize: '1.6rem',

@@ -6,6 +6,7 @@ import { useSoundManager } from '../useSoundManager';
 import { PAGE_MAX_WIDTH } from '../layout';
 import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../../data/games';
+import DiditLogo from '../../components/DiditLogo';
 import {
   ShopperIllustration, DJIllustration, EngineerIllustration,
   ChefIllustration, PianistIllustration, CoderIllustration,
@@ -133,6 +134,11 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
     position: 'fixed',
     inset: 0,
     zIndex: 400,
+    // Reserve space at the top for the BetaBanner so the in-screen
+    // header (logo + game name) is never tucked under the sticky banner
+    // on any page or device.
+    paddingTop: 'var(--app-banner-h, 0px)',
+    boxSizing: 'border-box',
     background: 'var(--game-bg)',
     display: 'flex',
     flexDirection: 'column',
@@ -221,7 +227,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
       <div style={{ padding: '8px 16px 0', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img src="/logo.png" alt="Did It!" style={{ height: 28, objectFit: 'contain', cursor: 'pointer' }} onClick={() => nav('/hub')} />
+            <DiditLogo height={28} />
             <span style={{ fontFamily: FONT, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{gameName}</span>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>

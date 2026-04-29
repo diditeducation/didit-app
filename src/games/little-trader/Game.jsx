@@ -243,12 +243,28 @@ export default function Game() {
   return (
     <div style={theme}>
       <GameShell title="Little Trader" hideTabs onBack={() => navigate('/hub')}>
+        {/* Outer flex column: centres the gameplay block vertically when the
+            viewport is taller than the play area needs (e.g. iPad). On phones
+            the inner block fills available height so layout is unchanged. */}
         <div
           style={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
+            minHeight: 0,
+          }}
+        >
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            // Cap the play column's natural height; on iPad the surplus
+            // becomes auto top/bottom margin which centres it vertically.
+            maxHeight: 720,
+            marginBlock: 'auto',
             alignItems: 'stretch',
             justifyContent: 'space-between',
             gap: 6,
@@ -366,6 +382,7 @@ export default function Game() {
               </button>
             </div>
           </div>
+        </div>
         </div>
 
       </GameShell>

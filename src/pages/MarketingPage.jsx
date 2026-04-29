@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { trackPageView, trackLandingClick } from '../analytics';
+import DiditLogo from '../components/DiditLogo';
 
 export default function MarketingPage() {
   const [email, setEmail] = useState('');
@@ -249,7 +250,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
       `}</style>
 
       <nav className={`mp-nav${navScrolled ? ' scrolled' : ''}`}>
-        <span className="mp-nav-logo" onClick={() => { trackLandingClick('nav_logo'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} /></span>
+        <span className="mp-nav-logo"><DiditLogo height={36} onNavigate={() => { trackLandingClick('nav_logo'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} /></span>
         <div className="mp-nav-links">
           <a onClick={() => scrollTo('problem')}>Why</a>
           <a onClick={() => scrollTo('games')}>Our Games</a>
@@ -446,7 +447,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
       <footer className="mp-footer">
         <div className="mp-footer-inner">
           <div>
-            <img src="/logo.png" alt="did it!" style={{ height: '32px', width: 'auto' }} />
+            <DiditLogo height={32} tone="light" />
             <div className="mp-footer-tagline">Real-world concepts for tiny humans.</div>
           </div>
           <div className="mp-footer-right">&copy; 2026 did*it. All rights reserved.</div>

@@ -83,6 +83,22 @@ export default function LandingPage() {
           Did<span style={asteriskStyle}>*</span>It
         </div>
         <div style={subtitleStyle}>Small games. Big ideas.</div>
+        <span
+          style={{
+            display: 'inline-block',
+            marginTop: 10,
+            fontFamily: fonts.display,
+            fontWeight: 900,
+            fontSize: 9,
+            letterSpacing: '0.18em',
+            color: 'rgba(255,255,255,0.85)',
+            background: 'rgba(255,255,255,0.14)',
+            padding: '2px 8px',
+            borderRadius: 999,
+          }}
+        >
+          BETA
+        </span>
       </div>
 
       <div style={gridStyle}>

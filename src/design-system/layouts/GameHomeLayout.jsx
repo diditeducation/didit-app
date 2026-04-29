@@ -10,6 +10,7 @@ import { useSoundManager } from '../useSoundManager';
 import { playWelcomeChime } from '../sharedSounds';
 import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../../data/games';
+import DiditLogo from '../../components/DiditLogo';
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
 
@@ -494,7 +495,7 @@ export default function GameHomeLayout({
         {/* TopBar */}
         <div style={topBarStyle}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <img src="/logo.png" alt="Did It!" style={{ height: 28, objectFit: 'contain', cursor: 'pointer' }} onClick={() => nav('/hub')} />
+            <DiditLogo height={28} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button style={iconBtnStyle} onClick={() => nav('/hub')} aria-label="Games hub">

@@ -7,6 +7,7 @@ import ParentGuide from '../components/ParentGuide';
 import SurpriseSheet from '../components/SurpriseSheet';
 import GameGrid from '../components/GameGrid';
 import HubFooter from '../components/HubFooter';
+import DiditLogo from '../components/DiditLogo';
 import ShareButton from '../design-system/components/ShareButton';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
@@ -43,12 +44,7 @@ export default function Hub() {
           justifyContent: 'space-between',
           padding: '20px 0 18px',
         }}>
-          <img
-            src="/logo.png"
-            alt="Did It!"
-            onClick={() => navigate('/')}
-            style={{ height: 36, width: 'auto', cursor: 'pointer' }}
-          />
+          <DiditLogo height={36} onNavigate={() => navigate('/')} />
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <ShareButton
               label={

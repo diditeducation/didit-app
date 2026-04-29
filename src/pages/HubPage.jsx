@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import ShareButton from '../design-system/components/ShareButton';
+import DiditLogo from '../components/DiditLogo';
 import {
   ShopperIllustration,
   DJIllustration,
@@ -238,8 +239,8 @@ export default function HubPage() {
       <style>{css}</style>
 
       <nav className="hub-nav">
-        <span className="hub-nav-logo" onClick={() => navigate('/')}>
-          <img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} />
+        <span className="hub-nav-logo">
+          <DiditLogo height={36} onNavigate={() => navigate('/')} />
         </span>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <div className="hub-nav-links" style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
