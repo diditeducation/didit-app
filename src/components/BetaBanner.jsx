@@ -96,8 +96,21 @@ export default function BetaBanner() {
           if (e.key === 'Enter' || e.key === ' ') setFeedbackOpen(true);
         }}
       >
-        <span style={{ fontWeight: 800, letterSpacing: '0.04em' }}>📝 Did·It is in trial mode</span>
-        <span style={{ opacity: 0.85 }}>— send us a note if anything feels off</span>
+        <span style={{ fontWeight: 800, letterSpacing: '0.04em' }}>Did·It is in trial mode</span>
+        <span style={{ opacity: 0.85 }}>
+          —{' '}
+          <span
+            style={{
+              color: '#1F4FBF',
+              textDecoration: 'underline',
+              textUnderlineOffset: '2px',
+              fontWeight: 800,
+            }}
+          >
+            send us a note
+          </span>{' '}
+          if anything feels off
+        </span>
         <button
           type="button"
           onClick={dismiss}
