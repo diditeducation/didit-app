@@ -56,7 +56,7 @@ export const CARDS = [
   // ── Toys ─────────────────────────────────────────────────
   { id: 'ball',     emoji: '⚽',  label: 'Ball',     theme: 'toys', tier: 'common', bg: '#E6F1FB', sound: 'pop' },
   { id: 'teddy',    emoji: '🧸', label: 'Teddy',     theme: 'toys', tier: 'common', bg: '#FAEEDA', sound: 'pop' },
-  { id: 'blocks',   emoji: '🧱', label: 'Blocks',    theme: 'toys', tier: 'common', bg: '#FCEBEB', sound: 'pop' },
+  { id: 'blocks',   emoji: '🧱', label: 'Chocolate', theme: 'toys', tier: 'common', bg: '#FCEBEB', sound: 'pop' },
   { id: 'crayon',   emoji: '🖍️', label: 'Crayon',   theme: 'toys', tier: 'common', bg: '#FAEEDA', sound: 'pop' },
   { id: 'drums',    emoji: '🥁', label: 'Drums',     theme: 'toys', tier: 'medium', bg: '#EEEDFE', sound: 'drum' },
   { id: 'guitar',   emoji: '🎸', label: 'Guitar',    theme: 'toys', tier: 'medium', bg: '#EEEDFE', sound: 'guitar' },

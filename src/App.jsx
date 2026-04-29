@@ -4,6 +4,7 @@ import MarketingPage from './pages/MarketingPage';
 import HubPage from './pages/HubPage';
 import Hub from './pages/Hub';
 import AboutPage from './pages/AboutPage';
+import FeedbackAdminPage from './pages/FeedbackAdminPage';
 import GameScreen from './pages/GameScreen';
 import BetaBanner from './components/BetaBanner';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -58,6 +59,7 @@ export default function App() {
           <Route path="/hub" element={<Hub />} />
           <Route path="/hub/classic" element={<HubPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
 
           {/* Little Engineer ✓ name matches folder */}
           <Route path="/games/little-engineer"      element={<ProtectedRoute><EngineerHome /></ProtectedRoute>} />
