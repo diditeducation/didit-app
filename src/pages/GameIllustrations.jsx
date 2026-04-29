@@ -67,36 +67,48 @@ export function ShopperIllustration() {
 // ── Little DJ ────────────────────────────────────────────────
 // Hero: DJ deck with two turntable platters. 6 core shapes.
 export function DJIllustration() {
+  // Composition is built around 250,250 (true centre) and scaled 1.2×.
+  // viewBox stays 0..500 so corner sparkles + accents have room.
   return (
     <svg width="100%" height="100%" viewBox="0 0 500 500">
+      <g transform="translate(250 250) scale(1.2) translate(-250 -250)">
 
-      {/* 1 — Deck body */}
-      <rect x="52" y="218" width="396" height="196" rx="28" fill="#F5A623"/>
+        {/* 1 — Deck body, vertically centred */}
+        <rect x="52" y="152" width="396" height="196" rx="28" fill="#F5A623"/>
 
-      {/* Left platter — 2 circles = 2 shapes */}
-      {/* 2 — Outer ring */}
-      <circle cx="158" cy="315" r="88" fill="#2E6FE0"/>
-      {/* 3 — Inner record */}
-      <circle cx="158" cy="315" r="60" fill="#2E6FE0"/>
-      <circle cx="158" cy="315" r="18" fill="#F5C842"/>
+        {/* Left platter */}
+        <circle cx="158" cy="250" r="88" fill="#2E6FE0"/>
+        <circle cx="158" cy="250" r="60" fill="#2E6FE0"/>
+        <circle cx="158" cy="250" r="18" fill="#F5C842"/>
 
-      {/* Right platter */}
-      {/* 4 — Outer ring */}
-      <circle cx="342" cy="315" r="88" fill="#2E6FE0"/>
-      {/* 5 — Inner record */}
-      <circle cx="342" cy="315" r="60" fill="#E03535"/>
-      <circle cx="342" cy="315" r="18" fill="#F5C842"/>
+        {/* Right platter */}
+        <circle cx="342" cy="250" r="88" fill="#2E6FE0"/>
+        <circle cx="342" cy="250" r="60" fill="#E03535"/>
+        <circle cx="342" cy="250" r="18" fill="#F5C842"/>
 
-      {/* 6 — Crossfader */}
-      <rect x="196" y="384" width="108" height="20" rx="10" fill="#2E6FE0"/>
-      <rect x="234" y="374" width="32" height="40" rx="10" fill="#fffef9"/>
+        {/* Crossfader, vertically centred relative to deck */}
+        <rect x="196" y="318" width="108" height="20" rx="10" fill="#2E6FE0"/>
+        <rect x="234" y="308" width="32" height="40" rx="10" fill="#fffef9"/>
 
-      {/* Accent dots */}
-      <circle cx="155" cy="165" r="10" fill="#E03535"/>
-      <circle cx="458" cy="428" r="8"  fill="#4ECDC4"/>
+        {/* Music note — floating above the deck, slight tilt for energy.
+            Built from a stem + flag + filled note head. */}
+        <g transform="translate(250 92) rotate(-8)">
+          {/* Stem */}
+          <rect x="-3" y="-58" width="10" height="74" fill="#2E6FE0"/>
+          {/* Flag */}
+          <path d="M7,-58 C28,-50 36,-32 30,-12 C30,-26 22,-36 7,-40 Z" fill="#2E6FE0"/>
+          {/* Note head — angled oval */}
+          <ellipse cx="-6" cy="18" rx="20" ry="14" fill="#2E6FE0" transform="rotate(-22 -6 18)"/>
+        </g>
+      </g>
 
-      <Sparkle x={455} y={145} />
-      <Sparkle x={165} y={458} large/>
+      {/* Accent dots — kept OUTSIDE the scale group so they stay snug to
+          the corners regardless of the inner zoom. */}
+      <circle cx="62" cy="122" r="10" fill="#E03535"/>
+      <circle cx="448" cy="426" r="8" fill="#4ECDC4"/>
+
+      <Sparkle x={448} y={120} />
+      <Sparkle x={66} y={440} large/>
     </svg>
   );
 }
@@ -155,8 +167,9 @@ export function EngineerIllustration() {
 // ── Little Chef ──────────────────────────────────────────────
 // Hero: frying pan with sunny side up egg. 6 core shapes.
 export function ChefIllustration() {
+  // viewBox cropped to zoom 1.2× — same artwork, 120 % visual size.
   return (
-    <svg width="100%" height="100%" viewBox="0 0 500 500">
+    <svg width="100%" height="100%" viewBox="42 42 416 416">
 
       {/* 1 — Pan handle (behind pan body) */}
       <rect x="340" y="244" width="140" height="36" rx="18" fill="#2E6FE0"/>
@@ -357,7 +370,8 @@ export function AstronomerIllustration() {
   ];
 
   return (
-    <svg width="100%" height="100%" viewBox="0 0 500 500">
+    // viewBox cropped to zoom 1.2× — same artwork, 120 % visual size.
+    <svg width="100%" height="100%" viewBox="42 42 416 416">
       {/* Background tiny stars sprinkled around the asterism */}
       <circle cx="80"  cy="140" r="4" fill="#F5C842"/>
       <circle cx="190" cy="120" r="3" fill="#F5C842"/>
@@ -418,7 +432,8 @@ export function AnalystIllustration() {
   const floatPath = `M ${cx+ox} ${cy+oy} L ${(yx+ox).toFixed(1)} ${(yy+oy).toFixed(1)} A ${r} ${r} 0 0 1 ${(bx+ox).toFixed(1)} ${(by+oy).toFixed(1)} Z`;
 
   return (
-    <svg width="100%" height="100%" viewBox="0 0 500 500">
+    // viewBox cropped to zoom 1.2× — same artwork, 120 % visual size.
+    <svg width="100%" height="100%" viewBox="42 42 416 416">
 
       <path d={bluePath}  fill="#2E6FE0"/>
       <path d={redPath}   fill="#E03535"/>
@@ -476,8 +491,9 @@ export function ArchitectIllustration() {
 }
 
 export function MatisseIllustration() {
+  // viewBox cropped to zoom 1.2× — same artwork, 120 % visual size.
   return (
-    <svg width="100%" height="100%" viewBox="0 0 680 500">
+    <svg width="100%" height="100%" viewBox="57 42 566 416">
       {/* Torn square — red, main hero, slight tilt */}
       <g transform="translate(280, 220) rotate(-4)">
         <path d="M-110,-100 L110,-106 L116,96 L-104,104 Z" fill="#E03535" />
