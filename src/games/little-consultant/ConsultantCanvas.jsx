@@ -684,27 +684,19 @@ function drawPatternBar(ctx, home, bannerH, pattern) {
     // colour cue — pattern is the only rule here.
     drawGiraffeSpots(ctx, home.x, home.y, home.w, bannerH, '#9A8F82');
   } else if (pattern === 'stripes') {
-    // Soft wavy diagonal stripes — grey to match the dots banner so
+    // Straight diagonal stripes — grey to match the dots banner so
     // the kid reads the rule as "pattern", not "colour".
     ctx.strokeStyle = '#9A8F82';
     ctx.lineWidth = Math.max(8, bannerH * 0.20);
-    ctx.lineCap = 'round';
+    ctx.lineCap = 'butt';
     const spacing = Math.max(20, bannerH * 0.55);
-    let seed = 0;
     for (let off = -bannerH * 1.5; off <= home.w + bannerH * 1.5; off += spacing) {
-      const w1 = (((seed * 13) % 7) - 3) * (bannerH * 0.04);
-      const w2 = (((seed * 7)  % 7) - 3) * (bannerH * 0.04);
-      const x0 = home.x + off, y0 = home.y;
-      const x1 = home.x + off + bannerH, y1 = home.y + bannerH;
+      const x0 = home.x + off,            y0 = home.y;
+      const x1 = home.x + off + bannerH,  y1 = home.y + bannerH;
       ctx.beginPath();
-      ctx.moveTo(x0 + w1, y0);
-      ctx.bezierCurveTo(
-        x0 + (x1 - x0) * 0.30 + w2 * 1.8, y0 + bannerH * 0.30,
-        x0 + (x1 - x0) * 0.70 + w1 * 1.8, y0 + bannerH * 0.70,
-        x1 + w2,                          y1,
-      );
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x1, y1);
       ctx.stroke();
-      seed += 1;
     }
   }
   ctx.restore();
