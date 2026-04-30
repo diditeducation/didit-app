@@ -118,120 +118,46 @@ export default function HubStoryFooter() {
 }
 
 /**
- * Two-column grid (stacks on mobile via the `--story-cols` CSS
- * variable trick — flips to 1 column at <720 px via the wrapping
- * <style> tag below).
+ * Centred share CTA — replaces the previous two-column "Our Story"
+ * layout. The yellow wavy section now exists purely to host the share
+ * referral.
  */
 function StoryGrid() {
   return (
-    <>
-      <style>{`
-        .didit-story-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 60px;
-          align-items: center;
-          max-width: 1000px;
-          margin: 0 auto;
-        }
-        @media (max-width: 760px) {
-          .didit-story-grid {
-            grid-template-columns: 1fr;
-            gap: 40px;
-            text-align: center;
-          }
-          .didit-story-share { justify-self: center; }
-        }
-      `}</style>
-      <div className="didit-story-grid">
-        {/* Left — Share CTA replaces the lightbulb illustration */}
-        <div
-          className="didit-story-share"
-          style={{
-            position: 'relative', height: 400,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          {/* Decorative white blobs from MarketingPage — keeps the
-              cut-paper feel even though the centre piece changed. */}
-          <div style={{
-            position: 'absolute', width: 100, height: 100,
-            borderRadius: '45% 55% 50% 50%',
-            background: '#FFFFFF', top: '2%', right: '15%', opacity: 0.7,
-          }} />
-          <div style={{
-            position: 'absolute', width: 70, height: 70,
-            borderRadius: '50% 42% 55% 48%',
-            background: '#FFFFFF', bottom: '10%', left: '8%', opacity: 0.6,
-          }} />
-          <div style={{
-            position: 'absolute', width: 50, height: 50,
-            borderRadius: '50%',
-            background: '#FFFFFF', bottom: '20%', right: '10%', opacity: 0.5,
-          }} />
+    <div style={{
+      maxWidth: 1000,
+      margin: '0 auto',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      minHeight: 240,
+    }}>
+      {/* Decorative white blobs — keep the cut-paper feel of the
+          original section even though the centre piece is just text. */}
+      <div style={{
+        position: 'absolute', width: 100, height: 100,
+        borderRadius: '45% 55% 50% 50%',
+        background: '#FFFFFF', top: '-4%', right: '14%', opacity: 0.7,
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', width: 70, height: 70,
+        borderRadius: '50% 42% 55% 48%',
+        background: '#FFFFFF', bottom: '-2%', left: '10%', opacity: 0.6,
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', width: 50, height: 50,
+        borderRadius: '50%',
+        background: '#FFFFFF', bottom: '12%', right: '12%', opacity: 0.5,
+        pointerEvents: 'none',
+      }} />
 
-          {/* The CTA itself */}
-          <ShareCTA />
-        </div>
-
-        {/* Right — Our Story */}
-        <div>
-          <p style={{
-            fontFamily: fonts.body, fontSize: '0.85rem', fontWeight: 800,
-            color: '#2D2A26', letterSpacing: '0.05em',
-            marginBottom: 8, textTransform: 'uppercase', margin: 0,
-          }}>
-            How it started
-          </p>
-          <div style={{
-            fontFamily: fonts.body, fontSize: '1.4rem', fontWeight: 900,
-            color: '#2D2A26', marginBottom: 8, marginTop: 4,
-          }}>
-            Our Story
-          </div>
-          <p style={paraStyle}>
-            We&apos;re parents from Sydney, Australia who have a wonderfully
-            energetic and curious toddler. 🧡
-          </p>
-          <p style={paraStyle}>
-            Teaching our child is one of our favourite things to do together.
-            But when we went looking for games to play with him, we kept
-            running into the same two problems.
-          </p>
-          <div style={{
-            fontFamily: fonts.body, fontSize: '0.95rem', lineHeight: 1.4,
-            color: '#2D2A26', margin: '0 0 16px', paddingLeft: 20,
-          }}>
-            <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
-              <span style={{ color: colors.coralMid, fontWeight: 800, flexShrink: 0 }}>1.</span>
-              <span>Most kids&apos; games are loud, busy, and designed to keep little eyes glued to the screen.</span>
-            </div>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <span style={{ color: colors.blueberryDark, fontWeight: 800, flexShrink: 0 }}>2.</span>
-              <span>The educational ones, while great for letters and numbers — rarely go beyond the basics. We were looking for something that could start introducing them to real world bigger ideas.</span>
-            </div>
-          </div>
-          <p style={paraStyle}>
-            So we built some games. The more we played, the more we realised
-            how capable kids really are. Their minds can stretch so much
-            further than we give them credit for.
-          </p>
-          <p style={{ ...paraStyle, fontWeight: 800, margin: 0 }}>
-            We hope your family gets to discover that too as you play along!
-          </p>
-        </div>
-      </div>
-    </>
+      <ShareCTA />
+    </div>
   );
 }
-
-const paraStyle = {
-  fontFamily: fonts.body,
-  fontSize: '0.95rem',
-  lineHeight: 1.4,
-  color: '#2D2A26',
-  margin: '0 0 16px',
-};
 
 function ShareCTA() {
   const pillStyle = {
