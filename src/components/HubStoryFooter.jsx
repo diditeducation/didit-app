@@ -100,8 +100,8 @@ export default function HubStoryFooter() {
             gameId="hub-cta"
             label="Share Did It!"
             style={{
-              background: '#FFE9A8',
-              color: colors.text,
+              background: colors.blueberryDark,
+              color: '#FFFFFF',
               border: 'none',
               borderRadius: 9999,
               padding: '14px 36px',
