@@ -1,11 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import { fonts, colors } from '../design-system/tokens';
+import { useAuth } from '../context/AuthContext';
 
 /**
  * Did·It logo block — logo image + small "BETA" pill underneath.
  * Drop-in replacement for `<img src="/logo.png" />` anywhere in the app.
  *
- * Tap the logo to go to /hub (or run the optional `onNavigate` override).
+ * Click behaviour:
+ *   - Signed-in users always go to /hub. Whatever caller-supplied
+ *     onNavigate exists is ignored — the rule "logged in → /hub" is
+ *     centralised here so individual pages can't accidentally trap a
+ *     user on the marketing/landing flow.
+ *   - Signed-out users run the caller's `onNavigate` if provided
+ *     (e.g. MarketingPage scrolls to top), otherwise fall through to
+ *     /hub which redirects to /signin via the protected route.
  *
  * Two visual variants:
  *   tone = 'dark' (default) — for light backgrounds. BETA pill is muted
@@ -16,7 +24,16 @@ import { fonts, colors } from '../design-system/tokens';
  */
 export default function DiditLogo({ height = 28, onNavigate, tone = 'dark' }) {
   const nav = useNavigate();
-  const goHome = () => (onNavigate ? onNavigate() : nav('/hub'));
+  const { user } = useAuth();
+  const isSignedIn = !!user;
+  const goHome = () => {
+    if (isSignedIn) {
+      nav('/hub');
+      return;
+    }
+    if (onNavigate) onNavigate();
+    else nav('/hub');
+  };
 
   const isLight = tone === 'light';
   const pillStyle = {
