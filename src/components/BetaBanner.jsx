@@ -109,7 +109,7 @@ export default function BetaBanner() {
           >
             report a bug
           </span>{' '}
-          if something isn&apos;t working
+          if something&apos;s off
         </span>
         <button
           type="button"
