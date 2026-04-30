@@ -32,7 +32,7 @@ export default function HubFooter() {
       alignItems: 'center',
       gap: 6,
     }}>
-      <button type="button" onClick={() => nav('/about')} style={linkStyle}>
+      <button type="button" onClick={() => nav('/home')} style={linkStyle}>
         About Did·It
       </button>
       <span style={{
