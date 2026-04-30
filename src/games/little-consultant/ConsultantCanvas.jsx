@@ -689,14 +689,15 @@ function drawPatternBar(ctx, home, bannerH, pattern) {
   ctx.fillRect(home.x, home.y, home.w, bannerH);
 
   if (pattern === 'dots') {
-    // scaleRef equals the shape's typical render size so the dot grid
-    // is sized like the dots painted into the shape itself.
-    const SHAPE_REF = 80;
+    // scaleRef equals the shape's typical render size, then bumped 20 %
+    // so the grey banner reads a touch louder than the dots painted
+    // inside shapes.
+    const SHAPE_REF = 80 * 1.2;
     drawGiraffeSpots(ctx, home.x, home.y, home.w, bannerH, MARK, SHAPE_REF);
   } else if (pattern === 'stripes') {
-    // Straight diagonals tuned to match the shape stripes' line width
-    // and spacing.
-    const SHAPE_SIZE = 40; // matches half-size used in patterns.js
+    // Straight diagonals tuned to the shape stripes' line width and
+    // spacing, then bumped 20 % to match the magnified dots banner.
+    const SHAPE_SIZE = 40 * 1.2; // matches half-size used in patterns.js
     ctx.strokeStyle = MARK;
     ctx.lineWidth = Math.max(2.5, SHAPE_SIZE * 0.08);
     ctx.lineCap = 'butt';
