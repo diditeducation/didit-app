@@ -19,7 +19,10 @@ import DJGame from './games/little-dj/Game';
 function HomePage() {
   const { user } = useAuth();
   if (user === undefined) return null; // loading
-  return user ? <HubPage /> : <MarketingPage />;
+  // Logged-in users land on the new /hub experience (Hub.jsx) rather
+  // than the legacy HubPage. The legacy version stays available at
+  // /hub/classic for the time being.
+  return user ? <Hub /> : <MarketingPage />;
 }
 
 const EngineerHome = lazy(() => import('./games/little-engineer/HomePage'));

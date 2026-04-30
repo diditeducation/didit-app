@@ -7,6 +7,7 @@ import ParentGuide from '../components/ParentGuide';
 import SurpriseSheet from '../components/SurpriseSheet';
 import GameGrid from '../components/GameGrid';
 import HubFooter from '../components/HubFooter';
+import HubShareCTA from '../components/HubShareCTA';
 import DiditLogo from '../components/DiditLogo';
 import ShareButton from '../design-system/components/ShareButton';
 import { useAuth } from '../context/AuthContext';
@@ -168,6 +169,7 @@ export default function Hub() {
           />
         </div>
 
+        <HubShareCTA />
         <HubFooter />
       </div>
 
