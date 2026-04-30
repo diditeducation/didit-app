@@ -14,6 +14,11 @@
 let ctx = null;
 let masterGain = null;
 let analyserNode = null;
+// Tracks whether the user has muted the app via the GameShell mute
+// toggle. When true, getAudioContext() keeps the context suspended so
+// every oscillator / buffer source ends up silent regardless of where
+// the audio code lives.
+let muted = false;
 
 /**
  * Returns the singleton AudioContext, creating it lazily on first call.
@@ -28,10 +33,40 @@ export function getAudioContext() {
 /**
  * Resumes a suspended AudioContext. Safe to call repeatedly.
  * Call this from user-gesture handlers (onClick, onTouchStart, onDrag).
+ *
+ * No-op when the global mute is on — keeping the context suspended is
+ * the cheap, bulletproof way to silence every game at once.
  */
 export function ensureAudioRunning() {
+  if (muted) return;
   const ac = getAudioContext();
   if (ac.state === 'suspended') ac.resume();
+}
+
+/**
+ * Master mute switch. When `next === true` the shared AudioContext is
+ * suspended (and master gain ducked to zero as a belt-and-braces
+ * measure for any audio path that ignores the context state). When
+ * `next === false` it resumes.
+ *
+ * Wire this from useSoundManager so every game inherits the rule
+ * "muted UI = silent app" without having to audit each audio.js file.
+ */
+export function setMasterMuted(next) {
+  muted = !!next;
+  if (!ctx) return;
+  if (masterGain) {
+    masterGain.gain.value = muted ? 0 : 0.5;
+  }
+  if (muted && ctx.state === 'running') {
+    ctx.suspend();
+  } else if (!muted && ctx.state === 'suspended') {
+    ctx.resume();
+  }
+}
+
+export function isMasterMuted() {
+  return muted;
 }
 
 /**
