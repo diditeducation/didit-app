@@ -32,7 +32,10 @@ export default function Hub() {
         background: 'transparent',
         minHeight: '100vh',
         fontFamily: fonts.display,
-        padding: '0 24px 88px',
+        // Bottom padding zeroed out so the full-bleed HubStoryFooter
+        // sits flush against the bottom of the viewport — no awkward
+        // empty white strip below the © line.
+        padding: '0 24px 0',
         maxWidth: 680,
         margin: '0 auto',
       }}>
