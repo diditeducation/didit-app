@@ -493,10 +493,12 @@ function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
 const PATTERN_INK = '#5C5247';
 
+// Sentence case — only the first word is capitalised. The dimension
+// names ("colour", "shape", "pattern") are common nouns, not titles.
 const DIMENSION_LABELS = {
-  colour:  'Sort by Colour',
-  shape:   'Sort by Shape',
-  pattern: 'Sort by Pattern',
+  colour:  'Sort by colour',
+  shape:   'Sort by shape',
+  pattern: 'Sort by pattern',
 };
 
 /** Three small bars at the top of the canvas. Active level filled in
