@@ -321,10 +321,12 @@ export default function ConsultantCanvas({ level, phase, onLevelComplete, onCorr
       s.animStart = performance.now();
       s.pendingHome = homeUnder.name;
       sound.thunk();
-      // Tell the parent — passes the drop position in viewport CSS px
-      // so a toast can be positioned just above where the shape landed.
+      // Tell the parent the shape's FINAL slot position (in viewport CSS
+      // px), not where the user happened to release it. The toast then
+      // sits above the resting place inside the home rather than above
+      // the user's last finger position.
       const rect = canvasRef.current?.getBoundingClientRect();
-      const clientY = rect ? rect.top + s.fromY : null;
+      const clientY = rect ? rect.top + slot.y : null;
       onCorrectDrop?.({ clientY });
     } else {
       // Wrong drop OR released into empty space → bounce back gently.
