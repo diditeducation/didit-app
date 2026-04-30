@@ -670,26 +670,37 @@ function drawBannerContent(ctx, home, level, cx, cy, bannerH) {
   }
 }
 
-/** L3 named-home banner — full pattern fill across the top bar. */
+/** L3 named-home banner — full pattern fill across the top bar.
+ *
+ *  Pattern density (cell size for dots, line width + spacing for
+ *  stripes) is tuned to match the patterns rendered INSIDE the shape
+ *  pieces — so the rule "this home matches this pattern" reads at a
+ *  glance instead of looking like a different motif. */
 function drawPatternBar(ctx, home, bannerH, pattern) {
   ctx.save();
   roundRectTop(ctx, home.x, home.y, home.w, bannerH, 22);
   ctx.clip();
 
-  ctx.fillStyle = '#EEE9DD';
+  // Dark grey base — light grey marks on top for high contrast.
+  const BASE   = '#6E635A';
+  const MARK   = '#E8E0D0';
+
+  ctx.fillStyle = BASE;
   ctx.fillRect(home.x, home.y, home.w, bannerH);
 
   if (pattern === 'dots') {
-    // L3 banner stays neutral grey so the kid never reads it as a
-    // colour cue — pattern is the only rule here.
-    drawGiraffeSpots(ctx, home.x, home.y, home.w, bannerH, '#9A8F82');
+    // scaleRef equals the shape's typical render size so the dot grid
+    // is sized like the dots painted into the shape itself.
+    const SHAPE_REF = 80;
+    drawGiraffeSpots(ctx, home.x, home.y, home.w, bannerH, MARK, SHAPE_REF);
   } else if (pattern === 'stripes') {
-    // Straight diagonal stripes — grey to match the dots banner so
-    // the kid reads the rule as "pattern", not "colour".
-    ctx.strokeStyle = '#9A8F82';
-    ctx.lineWidth = Math.max(8, bannerH * 0.20);
+    // Straight diagonals tuned to match the shape stripes' line width
+    // and spacing.
+    const SHAPE_SIZE = 40; // matches half-size used in patterns.js
+    ctx.strokeStyle = MARK;
+    ctx.lineWidth = Math.max(2.5, SHAPE_SIZE * 0.08);
     ctx.lineCap = 'butt';
-    const spacing = Math.max(20, bannerH * 0.55);
+    const spacing = Math.max(9, SHAPE_SIZE * 0.22);
     for (let off = -bannerH * 1.5; off <= home.w + bannerH * 1.5; off += spacing) {
       const x0 = home.x + off,            y0 = home.y;
       const x1 = home.x + off + bannerH,  y1 = home.y + bannerH;

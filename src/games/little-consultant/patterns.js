@@ -167,11 +167,15 @@ function drawPatternOverlay(ctx, pattern, size, overlayColour) {
  * of a fine grid for an organic "spotted fabric" look. Deterministic
  * (seeded) so the pattern is stable between frames.
  */
-export function drawGiraffeSpots(ctx, x, y, w, h, fillStyle) {
+export function drawGiraffeSpots(ctx, x, y, w, h, fillStyle, scaleRef = null) {
   ctx.save();
   ctx.fillStyle = fillStyle;
 
-  const baseSize = Math.min(w, h);
+  // `scaleRef` lets callers force the dot-density to match a different
+  // reference size — e.g. the L3 banner is wide and short, so passing
+  // a scaleRef equal to the shape's typical render size keeps the dots
+  // visually the same size as the dots painted inside shapes.
+  const baseSize = scaleRef != null ? scaleRef : Math.min(w, h);
   // Fine grid: ~12 cells across the shorter side. Each cell holds (most
   // of the time) one small spot at a randomised position with a varied
   // radius. Random skips create organic empty patches.
