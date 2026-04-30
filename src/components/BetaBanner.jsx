@@ -96,7 +96,7 @@ export default function BetaBanner() {
           if (e.key === 'Enter' || e.key === ' ') setFeedbackOpen(true);
         }}
       >
-        <span style={{ fontWeight: 800, letterSpacing: '0.04em' }}>Did·It is in trial mode</span>
+        <span style={{ fontWeight: 800, letterSpacing: '0.04em' }}>Did·It is in test mode</span>
         <span style={{ opacity: 0.85 }}>
           —{' '}
           <span
@@ -107,9 +107,9 @@ export default function BetaBanner() {
               fontWeight: 800,
             }}
           >
-            send us a note
+            report a bug
           </span>{' '}
-          if anything feels off
+          if something isn&apos;t working
         </span>
         <button
           type="button"
