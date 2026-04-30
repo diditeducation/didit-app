@@ -17,7 +17,7 @@ export default function HomePage() {
         title="Consultant"
         tagline="Same things, different ways to sort them."
         tag="🗂️ Structured Problem Solving"
-        description="Sort six shapes into three homes. The rule changes each level — colour, then shape, then pattern. Sorting things into categories with no overlaps and no gaps is a stepping stone to structured problem solving."
+        description="Sort the same six shapes three different ways — by colour, then shape, then pattern. Clean categories are the start of structured thinking."
         skillPills={[
           { label: 'Categorisation' },
           { label: 'Structured thinking' },
