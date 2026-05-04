@@ -1,5 +1,6 @@
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { playWelcomeChime } from '../design-system/sharedSounds';
+import { trackGameOpen } from '../analytics';
 import {
   ShopperIllustration,
   DJIllustration,
@@ -176,7 +177,7 @@ export default function TodayCard({ game, onPlay }) {
         {/* Play button — compact + bouncing */}
         <button
           className="today-play-btn"
-          onClick={() => { playWelcomeChime(); onPlay(); }}
+          onClick={() => { playWelcomeChime(); trackGameOpen(game.id + '-featured'); onPlay(); }}
           style={{
             marginTop: 4,
             display: 'inline-flex',

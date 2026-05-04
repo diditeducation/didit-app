@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { fonts } from '../design-system/tokens';
 import QuickFeedbackModal from './QuickFeedbackModal';
+import { trackLandingClick } from '../analytics';
 
 /**
  * Top-of-app beta strip. Renders on every page (hub, game, marketing,
@@ -70,7 +71,7 @@ export default function BetaBanner() {
         role="button"
         tabIndex={0}
         aria-label="Did·It is in beta — tap to send feedback"
-        onClick={() => setFeedbackOpen(true)}
+        onClick={() => { setFeedbackOpen(true); trackLandingClick('report-a-bug'); }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') setFeedbackOpen(true);
         }}

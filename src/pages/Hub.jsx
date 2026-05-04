@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { GAMES, TODAY_GAME_ID } from '../data/games';
+import { trackHubView, trackLandingClick } from '../analytics';
 import TodayCard from '../components/TodayCard';
 import ParentGuide from '../components/ParentGuide';
 import SurpriseSheet from '../components/SurpriseSheet';
 import GameGrid from '../components/GameGrid';
 import HubStoryFooter from '../components/HubStoryFooter';
 import DiditLogo from '../components/DiditLogo';
+import WelcomeModal from '../components/WelcomeModal';
+import AboutModal from '../components/AboutModal';
 import ShareButton from '../design-system/components/ShareButton';
 import { useAuth } from '../context/AuthContext';
 import { auth } from '../firebase';
@@ -18,7 +21,17 @@ export default function Hub() {
   const { user } = useAuth();
   const isLoggedIn = !!user;
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Wait for auth to resolve before tracking so userId/userEmail are populated
+  const hubTracked = useRef(false);
+  useEffect(() => {
+    if (user !== undefined && !hubTracked.current) {
+      hubTracked.current = true;
+      trackHubView();
+    }
+  }, [user]);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const today = GAMES.find(g => g.id === TODAY_GAME_ID);
 
   return (
@@ -49,7 +62,27 @@ export default function Hub() {
         }}>
           <DiditLogo height={36} onNavigate={() => navigate('/')} />
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            {/* About us */}
+            <button
+              onClick={() => { setAboutOpen(true); trackLandingClick('about-icon'); }}
+              aria-label="About Did·It"
+              style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: colors.blueberryDark, border: 'none',
+                color: '#fff', display: 'flex',
+                alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', padding: 0,
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="8" strokeWidth="2.5" strokeLinecap="round"/>
+                <line x1="12" y1="12" x2="12" y2="16"/>
+              </svg>
+            </button>
+
             <ShareButton
+              gameId="hub-nav"
               label={
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
@@ -174,6 +207,12 @@ export default function Hub() {
         <HubStoryFooter />
       </div>
 
+
+      {/* ── Welcome modal (first 3 visits) ── */}
+      <WelcomeModal />
+
+      {/* ── About modal ── */}
+      {aboutOpen && <AboutModal onClose={() => setAboutOpen(false)} />}
 
       {/* ── Surprise bottom sheet ── */}
       <SurpriseSheet

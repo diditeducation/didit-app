@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { trackFilterSelect, trackLandingClick } from '../analytics';
 import { playWelcomeChime } from '../design-system/sharedSounds';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { CATEGORIES } from '../data/games';
@@ -54,14 +55,27 @@ const cardCss = `
    Random per-mount animation-delay (set inline) staggers them so they
    don't bob in lockstep. */
 @keyframes diditEmojiFloat {
-  0%, 100% { transform: translateY(0)   rotate(0deg); }
-  25%      { transform: translateY(-6px) rotate(-3deg); }
-  50%      { transform: translateY(0)    rotate(0deg); }
-  75%      { transform: translateY(-4px) rotate(3deg); }
+  0%   { transform: translateY(0)    rotate(0deg)   scale(1); }
+  20%  { transform: translateY(-10px) rotate(-8deg)  scale(1.12); }
+  45%  { transform: translateY(-4px)  rotate(4deg)   scale(0.95); }
+  65%  { transform: translateY(-12px) rotate(-5deg)  scale(1.08); }
+  85%  { transform: translateY(-2px)  rotate(6deg)   scale(1.03); }
+  100% { transform: translateY(0)    rotate(0deg)   scale(1); }
 }
 .didit-emoji-float {
   display: inline-block;
-  animation: diditEmojiFloat 3.4s ease-in-out infinite;
+  animation: diditEmojiFloat 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+/* Pill wand: smaller, gentler variant so it doesn't dominate the filter strip */
+@keyframes diditWandFloat {
+  0%,100% { transform: translateY(0)   rotate(0deg); }
+  30%     { transform: translateY(-4px) rotate(-10deg); }
+  70%     { transform: translateY(-2px) rotate(8deg); }
+}
+.didit-wand-float {
+  display: inline-block;
+  animation: diditWandFloat 2.2s ease-in-out infinite;
   will-change: transform;
 }
 `;
@@ -308,7 +322,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
         {CATEGORIES.map(cat => (
           <button
             key={cat}
-            onClick={() => setFilter(cat)}
+            onClick={() => { setFilter(cat); if (cat !== 'All') trackFilterSelect(cat); }}
             style={{
               flexShrink: 0,
               padding: '7px 16px',
@@ -328,31 +342,31 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
           </button>
         ))}
 
-        {/* Wish pill — subtle white-on-muted styling so it sits
-            quietly at the end of the category strip without competing
-            with the active filter. */}
+        {/* Wish pill — same treatment as the category pills so it
+            reads as a peer action, not a greyed-out afterthought.
+            Only the wand emoji gets animated. */}
         <button
-          onClick={() => setWishOpen(true)}
+          onClick={() => { setWishOpen(true); trackLandingClick('wish-card'); }}
           style={{
             flexShrink: 0,
-            padding: '7px 14px 7px 12px',
+            padding: '7px 16px',
             borderRadius: radii.pill,
-            border: `1px dashed ${colors.border}`,
+            border: 'none',
             background: 'white',
-            color: colors.muted,
+            color: colors.text,
             fontFamily: fonts.display,
             fontWeight: 700,
             fontSize: 13,
             cursor: 'pointer',
             transition: 'background 0.18s ease, color 0.18s ease',
-            boxShadow: 'none',
+            boxShadow: shadows.sm,
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
             whiteSpace: 'nowrap',
           }}
         >
-          <span aria-hidden="true">🪄</span>
+          <span aria-hidden="true" className="didit-wand-float">✨</span>
           Wish for a game
         </button>
       </div>
@@ -428,7 +442,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
                 <SurpriseCard
                   key="surprise-mid"
                   onSurprise={onSurprise}
-                  onRandomPlay={() => onNavigate(randomGame.path)}
+                  onRandomPlay={() => { trackLandingClick('surprise-card'); onNavigate(randomGame.path); }}
                 />
               );
             }
@@ -439,7 +453,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
               items.push(
                 <WishCard
                   key="wish-mid"
-                  onClick={() => setWishOpen(true)}
+                  onClick={() => { setWishOpen(true); trackLandingClick('wish-card'); }}
                 />
               );
             }

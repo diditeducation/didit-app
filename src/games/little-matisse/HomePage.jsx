@@ -15,7 +15,7 @@ export default function HomePage() {
         heroVisual={<div style={{ width: 160, height: 160 }}><MatisseIllustration /></div>}
         title="Matisse"
         tagline="Drag shapes to make your own collage!"
-        tag="🎨 Art & Collage"
+        tag="🎨 Art & Composition"
         description="A big colourful shape is waiting on the canvas. Grab the cutouts from the tray and place them anywhere you like. Every masterpiece is different!"
         skillPills={[
           { label: 'Creativity' },

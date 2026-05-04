@@ -362,14 +362,17 @@ export default function Game() {
         }}>
           {!showSuccess && (
             <>
-              {/* Canvas area */}
+              {/* Canvas area — fixed square so it never grows/shrinks
+                  with the viewport. 320px fits any phone; clamps at
+                  400px on wider screens. */}
               <div
                 ref={canvasRef}
                 style={{
-                  flex: 1,
-                  display: 'flex',
-                  margin: '4px 12px 0',
-                  minHeight: 0,
+                  width: 'min(320px, calc(100vw - 24px))',
+                  height: 'min(320px, calc(100vw - 24px))',
+                  flexShrink: 0,
+                  alignSelf: 'center',
+                  margin: '4px auto 0',
                 }}
               >
                 <Canvas

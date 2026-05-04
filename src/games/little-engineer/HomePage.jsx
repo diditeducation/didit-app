@@ -18,7 +18,7 @@ export default function HomePage() {
         tagline="Build, connect, solve — your toddler's first engineering challenge."
         tag="🔧 Electrical Engineering"
         description="See that bulb? Follow the coloured wire to find the right switch, then tap it to light things up! Get them all to collect every animal."
-        skillPills={[{ label: 'Cause & effect' }, { label: 'Binary logic' }, { label: 'Systems thinking' }]}
+        skillPills={[{ label: 'Circuits' }, { label: 'Cause & effect' }, { label: 'Binary logic' }]}
         gameId="little-engineer"
         onPlay={() => navigate('/games/little-engineer/play')}
         onBack={() => navigate('/hub')}

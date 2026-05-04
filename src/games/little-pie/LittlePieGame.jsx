@@ -57,6 +57,25 @@ export const LEVEL_DEFS = [
       { id: 2, start: 324, end: 360, color: C.sunMid },
     ],
   },
+  // L7: 25% (90°) + 25% (90°) + 25% (90°) + 25% (90°) = 100%
+  {
+    filled: [{ start: 0, end: 90, color: C.blueberry }],
+    gaps:   [
+      { id: 0, start:  90, end: 180, color: C.coral },
+      { id: 1, start: 180, end: 270, color: C.grass },
+      { id: 2, start: 270, end: 360, color: C.sunMid },
+    ],
+  },
+  // L8: 35% (126°) + 25% (90°) + 20% (72°) + 15% (54°) + 5% (18°) = 100%
+  {
+    filled: [{ start: 0, end: 126, color: C.sun }],
+    gaps:   [
+      { id: 0, start: 126, end: 216, color: C.blueberry },
+      { id: 1, start: 216, end: 288, color: C.coral },
+      { id: 2, start: 288, end: 342, color: C.grass },
+      { id: 3, start: 342, end: 360, color: C.sky },
+    ],
+  },
 ];
 
 // ── Safe percentage label (largest-remainder, always sums to 100) ─
@@ -357,7 +376,7 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
             const mid      = (f.start + f.end) / 2;
             const labelR   = span > 120 ? R * 0.58 : R * 0.62;
             const [lx, ly] = ptOnCircle(CX, CY, labelR, mid);
-            const fontSize = span < 60 ? 10 : 13;
+            const fontSize = span < 60 ? 20 : 26;
             return (
               <g key={i}>
                 <path
@@ -392,7 +411,7 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
               const mid    = (gap.start + gap.end) / 2;
               const labelR = (gap.end - gap.start) > 120 ? R * 0.58 : R * 0.62;
               const [lx, ly] = ptOnCircle(CX, CY, labelR, mid);
-              const fontSize = (gap.end - gap.start) < 60 ? 10 : 12;
+              const fontSize = (gap.end - gap.start) < 60 ? 20 : 24;
               return (
                 <g key={gap.id} style={{ animation: justSnapped === i ? 'pieSnapBright 0.45s ease-out forwards' : 'none' }}>
                   <path d={d} fill={gap.color} stroke="white" strokeWidth={2} />
@@ -504,7 +523,7 @@ export default function LittlePieGame({ levelDef, onMilestone }) {
                 const mid = (gap.start + gap.end) / 2;
                 const labelR = (gap.end - gap.start) > 120 ? R * 0.58 : R * 0.62;
                 const [lx, ly] = ptOnCircle(CX, CY, labelR, mid);
-                const fontSize = (gap.end - gap.start) < 60 ? 11 : 13;
+                const fontSize = (gap.end - gap.start) < 60 ? 22 : 26;
                 return (
                   <text
                     x={lx} y={ly}

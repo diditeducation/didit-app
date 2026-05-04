@@ -15,9 +15,10 @@ export default function HomePage() {
         illustrationComponent={<CoderIllustration />}
         heroVisual={<div style={{ width: 160, height: 160 }}><CoderIllustration /></div>}
         title="Coder"
+        tagline="Guide the rat to the cheese — your toddler's first coding challenge."
         tag="💻 Coding & Logic"
         description="The rat is hungry! Tap the arrows to move it one step at a time — up, down, left, right. Can you find the way to the cheese?"
-        skillPills={['Directions', 'Logic', 'Sequencing']}
+        skillPills={[{ label: 'Directions' }, { label: 'Logic' }, { label: 'Sequencing' }]}
         gameId="little-coder"
         onPlay={() => navigate('/games/little-coder/play')}
         onBack={() => navigate('/hub')}

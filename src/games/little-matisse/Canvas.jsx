@@ -25,7 +25,8 @@ export default function Canvas({
       ref={canvasRef}
       onPointerUp={handlePointerUp}
       style={{
-        flex: 1,
+        width: '100%',
+        height: '100%',
         position: 'relative',
         borderRadius: 20,
         background: '#FFFFFF',
@@ -34,7 +35,6 @@ export default function Canvas({
         touchAction: 'none',
         userSelect: 'none',
         WebkitUserSelect: 'none',
-        minHeight: 0,
       }}
     >
       <style>{`

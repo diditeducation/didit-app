@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Confetti from './Confetti';
 import ShareButton from './ShareButton';
+import { trackSuccessClick } from '../../analytics';
 import { playSuccessChime } from '../sharedSounds';
 import { useSoundManager } from '../useSoundManager';
 import { PAGE_MAX_WIDTH } from '../layout';
@@ -231,7 +232,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
             <span style={{ fontFamily: FONT, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{gameName}</span>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <button onClick={() => nav('/hub')} aria-label="Games hub" style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.06)', border: 'none', color: 'var(--game-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}>
+            <button onClick={() => { trackSuccessClick('home_icon', gameId); nav('/hub'); }} aria-label="Games hub" style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.06)', border: 'none', color: 'var(--game-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </button>
             <button onClick={toggleMute} aria-label="Toggle sound" style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.06)', border: 'none', color: 'var(--game-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}>
@@ -423,10 +424,11 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
 
       <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: '360px', flexShrink: 0 }}>
         <div style={{ display: 'flex', flexDirection: 'row', gap: 8 }}>
-          <button style={primaryBtnStyle} onClick={onPlayAgain}>
+          <button style={primaryBtnStyle} onClick={() => { trackSuccessClick('play_again', gameId); onPlayAgain(); }}>
             <span>🔄</span><span>Play again</span>
           </button>
           <button style={secondaryBtnStyle} onClick={() => {
+            trackSuccessClick('another_game', gameId);
             const others = GAMES.filter(g => g.path !== window.location.pathname.replace('/play', ''));
             const pick = others[Math.floor(Math.random() * others.length)];
             nav(pick.path);
@@ -436,7 +438,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
         </div>
         {/* Back to Hub — full-width tertiary button. Was previously only the
             small house icon in the header, easy to miss on the success screen. */}
-        <button style={homeBtnStyle} onClick={onBack || (() => nav('/hub'))}>
+        <button style={homeBtnStyle} onClick={() => { trackSuccessClick('back_to_hub', gameId); (onBack || (() => nav('/hub')))(); }}>
           <span>🏠</span><span>Back to Hub</span>
         </button>
       </div>

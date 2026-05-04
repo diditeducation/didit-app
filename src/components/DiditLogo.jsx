@@ -22,7 +22,7 @@ import { useAuth } from '../context/AuthContext';
  *                              BETA pill flips to a soft white-on-translucent
  *                              chip so it stays legible.
  */
-export default function DiditLogo({ height = 28, onNavigate, tone = 'dark' }) {
+export default function DiditLogo({ height = 28, onNavigate, tone = 'dark', hideBeta = false }) {
   const nav = useNavigate();
   const { user } = useAuth();
   const isSignedIn = !!user;
@@ -63,7 +63,7 @@ export default function DiditLogo({ height = 28, onNavigate, tone = 'dark' }) {
         onClick={goHome}
         style={{ height, objectFit: 'contain', cursor: 'pointer', display: 'block' }}
       />
-      <span style={{ ...pillStyle, marginTop: 2 }}>BETA</span>
+      {!hideBeta && <span style={{ ...pillStyle, marginTop: 2 }}>BETA</span>}
     </div>
   );
 }

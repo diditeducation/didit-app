@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { colors, fonts } from '../design-system/tokens';
+import { trackLandingClick } from '../analytics';
 
 function Section({ title, children }) {
   return (
@@ -27,7 +28,7 @@ export default function ParentGuide({ guide }) {
     <div style={{ background: 'white' }}>
       {/* Toggle button — flush under the hero card */}
       <button
-        onClick={() => setOpen(o => !o)}
+        onClick={() => { const next = !open; setOpen(next); if (next) trackLandingClick('grown-up-guide-hub'); }}
         style={{
           display: 'flex',
           alignItems: 'center',

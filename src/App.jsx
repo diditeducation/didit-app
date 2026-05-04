@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import MarketingPage from './pages/MarketingPage';
 import HubPage from './pages/HubPage';
@@ -48,10 +48,16 @@ const TraderGame         = lazy(() => import('./games/little-trader/Game'));
 const ConsultantHome     = lazy(() => import('./games/little-consultant/HomePage'));
 const ConsultantGame     = lazy(() => import('./games/little-consultant/Game'));
 
+function BetaBannerConditional() {
+  const { pathname } = useLocation();
+  if (pathname === '/') return null;
+  return <BetaBanner />;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <BetaBanner />
+      <BetaBannerConditional />
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<HomePage />} />

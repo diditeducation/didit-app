@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
+import { trackWishSubmit } from '../analytics';
 
 const KEYFRAMES_ID = 'didit-wish-modal-keyframes';
 
@@ -72,6 +73,7 @@ export default function WishModal({ isOpen, onClose }) {
         gameName: 'Wish — game request',
         timestamp: serverTimestamp(),
       });
+      trackWishSubmit();
       setSubmitted(true);
     } catch (err) {
       console.error('Wish save failed:', err);

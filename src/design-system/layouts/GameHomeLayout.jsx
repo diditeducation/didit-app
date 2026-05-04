@@ -11,6 +11,7 @@ import { playWelcomeChime } from '../sharedSounds';
 import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../../data/games';
 import DiditLogo from '../../components/DiditLogo';
+import { trackGameHomeView, trackLandingClick } from '../../analytics';
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
 
@@ -247,7 +248,8 @@ export default function GameHomeLayout({
 
   useEffect(() => {
     injectKeyframes();
-  }, []);
+    if (gameId) trackGameHomeView(gameId);
+  }, [gameId]);
 
   /* ── Outer container ── */
   const outerStyle = {
@@ -575,7 +577,7 @@ export default function GameHomeLayout({
           {/* Parent Guide Link */}
           {parentTipBody && (
             <div style={guideLinkStyle}>
-              <button style={guideLinkTextStyle} onClick={() => setGuideOpen(true)}>
+              <button style={guideLinkTextStyle} onClick={() => { setGuideOpen(true); trackLandingClick(`grown-up-guide-${gameId || 'game'}`); }}>
                 💡 Grown-up Guide
               </button>
             </div>
