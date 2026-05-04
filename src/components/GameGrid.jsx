@@ -65,6 +65,12 @@ function WishCard({ onClick }) {
       style={{
         cursor: 'pointer',
         background: colors.coralDark,
+        // Same textured tile that the red game cards (and SurpriseCard's
+        // yellow tile) use, so the wish card reads as part of the family
+        // rather than a flat outlier.
+        backgroundImage: `url('/backgrounds/background-red.png')`,
+        backgroundSize: '240px',
+        backgroundRepeat: 'repeat',
         border: 'none',
         display: 'flex',
         flexDirection: 'column',
