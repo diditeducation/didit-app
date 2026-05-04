@@ -284,6 +284,34 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
             {cat}
           </button>
         ))}
+
+        {/* Wish pill — opens the same WishModal as the wish card. Lives
+            at the end of the category strip so parents who don't scroll
+            all the way to the last card still have a path. */}
+        <button
+          onClick={() => setWishOpen(true)}
+          style={{
+            flexShrink: 0,
+            padding: '7px 14px 7px 12px',
+            borderRadius: radii.pill,
+            border: 'none',
+            background: colors.coralDark,
+            color: '#FFFFFF',
+            fontFamily: fonts.display,
+            fontWeight: 800,
+            fontSize: 13,
+            cursor: 'pointer',
+            transition: 'transform 0.15s ease',
+            boxShadow: shadows.sm,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span aria-hidden="true">🪄</span>
+          Wish for a game
+        </button>
       </div>
 
       {/* Cards grid */}
