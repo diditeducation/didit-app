@@ -49,6 +49,20 @@ const cardCss = `
 .gg-play-btn{padding:10px 28px;border-radius:9999px;border:none;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;cursor:pointer;transition:all .25s;color:#fff;margin-top:auto;width:100%}
 .gg-play-btn:hover{filter:brightness(1.1)}
 .gg-pills::-webkit-scrollbar{display:none}
+
+/* Periodic wiggle on the wish card so it catches the eye without
+   being constantly distracting. ~7 % of the cycle is the actual
+   shake; the rest is held still. Random per-mount delay (set inline)
+   staggers the first wiggle. */
+@keyframes wishShake {
+  0%, 86%, 100% { transform: rotate(0deg) translateY(0); }
+  88% { transform: rotate(-4deg) translateY(-2px); }
+  90% { transform: rotate(4deg)  translateY(0); }
+  92% { transform: rotate(-3deg) translateY(-1px); }
+  94% { transform: rotate(3deg)  translateY(0); }
+  96% { transform: rotate(-1.5deg) translateY(0); }
+}
+.didit-wish-shake { animation: wishShake 6s ease-in-out infinite; }
 `;
 
 /**
@@ -58,11 +72,15 @@ const cardCss = `
  * submit a profession or skill they'd like a Did·It game built around.
  */
 function WishCard({ onClick }) {
+  // Random delay so the wiggle doesn't sync with anything else and
+  // feels like organic "look at me" behaviour.
+  const delay = (Math.random() * 4).toFixed(1);
   return (
     <div
-      className="gg-card"
+      className="gg-card didit-wish-shake"
       onClick={onClick}
       style={{
+        animationDelay: `${delay}s`,
         cursor: 'pointer',
         background: colors.coralDark,
         // Same textured tile that the red game cards (and SurpriseCard's
@@ -285,24 +303,24 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
           </button>
         ))}
 
-        {/* Wish pill — opens the same WishModal as the wish card. Lives
-            at the end of the category strip so parents who don't scroll
-            all the way to the last card still have a path. */}
+        {/* Wish pill — subtle white-on-muted styling so it sits
+            quietly at the end of the category strip without competing
+            with the active filter. */}
         <button
           onClick={() => setWishOpen(true)}
           style={{
             flexShrink: 0,
             padding: '7px 14px 7px 12px',
             borderRadius: radii.pill,
-            border: 'none',
-            background: colors.coralDark,
-            color: '#FFFFFF',
+            border: `1px dashed ${colors.border}`,
+            background: 'white',
+            color: colors.muted,
             fontFamily: fonts.display,
-            fontWeight: 800,
+            fontWeight: 700,
             fontSize: 13,
             cursor: 'pointer',
-            transition: 'transform 0.15s ease',
-            boxShadow: shadows.sm,
+            transition: 'background 0.18s ease, color 0.18s ease',
+            boxShadow: 'none',
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
@@ -376,21 +394,35 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
               </div>
             );
 
-            // Inject surprise card after position 6 (slot #7) — only when "All" is selected
-            if (onSurprise && filter === 'All' && i === 5) {
+            // SurpriseCard sits one row higher than before — after the
+            // 4th game card it lands as slot 5 in a 2-col grid (was
+            // slot 7).
+            if (onSurprise && filter === 'All' && i === 3) {
               const randomGame = games[Math.floor(Math.random() * games.length)];
               items.push(
                 <SurpriseCard
-                  key="surprise-7"
+                  key="surprise-mid"
                   onSurprise={onSurprise}
                   onRandomPlay={() => onNavigate(randomGame.path)}
                 />
               );
             }
+
+            // WishCard sits two rows higher than before — after the
+            // 10th game card it lands as slot 11 (was slot 15 / end).
+            if (filter === 'All' && i === 9) {
+              items.push(
+                <WishCard
+                  key="wish-mid"
+                  onClick={() => setWishOpen(true)}
+                />
+              );
+            }
           });
 
-          // Append at end if "All" selected and list has 6 or fewer items
-          if (onSurprise && filter === 'All' && filtered.length <= 6) {
+          // Fallbacks for category filters with shorter game lists —
+          // both helpers still appear, just at the end.
+          if (onSurprise && filter === 'All' && filtered.length < 4) {
             const randomGame = games[Math.floor(Math.random() * games.length)];
             items.push(
               <SurpriseCard
@@ -400,12 +432,11 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
               />
             );
           }
-
-          // Wish card — always last, every filter, so parents always
-          // have a path to pitch the next game.
-          items.push(
-            <WishCard key="wish-card" onClick={() => setWishOpen(true)} />
-          );
+          if (filter !== 'All' || filtered.length < 10) {
+            items.push(
+              <WishCard key="wish-end" onClick={() => setWishOpen(true)} />
+            );
+          }
 
           return items;
         })()}
