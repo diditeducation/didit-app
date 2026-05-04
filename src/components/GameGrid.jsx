@@ -260,13 +260,35 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
   const [filter, setFilter] = useState('All');
   const [wishOpen, setWishOpen] = useState(false);
 
-  // Shuffle once per mount, then reorder so no two adjacent cards share a color.
-  // In a 2-col grid, "adjacent" means i±1 (same row) and i±2 (column neighbor).
+  // ── Seeded PRNG (mulberry32) ──────────────────────────────────────────────
+  // Returns a deterministic pseudo-random number generator seeded by an integer.
+  function seededRng(seed) {
+    let s = seed >>> 0;
+    return () => {
+      s += 0x6D2B79F5;
+      let t = s;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // Produce an integer seed from today's date (YYYYMMDD) so the order is
+  // stable for all users all day but changes each new calendar day.
+  function todaySeed() {
+    const d = new Date();
+    return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  }
+
+  // Shuffle daily (stable within a day), then reorder so no two adjacent
+  // cards share a color. In a 2-col grid, "adjacent" means i±1 (same row)
+  // and i±2 (column neighbour).
   const shuffled = useMemo(() => {
-    // 1. Fisher-Yates shuffle
+    const rng = seededRng(todaySeed());
+    // 1. Fisher-Yates shuffle with seeded rng
     const arr = [...games];
     for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(rng() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     // 2. Greedy reorder: pick next card that avoids the last 2 colors placed
@@ -280,7 +302,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
       result.push(pool.splice(idx, 1)[0]);
     }
     return result;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [games]);
 
   const filtered = filter === 'All'
     ? shuffled

@@ -65,7 +65,7 @@ export default function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/hub" element={<Hub />} />
+          <Route path="/hub" element={<ProtectedRoute><Hub /></ProtectedRoute>} />
           <Route path="/hub/classic" element={<HubPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />

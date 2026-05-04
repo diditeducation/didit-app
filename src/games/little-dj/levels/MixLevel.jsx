@@ -102,7 +102,13 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
     }
   }, [grid, level]);
 
-  const handleNext = () => { onMilestone(50, 50); };
+  const handleNext = () => {
+    // Stop the sequencer and clear playing state before advancing so
+    // music doesn't bleed into the next level / success screen.
+    stopLoop();
+    setPlaying(false);
+    onMilestone(50, 50);
+  };
 
   // ── Render ───────────────────────────────────────────────────────────────
   return (
@@ -129,12 +135,21 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
               border: 'none', cursor: 'pointer',
               touchAction: 'manipulation',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '1.15rem',
-              color: playing ? 'rgba(0,0,0,0.5)' : '#fff',
-              transition: 'background 0.2s, color 0.2s',
+              transition: 'background 0.2s',
             }}
           >
-            {playing ? '⏸' : '▶'}
+            {playing ? (
+              /* Pause — two vertical bars */
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="4"  y="3" width="4" height="14" rx="1.5" fill="rgba(0,0,0,0.5)" />
+                <rect x="12" y="3" width="4" height="14" rx="1.5" fill="rgba(0,0,0,0.5)" />
+              </svg>
+            ) : (
+              /* Play — solid triangle */
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M6 4L16 10L6 16V4Z" fill="#fff" />
+              </svg>
+            )}
           </button>
         </div>
 
@@ -231,9 +246,10 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
               fontSize: '1rem',
               cursor: 'pointer',
               touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
             }}
           >
-            {isLast ? 'Finished! 🎉' : 'Next ▶'}
+            {isLast ? 'Finished! 🎉' : 'Next →'}
           </button>
         </div>
       )}

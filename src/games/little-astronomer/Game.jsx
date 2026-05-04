@@ -61,7 +61,6 @@ export default function Game() {
   const boughtItems = levels.map(l => ({
     emoji: l.animal,
     name: l.animalName,
-    description: l.description,
   }));
 
   return (
@@ -78,7 +77,7 @@ export default function Game() {
       `}</style>
 
       <GameShell
-        title="Little Astronomer"
+        title="Little Astronaut"
         hideTabs
         onBack={() => navigate('/hub')}
       >
@@ -237,7 +236,7 @@ export default function Game() {
 
       <SuccessScreen
         visible={showSuccess}
-        gameName="Little Astronomer"
+        gameName="Little Astronaut"
         learnedText="5 amazing constellations"
         onPlayAgain={() => {
           setLevels(pickLevels());
@@ -256,7 +255,7 @@ export default function Game() {
       <FeedbackModal
         isOpen={feedbackOpen}
         onClose={() => setFeedbackOpen(false)}
-        gameName="Little Astronomer"
+        gameName="Little Astronaut"
       />
     </div>
   );

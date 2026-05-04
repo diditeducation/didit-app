@@ -98,13 +98,10 @@ const Docket = forwardRef(function Docket(
       <div
         style={{
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 8,
-          overflowX: 'auto',
-          overflowY: 'visible',
-          WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'none',
           padding: '4px 4px',
         }}
       >

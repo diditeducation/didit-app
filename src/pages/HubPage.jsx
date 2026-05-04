@@ -122,7 +122,7 @@ const GAMES = [
   },
   {
     key: 'astronomer',
-    title: 'Little Astronomer',
+    title: 'Little Astronaut',
     tag: '🪐 Space & Planets',
     desc: 'A mystery planet silhouette appears in the stars. Tap the right planet to match it and light up the sky!',
     skills: ['Planets', 'Shapes', 'Matching'],

@@ -82,8 +82,8 @@ const KF_CSS = `
   60%     { transform: rotate(7deg);  }
 }
 @keyframes cellWinGlow {
-  0%,100% { box-shadow: 0 0 12px 4px rgba(76,200,48,0.55); }
-  50%     { box-shadow: 0 0 28px 10px rgba(76,200,48,0.85); }
+  0%,100% { box-shadow: 0 0 12px 4px rgba(190,224,96,0.60); }
+  50%     { box-shadow: 0 0 28px 10px rgba(190,224,96,0.90); }
 }
 `;
 
@@ -248,14 +248,14 @@ export default function GridLevel({ minMoves, onWin }) {
               width: CELL, height: CELL,
               borderRadius: 16,
               background: isWinCell
-                ? colors.grassMid
+                ? colors.grassLight
                 : isRat
                   ? `color-mix(in srgb, ${colors.sunMid} 22%, ${colors.bg})`
                   : isCheese
                     ? `color-mix(in srgb, ${colors.sunDark} 10%, ${colors.bg})`
                     : isEven ? 'rgba(0,0,0,0.03)' : 'rgba(0,0,0,0.06)',
               border: `2px solid ${
-                isWinCell  ? colors.grassDark
+                isWinCell  ? colors.grass
                 : isCheese ? colors.sunMid + '80'
                 : isRat    ? colors.sunMid + '40'
                 : 'rgba(0,0,0,0.07)'

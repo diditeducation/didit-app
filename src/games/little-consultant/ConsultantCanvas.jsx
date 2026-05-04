@@ -102,9 +102,11 @@ export default function ConsultantCanvas({ level, phase, onLevelComplete, onCorr
         canvas.style.width = r.width + 'px';
         canvas.style.height = r.height + 'px';
       }
-      // Re-layout the existing state if it's already populated.
+      // Re-layout the existing state if it's already populated with shapes.
+      // If shapes is empty (first paint on mobile where initial size was 0),
+      // fall through to initState() to build shapes with the real dimensions.
       const st = stateRef.current;
-      if (st && st.level) {
+      if (st && st.level && st.shapes.length > 0) {
         st.homes = makeHomes(st.level, r.width, r.height, phaseRef.current);
         // For unplaced shapes, recompute pile positions; for placed
         // shapes, re-anchor them inside their (new) home.

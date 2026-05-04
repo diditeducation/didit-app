@@ -14,7 +14,7 @@ export default function HomePage() {
       <GameHomeLayout
         illustrationComponent={<AstronomerIllustration />}
         heroVisual={<div style={{ width: 160, height: 160 }}><AstronomerIllustration /></div>}
-        title="Astronomer"
+        title="Astronaut"
         tagline="Tap the stars to draw a constellation!"
         tag="🌟 Stars & Constellations"
         description="Look — glowing stars in the night sky! Tap them one by one to connect the dots. What animal or symbol is hiding up there? Only one way to find out!"
@@ -33,7 +33,7 @@ export default function HomePage() {
       <FeedbackModal
         isOpen={feedbackOpen}
         onClose={() => setFeedbackOpen(false)}
-        gameName="Little Astronomer"
+        gameName="Little Astronaut"
       />
     </div>
   );

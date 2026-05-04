@@ -362,7 +362,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           </div>
         </div>
 
-        {/* Little Astronomer */}
+        {/* Little Astronaut */}
         <div className="mp-game-card-v mp-game-astronomer reveal" onClick={() => handleGameClick('/games/little-astronomer', 'game_card_little-astronomer')}>
           <div className="mp-game-arch-header">
             <div className="mp-game-arch-circle">
@@ -370,7 +370,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
             </div>
           </div>
           <div className="mp-game-body">
-            <div className="mp-game-title">Little Astronomer</div>
+            <div className="mp-game-title">Little Astronaut</div>
             <div className="mp-game-tag">🌟 Stars & Constellations</div>
             <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Tap the glowing stars in order to reveal the constellation hiding in the night sky.</div>
             <div className="mp-game-skills"><span className="mp-game-skill">Constellations</span><span className="mp-game-skill">Stars</span><span className="mp-game-skill">Sequences</span></div>

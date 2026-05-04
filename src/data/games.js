@@ -315,7 +315,7 @@ export const GAMES = [
   {
     id: 'little-astronomer',
     illustrationKey: 'astronomer',
-    title: 'Little Astronomer',
+    title: 'Little Astronaut',
     emoji: '🌟',
     tag: '🌟 Stars & Constellations',
     category: 'Science & Tech',
