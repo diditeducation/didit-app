@@ -178,8 +178,8 @@ const MiniSwitch = ({ on, onClick, shake }) => (
         transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
       }} />
     </div>
-    <div style={{ marginTop: 4, fontSize: 11, fontWeight: 800, fontFamily: 'Nunito, sans-serif', color: on ? C.accentGreen : C.textSoft }}>
-      {on ? 'ON' : 'OFF'}
+    <div style={{ marginTop: 4, fontSize: 18, fontWeight: 800, fontFamily: 'Nunito, sans-serif', color: '#FFFFFF' }}>
+      {on ? 'On' : 'Off'}
     </div>
   </div>
 );
