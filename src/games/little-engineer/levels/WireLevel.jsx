@@ -22,6 +22,8 @@ const keyframesCSS = `
 @keyframes floatUpFade{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(-30px)}}
 @keyframes catBreath{0%,100%{transform:scale(1);opacity:0.7}50%{transform:scale(1.08);opacity:1}}
 @keyframes handBounceUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes electricFlow{0%{stroke-dashoffset:28}100%{stroke-dashoffset:0}}
+@keyframes wireGlowPulse{0%,100%{opacity:0.18}50%{opacity:0.38}}
 `;
 
 function injectKeyframes() {
@@ -239,20 +241,48 @@ export default function WireLevel({ onMilestone }) {
       }}>
         <Starfield />
 
-        {/* Straight vertical wires from switch to bulb */}
+        {/* Wires from switch to bulb — base + glow + travelling current */}
         <svg width={CARD_W} height={CARD_H} viewBox={`0 0 ${CARD_W} ${CARD_H}`}
           style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 }}>
           {[0, 1, 2].map(i => {
             const isOn = activeBulb === i;
+            const x  = COL_X[i];
+            const y1 = SWITCH_Y + SWITCH_H + 5;
+            const y2 = BULB_Y;
             return (
-              <line key={`wire-${i}`}
-                x1={COL_X[i]} y1={SWITCH_Y + SWITCH_H + 5}
-                x2={COL_X[i]} y2={BULB_Y}
-                stroke={isOn ? C.warmGlow : '#334'}
-                strokeWidth={4}
-                opacity={isOn ? 0.7 : 0.3}
-                style={{ transition: 'all 0.4s ease' }}
-              />
+              <g key={`wire-${i}`}>
+                {/* Wide yellow halo — pulses softly when on */}
+                <line x1={x} y1={y1} x2={x} y2={y2}
+                  stroke={C.warmGlow}
+                  strokeWidth={14}
+                  opacity={isOn ? 0 : 0}
+                  style={{
+                    transition: 'opacity 0.4s ease',
+                    animation: isOn ? 'wireGlowPulse 1.4s ease-in-out infinite' : 'none',
+                    opacity: isOn ? 0.22 : 0,
+                  }}
+                />
+                {/* Base wire */}
+                <line x1={x} y1={y1} x2={x} y2={y2}
+                  stroke={isOn ? C.warmGlow : '#334'}
+                  strokeWidth={6}
+                  strokeLinecap="square"
+                  opacity={isOn ? 0.75 : 0.3}
+                  style={{ transition: 'stroke 0.4s ease, opacity 0.4s ease',
+                    filter: isOn ? `drop-shadow(0 0 6px ${C.warmGlow})` : 'none' }}
+                />
+                {/* Travelling current dashes — visible only when on */}
+                {isOn && (
+                  <line x1={x} y1={y1} x2={x} y2={y2}
+                    stroke="#fff"
+                    strokeWidth={3}
+                    strokeLinecap="round"
+                    strokeDasharray="8 20"
+                    opacity={0.65}
+                    style={{ animation: 'electricFlow 0.45s linear infinite' }}
+                  />
+                )}
+              </g>
             );
           })}
         </svg>
