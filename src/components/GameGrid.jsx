@@ -50,19 +50,20 @@ const cardCss = `
 .gg-play-btn:hover{filter:brightness(1.1)}
 .gg-pills::-webkit-scrollbar{display:none}
 
-/* Periodic wiggle on the wish card so it catches the eye without
-   being constantly distracting. ~7 % of the cycle is the actual
-   shake; the rest is held still. Random per-mount delay (set inline)
-   staggers the first wiggle. */
-@keyframes wishShake {
-  0%, 86%, 100% { transform: rotate(0deg) translateY(0); }
-  88% { transform: rotate(-4deg) translateY(-2px); }
-  90% { transform: rotate(4deg)  translateY(0); }
-  92% { transform: rotate(-3deg) translateY(-1px); }
-  94% { transform: rotate(3deg)  translateY(0); }
-  96% { transform: rotate(-1.5deg) translateY(0); }
+/* Gentle floating motion for the emoji on the wish + surprise cards.
+   Random per-mount animation-delay (set inline) staggers them so they
+   don't bob in lockstep. */
+@keyframes diditEmojiFloat {
+  0%, 100% { transform: translateY(0)   rotate(0deg); }
+  25%      { transform: translateY(-6px) rotate(-3deg); }
+  50%      { transform: translateY(0)    rotate(0deg); }
+  75%      { transform: translateY(-4px) rotate(3deg); }
 }
-.didit-wish-shake { animation: wishShake 6s ease-in-out infinite; }
+.didit-emoji-float {
+  display: inline-block;
+  animation: diditEmojiFloat 3.4s ease-in-out infinite;
+  will-change: transform;
+}
 `;
 
 /**
@@ -72,22 +73,21 @@ const cardCss = `
  * submit a profession or skill they'd like a Did·It game built around.
  */
 function WishCard({ onClick }) {
-  // Random delay so the wiggle doesn't sync with anything else and
-  // feels like organic "look at me" behaviour.
-  const delay = (Math.random() * 4).toFixed(1);
+  // Random delay so the floating emoji doesn't sync with the surprise
+  // card's emoji — feels organic.
+  const emojiDelay = (Math.random() * 2).toFixed(1);
   return (
     <div
-      className="gg-card didit-wish-shake"
+      className="gg-card"
       onClick={onClick}
       style={{
-        animationDelay: `${delay}s`,
         cursor: 'pointer',
         background: colors.coralDark,
         // Same textured tile that the red game cards (and SurpriseCard's
-        // yellow tile) use, so the wish card reads as part of the family
-        // rather than a flat outlier.
+        // yellow tile) use, then enlarged 130 % so the pattern reads
+        // as a hero motif on these stand-out cards.
         backgroundImage: `url('/backgrounds/background-red.png')`,
-        backgroundSize: '240px',
+        backgroundSize: '312px',
         backgroundRepeat: 'repeat',
         border: 'none',
         display: 'flex',
@@ -100,7 +100,17 @@ function WishCard({ onClick }) {
         minHeight: 280,
       }}
     >
-      <span style={{ fontSize: 64, lineHeight: 1, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.18))' }}>🪄</span>
+      <span
+        className="didit-emoji-float"
+        style={{
+          fontSize: 64,
+          lineHeight: 1,
+          filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.18))',
+          animationDelay: `${emojiDelay}s`,
+        }}
+      >
+        🪄
+      </span>
 
       <div style={{
         fontSize: '1.4rem',
@@ -148,6 +158,9 @@ function WishCard({ onClick }) {
 }
 
 function SurpriseCard({ onSurprise, onRandomPlay }) {
+  // Per-mount random delay so the surprise + wish emojis float on
+  // different phases — neither card looks mechanically synced.
+  const emojiDelay = (Math.random() * 2).toFixed(1);
   return (
     <div
       className="gg-card"
@@ -155,8 +168,10 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
       style={{
         cursor: 'pointer',
         background: colors.sunMid,
+        // Pattern enlarged 130 % so the textured tile reads as a hero
+        // motif on these stand-out cards.
         backgroundImage: `url('/backgrounds/background-yellow.png')`,
-        backgroundSize: '240px',
+        backgroundSize: '312px',
         backgroundRepeat: 'repeat',
         border: 'none',
         display: 'flex',
@@ -169,7 +184,17 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
         minHeight: 280,
       }}
     >
-      <span style={{ fontSize: 64, lineHeight: 1, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))' }}>🎲</span>
+      <span
+        className="didit-emoji-float"
+        style={{
+          fontSize: 64,
+          lineHeight: 1,
+          filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
+          animationDelay: `${emojiDelay}s`,
+        }}
+      >
+        🎲
+      </span>
 
       <div style={{
         fontSize: '1.5rem',
