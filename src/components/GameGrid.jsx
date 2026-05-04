@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { playWelcomeChime } from '../design-system/sharedSounds';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { CATEGORIES } from '../data/games';
+import WishModal from './WishModal';
 import {
   ShopperIllustration,
   DJIllustration,
@@ -49,6 +50,78 @@ const cardCss = `
 .gg-play-btn:hover{filter:brightness(1.1)}
 .gg-pills::-webkit-scrollbar{display:none}
 `;
+
+/**
+ * Wish card — always pinned at the end of the games grid (regardless
+ * of category filter). Visual mirror of SurpriseCard but in coral red
+ * with a magic-wand emoji. Tapping opens the WishModal so parents can
+ * submit a profession or skill they'd like a Did·It game built around.
+ */
+function WishCard({ onClick }) {
+  return (
+    <div
+      className="gg-card"
+      onClick={onClick}
+      style={{
+        cursor: 'pointer',
+        background: colors.coralDark,
+        border: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '32px 20px',
+        gap: 10,
+        textAlign: 'center',
+        minHeight: 280,
+      }}
+    >
+      <span style={{ fontSize: 64, lineHeight: 1, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.18))' }}>🪄</span>
+
+      <div style={{
+        fontSize: '1.4rem',
+        fontWeight: 900,
+        color: '#FFFFFF',
+        fontFamily: fonts.display,
+        letterSpacing: '-0.02em',
+        marginTop: 4,
+      }}>
+        Submit a wish
+      </div>
+
+      <div style={{
+        fontSize: '0.8rem',
+        color: 'rgba(255,255,255,0.92)',
+        fontFamily: fonts.display,
+        fontWeight: 600,
+        lineHeight: 1.5,
+        maxWidth: 200,
+      }}>
+        We&apos;ll build a game from your idea.
+      </div>
+
+      <button
+        style={{
+          marginTop: 8,
+          padding: '11px 28px',
+          borderRadius: 9999,
+          border: 'none',
+          background: '#FFFFFF',
+          color: colors.coralDark,
+          fontFamily: fonts.display,
+          fontWeight: 800,
+          fontSize: '0.9rem',
+          cursor: 'pointer',
+          boxShadow: '0 4px 14px rgba(0,0,0,0.18)',
+          letterSpacing: '-0.01em',
+        }}
+        onClick={(e) => { e.stopPropagation(); onClick(); }}
+      >
+        Make a wish →
+      </button>
+    </div>
+  );
+}
 
 function SurpriseCard({ onSurprise, onRandomPlay }) {
   return (
@@ -122,6 +195,7 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
 
 export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
   const [filter, setFilter] = useState('All');
+  const [wishOpen, setWishOpen] = useState(false);
 
   // Shuffle once per mount, then reorder so no two adjacent cards share a color.
   // In a 2-col grid, "adjacent" means i±1 (same row) and i±2 (column neighbor).
@@ -293,6 +367,12 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
             );
           }
 
+          // Wish card — always last, every filter, so parents always
+          // have a path to pitch the next game.
+          items.push(
+            <WishCard key="wish-card" onClick={() => setWishOpen(true)} />
+          );
+
           return items;
         })()}
 
@@ -311,6 +391,8 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
           </div>
         )}
       </div>
+
+      <WishModal isOpen={wishOpen} onClose={() => setWishOpen(false)} />
     </div>
   );
 }

@@ -12,19 +12,48 @@ import ShareButton from '../design-system/components/ShareButton';
 const GRASS_LIGHT = colors.grassLight; // '#E0F0A8'
 
 // Halo dots use the Did·It primary palette tokens. Positions are
-// pulled in tighter than before so the halo hugs the pill instead of
-// floating loose around it.
+// pulled in tight so the halo hugs the pill. Each dot has its own
+// duration + delay so the floating animation feels organic instead of
+// metronome-synchronised.
 const HALO = [
-  { top: '-10%', left: '18%', size: 7, color: colors.coralDark },
-  { top: '-14%', left: '50%', size: 8, color: colors.blueberryDark },
-  { top: '-8%',  left: '78%', size: 7, color: colors.grassDark },
-  { top: '40%',  left: '4%',  size: 8, color: colors.sunMid },
-  { top: '40%',  left: '94%', size: 8, color: colors.coralDark },
-  { top: '92%',  left: '38%', size: 7, color: colors.blueberryDark },
-  { top: '92%',  left: '64%', size: 7, color: colors.grassDark },
+  { top: '-10%', left: '18%',  size: 7, color: colors.coralDark,     dur: 3.2, delay: 0.0 },
+  { top: '-14%', left: '50%',  size: 8, color: colors.blueberryDark, dur: 4.1, delay: 0.7 },
+  { top: '-8%',  left: '78%',  size: 7, color: colors.grassDark,     dur: 3.6, delay: 1.2 },
+  { top: '40%',  left: '4%',   size: 8, color: colors.sunMid,        dur: 4.5, delay: 0.4 },
+  { top: '40%',  left: '94%',  size: 8, color: colors.coralDark,     dur: 3.8, delay: 1.6 },
+  { top: '92%',  left: '38%',  size: 7, color: colors.blueberryDark, dur: 4.2, delay: 0.2 },
+  { top: '92%',  left: '64%',  size: 7, color: colors.grassDark,     dur: 3.4, delay: 1.0 },
 ];
 
+const HALO_KEYFRAMES_ID = 'didit-halo-float-keyframes';
+function injectHaloKeyframes() {
+  if (typeof document === 'undefined') return;
+  if (document.getElementById(HALO_KEYFRAMES_ID)) return;
+  const style = document.createElement('style');
+  style.id = HALO_KEYFRAMES_ID;
+  // Two staggered drift paths so neighbouring dots don't move in
+  // lockstep. Each dot picks one based on its index parity.
+  style.textContent = `
+    @keyframes diditHaloFloatA {
+      0%   { transform: translate(0, 0); }
+      33%  { transform: translate(3px, -6px); }
+      66%  { transform: translate(-4px, -3px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes diditHaloFloatB {
+      0%   { transform: translate(0, 0); }
+      33%  { transform: translate(-5px, 4px); }
+      66%  { transform: translate(2px, 6px); }
+      100% { transform: translate(0, 0); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 export default function HubStoryFooter() {
+  // Inject the halo float keyframes lazily — safe to call on every
+  // render because the function bails when the <style> already exists.
+  injectHaloKeyframes();
   // Full-bleed wrapper so this can sit inside Hub.jsx's max-width
   // content column without inheriting its narrow padding.
   const fullBleed = {
@@ -93,6 +122,8 @@ export default function HubStoryFooter() {
                 borderRadius: '50%',
                 background: d.color, opacity: 0.85,
                 pointerEvents: 'none',
+                animation: `${i % 2 === 0 ? 'diditHaloFloatA' : 'diditHaloFloatB'} ${d.dur}s ease-in-out ${d.delay}s infinite`,
+                willChange: 'transform',
               }}
             />
           ))}

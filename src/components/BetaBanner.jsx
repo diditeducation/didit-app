@@ -3,33 +3,34 @@ import { fonts } from '../design-system/tokens';
 import QuickFeedbackModal from './QuickFeedbackModal';
 
 /**
- * Top-of-app beta strip. Renders on every page (hub, game, marketing).
+ * Top-of-app beta strip. Renders on every page (hub, game, marketing,
+ * admin) for the entire trial period — there is no dismiss control,
+ * intentionally, so every visitor sees the bug-report path.
  *
- * Tapping the strip (or the inline "Tell us" link) opens the shared
- * FeedbackModal — same form the in-game feedback link uses, so every
- * submission lands in the same Firestore `feedback` collection.
+ * Tapping the strip opens QuickFeedbackModal; submissions land in the
+ * shared Firestore `feedback` collection.
  *
  * On mount the strip sets `--app-banner-h` on <html> equal to its
- * rendered height; on dismiss / unmount it sets the variable back to
- * 0px. Any full-viewport layout (GameShell, GameHomeLayout, Hub,
- * AboutPage) uses `calc(100dvh - var(--app-banner-h, 0px))` so its
- * inner area doesn't get pushed off-screen by the banner.
+ * rendered height; full-viewport layouts subtract that value via
+ * `calc(100dvh - var(--app-banner-h, 0px))` so the bottom of the page
+ * isn't pushed off-screen.
  */
 export default function BetaBanner() {
-  const [dismissed, setDismissed] = useState(() => {
-    if (typeof sessionStorage === 'undefined') return false;
-    return sessionStorage.getItem('didit:beta-dismissed') === '1';
-  });
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const ref = useRef(null);
+
+  // Defensive cleanup: an earlier build of this component used
+  // sessionStorage to remember a dismissal. If a tester hit dismiss
+  // back then, the flag would still be set in their session and the
+  // banner would stay hidden. Clear it on mount so the banner always
+  // appears now that there's no dismiss control.
+  useEffect(() => {
+    try { sessionStorage.removeItem('didit:beta-dismissed'); } catch { /* noop */ }
+  }, []);
 
   // Keep the CSS variable in sync with the actual rendered height.
   useEffect(() => {
     const root = document.documentElement;
-    if (dismissed) {
-      root.style.setProperty('--app-banner-h', '0px');
-      return;
-    }
     const update = () => {
       const h = ref.current?.offsetHeight || 0;
       root.style.setProperty('--app-banner-h', `${h}px`);
@@ -40,15 +41,7 @@ export default function BetaBanner() {
       window.removeEventListener('resize', update);
       root.style.setProperty('--app-banner-h', '0px');
     };
-  }, [dismissed]);
-
-  const dismiss = (e) => {
-    e.stopPropagation();
-    try { sessionStorage.setItem('didit:beta-dismissed', '1'); } catch { /* noop */ }
-    setDismissed(true);
-  };
-
-  if (dismissed) return null;
+  }, []);
 
   const wrapStyle = {
     background: '#FFE9A8',
@@ -67,20 +60,6 @@ export default function BetaBanner() {
     zIndex: 1000,
     flexShrink: 0,
     cursor: 'pointer',
-  };
-  const dismissBtn = {
-    background: 'transparent',
-    border: 'none',
-    padding: 0,
-    cursor: 'pointer',
-    fontSize: 16,
-    lineHeight: 1,
-    color: '#5C3D08',
-    opacity: 0.7,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 4,
   };
 
   return (
@@ -111,14 +90,6 @@ export default function BetaBanner() {
           </span>{' '}
           if something&apos;s off
         </span>
-        <button
-          type="button"
-          onClick={dismiss}
-          aria-label="Dismiss"
-          style={dismissBtn}
-        >
-          ×
-        </button>
       </div>
 
       <QuickFeedbackModal
