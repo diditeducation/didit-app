@@ -280,20 +280,30 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
     return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
   }
 
-  // Shuffle daily (stable within a day), then reorder so no two adjacent
-  // cards share a color. In a 2-col grid, "adjacent" means i±1 (same row)
-  // and i±2 (column neighbour).
+  // Shuffle daily (stable within a day), pin today's game first, then
+  // reorder the rest so no two adjacent cards share a color.
   const shuffled = useMemo(() => {
     const rng = seededRng(todaySeed());
-    // 1. Fisher-Yates shuffle with seeded rng
+    // 1. Fisher-Yates shuffle (seeded, deterministic per day)
     const arr = [...games];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(rng() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    // 2. Greedy reorder: pick next card that avoids the last 2 colors placed
-    const result = [];
-    const pool = [...arr];
+    // 2. Pin today's game to position 0 so it's always the first card
+    if (todayId) {
+      const todayIdx = arr.findIndex(g => g.id === todayId);
+      if (todayIdx > 0) {
+        const [todayGame] = arr.splice(todayIdx, 1);
+        arr.unshift(todayGame);
+      }
+    }
+    // 3. Greedy reorder the remaining cards (index 1+) to avoid adjacent
+    //    color clashes. Today's card stays pinned at index 0.
+    const pinned = todayId ? arr.slice(0, 1) : [];
+    const rest   = todayId ? arr.slice(1)    : arr;
+    const result = [...pinned];
+    const pool   = [...rest];
     while (pool.length > 0) {
       const c1 = result.length >= 1 ? result[result.length - 1].color : null;
       const c2 = result.length >= 2 ? result[result.length - 2].color : null;
@@ -302,7 +312,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
       result.push(pool.splice(idx, 1)[0]);
     }
     return result;
-  }, [games]);
+  }, [games, todayId]);
 
   const filtered = filter === 'All'
     ? shuffled
