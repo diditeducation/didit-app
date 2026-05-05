@@ -123,7 +123,7 @@ export default function Game() {
       <SuccessScreen
         visible={showSuccess}
         gameName="Little Shopper"
-        learnedText="money and saving 💰"
+        learnedText="money and saving"
         savedCoins={shopResult.saved}
         boughtItems={shopResult.bought}
         onPlayAgain={() => {

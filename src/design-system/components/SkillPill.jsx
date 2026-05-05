@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { fonts, easing, colors } from '../tokens';
+import { toTitleCase } from '../textCase';
 
 const variants = {
   purple: {
@@ -55,7 +56,7 @@ export default function SkillPill({ label, variant = 'purple', style: overrideSt
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
-      {label}
+      {toTitleCase(label)}
     </span>
   );
 }

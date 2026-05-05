@@ -1,6 +1,29 @@
 import { useState, useEffect } from 'react';
 import Confetti from './Confetti';
 import ShareButton from './ShareButton';
+import { trackSuccessClick } from '../../analytics';
+import { playSuccessChime } from '../sharedSounds';
+import { useSoundManager } from '../useSoundManager';
+import { PAGE_MAX_WIDTH } from '../layout';
+import { useNavigate } from 'react-router-dom';
+import { GAMES } from '../../data/games';
+import DiditLogo from '../../components/DiditLogo';
+import {
+  ShopperIllustration, DJIllustration, EngineerIllustration,
+  ChefIllustration, PianistIllustration, CoderIllustration,
+  ChemistIllustration, AstronomerIllustration, AnalystIllustration,
+  ArchitectIllustration, MatisseIllustration, TraderIllustration,
+  ConsultantIllustration,
+} from '../../pages/GameIllustrations';
+
+const ILLUSTRATIONS = {
+  shopper: ShopperIllustration, mixer: DJIllustration, engineer: EngineerIllustration,
+  chef: ChefIllustration, dj: PianistIllustration, coder: CoderIllustration,
+  chemist: ChemistIllustration, astronomer: AstronomerIllustration,
+  pie: AnalystIllustration, architect: ArchitectIllustration,
+  matisse: MatisseIllustration, trader: TraderIllustration,
+  consultant: ConsultantIllustration,
+};
 
 const KEYFRAMES_ID = 'didit-success-screen-keyframes';
 
@@ -25,28 +48,6 @@ const keyframesCSS = `
   100% { transform: translateY(0px) rotate(0deg); }
 }
 `;
-
-function playSuccessChime() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
-      gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + i * 0.12 + 0.04);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.35);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + i * 0.12);
-      osc.stop(ctx.currentTime + i * 0.12 + 0.4);
-    });
-  } catch (e) {
-    // Web Audio not supported, fail silently
-  }
-}
 
 function injectKeyframes() {
   if (typeof document === 'undefined') return;
@@ -79,7 +80,6 @@ function SuccessCoin({ floatDelay = 0 }) {
         animationDelay: `${floatDelay || 0}s`,
       }}
     >
-      {/* Highlight oval */}
       <div
         style={{
           position: 'absolute',
@@ -92,7 +92,6 @@ function SuccessCoin({ floatDelay = 0 }) {
           pointerEvents: 'none',
         }}
       />
-      {/* Label */}
       <span
         style={{
           fontSize: 'clamp(0.5rem, 1.6vw, 0.65rem)',
@@ -109,24 +108,11 @@ function SuccessCoin({ floatDelay = 0 }) {
   );
 }
 
-function EmptySlot() {
-  return (
-    <div
-      style={{
-        width: 32,
-        height: 32,
-        borderRadius: '50%',
-        border: '2px dashed rgba(255,255,255,0.15)',
-        background: 'transparent',
-        flexShrink: 0,
-      }}
-    />
-  );
-}
-
-export default function SuccessScreen({ visible, gameName, learnedText, onPlayAgain, onBack, savedCoins = null, boughtItems = null, boughtLabel = 'You bought', onFeedback, showShare = false, gameId = null }) {
+export default function SuccessScreen({ visible, gameName, learnedText, learnedSentence = null, onPlayAgain, onBack, savedCoins = null, boughtItems = null, boughtLabel = 'You bought', onFeedback, showShare = false, gameId = null, featuredContent = null }) {
   const [confettiActive, setConfettiActive] = useState(false);
   const [savingsConfetti, setSavingsConfetti] = useState(false);
+  const nav = useNavigate();
+  const { muted, toggleMute } = useSoundManager();
 
   useEffect(() => {
     injectKeyframes();
@@ -149,15 +135,16 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
     position: 'fixed',
     inset: 0,
     zIndex: 400,
+    // Reserve space at the top for the BetaBanner so the in-screen
+    // header (logo + game name) is never tucked under the sticky banner
+    // on any page or device.
+    paddingTop: 'var(--app-banner-h, 0px)',
+    boxSizing: 'border-box',
     background: 'var(--game-bg)',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
     overflowY: 'auto',
     overflowX: 'hidden',
-    padding: '24px 20px env(safe-area-inset-bottom, 16px)',
-    gap: 14,
     animation: 'successZoomIn 0.35s ease-out forwards',
   };
 
@@ -193,46 +180,72 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
     flexDirection: 'row',
     gap: 8,
     width: '100%',
-    maxWidth: '320px',
+    maxWidth: '360px',
     flexShrink: 0,
   };
 
-  const primaryBtnStyle = {
-    background: 'var(--game-primary)',
-    color: '#FFFFFF',
-    borderRadius: '9999px',
-    padding: '14px 0',
-    flex: 1,
-    fontFamily: FONT,
-    fontWeight: 800,
-    fontSize: '0.85rem',
-    boxShadow: 'none',
-    border: 'none',
-    cursor: 'pointer',
-  };
-
-  const ghostBtnStyle = {
-    background: 'transparent',
-    color: 'var(--game-text-muted)',
+  const btnBase = {
     borderRadius: '9999px',
     padding: '12px 0',
-    flex: 1,
     fontFamily: FONT,
     fontWeight: 700,
-    fontSize: '0.85rem',
-    border: '1.5px solid color-mix(in srgb, var(--game-text-muted) 30%, transparent)',
+    fontSize: '0.78rem',
+    border: 'none',
     cursor: 'pointer',
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  };
+
+  const primaryBtnStyle = {
+    ...btnBase,
+    background: 'var(--game-primary)',
+    color: '#FFFFFF',
+    fontWeight: 800,
+  };
+
+  const secondaryBtnStyle = {
+    ...btnBase,
+    background: 'color-mix(in srgb, var(--game-primary) 12%, transparent)',
+    color: 'var(--game-primary)',
+  };
+
+  const homeBtnStyle = {
+    ...btnBase,
+    background: 'color-mix(in srgb, var(--game-text) 8%, transparent)',
+    color: 'var(--game-text)',
+    fontWeight: 700,
+    fontSize: '0.85rem',
+    padding: '14px 0',
   };
 
   return (
     <div style={overlayStyle}>
-      <style>{`
-        @keyframes coinFloat {
-          0%   { transform: translateY(0px) rotate(0deg); }
-          50%  { transform: translateY(-4px) rotate(2deg); }
-          100% { transform: translateY(0px) rotate(0deg); }
-        }
-      `}</style>
+      <div style={{ maxWidth: `${PAGE_MAX_WIDTH}px`, margin: '0 auto', width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      {/* Header bar — identical to GameShell */}
+      <div style={{ padding: '8px 16px 0', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <DiditLogo height={28} />
+            <span style={{ fontFamily: FONT, fontWeight: 800, fontSize: '0.9rem', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{gameName}</span>
+          </div>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button onClick={() => { trackSuccessClick('home_icon', gameId); nav('/hub'); }} aria-label="Games hub" style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.06)', border: 'none', color: 'var(--game-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button onClick={toggleMute} aria-label="Toggle sound" style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.06)', border: 'none', color: 'var(--game-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '0.8rem', padding: 0 }}>
+              {muted
+                ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Content area — centered */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 20px env(safe-area-inset-bottom, 16px)', gap: 14, position: 'relative' }}>
       {/* Floating dots */}
       <div style={{ position: 'absolute', width: 12, height: 12, borderRadius: '50%', background: 'var(--game-accent)', top: '8%', left: '8%', opacity: 0.4, pointerEvents: 'none', animation: 'coinFloat 8s ease-in-out infinite' }} />
       <div style={{ position: 'absolute', width: 8, height: 8, borderRadius: '50%', background: 'var(--game-primary)', top: '15%', right: '10%', opacity: 0.35, pointerEvents: 'none', animation: 'coinFloat 11s ease-in-out infinite', animationDelay: '1s' }} />
@@ -242,59 +255,67 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
       <div style={{ position: 'absolute', width: 8, height: 8, borderRadius: '50%', background: 'var(--game-primary)', top: '55%', right: '6%', opacity: 0.35, pointerEvents: 'none', animation: 'coinFloat 12s ease-in-out infinite', animationDelay: '1.5s' }} />
       <Confetti active={confettiActive} onComplete={() => setConfettiActive(false)} />
       <Confetti active={savingsConfetti} originX={50} originY={30} onComplete={() => setSavingsConfetti(false)} />
-      <div style={emojiStyle}>🎉</div>
+      {(() => {
+        const game = GAMES.find(g => g.id === gameId);
+        const Illust = game ? ILLUSTRATIONS[game.illustrationKey] : null;
+        return Illust
+          ? <div style={{ width: 100, height: 100, flexShrink: 0 }}><Illust /></div>
+          : <div style={emojiStyle}>🎉</div>;
+      })()}
       <div style={headingStyle}><span style={{ color: '#2D2A26' }}>You </span><span style={{ color: 'var(--game-primary)', position: 'relative', display: 'inline-block' }}>did it!<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="var(--game-warm)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span></div>
-      <div style={subheadingStyle}>You've learnt about {learnedText} 🌟</div>
+      <div style={subheadingStyle}>{(() => {
+        if (learnedSentence) return learnedSentence;
+        if (!learnedText) return null;
+        const items = learnedText.split(',').map(s => s.trim()).filter(Boolean);
+        let sentence;
+        if (items.length === 1) sentence = items[0];
+        else if (items.length === 2) sentence = `${items[0]} and ${items[1]}`;
+        else sentence = `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
+        return `You've learnt about ${sentence}.`;
+      })()}</div>
 
-      {/* Savings box — only when savedCoins > 0 */}
+      {/* Optional featured content slot (e.g. artwork recap) */}
+      {featuredContent}
+
+      {/* Savings — light coloured box */}
       {savedCoins > 0 && (
         <div style={{
-          background: 'color-mix(in srgb, var(--game-text) 6%, transparent)',
-          borderRadius: 16,
-          border: '1.5px solid rgba(255,255,255,0.25)',
-          padding: '10px 16px',
+          background: 'color-mix(in srgb, var(--game-primary) 8%, transparent)',
+          borderRadius: 20,
+          padding: '16px 20px',
           width: 'calc(100% - 32px)',
           maxWidth: '320px',
           margin: '0 auto',
+          boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '4px',
-          boxSizing: 'border-box',
+          gap: 4,
           flexShrink: 0,
         }}>
-          {/* Label + Amount on one row */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '4px',
+          <span style={{
+            fontSize: '0.7rem',
+            fontWeight: 700,
+            color: 'var(--game-primary)',
+            letterSpacing: '0.08em',
+            fontFamily: FONT,
           }}>
-            <span style={{
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              color: 'var(--game-primary)',
-              letterSpacing: '0.08em',
-              fontFamily: FONT,
-            }}>
-              You saved
-            </span>
-            <span style={{
-              fontSize: '2.2rem',
-              fontWeight: 900,
-              color: 'var(--game-primary)',
-              fontFamily: FONT,
-              lineHeight: 1,
-            }}>
-              {`$${savedCoins}`}
-            </span>
-          </div>
-          {/* Coin flex grid — max 5 per row, centered */}
+            You saved
+          </span>
+          <span style={{
+            fontSize: '2.2rem',
+            fontWeight: 900,
+            color: 'var(--game-primary)',
+            fontFamily: FONT,
+            lineHeight: 1,
+          }}>
+            {`$${savedCoins}`}
+          </span>
           <div style={{
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            gap: '4px',
+            gap: 4,
             maxWidth: savedCoins >= 5 ? '176px' : '100%',
             margin: '2px auto 0',
           }}>
@@ -305,92 +326,120 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
         </div>
       )}
 
-      {/* Bought items box — only when boughtItems has items */}
+      {/* Bought items — grouped in background box */}
       {boughtItems != null && boughtItems.length > 0 && (
-        <div
-          style={{
-            background: 'color-mix(in srgb, var(--game-text) 6%, transparent)',
-            border: '1.5px solid rgba(255,255,255,0.25)',
-            borderRadius: 16,
-            padding: '14px 16px',
-            width: 'calc(100% - 32px)',
-            maxWidth: '320px',
-            margin: '0 auto',
-            boxSizing: 'border-box',
-            flexShrink: 0,
-          }}
-        >
-          <div
-            style={{
-              fontSize: '0.85rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              color: 'var(--game-primary)',
-              textAlign: 'center',
-              marginBottom: 8,
-              fontFamily: FONT,
-            }}
-          >
+        <div style={{
+          background: 'color-mix(in srgb, var(--game-primary) 8%, transparent)',
+          borderRadius: 20,
+          padding: '16px 20px',
+          width: 'calc(100% - 32px)',
+          maxWidth: '320px',
+          margin: '0 auto',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 12,
+          flexShrink: 0,
+        }}>
+          <div style={{
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            color: 'var(--game-primary)',
+            textAlign: 'center',
+            fontFamily: FONT,
+          }}>
             {boughtLabel}
           </div>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: 4,
-            }}
-          >
-            {boughtItems.map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 2,
-                  padding: '10px 8px',
-                  background: 'rgba(255,255,255,0.1)',
-                  borderRadius: 12,
-                  width: 'calc(50% - 2px)',
-                  boxSizing: 'border-box',
-                }}
-              >
-                <span style={{ fontSize: '2rem', lineHeight: 1 }}>{item.emoji}</span>
-                <span
-                  style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    color: 'var(--game-primary)',
-                    fontFamily: FONT,
-                  }}
-                >
-                  {item.name}
-                </span>
-                {item.price != null && (
-                  <span
+          {(() => {
+            const n = boughtItems.length;
+            // Pick a column count for the *full* rows. Partial last rows
+            // stay centered automatically because we use flex-wrap rather
+            // than padding with empty cells.
+            const cols = n <= 3 ? n : n === 4 ? 2 : 3;
+            const itemBasis = `calc(${100 / cols}% - ${(12 * (cols - 1)) / cols}px)`;
+            return (
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: 12,
+                width: '100%',
+              }}>
+                {boughtItems.map((item, i) => (
+                  <div
+                    key={i}
                     style={{
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      color: '#2D2A26',
-                      fontFamily: FONT,
+                      flexBasis: itemBasis,
+                      maxWidth: itemBasis,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 4,
                     }}
                   >
-                    {`$${item.price}`}
-                  </span>
-                )}
+                    <span style={{ fontSize: '2rem', lineHeight: 1 }}>
+                      {item.node ? item.node : item.emoji}
+                    </span>
+                    <span style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      color: 'var(--game-primary)',
+                      fontFamily: FONT,
+                      textAlign: 'center',
+                    }}>
+                      {item.name}
+                    </span>
+                    {item.description && (
+                      <span style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 500,
+                        color: 'var(--game-text-muted, #2D2A26)',
+                        opacity: 0.75,
+                        fontFamily: FONT,
+                        textAlign: 'center',
+                        lineHeight: 1.3,
+                      }}>
+                        {item.description}
+                      </span>
+                    )}
+                    {item.price != null && (
+                      <span style={{
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        color: '#2D2A26',
+                        fontFamily: FONT,
+                      }}>
+                        {`$${item.price}`}
+                      </span>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
       )}
 
-      <div style={btnContainerStyle}>
-        <button style={primaryBtnStyle} onClick={onPlayAgain}>
-          Play again 🔄
-        </button>
-        <button style={ghostBtnStyle} onClick={onBack}>
-          ← Other games
+      <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: '360px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 8 }}>
+          <button style={primaryBtnStyle} onClick={() => { trackSuccessClick('play_again', gameId); onPlayAgain(); }}>
+            <span>🔄</span><span>Play again</span>
+          </button>
+          <button style={secondaryBtnStyle} onClick={() => {
+            trackSuccessClick('another_game', gameId);
+            const others = GAMES.filter(g => g.path !== window.location.pathname.replace('/play', ''));
+            const pick = others[Math.floor(Math.random() * others.length)];
+            nav(pick.path);
+          }}>
+            <span>🎲</span><span>Another game</span>
+          </button>
+        </div>
+        {/* Back to Hub — full-width tertiary button. Was previously only the
+            small house icon in the header, easy to miss on the success screen. */}
+        <button style={homeBtnStyle} onClick={() => { trackSuccessClick('back_to_hub', gameId); (onBack || (() => nav('/hub')))(); }}>
+          <span>🏠</span><span>Back to Hub</span>
         </button>
       </div>
 
@@ -429,6 +478,8 @@ export default function SuccessScreen({ visible, gameName, learnedText, onPlayAg
           )}
         </div>
       )}
+      </div>
+      </div>
     </div>
   );
 }

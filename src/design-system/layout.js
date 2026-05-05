@@ -1,4 +1,4 @@
-export const PAGE_MAX_WIDTH = 480;
+export const PAGE_MAX_WIDTH = 680;
 export const PAGE_PADDING_X = 24;
 export const PAGE_BOTTOM_PADDING = 96;
 export const HERO_VISUAL_SIZE = 180;

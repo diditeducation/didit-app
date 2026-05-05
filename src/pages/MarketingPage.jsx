@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { trackPageView, trackLandingClick } from '../analytics';
+import DiditLogo from '../components/DiditLogo';
+import { AstronomerIllustration } from './GameIllustrations';
 
 export default function MarketingPage() {
   const [email, setEmail] = useState('');
@@ -67,6 +69,7 @@ export default function MarketingPage() {
   --didit-blueberry:#9BB5E8;--didit-blueberry-light:#CFD9F4;--didit-blueberry-mid:#6B8FD8;--didit-blueberry-dark:#3A6CE5;
 }
 html{scroll-behavior:smooth}
+#problem,#games,#how,#ourstory,#signup{scroll-margin-top:80px}
 body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
 .mp-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(255,251,245,0.9);border-bottom:1px solid rgba(0,0,0,0.04);transition:all .3s}
@@ -88,7 +91,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .mp-btn-primary:hover{background:#c5cc3a;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.2)}
 
 .mp-rotating-wrapper{display:inline-block;position:relative;overflow:hidden;vertical-align:bottom;height:1.1em;min-width:200px}
-.mp-rotating-words{display:inline-block;position:relative;animation:mp-rotateWords 10s infinite;top:0}
+.mp-rotating-words{display:inline-block;position:relative;animation:mp-rotateWords 14s infinite;top:0}
 .mp-rotating-words span{display:block;height:1.1em;font-family:'Nunito',sans-serif;font-weight:800;line-height:1.1}
 
 .mp-hero-blob{position:absolute;border-radius:50% 42% 55% 40%;opacity:0;animation:mp-floatBlob 8s ease-in-out infinite,mp-fadeIn 1s ease forwards}
@@ -153,6 +156,13 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 .mp-game-chef .mp-game-skill{background:color-mix(in srgb, var(--didit-sun-dark) 15%, transparent);border:1.5px solid color-mix(in srgb, var(--didit-sun-dark) 40%, transparent);color:var(--didit-sun-dark)}
 .mp-game-chef .mp-game-play-btn{background:#EE6A30}
 
+.mp-game-astronomer .mp-game-arch-header{background:#2D2A26;background-image:url('/backgrounds/background-yellow.png');background-size:cover;background-position:center}
+.mp-game-astronomer .mp-game-title{color:var(--didit-sun-dark)}
+.mp-game-astronomer .mp-game-tag{background:var(--didit-sun-light);color:var(--didit-sun-dark)}
+.mp-game-astronomer .mp-game-skill{background:color-mix(in srgb, var(--didit-sun-dark) 15%, transparent);border:1.5px solid color-mix(in srgb, var(--didit-sun-dark) 40%, transparent);color:var(--didit-sun-dark)}
+.mp-game-astronomer .mp-game-play-btn{background:#E8B840;color:#2D2A26}
+.mp-game-arch-circle .mp-svg-illus{width:128px;height:128px;display:flex;align-items:center;justify-content:center}
+
 .mp-how{padding:80px 40px 100px;background:#FFFFFF;margin-top:-1px}
 .mp-how-inner{max-width:1000px;margin:0 auto;text-align:center}
 .mp-how h2{font-family:'Nunito',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,44px);color:var(--didit-text);margin-bottom:60px}
@@ -195,7 +205,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
 @keyframes mp-fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes mp-fadeIn{to{opacity:1}}
 @keyframes mp-floatBlob{0%,100%{transform:translate(0,0) rotate(0deg) scale(1)}25%{transform:translate(8px,-14px) rotate(6deg) scale(1.06)}50%{transform:translate(-5px,-22px) rotate(-4deg) scale(.94)}75%{transform:translate(10px,-8px) rotate(3deg) scale(1.03)}}
-@keyframes mp-rotateWords{0%,22%{transform:translateY(0)}25%,47%{transform:translateY(-1.1em)}50%,72%{transform:translateY(-2.2em)}75%,97%{transform:translateY(-3.3em)}100%{transform:translateY(-4.4em)}}
+@keyframes mp-rotateWords{0%,11%{transform:translateY(0)}14%,25%{transform:translateY(-1.1em)}28%,39%{transform:translateY(-2.2em)}42%,53%{transform:translateY(-3.3em)}56%,67%{transform:translateY(-4.4em)}70%,81%{transform:translateY(-5.5em)}84%,100%{transform:translateY(-6.6em)}}
 .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
@@ -249,13 +259,13 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
       `}</style>
 
       <nav className={`mp-nav${navScrolled ? ' scrolled' : ''}`}>
-        <span className="mp-nav-logo" onClick={() => { trackLandingClick('nav_logo'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><img src="/logo.png" alt="did it!" style={{ height: '36px', width: 'auto' }} /></span>
+        <span className="mp-nav-logo"><DiditLogo height={36} onNavigate={() => { trackLandingClick('nav_logo'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} /></span>
         <div className="mp-nav-links">
           <a onClick={() => scrollTo('problem')}>Why</a>
           <a onClick={() => scrollTo('games')}>Our Games</a>
           <a onClick={() => scrollTo('how')}>Our Philosophy</a>
           <a onClick={() => scrollTo('ourstory')}>Our Story</a>
-          <a className="mp-nav-cta" onClick={() => { trackLandingClick('nav_login'); navigate('/signin'); }}>Log in</a>
+          <a className="mp-nav-cta" onClick={() => { trackLandingClick('nav_login'); navigate('/signin'); }}>Get started</a>
         </div>
       </nav>
 
@@ -269,7 +279,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         <div className="mp-hero-blob mp-hero-blob-6" />
 
         <div className="mp-hero-content">
-          <h1>Kids learning<br /><span className="mp-rotating-wrapper"><span className="mp-rotating-words"><span style={{ color: '#CF4A4A' }}>algorithms</span><span style={{ color: '#CF4A4A' }}>finance</span><span style={{ color: '#CF4A4A' }}>engineering</span><span style={{ color: '#CF4A4A' }}>DJ-ing</span><span style={{ color: '#CF4A4A' }}>algorithms</span></span></span><br />through <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>play.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h1>
+          <h1>Kids learning<br /><span className="mp-rotating-wrapper"><span className="mp-rotating-words"><span style={{ color: '#CF4A4A' }}>engineering</span><span style={{ color: '#CF4A4A' }}>finance</span><span style={{ color: '#CF4A4A' }}>music</span><span style={{ color: '#CF4A4A' }}>coding</span><span style={{ color: '#CF4A4A' }}>astronomy</span><span style={{ color: '#CF4A4A' }}>fine art</span><span style={{ color: '#CF4A4A' }}>engineering</span></span></span><br />through <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>play.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h1>
           <p className="mp-hero-sub">What if your child could explore the concepts most grown-ups only encounter later in life — just by playing?</p>
           <div className="mp-hero-actions">
             <button className="mp-btn-primary" onClick={() => { trackLandingClick('hero_try_games'); navigate(user ? '/hub' : '/signin'); }}>Try the games{' '}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button>
@@ -300,7 +310,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
         <div className="mp-float-dot" style={{ width: 12, height: 12, background: 'var(--didit-grass-mid)', bottom: '20%', left: '12%', opacity: 0.45, animationDelay: '4s', animationDuration: '13s' }} />
         <div className="mp-float-dot" style={{ width: 8, height: 8, background: 'var(--didit-sun-mid)', top: '35%', right: '15%', opacity: 0.5, animationDelay: '1s', animationDuration: '11s' }} />
         <div className="mp-games-intro-inner">
-          <h2 className="reveal">Four games. Four{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>real-world skills<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-1deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span>{' '}they could start exploring!</h2>
+          <h2 className="reveal">A few favourites to{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>get you started<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-4px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-1deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
           <p className="reveal">Each game teaches one big real-world concept through simple, joyful interactions designed for <strong>kids and parents to play together.</strong></p>
         </div>
       </section>
@@ -352,19 +362,35 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
           </div>
         </div>
 
-        {/* Little Chef */}
-        <div className="mp-game-card-v mp-game-chef reveal" onClick={() => handleGameClick('/games/little-chef', 'game_card_little-chef')}>
+        {/* Little Astronaut */}
+        <div className="mp-game-card-v mp-game-astronomer reveal" onClick={() => handleGameClick('/games/little-astronomer', 'game_card_little-astronomer')}>
           <div className="mp-game-arch-header">
-            <div className="mp-game-arch-circle"><img src="/game%20illustrations/Pizza.png" alt="Little Chef" /></div>
+            <div className="mp-game-arch-circle">
+              <div className="mp-svg-illus"><AstronomerIllustration /></div>
+            </div>
           </div>
           <div className="mp-game-body">
-            <div className="mp-game-title">Little Chef</div>
-            <div className="mp-game-tag">{'\uD83E\uDD58'} Cooking & Sequencing</div>
-            <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Crack the egg. Pour the flour. Mix. The order matters. Change a step, change the result.</div>
-            <div className="mp-game-skills"><span className="mp-game-skill">Sequencing</span><span className="mp-game-skill">Planning</span><span className="mp-game-skill">Process</span></div>
-            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-chef', 'game_explore_little-chef'); }}>Explore {'\u2192'}</button>
+            <div className="mp-game-title">Little Astronaut</div>
+            <div className="mp-game-tag">🌟 Stars & Constellations</div>
+            <div className="mp-game-desc" style={{ color: '#2D2A26' }}>Tap the glowing stars in order to reveal the constellation hiding in the night sky.</div>
+            <div className="mp-game-skills"><span className="mp-game-skill">Constellations</span><span className="mp-game-skill">Stars</span><span className="mp-game-skill">Sequences</span></div>
+            <button className="mp-game-play-btn" onClick={(e) => { e.stopPropagation(); handleGameClick('/games/little-astronomer', 'game_explore_little-astronomer'); }}>Explore →</button>
           </div>
         </div>
+      </div>
+
+      {/* Explore all games CTA */}
+      <div style={{ textAlign: 'center', padding: '0 20px 60px', marginTop: -20 }}>
+        <p style={{ fontFamily: "'Nunito',sans-serif", fontSize: 15, color: '#9A8F82', fontWeight: 600, margin: '0 0 16px' }}>
+          Just 4 of our many games — there's a lot more inside.
+        </p>
+        <button
+          className="mp-btn-primary"
+          onClick={() => { trackLandingClick('explore_all_games'); navigate(user ? '/hub' : '/signin'); }}
+          style={{ gap: 10 }}
+        >
+          Explore all games →
+        </button>
       </div>
 
       <section className="mp-cta-section" id="signup" style={{ background: '#D4DB4A' }}>
@@ -446,7 +472,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
       <footer className="mp-footer">
         <div className="mp-footer-inner">
           <div>
-            <img src="/logo.png" alt="did it!" style={{ height: '32px', width: 'auto' }} />
+            <DiditLogo height={32} tone="light" />
             <div className="mp-footer-tagline">Real-world concepts for tiny humans.</div>
           </div>
           <div className="mp-footer-right">&copy; 2026 did*it. All rights reserved.</div>

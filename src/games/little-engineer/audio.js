@@ -1,24 +1,21 @@
 import { isGlobalMuted } from '../../design-system/useSoundManager';
+import { getAudioContext, ensureAudioRunning } from '../../design-system/audioContext';
 
-let audioCtx;
-
-export const initAudio = () => {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-};
+export const initAudio = () => ensureAudioRunning();
 
 export const playTone = (freq, duration, type = 'sine', volume = 0.15) => {
-  if (!audioCtx) return;
   if (isGlobalMuted()) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
+  const ac = getAudioContext();
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
   osc.type = type;
   osc.frequency.value = freq;
   gain.gain.value = volume;
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
   osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(ac.destination);
   osc.start();
-  osc.stop(audioCtx.currentTime + duration);
+  osc.stop(ac.currentTime + duration);
 };
 
 export const sound = {

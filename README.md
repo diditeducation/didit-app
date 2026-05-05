@@ -1,4 +1,29 @@
-# React + Vite
+# Did·It — Toddler Learning Games
+
+## Game Card Illustrations
+
+Every game card in the hub requires a custom SVG illustration.
+All illustrations **must follow `public/game illustrations/ILLUSTRATIONS.md`** exactly.
+
+Key rules (non-negotiable):
+- Derive objects from the **game mechanic** — not the theme name (Section 0)
+- Flat solid fills only — no opacity, no gradients, no `rgba()`
+- Only palette hex values from Section 2
+- Chunky, bold silhouettes with rounded corners everywhere
+- Objects overlap slightly and are large (fill 50–60% of canvas)
+- Exactly **two** 4-point rounded sparkles in `#F5C842` per illustration
+- `viewBox="0 0 680 500"` for full-card illustrations (hub icons use 500×500 square variant)
+
+To add an illustration for a new game:
+1. Read the game's mechanic description
+2. Follow the prompt template in `ILLUSTRATIONS.md` Section 11
+3. Add the component to `src/pages/GameIllustrations.jsx`
+4. Register it in `GAME_ILLUSTRATIONS` in `src/pages/HubPage.jsx`
+5. Run the QA checklist from `ILLUSTRATIONS.md` Section 12
+
+---
+
+# React + Vite (original)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

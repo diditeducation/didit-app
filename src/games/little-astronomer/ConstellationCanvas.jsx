@@ -1,0 +1,262 @@
+import { useState, useRef, useCallback } from 'react';
+import { initAudio, sound } from './audio';
+
+// Star size → visual radii
+const SIZE_MAP = { lg: { dot: 10, glow: 18 }, md: { dot: 8, glow: 15 }, sm: { dot: 6, glow: 12 } };
+
+// Deterministic pseudo-random background stars per level
+function makeBgStars(seed) {
+  const out = [];
+  let s = (seed * 1664525 + 1013904223) & 0xffffffff;
+  const next = () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+  for (let i = 0; i < 48; i++) {
+    out.push({
+      x: next() * 100,
+      y: next() * 100,
+      size: 0.9 + next() * 1.5,
+      delay: next() * 3.5,
+      dur: 2.2 + next() * 1.8,
+    });
+  }
+  return out;
+}
+
+export default function ConstellationCanvas({
+  levelId,
+  stars,
+  sequence,
+  animal,
+  onMilestone,
+}) {
+  const bgStars = useRef(makeBgStars(levelId * 137 + 42));
+
+  const [nextIdx, setNextIdx]   = useState(0);   // index into `sequence`
+  const [lines, setLines]       = useState([]);   // [{from, to}] star indices
+  const [wrongIdx, setWrongIdx] = useState(null); // star index briefly animating
+  const [complete, setComplete] = useState(false);
+
+  const wrongTimer = useRef(null);
+  const milestoneTimer = useRef(null);
+
+  // Set of star indices that have been activated (already correctly tapped)
+  const activated = new Set(sequence.slice(0, nextIdx));
+
+  const handleStarTap = useCallback((starIndex) => {
+    if (complete) return;
+    initAudio();
+
+    const expected = sequence[nextIdx];
+
+    if (starIndex === expected) {
+      sound.tap();
+
+      // Only draw a line if the previous sequence entry was a real star
+      // (not a `null` "lift pen" sentinel used to start a new disjoint line).
+      if (nextIdx > 0 && sequence[nextIdx - 1] != null) {
+        setLines(prev => [...prev, { from: sequence[nextIdx - 1], to: starIndex }]);
+      }
+
+      // Auto-advance past any null sentinels so the user never has to
+      // tap a phantom step.
+      let newIdx = nextIdx + 1;
+      while (newIdx < sequence.length && sequence[newIdx] == null) {
+        newIdx += 1;
+      }
+      setNextIdx(newIdx);
+
+      if (newIdx === sequence.length) {
+        setComplete(true);
+        // fire milestone after brief animal-reveal pause
+        clearTimeout(milestoneTimer.current);
+        milestoneTimer.current = setTimeout(() => {
+          onMilestone(50, 55);
+        }, 700);
+      }
+    } else {
+      // Wrong tap — gentle shake, no negative sound
+      clearTimeout(wrongTimer.current);
+      setWrongIdx(starIndex);
+      wrongTimer.current = setTimeout(() => setWrongIdx(null), 550);
+    }
+  }, [nextIdx, sequence, complete, onMilestone]);
+
+  const nextExpected = complete ? null : sequence[nextIdx];
+
+  return (
+    <div
+      style={{
+        /* Height-driven: leaves room for top bar, pips, and label below. */
+        height: 'min(calc(100dvh - 230px), 460px)',
+        width: 'auto',
+        aspectRatio: '390 / 700',
+        maxWidth: 'calc(100% - 68px)', /* leave room for sidebar */
+        position: 'relative',
+        borderRadius: 24,
+        background: 'radial-gradient(ellipse at 50% 35%, #1c2040 0%, #0a0e1a 68%)',
+        overflow: 'hidden',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.65)',
+        touchAction: 'none',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+      }}
+    >
+      <style>{`
+        @keyframes bgTwinkle {
+          0%, 100% { opacity: 0.18; }
+          50%       { opacity: 0.75; }
+        }
+        @keyframes starPulse {
+          0%, 100% { transform: translate(-50%,-50%) scale(1); }
+          50%       { transform: translate(-50%,-50%) scale(1.28); }
+        }
+        @keyframes starShake {
+          0%,100% { transform: translate(-50%,-50%) rotate(0deg); }
+          20%     { transform: translate(-50%,-50%) rotate(-14deg); }
+          45%     { transform: translate(-50%,-50%) rotate(14deg); }
+          65%     { transform: translate(-50%,-50%) rotate(-9deg); }
+          82%     { transform: translate(-50%,-50%) rotate(9deg); }
+        }
+        @keyframes lineIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes nextRing {
+          0%, 100% { box-shadow: 0 0 0 4px rgba(255,224,75,0.95), 0 0 16px 6px rgba(255,224,75,0.45); }
+          50%       { box-shadow: 0 0 0 10px rgba(255,224,75,0.25), 0 0 28px 12px rgba(255,224,75,0.2); }
+        }
+        @keyframes animalIn {
+          0%   { transform: translate(-50%,-50%) scale(0.1); opacity: 0; }
+          55%  { transform: translate(-50%,-50%) scale(1.18); opacity: 1; }
+          75%  { transform: translate(-50%,-50%) scale(0.94); opacity: 1; }
+          88%  { transform: translate(-50%,-50%) scale(1.05); opacity: 1; }
+          100% { transform: translate(-50%,-50%) scale(1);    opacity: 1; }
+        }
+      `}</style>
+
+      {/* Background field stars */}
+      {bgStars.current.map((s, i) => (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            width: s.size,
+            height: s.size,
+            borderRadius: '50%',
+            background: '#ffffff',
+            pointerEvents: 'none',
+            animation: `bgTwinkle ${s.dur}s ${s.delay}s ease-in-out infinite`,
+          }}
+        />
+      ))}
+
+      {/* SVG line overlay — coordinate system matches CSS % positions */}
+      <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+        }}
+      >
+        {lines.map((ln, i) => {
+          const a = stars.find(s => s.index === ln.from);
+          const b = stars.find(s => s.index === ln.to);
+          return (
+            <line
+              key={i}
+              x1={a.x} y1={a.y}
+              x2={b.x} y2={b.y}
+              stroke={complete ? 'rgba(255,224,128,0.75)' : 'rgba(160,196,255,0.55)'}
+              strokeWidth="0.6"
+              strokeLinecap="round"
+              style={{
+                animation: 'lineIn 0.35s ease-out forwards',
+                transition: 'stroke 0.4s ease',
+              }}
+            />
+          );
+        })}
+      </svg>
+
+      {/* Constellation stars — 64px tap target, sized visual dot */}
+      {stars.map((star) => {
+        const isActivated = activated.has(star.index);
+        const isNext      = nextExpected === star.index;
+        const isWrong     = wrongIdx === star.index;
+
+        const sizeInfo = SIZE_MAP[star.size] || SIZE_MAP.md;
+        const dotSize = isNext ? sizeInfo.dot + 6 : isActivated ? sizeInfo.dot + 2 : sizeInfo.dot;
+        const starColor = star.color || '#ffffff';
+
+        const glowColor = isActivated ? `${starColor}bb` : 'rgba(130,160,220,0.35)';
+        const dotBg = isNext
+          ? 'radial-gradient(circle at 38% 35%, #ffffff, #FFE04B)'
+          : isActivated
+          ? `radial-gradient(circle at 38% 35%, #ffffff, ${starColor})`
+          : 'radial-gradient(circle at 38% 35%, #c0cce8, #7088c0)';
+
+        return (
+          <div
+            key={star.index}
+            onPointerDown={(e) => {
+              e.preventDefault();
+              handleStarTap(star.index);
+            }}
+            onPointerCancel={() => {
+              // Touch interrupted by the OS — clear the wrong-tap shake
+              // so the star doesn't stay stuck in its red animation.
+              clearTimeout(wrongTimer.current);
+              setWrongIdx(null);
+            }}
+            style={{
+              position: 'absolute',
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: 64,
+              height: 64,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transform: 'translate(-50%, -50%)',
+              cursor: 'pointer',
+              touchAction: 'none',
+              zIndex: isNext ? 3 : 2,
+              animation: isWrong
+                ? 'starShake 0.5s ease'
+                : 'none',
+            }}
+          >
+            <div
+              style={{
+                width: dotSize,
+                height: dotSize,
+                borderRadius: '50%',
+                background: dotBg,
+                boxShadow: isActivated
+                  ? `0 0 10px 3px ${glowColor}`
+                  : !isNext ? `0 0 5px 1px ${glowColor}` : undefined,
+                animation: isNext && !complete ? 'nextRing 1.4s ease-in-out infinite' : 'none',
+                pointerEvents: 'none',
+                transition: 'width 0.25s ease, height 0.25s ease',
+              }}
+            />
+          </div>
+        );
+      })}
+
+      {/* The completion emoji lives at the page level (Game.jsx) so it
+          can pop centred over the whole screen. We intentionally do not
+          render a second one inside the canvas. */}
+
+    </div>
+  );
+}
