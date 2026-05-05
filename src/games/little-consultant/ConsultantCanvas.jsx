@@ -275,8 +275,9 @@ export default function ConsultantCanvas({ level, phase, onLevelComplete, onCorr
     for (let i = st.shapes.length - 1; i >= 0; i--) {
       const s = st.shapes[i];
       if (s.placed) continue;
-      const r = shapeSize(sizeRef.current.w) / 2 + 6;
-      if (Math.hypot(s.x - px, s.y - py) <= r * 1.2) {
+      // Hit target is shape radius + 24px generous padding for toddler fingers.
+      const r = shapeSize(sizeRef.current.w) / 2 + 24;
+      if (Math.hypot(s.x - px, s.y - py) <= r) {
         st.drag = { shapeId: s.id, offX: s.x - px, offY: s.y - py, pid: e.pointerId };
         s.dragging = true;
         s.animType = null;
@@ -376,8 +377,9 @@ export default function ConsultantCanvas({ level, phase, onLevelComplete, onCorr
 // ── Layout helpers ────────────────────────────────────────
 
 function shapeSize(canvasW) {
-  // Scale shape size with canvas width, clamped to a friendly range.
-  return Math.max(38, Math.min(60, canvasW * 0.13));
+  // Toddler-friendly: larger shapes are much easier to grab and drag.
+  // Scales with canvas width, clamped so they're never tiny or oversize.
+  return Math.max(56, Math.min(78, canvasW * 0.19));
 }
 
 function buildShapes(w, h) {
@@ -389,7 +391,7 @@ function buildShapes(w, h) {
   const cols = 3;
   const cellW = bounds.w / cols;
   const ss = shapeSize(w);
-  const rowGap = 8;
+  const rowGap = 16;
   const totalRowsH = ss * 2 + rowGap;
   const rowsTop = bounds.y + (bounds.h - totalRowsH) / 2;
   const order = shuffleIndices(SHAPES.length);
@@ -431,7 +433,7 @@ const PILE_TO_HOMES_GAP = 36;
 function pileBounds(w, h) {
   const ss = shapeSize(w);
   const innerPad = 18;
-  const rowGap = 8;
+  const rowGap = 16;
   const desiredH = ss * 2 + rowGap + innerPad * 2;
 
   const pileTop    = TITLE_HEIGHT + PILE_TOP_PAD;
