@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../../data/games';
 import DiditLogo from '../../components/DiditLogo';
 import { trackGameHomeView, trackLandingClick } from '../../analytics';
+import { BOTTOM_STRIP_HEIGHT } from '../layout';
 
 const KEYFRAMES_ID = 'didit-home-layout-keyframes';
 
@@ -461,8 +462,9 @@ export default function GameHomeLayout({
 
   const stripWrapperStyle = {
     flexShrink: 0,
-    marginTop: '6px',
-    paddingBottom: 'env(safe-area-inset-bottom, 8px)',
+    // Reserve space equal to the fixed ParentStrip so the Feedback link
+    // is never hidden behind it. env() adds extra clearance on notched phones.
+    paddingBottom: `calc(${BOTTOM_STRIP_HEIGHT}px + env(safe-area-inset-bottom, 8px))`,
   };
 
   // Rich parent guide from games.js (looked up by gameId)

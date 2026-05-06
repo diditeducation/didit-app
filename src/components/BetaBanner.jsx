@@ -18,18 +18,19 @@ import { trackLandingClick } from '../analytics';
  */
 export default function BetaBanner() {
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    try { return sessionStorage.getItem('didit:beta-dismissed') === '1'; } catch { return false; }
+  });
   const ref = useRef(null);
 
-  // Defensive cleanup: an earlier build of this component used
-  // sessionStorage to remember a dismissal. If a tester hit dismiss
-  // back then, the flag would still be set in their session and the
-  // banner would stay hidden. Clear it on mount so the banner always
-  // appears now that there's no dismiss control.
-  useEffect(() => {
-    try { sessionStorage.removeItem('didit:beta-dismissed'); } catch { /* noop */ }
-  }, []);
+  const dismiss = (e) => {
+    e.stopPropagation();
+    try { sessionStorage.setItem('didit:beta-dismissed', '1'); } catch { /* noop */ }
+    setDismissed(true);
+  };
 
   // Keep the CSS variable in sync with the actual rendered height.
+  // When dismissed the banner is gone so height drops to 0.
   useEffect(() => {
     const root = document.documentElement;
     const update = () => {
@@ -42,7 +43,7 @@ export default function BetaBanner() {
       window.removeEventListener('resize', update);
       root.style.setProperty('--app-banner-h', '0px');
     };
-  }, []);
+  }, [dismissed]);
 
   const wrapStyle = {
     background: '#FFE9A8',
@@ -62,6 +63,8 @@ export default function BetaBanner() {
     flexShrink: 0,
     cursor: 'pointer',
   };
+
+  if (dismissed) return null;
 
   return (
     <>
@@ -91,6 +94,25 @@ export default function BetaBanner() {
           </span>{' '}
           if something&apos;s off
         </span>
+
+        {/* Dismiss X */}
+        <button
+          aria-label="Dismiss banner"
+          onClick={dismiss}
+          style={{
+            marginLeft: 'auto',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '2px 4px',
+            color: '#5C3D08',
+            opacity: 0.55,
+            fontSize: 16,
+            lineHeight: 1,
+            fontWeight: 700,
+            flexShrink: 0,
+          }}
+        >✕</button>
       </div>
 
       <QuickFeedbackModal
