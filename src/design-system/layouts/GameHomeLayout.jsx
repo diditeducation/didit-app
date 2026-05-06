@@ -574,28 +574,28 @@ export default function GameHomeLayout({
             </Button>
           </div>
 
-          {/* Parent Guide Link */}
-          {parentTipBody && (
-            <div style={guideLinkStyle}>
-              <button style={guideLinkTextStyle} onClick={() => { setGuideOpen(true); trackLandingClick(`grown-up-guide-${gameId || 'game'}`); }}>
-                💡 Grown-up Guide
-              </button>
-            </div>
-          )}
-
-          {/* Feedback link */}
-          {onFeedback && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, ...slotAnimation(7) }}>
-              <button
-                onClick={onFeedback}
-                style={{ ...guideLinkTextStyle, textDecorationStyle: 'dotted', fontSize: '0.8rem', opacity: 0.6 }}
-              >
-                💬 Feedback
-              </button>
-            </div>
-          )}
-
         </div>
+
+        {/* Parent Guide Link — outside body so it never overlaps ParentStrip */}
+        {parentTipBody && (
+          <div style={{ ...guideLinkStyle, marginTop: 4 }}>
+            <button style={guideLinkTextStyle} onClick={() => { setGuideOpen(true); trackLandingClick(`grown-up-guide-${gameId || 'game'}`); }}>
+              💡 Grown-up Guide
+            </button>
+          </div>
+        )}
+
+        {/* Feedback link — outside body so it never overlaps ParentStrip */}
+        {onFeedback && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2, ...slotAnimation(7) }}>
+            <button
+              onClick={onFeedback}
+              style={{ ...guideLinkTextStyle, textDecorationStyle: 'dotted', fontSize: '0.8rem', opacity: 0.6 }}
+            >
+              💬 Feedback
+            </button>
+          </div>
+        )}
 
         {/* ParentStrip */}
         <div style={stripWrapperStyle}>
