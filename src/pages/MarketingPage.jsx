@@ -44,14 +44,30 @@ export default function MarketingPage() {
     return () => observer.disconnect();
   }, []);
 
+  // Track when each named section scrolls into view (fires once per page load)
+  useEffect(() => {
+    const sectionIds = ['problem', 'games', 'how', 'ourstory', 'signup'];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            trackLandingClick(`section_${entry.target.id}_view`);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   const scrollTo = (id) => {
     trackLandingClick(`nav_${id}`);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate('/signin');
   };
 
   return (
@@ -259,7 +275,7 @@ body{font-family:'Nunito',sans-serif;background:#FFFFFF;color:var(--didit-text);
       `}</style>
 
       <nav className={`mp-nav${navScrolled ? ' scrolled' : ''}`}>
-        <span className="mp-nav-logo"><DiditLogo height={36} onNavigate={() => { trackLandingClick('nav_logo'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} /></span>
+        <span className="mp-nav-logo"><DiditLogo height={36} onNavigate={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }} /></span>
         <div className="mp-nav-links">
           <a onClick={() => scrollTo('problem')}>Why</a>
           <a onClick={() => scrollTo('games')}>Our Games</a>
