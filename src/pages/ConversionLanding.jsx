@@ -543,6 +543,22 @@ export default function ConversionLanding() {
 .lp-quote-role{font-size:12.5px;color:var(--muted)}
 @media(max-width:640px){.lp-quotes-grid{grid-template-columns:1fr;gap:16px}.lp-quotes{padding:36px 20px 40px}}
 
+.lp-accordion{max-width:720px;margin:0 auto;padding:8px 24px 24px}
+.lp-acc{border-top:1px solid var(--border)}
+.lp-acc:last-of-type{border-bottom:1px solid var(--border)}
+.lp-acc summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 4px;font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--text)}
+.lp-acc summary::-webkit-details-marker{display:none}
+.lp-acc-plus{flex-shrink:0;width:22px;height:22px;position:relative;color:var(--muted);transition:transform .28s cubic-bezier(.16,1,.3,1)}
+.lp-acc-plus::before,.lp-acc-plus::after{content:'';position:absolute;background:currentColor;border-radius:2px}
+.lp-acc-plus::before{left:0;top:9.5px;width:22px;height:3px}
+.lp-acc-plus::after{left:9.5px;top:0;width:3px;height:22px}
+.lp-acc[open] .lp-acc-plus{transform:rotate(135deg);color:var(--blue)}
+.lp-acc-body{padding:0 4px 24px;animation:lpAccIn .3s ease}
+@keyframes lpAccIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.lp-acc-p{font-size:15.5px;line-height:1.6;color:var(--text);font-weight:600;margin:0 0 14px}
+.lp-acc-p:last-child{margin-bottom:0}
+.lp-acc-p strong{font-weight:900}
+.lp-acc-num{font-weight:900}
 .lp-footer{padding:36px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;max-width:1000px;margin:0 auto;color:var(--muted);font-size:13px}
 .lp-footer-links{display:flex;gap:22px}
 .lp-footer-links button{background:none;border:none;color:var(--muted);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;padding:0}
@@ -715,15 +731,42 @@ export default function ConversionLanding() {
           </div>
         </section>
 
+        <div className="lp-accordion">
+          <details
+            className="lp-acc"
+            onToggle={(e) => { if (e.target.open) trackLandingClick('footer_philosophy'); }}
+          >
+            <summary>
+              Our Design Philosophy
+              <span className="lp-acc-plus" aria-hidden="true" />
+            </summary>
+            <div className="lp-acc-body">
+              <p className="lp-acc-p"><strong>Play Together. That&apos;s the Magic.</strong> The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.</p>
+              <p className="lp-acc-p"><strong>Big Concepts. Made Simple.</strong> The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.</p>
+              <p className="lp-acc-p"><strong>No Clutter. No Surprises.</strong> A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.</p>
+            </div>
+          </details>
+          <details
+            className="lp-acc"
+            onToggle={(e) => { if (e.target.open) trackLandingClick('footer_story'); }}
+          >
+            <summary>
+              Our Story
+              <span className="lp-acc-plus" aria-hidden="true" />
+            </summary>
+            <div className="lp-acc-body">
+              <p className="lp-acc-p">We&apos;re parents from Sydney, Australia who have a wonderfully energetic and curious toddler. {'🧡'}</p>
+              <p className="lp-acc-p">Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems. <span className="lp-acc-num" style={{ color: 'var(--coral)' }}>1.</span> Most kids&apos; games are loud, busy, and designed to keep little eyes glued to the screen. <span className="lp-acc-num" style={{ color: 'var(--blue)' }}>2.</span> The educational ones, while great for letters and numbers, rarely go beyond the basics.</p>
+              <p className="lp-acc-p">So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for. <strong>We hope your family gets to discover that too as you play along!</strong></p>
+            </div>
+          </details>
+        </div>
+
         <footer className="lp-footer">
           <div>
             <DiditLogo height={30} hideBeta />
             <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
           </div>
-          <nav className="lp-footer-links">
-            <button onClick={() => { trackLandingClick('footer_philosophy'); navigate('/about#design-philosophy'); }}>Design Philosophy</button>
-            <button onClick={() => { trackLandingClick('footer_story'); navigate('/about#our-story'); }}>Our Story</button>
-          </nav>
           <div>&copy; 2026 did·it. All rights reserved.</div>
         </footer>
 
