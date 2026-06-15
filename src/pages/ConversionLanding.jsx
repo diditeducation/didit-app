@@ -721,8 +721,8 @@ export default function ConversionLanding() {
             <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
           </div>
           <nav className="lp-footer-links">
-            <button onClick={() => { trackLandingClick('footer_philosophy'); navigate('/about'); }}>Design Philosophy</button>
-            <button onClick={() => { trackLandingClick('footer_story'); navigate('/about'); }}>Our Story</button>
+            <button onClick={() => { trackLandingClick('footer_philosophy'); navigate('/about#design-philosophy'); }}>Design Philosophy</button>
+            <button onClick={() => { trackLandingClick('footer_story'); navigate('/about#our-story'); }}>Our Story</button>
           </nav>
           <div>&copy; 2026 did·it. All rights reserved.</div>
         </footer>

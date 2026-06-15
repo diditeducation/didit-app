@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { fonts, colors } from '../design-system/tokens';
 
 /**
@@ -10,6 +11,20 @@ import { fonts, colors } from '../design-system/tokens';
  */
 export default function AboutPage() {
   const nav = useNavigate();
+  const { hash } = useLocation();
+
+  // Deep-link support: scroll to the section named in the URL hash
+  // (e.g. /about#our-story from the landing footer).
+  useEffect(() => {
+    if (!hash) return;
+    // Defer until after layout/paint so the target's final position is known
+    // (fonts and content above can shift it on first render).
+    const t = setTimeout(() => {
+      const el = document.getElementById(hash.slice(1));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+    return () => clearTimeout(t);
+  }, [hash]);
 
   const pageStyle = {
     minHeight: '100vh',
@@ -157,7 +172,7 @@ export default function AboutPage() {
           and again.
         </p>
 
-        <h2 style={sectionTitle}>Our Design Philosophy</h2>
+        <h2 id="design-philosophy" style={{ ...sectionTitle, scrollMarginTop: 24 }}>Our Design Philosophy</h2>
         <p style={para}>
           <span style={strongStyle}>Play together — that&apos;s the magic.</span>{' '}
           The games are a tool in your parenting toolkit, for you and your child
@@ -175,7 +190,7 @@ export default function AboutPage() {
           for you to feel at ease. Zero ads, ever.
         </p>
 
-        <h2 style={sectionTitle}>Our Story</h2>
+        <h2 id="our-story" style={{ ...sectionTitle, scrollMarginTop: 24 }}>Our Story</h2>
         <p style={para}>
           We&apos;re Danne &amp; Nigel, parents from Sydney with a wonderfully
           energetic, curious toddler. Teaching him is one of our favourite things
