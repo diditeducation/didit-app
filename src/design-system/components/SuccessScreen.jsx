@@ -7,6 +7,7 @@ import { useSoundManager } from '../useSoundManager';
 import { PAGE_MAX_WIDTH } from '../layout';
 import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../../data/games';
+import { useDemo } from '../../context/DemoContext';
 import DiditLogo from '../../components/DiditLogo';
 import {
   ShopperIllustration, DJIllustration, EngineerIllustration,
@@ -113,6 +114,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
   const [savingsConfetti, setSavingsConfetti] = useState(false);
   const nav = useNavigate();
   const { muted, toggleMute } = useSoundManager();
+  const { isDemo } = useDemo();
 
   useEffect(() => {
     injectKeyframes();
@@ -220,6 +222,47 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
     fontSize: '0.85rem',
     padding: '14px 0',
   };
+
+  // ── Demo / sampler mode ──────────────────────────────────────────────
+  // Finishing a trial game must NOT drop the player into the full game
+  // success screen. Instead we celebrate briefly and pivot straight to an
+  // "unlock more games" call to action.
+  if (isDemo) {
+    const demoGame = GAMES.find(g => g.id === gameId);
+    const DemoIllust = demoGame ? ILLUSTRATIONS[demoGame.illustrationKey] : null;
+    return (
+      // Absolute (not fixed) so the trial success screen stays contained
+      // inside the iPad mockup on the landing page rather than covering the
+      // whole viewport.
+      <div style={{ ...overlayStyle, position: 'absolute', paddingTop: 0 }}>
+        <div style={{ maxWidth: `${PAGE_MAX_WIDTH}px`, margin: '0 auto', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px 24px', gap: 12, position: 'relative', textAlign: 'center' }}>
+          <Confetti active={confettiActive} onComplete={() => setConfettiActive(false)} />
+          {DemoIllust
+            ? <div style={{ width: 92, height: 92, flexShrink: 0 }}><DemoIllust /></div>
+            : <div style={emojiStyle}>🎉</div>}
+          <div style={headingStyle}>
+            <span style={{ color: '#2D2A26' }}>You </span>
+            <span style={{ color: 'var(--game-primary)' }}>did it!</span>
+          </div>
+          <p style={{ ...subheadingStyle, maxWidth: 340, fontWeight: 700 }}>
+            That&apos;s just a taste. Unlock all {GAMES.length} games and keep the real-world adventures going.
+          </p>
+          <button
+            style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: '#D4DB4A', color: '#1A1A1A', gap: 8 }}
+            onClick={() => { trackSuccessClick('demo_unlock', gameId); nav('/checkout'); }}
+          >
+            <span>🔓</span><span>Unlock all games</span>
+          </button>
+          <button
+            style={{ ...btnBase, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '14px 0', fontSize: '0.95rem', background: 'color-mix(in srgb, var(--game-primary) 12%, transparent)', color: 'var(--game-primary)' }}
+            onClick={() => { trackSuccessClick('play_again', gameId); onPlayAgain(); }}
+          >
+            <span>🔄</span><span>Play again</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={overlayStyle}>
@@ -422,6 +465,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
         </div>
       )}
 
+      {/* ── Buttons (demo mode is handled by the early return above) ── */}
       <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: '360px', flexShrink: 0 }}>
         <div style={{ display: 'flex', flexDirection: 'row', gap: 8 }}>
           <button style={primaryBtnStyle} onClick={() => { trackSuccessClick('play_again', gameId); onPlayAgain(); }}>
@@ -436,8 +480,6 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
             <span>🎲</span><span>Another game</span>
           </button>
         </div>
-        {/* Back to Hub — full-width tertiary button. Was previously only the
-            small house icon in the header, easy to miss on the success screen. */}
         <button style={homeBtnStyle} onClick={() => { trackSuccessClick('back_to_hub', gameId); (onBack || (() => nav('/hub')))(); }}>
           <span>🏠</span><span>Back to Hub</span>
         </button>

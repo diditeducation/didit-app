@@ -213,12 +213,12 @@ function Coin({ variant = 'wallet', onTap, animClass, dimmed, onDragStart, coinS
 }
 
 /* ───────────────────── Empty Coin Slot ───────────────────── */
-function EmptySlot() {
+function EmptySlot({ coinSize }) {
   return (
     <div
       style={{
-        width: 'clamp(36px, 8vw, 44px)',
-        height: 'clamp(36px, 8vw, 44px)',
+        width: coinSize || 'clamp(36px, 8vw, 44px)',
+        height: coinSize || 'clamp(36px, 8vw, 44px)',
         borderRadius: '50%',
         border: '2px dashed rgba(255,255,255,0.1)',
         background: 'transparent',
@@ -319,7 +319,17 @@ function fireConfetti(canvas) {
 /* ═══════════════════════════════════════════════════════════
    ShopGame — single continuous flow
    ═══════════════════════════════════════════════════════════ */
-export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef }) {
+export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef, compact = false }) {
+  /* Compact mode (landing sampler) tightens the wallet + item area so the
+     payment tray ("shelf") fits inside the shorter iPad scene card. */
+  const coinSize     = compact ? 'clamp(28px, 7vw, 34px)' : 'clamp(36px, 8vw, 44px)';
+  const emojiSize    = compact ? 'clamp(2.1rem, 9vw, 3rem)' : 'clamp(3rem, 14vw, 5rem)';
+  const walletPad    = compact ? '7px 12px' : '10px 14px';
+  const walletGap    = compact ? 3 : 4;
+  const itemPad      = compact ? '8px 13px 2px' : '16px 13px 3px';
+  const trayPad      = compact ? '6px 13px' : '8px 13px';
+  const trayMinH     = compact ? 40 : 48;
+  const nameMarginTop = compact ? 2 : 6;
   const [items, setItems] = useState(() => pickRandom());
   const [wallet, setWallet] = useState(() => makeWallet(START_COINS, 0));
   const [payment, setPayment] = useState([]);
@@ -605,7 +615,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
           style={{
             background: C_card.nightSky,
             borderRadius: 18,
-            padding: '10px 14px',
+            padding: walletPad,
             maxWidth: 340,
             margin: '0 auto',
             width: '100%',
@@ -648,18 +658,18 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
               display: 'grid',
               gridTemplateColumns: 'repeat(5, 1fr)',
               gridTemplateRows: 'repeat(2, auto)',
-              gap: 4,
+              gap: walletGap,
               justifyItems: 'center',
             }}
           >
             {Array.from({ length: START_COINS }, (_, slotIdx) => {
               if (slotIdx < walletCount) {
                 const coin = wallet[slotIdx];
-                const isLast = slotIdx === walletCount - 1;
                 return (
                   <Coin
                     key={`slot-${slotIdx}`}
                     variant="wallet"
+                    coinSize={coinSize}
                     animClass={flyDownIds.has(coin.id) ? 'sg-flyDown' : ''}
                     dimmed={dragging && dragging.coinId === coin.id}
                     onTap={handleTapWallet}
@@ -667,7 +677,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
                   />
                 );
               }
-              return <EmptySlot key={`slot-${slotIdx}`} />;
+              return <EmptySlot key={`slot-${slotIdx}`} coinSize={coinSize} />;
             })}
           </div>
         </div>
@@ -719,13 +729,14 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
           <div
             style={{
               flex: 1,
+              minHeight: 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 2,
               zIndex: 2,
-              padding: '16px 13px 3px',
+              padding: itemPad,
               position: 'relative',
             }}
           >
@@ -752,7 +763,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
               <div
                 key={`item-${qIdx}`}
                 style={{
-                  fontSize: 'clamp(3rem, 14vw, 5rem)',
+                  fontSize: emojiSize,
                   lineHeight: 1,
                   animation: itemPop ? 'sg-popIn 0.4s ease-out' : 'none',
                   opacity: fadeItem ? 0.15 : itemVisible ? 1 : 0,
@@ -771,7 +782,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
                 fontFamily: font,
                 opacity: itemVisible ? 1 : 0,
                 transition: 'opacity 0.3s ease',
-                marginTop: 6,
+                marginTop: nameMarginTop,
               }}
             >
               {currentItem.name}
@@ -811,7 +822,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
             style={{
               flexShrink: 0,
               borderTop: 'none',
-              padding: '8px 13px',
+              padding: trayPad,
               zIndex: 2,
             }}
           >
@@ -851,7 +862,7 @@ export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef 
                 background: '#FFFFFF',
                 border: 'none',
                 borderRadius: 12,
-                minHeight: 48,
+                minHeight: trayMinH,
                 padding: '6px 10px',
                 display: 'flex',
                 flexWrap: 'wrap',

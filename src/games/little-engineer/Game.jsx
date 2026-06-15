@@ -6,6 +6,7 @@ import FeedbackModal from '../../components/FeedbackModal';
 import theme from './theme';
 import JunctionBoxLevel from './levels/JunctionBoxLevel';
 import { trackGameOpen, trackGameComplete } from '../../analytics';
+import { useDemo } from '../../context/DemoContext';
 
 const ANIMAL_NAMES = {
   '🐶':'Dog', '🐱':'Cat', '🐭':'Mouse', '🐹':'Hamster',
@@ -20,6 +21,7 @@ const ANIMAL_NAMES = {
 
 export default function Game() {
   const navigate = useNavigate();
+  const { isDemo } = useDemo();
   const [showSuccess, setShowSuccess] = useState(false);
   const [collectedAnimals, setCollectedAnimals] = useState([]);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -44,11 +46,13 @@ export default function Game() {
         levels={[]}
         activeLevel={1}
         onBack={() => navigate('/hub')}
+        instructions="Let your little one tap the switches to light up the bulb and reveal a friend."
         hideTabs
       >
         <JunctionBoxLevel
           key={showSuccess ? 'done' : 'playing'}
           onComplete={handleComplete}
+          totalAnimals={isDemo ? 4 : 6}
         />
       </GameShell>
 

@@ -31,11 +31,21 @@ const BPM   = 100;
 const BEAT_MS = Math.round((60 / BPM) * 1000);
 
 // ─── Component ─────────────────────────────────────────────────────────────
-export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
+export default function MixLevel({ level = 1, isLast = false, onMilestone, compact = false }) {
   const layersRef = useRef(
     LEVEL_LAYERS[level].map(id => ALL_LAYERS.find(l => l.id === id))
   );
   const layers = layersRef.current;
+
+  // Compact mode (landing sampler) tightens vertical spacing so the
+  // tallest level (Full Mix, 5 rows) fits the iPad without scrolling.
+  const cell        = compact ? 34 : CELL_SIZE;
+  const rowGap      = compact ? 7  : 14;
+  const cardPadTop  = compact ? 10 : 18;
+  const cardPadBot  = compact ? 10 : 20;
+  const playMargin  = compact ? 6  : 18;
+  const beatMargin  = compact ? 8  : 16;
+  const wrapGap     = compact ? 7  : 12;
 
   const makeGrid = () => layers.map((_, li) => Array(BEATS).fill(li === 0));
 
@@ -112,7 +122,7 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
 
   // ── Render ───────────────────────────────────────────────────────────────
   return (
-    <div style={{ display: 'flex', flex: 1, width: '100%', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'flex', flex: 1, width: '100%', flexDirection: 'column', gap: wrapGap }}>
       {/* ── Sequencer card ─────────────────────────────────────────────── */}
       <div style={{
         width: '100%',
@@ -120,13 +130,13 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
         borderRadius: 24,
         border: `2px solid ${done ? 'var(--game-primary)' : 'rgba(0,0,0,0.08)'}`,
         boxSizing: 'border-box',
-        padding: '18px 16px 20px',
+        padding: `${cardPadTop}px 16px ${cardPadBot}px`,
         transition: 'border-color 0.35s ease',
         boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
       }}>
 
         {/* Top bar: play/pause only */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 18 }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: playMargin }}>
           <button
             onPointerDown={togglePlay}
             style={{
@@ -154,7 +164,7 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
         </div>
 
         {/* ── Grid ─────────────────────────────────────────────────────── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: rowGap }}>
           {layers.map((layer, li) => (
             <div key={layer.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
 
@@ -187,7 +197,7 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
                     onPointerDown={() => toggleCell(li, col)}
                     style={{
                       flex: 1,
-                      height: CELL_SIZE,
+                      height: cell,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       cursor: 'pointer', touchAction: 'manipulation',
                       // Yellow column highlight behind the circle
@@ -197,7 +207,7 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
                     }}
                   >
                     <div style={{
-                      width: CELL_SIZE, height: CELL_SIZE,
+                      width: cell, height: cell,
                       borderRadius: '50%',
                       pointerEvents: 'none',
                       background: on
@@ -215,7 +225,7 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
         </div>
 
         {/* ── Beat indicator dots ──────────────────────────────────────── */}
-        <div style={{ display: 'flex', gap: 10, marginTop: 16, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 10, marginTop: beatMargin, alignItems: 'center' }}>
           <div style={{ width: 48, flexShrink: 0 }} />
           {Array.from({ length: BEATS }, (_, i) => (
             <div key={i} style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
@@ -236,14 +246,14 @@ export default function MixLevel({ level = 1, isLast = false, onMilestone }) {
           <button
             onPointerDown={handleNext}
             style={{
-              padding: '14px 40px',
+              padding: compact ? '9px 32px' : '14px 40px',
               background: 'var(--game-primary)',
               color: '#fff',
               border: 'none',
               borderRadius: 9999,
               fontFamily: "'Nunito', sans-serif",
               fontWeight: 800,
-              fontSize: '1rem',
+              fontSize: compact ? '0.9rem' : '1rem',
               cursor: 'pointer',
               touchAction: 'manipulation',
               WebkitTapHighlightColor: 'transparent',

@@ -25,3 +25,6 @@ dist-ssr
 .env
 serviceAccount.json
 *serviceAccount*.json
+
+# Internal docs — not for public repo
+docs/

@@ -11,6 +11,7 @@ import theme from './theme';
 import Waveform from './Waveform';
 import MixLevel from './levels/MixLevel';
 import { trackGameOpen, trackLevelComplete, trackGameComplete } from '../../analytics';
+import { useDemo } from '../../context/DemoContext';
 
 const levels = [
   { id: 1, label: '🥁 Duo' },
@@ -38,7 +39,10 @@ const ALL_ITEMS = [
 
 export default function Game() {
   const navigate = useNavigate();
-  const [activeLevel, setActiveLevel] = useState(1);
+  const { isDemo } = useDemo();
+  // In the landing sampler, show only the final "Full Mix" level.
+  const visibleLevels = isDemo ? levels.slice(-1) : levels;
+  const [activeLevel, setActiveLevel] = useState(isDemo ? levels.length : 1);
   const [completedLevels, setCompletedLevels] = useState(new Set());
   const [showSuccess, setShowSuccess] = useState(false);
   const [milestone, setMilestone] = useState({ active: false, originX: 50, originY: 50 });
@@ -93,14 +97,15 @@ export default function Game() {
 
       <GameShell
         title="Little DJ"
-        levels={levels}
+        levels={visibleLevels}
+        instructions="Let your little one tap the dots to stack sounds, then watch them understand patterns."
         activeLevel={activeLevel}
         onLevelChange={(id) => setActiveLevel(id)}
         onBack={() => navigate('/hub')}
         unlockedUpTo={levels.length}
         topSlot={
-          <div style={{ padding: '4px 24px 8px' }}>
-            <Waveform height={48} />
+          <div style={{ padding: isDemo ? '2px 24px 4px' : '4px 24px 8px' }}>
+            <Waveform height={isDemo ? 30 : 48} />
           </div>
         }
       >
@@ -111,6 +116,7 @@ export default function Game() {
               level={activeLevel}
               isLast={activeLevel === levels.length}
               onMilestone={(x, y) => triggerMilestone(x, y)}
+              compact={isDemo}
             />
           )}
         </div>

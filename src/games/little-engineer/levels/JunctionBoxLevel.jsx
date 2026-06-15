@@ -122,8 +122,12 @@ const Stars = () => {
 /* ════════════════════════════════════════════════════════
    JunctionBoxLevel
    ════════════════════════════════════════════════════════ */
-export default function JunctionBoxLevel({ onComplete }) {
+export default function JunctionBoxLevel({ onComplete, totalAnimals = 6 }) {
   useEffect(() => { injectKeyframes(); }, []);
+
+  /* Round 0 is the intro (1st animal); each later round adds one more.
+     The level finishes once `totalAnimals` have been collected. */
+  const lastRound = Math.max(1, totalAnimals - 1);
 
   const [round,          setRound]         = useState(0);
   const [mapping,        setMapping]       = useState(generateMapping);
@@ -199,7 +203,7 @@ export default function JunctionBoxLevel({ onComplete }) {
 
       /* After 3s: start next round (light goes off) */
       setTimeout(() => {
-        if (capturedRound >= 5) {
+        if (capturedRound >= lastRound) {
           onComplete?.(usedRef.current);
         } else {
           setRound(capturedRound + 1);
@@ -439,7 +443,7 @@ export default function JunctionBoxLevel({ onComplete }) {
         )}
       </div>
 
-      {/* ── Collection docket — 6 slots ── */}
+      {/* ── Collection docket — one slot per animal to collect ── */}
       <div style={{
         width: '100%', maxWidth: SVG_W,
         borderRadius: 14,
@@ -447,7 +451,7 @@ export default function JunctionBoxLevel({ onComplete }) {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         gap: 8, padding: '10px 16px',
       }}>
-        {Array.from({ length: 6 }, (_, i) => {
+        {Array.from({ length: totalAnimals }, (_, i) => {
           const item = trayItems[i];
           return (
             <div key={i} style={{

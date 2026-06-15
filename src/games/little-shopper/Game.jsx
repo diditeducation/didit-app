@@ -10,9 +10,11 @@ import { fonts } from '../../design-system/tokens';
 import theme from './theme';
 import ShopGame from './ShopGame';
 import { trackGameOpen, trackGameComplete } from '../../analytics';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Game() {
   const navigate = useNavigate();
+  const { isDemo } = useDemo();
   const [showNext, setShowNext] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [milestone, setMilestone] = useState({
@@ -70,8 +72,10 @@ export default function Game() {
         title="Little Shopper"
         hideTabs
         onBack={() => navigate('/hub')}
+        instructions="Let your little one drag the coins onto the shelf to pay for each treat."
       >
         <ShopGame
+          compact={isDemo}
           resetRef={shopResetRef}
           onMilestone={(x, y) =>
             triggerMilestone(

@@ -157,6 +157,37 @@ export default function AboutPage() {
           and again.
         </p>
 
+        <h2 style={sectionTitle}>Our Design Philosophy</h2>
+        <p style={para}>
+          <span style={strongStyle}>Play together — that&apos;s the magic.</span>{' '}
+          The games are a tool in your parenting toolkit, for you and your child
+          to explore together. Your encouragement and coaching makes the learning
+          moment more magical.
+        </p>
+        <p style={para}>
+          <span style={strongStyle}>Big concepts, made simple.</span> The ideas
+          may be big, but the games are simple. Designed for tiny fingers, they
+          are intuitive and tactile, without being overwhelming.
+        </p>
+        <p style={para}>
+          <span style={strongStyle}>No clutter, no surprises.</span> A clean,
+          safe, distraction-free space. Designed for your child to explore and
+          for you to feel at ease. Zero ads, ever.
+        </p>
+
+        <h2 style={sectionTitle}>Our Story</h2>
+        <p style={para}>
+          We&apos;re Danne &amp; Nigel, parents from Sydney with a wonderfully
+          energetic, curious toddler. Teaching him is one of our favourite things
+          to do together — but every game we found was either loud and mindless,
+          or never went beyond letters and numbers.
+        </p>
+        <p style={para}>
+          So we built our own. The more we played, the more we saw how capable
+          little minds really are — they can stretch so much further than we give
+          them credit for. We hope your family gets to discover that too. {'🧡'}
+        </p>
+
         <button onClick={() => nav('/hub')} style={backBtn}>← Back to games</button>
       </div>
     </div>
