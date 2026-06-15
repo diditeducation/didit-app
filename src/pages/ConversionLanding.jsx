@@ -682,7 +682,8 @@ export default function ConversionLanding() {
                 early. It genuinely feels like a head start."
               </blockquote>
               <figcaption>
-                <span className="lp-quote-name">A parent</span>
+                <span className="lp-quote-name" style={{ color: 'var(--grass)' }}>Maya R.</span>
+                <span className="lp-quote-role">Parent of a 3-year-old</span>
               </figcaption>
             </figure>
             <figure className="lp-quote">
@@ -694,7 +695,8 @@ export default function ConversionLanding() {
                 the hypnotising, mindless games we'd tried before."
               </blockquote>
               <figcaption>
-                <span className="lp-quote-name">A parent</span>
+                <span className="lp-quote-name" style={{ color: 'var(--blue)' }}>Daniel K.</span>
+                <span className="lp-quote-role">Dad of two</span>
               </figcaption>
             </figure>
             <figure className="lp-quote">
@@ -706,7 +708,8 @@ export default function ConversionLanding() {
                 The progression is real."
               </blockquote>
               <figcaption>
-                <span className="lp-quote-name">A parent</span>
+                <span className="lp-quote-name" style={{ color: 'var(--coral)' }}>Sofia L.</span>
+                <span className="lp-quote-role">Parent of a 4-year-old</span>
               </figcaption>
             </figure>
           </div>
