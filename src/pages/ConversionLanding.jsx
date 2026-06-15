@@ -691,7 +691,7 @@ export default function ConversionLanding() {
               <div className="lp-quote-title">Finally, something <em>actually</em> enriching</div>
               <blockquote>
                 "I love that it's not overstimulating. It's so well designed, simple and
-                intuitive. And I use it as a tool to play together with my child, rather than
+                intuitive. And I use it as a tool to play together with my children, rather than
                 the hypnotising, mindless games we'd tried before."
               </blockquote>
               <figcaption>
