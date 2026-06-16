@@ -166,7 +166,7 @@ export default function Checkout() {
             Widen your child&apos;s world
           </h1>
           <p style={{ fontSize: '0.92rem', fontWeight: 600, color: colors.muted, lineHeight: 1.45, margin: '0 0 16px' }}>
-            Ages 2&ndash;5 is when their brain develops fastest. Give them real-world concepts while it matters most.
+            Ages 2&ndash;5 is when their brain develops fastest. Watch them explore real-world concepts through play.
           </p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
             <span style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }}>{PRICE}</span>
