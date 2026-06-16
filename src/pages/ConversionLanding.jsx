@@ -807,7 +807,7 @@ export default function ConversionLanding() {
         {/* Sticky conversion bar */}
         <div className={`lp-sticky${showStickyBar ? ' show' : ''}`}>
           <div className="lp-sticky-text">
-            Unlock all {GAMES.length} games
+            Unlock every game
             <span>{PRICE}/month · Cancel anytime</span>
           </div>
           <button className="lp-btn lp-btn-lime" onClick={() => goCheckout('sticky_unlock')} style={{ padding: '12px 24px', fontSize: 15 }}>

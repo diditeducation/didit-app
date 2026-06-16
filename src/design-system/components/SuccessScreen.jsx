@@ -245,7 +245,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
             <span style={{ color: 'var(--game-primary)' }}>did it!</span>
           </div>
           <p style={{ ...subheadingStyle, maxWidth: 340, fontWeight: 700 }}>
-            That&apos;s just a taste. Unlock all {GAMES.length} games and keep the real-world adventures going.
+            That&apos;s just a taste. Unlock every game and keep the real-world adventures going.
           </p>
           <button
             style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: '#D4DB4A', color: '#1A1A1A', gap: 8 }}
