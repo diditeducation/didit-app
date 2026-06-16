@@ -21,6 +21,7 @@ export default function Checkout() {
   const { devEnabled, setDevMember } = useSubscription();
   const { user } = useAuth();
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [notice, setNotice] = useState('');
 
   const fromGame = from ? GAMES.find((g) => g.id === from) : null;
@@ -258,6 +259,16 @@ export default function Checkout() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@email.com"
+                style={{ ...fieldStyle, marginBottom: 14 }}
+              />
+
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: colors.text, marginBottom: 6 }}>Create a password</label>
+              <input
+                className="co-field"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 6 characters"
                 style={{ ...fieldStyle, marginBottom: 14 }}
               />
 
