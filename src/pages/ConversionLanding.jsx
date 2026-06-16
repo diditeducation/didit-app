@@ -559,6 +559,19 @@ export default function ConversionLanding() {
 .lp-acc-p:last-child{margin-bottom:0}
 .lp-acc-p strong{font-weight:900}
 .lp-acc-num{font-weight:900}
+.lp-acc-h{font-family:'Nunito',sans-serif;font-weight:800;font-size:19px;line-height:1.3;color:var(--text);margin:2px 0 20px}
+.lp-acc-squig{position:relative;display:inline-block;white-space:nowrap;color:var(--blue)}
+.lp-acc-principle{display:flex;gap:16px;align-items:flex-start;margin-bottom:18px}
+.lp-acc-principle:last-child{margin-bottom:0}
+.lp-acc-pnum{font-family:'Nunito',sans-serif;font-weight:900;font-size:30px;line-height:1;flex-shrink:0;min-width:38px}
+.lp-acc-ptitle{font-weight:900;font-size:16px;color:var(--text);margin:0 0 4px}
+.lp-acc-ptext{font-size:14.5px;line-height:1.55;color:var(--muted);font-weight:600;margin:0}
+.lp-acc-story{display:flex;gap:24px;align-items:center;background:#FAF6DC;border-radius:18px;padding:24px;margin-top:2px}
+.lp-acc-story-visual{flex-shrink:0;width:132px;height:132px;border-radius:50% 42% 55% 45%;background:#fff;display:flex;align-items:center;justify-content:center}
+.lp-acc-story-visual img{width:104px;height:104px;object-fit:contain}
+.lp-acc-story-text{flex:1;min-width:0}
+.lp-acc-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+@media(max-width:560px){.lp-acc-story{flex-direction:column;align-items:center;text-align:left;padding:22px 18px}.lp-acc-story-visual{width:100px;height:100px}.lp-acc-story-visual img{width:78px;height:78px}}
 .lp-footer{padding:36px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;max-width:1000px;margin:0 auto;color:var(--muted);font-size:13px}
 .lp-footer-links{display:flex;gap:22px}
 .lp-footer-links button{background:none;border:none;color:var(--muted);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;padding:0}
@@ -741,9 +754,19 @@ export default function ConversionLanding() {
               <span className="lp-acc-plus" aria-hidden="true" />
             </summary>
             <div className="lp-acc-body">
-              <p className="lp-acc-p"><strong>Play Together. That&apos;s the Magic.</strong> The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.</p>
-              <p className="lp-acc-p"><strong>Big Concepts. Made Simple.</strong> The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.</p>
-              <p className="lp-acc-p"><strong>No Clutter. No Surprises.</strong> A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.</p>
+              <p className="lp-acc-h">Thoughtfully made for little hands and{' '}<span className="lp-acc-squig">big a-ha moments.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></p>
+              <div className="lp-acc-principle">
+                <div className="lp-acc-pnum" style={{ color: 'var(--coral)' }}>01</div>
+                <div><div className="lp-acc-ptitle">Play Together. That&apos;s the Magic.</div><p className="lp-acc-ptext">The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.</p></div>
+              </div>
+              <div className="lp-acc-principle">
+                <div className="lp-acc-pnum" style={{ color: 'var(--blue)' }}>02</div>
+                <div><div className="lp-acc-ptitle">Big Concepts. Made Simple.</div><p className="lp-acc-ptext">The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.</p></div>
+              </div>
+              <div className="lp-acc-principle">
+                <div className="lp-acc-pnum" style={{ color: 'var(--grass)' }}>03</div>
+                <div><div className="lp-acc-ptitle">No Clutter. No Surprises.</div><p className="lp-acc-ptext">A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.</p></div>
+              </div>
             </div>
           </details>
           <details
@@ -755,9 +778,17 @@ export default function ConversionLanding() {
               <span className="lp-acc-plus" aria-hidden="true" />
             </summary>
             <div className="lp-acc-body">
-              <p className="lp-acc-p">We&apos;re parents from Sydney, Australia who have a wonderfully energetic and curious toddler. {'🧡'}</p>
-              <p className="lp-acc-p">Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems. <span className="lp-acc-num" style={{ color: 'var(--coral)' }}>1.</span> Most kids&apos; games are loud, busy, and designed to keep little eyes glued to the screen. <span className="lp-acc-num" style={{ color: 'var(--blue)' }}>2.</span> The educational ones, while great for letters and numbers, rarely go beyond the basics.</p>
-              <p className="lp-acc-p">So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for. <strong>We hope your family gets to discover that too as you play along!</strong></p>
+              <div className="lp-acc-story">
+                <div className="lp-acc-story-visual">
+                  <img src="/game%20illustrations/Bulb.png" alt="" />
+                </div>
+                <div className="lp-acc-story-text">
+                  <p className="lp-acc-eyebrow">How it started</p>
+                  <p className="lp-acc-p">We&apos;re parents from Sydney, Australia who have a wonderfully energetic and curious toddler. {'🧡'}</p>
+                  <p className="lp-acc-p">Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems. <span className="lp-acc-num" style={{ color: 'var(--coral)' }}>1.</span> Most kids&apos; games are loud, busy, and designed to keep little eyes glued to the screen. <span className="lp-acc-num" style={{ color: 'var(--blue)' }}>2.</span> The educational ones, while great for letters and numbers, rarely go beyond the basics.</p>
+                  <p className="lp-acc-p">So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for. <strong>We hope your family gets to discover that too as you play along!</strong></p>
+                </div>
+              </div>
             </div>
           </details>
         </div>
