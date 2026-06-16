@@ -39,7 +39,7 @@ export default function Checkout() {
   };
 
   const perks = [
-    [`All ${GAMES.length} games unlocked`, 'Finance, coding, music, science & more'],
+    ['All games unlocked', 'Finance, coding, music, science & more'],
     ['New games added regularly', 'Fresh concepts every few weeks'],
     ['Made for co-play', 'Designed for you and your child together'],
     ['Zero ads, ever', 'A calm, safe, distraction-free space'],
@@ -162,9 +162,12 @@ export default function Checkout() {
             <DiditLogo height={28} hideBeta />
           </div>
 
-          <h1 style={{ fontSize: '1.6rem', fontWeight: 900, color: colors.text, margin: '0 0 6px', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-            Unlock all {GAMES.length} games
+          <h1 style={{ fontSize: '1.7rem', fontWeight: 900, color: colors.text, margin: '0 0 8px', letterSpacing: '-0.02em', lineHeight: 1.12 }}>
+            Widen your child&apos;s world
           </h1>
+          <p style={{ fontSize: '0.92rem', fontWeight: 600, color: colors.muted, lineHeight: 1.45, margin: '0 0 16px' }}>
+            Ages 2&ndash;5 is when their brain develops fastest. Give them real-world concepts while it matters most.
+          </p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
             <span style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }}>{PRICE}</span>
             <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>/ month</span>
@@ -220,7 +223,7 @@ export default function Checkout() {
           ) : (
             <>
               <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: colors.text, margin: '0 0 18px', letterSpacing: '-0.01em' }}>
-                Start your membership
+                Unlock full game access
               </h2>
 
               <button
