@@ -767,6 +767,9 @@ export default function ConversionLanding() {
             <DiditLogo height={30} hideBeta />
             <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
           </div>
+          <nav className="lp-footer-links">
+            <button onClick={() => { trackLandingClick('footer_about'); navigate('/about'); }}>About did·it</button>
+          </nav>
           <div>&copy; 2026 did·it. All rights reserved.</div>
         </footer>
 
