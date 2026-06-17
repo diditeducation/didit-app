@@ -5,6 +5,7 @@ import { TRIAL_GAME_IDS } from '../data/trialGames';
 import { trackPageView, trackLandingClick } from '../analytics';
 import { DemoContext } from '../context/DemoContext';
 import DiditLogo from '../components/DiditLogo';
+import AboutContent from '../components/AboutContent';
 
 // The 3 free games, lazy-loaded so they only download when actually played
 // inline. Rendered in an overlay over the landing — no route change.
@@ -585,6 +586,9 @@ export default function ConversionLanding() {
 @media(max-width:640px){
   .lp-why{grid-template-columns:1fr;gap:22px}
   .lp-hero{padding:54px 20px 34px}
+  .lp-hero h1{font-size:clamp(36px,10vw,46px);line-height:1.1}
+  .lp-hero h1 .lp-w{display:block}
+  .lp-hero h1 .lp-h1-br{display:none}
   .lp-footer{flex-direction:column;text-align:center}
 }
       `}</style>
@@ -605,11 +609,13 @@ export default function ConversionLanding() {
             <span className="lp-dot d7" /><span className="lp-dot d8" />
           </div>
           <h1>
-            <span className="lp-kw" style={{ color: 'var(--grass)' }}>Finance.</span>{' '}
-            <span className="lp-kw" style={{ color: 'var(--blue)' }}>Engineering.</span><br />
-            <span className="lp-kw" style={{ color: 'var(--coral)' }}>Music.</span>{' '}
-            <span className="lp-kw" style={{ color: '#e8b840' }}>Code.</span>{' '}
-            <span style={{ color: 'var(--muted)' }}>And more.</span>
+            <span className="lp-kw lp-w" style={{ color: 'var(--grass)' }}>Finance.</span>{' '}
+            <span className="lp-kw lp-w" style={{ color: 'var(--blue)' }}>Engineering.</span><br className="lp-h1-br" />
+            <span className="lp-w">
+              <span className="lp-kw" style={{ color: 'var(--coral)' }}>Music.</span>{' '}
+              <span className="lp-kw" style={{ color: '#e8b840' }}>Code.</span>
+            </span>{' '}
+            <span className="lp-w" style={{ color: 'var(--muted)' }}>And more.</span>
           </h1>
           <p className="lp-hero-play">Real world skills for curious kids aged 2&nbsp;to&nbsp;5,<br />explored through play.</p>
           <HeroFan />
