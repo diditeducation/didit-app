@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, googleProvider } from '../firebase'
 import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail } from 'firebase/auth'
+import { colors, fonts, radii } from '../design-system/tokens'
 import DiditLogo from '../components/DiditLogo'
 
 const getActionCodeSettings = (email) => ({
@@ -9,21 +10,16 @@ const getActionCodeSettings = (email) => ({
   handleCodeInApp: true,
 })
 
-const floatCSS = `
-@keyframes siFloat{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(12px,-18px) scale(1.08)}50%{transform:translate(-8px,-30px) scale(0.95)}75%{transform:translate(16px,-12px) scale(1.04)}}
-.si-dot{position:absolute;border-radius:50%;pointer-events:none;animation:siFloat 12s ease-in-out infinite}
-`
-
 export default function SignIn() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [showEmail, setShowEmail] = useState(false)
 
   /* On mobile, Firebase falls back from popup → redirect.
      Pick up the result when we land back on this page. */
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true)
     getRedirectResult(auth)
       .then(result => {
@@ -40,16 +36,12 @@ export default function SignIn() {
     setLoading(true)
     setError(null)
     try {
-      // Try popup first; on mobile browsers that block popups this throws
-      // and we fall through to the redirect flow.
       await signInWithPopup(auth, googleProvider)
       navigate('/hub')
     } catch (err) {
       if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user' ||
           err.code === 'auth/cancelled-popup-request') {
-        // Fall back to redirect (mobile / restrictive browsers)
         await signInWithRedirect(auth, googleProvider)
-        // Navigation happens after redirect returns — handled by useEffect above
       } else {
         setError(err.message)
         setLoading(false)
@@ -71,207 +63,160 @@ export default function SignIn() {
     }
   }
 
+  const fieldStyle = {
+    width: '100%',
+    boxSizing: 'border-box',
+    padding: '14px 14px',
+    fontFamily: fonts.display,
+    fontSize: '0.95rem',
+    color: colors.text,
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    borderRadius: radii.sm,
+    outline: 'none',
+  }
+
+  const Check = () => (
+    <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: '50%', background: colors.grassMid, color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginTop: 1 }}>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+    </span>
+  )
+
+  const reassurance = [
+    'Pick up right where you left off',
+    'Every game, all your progress',
+    'Play on any device',
+  ]
+
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#FFFFFF',
-      fontFamily: "'Nunito', sans-serif",
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: colors.bg,
+        fontFamily: fonts.display,
+        padding: 20,
+        boxSizing: 'border-box',
+      }}
+    >
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-      <style>{floatCSS}</style>
+      <style>{`
+        .si-card{display:grid;grid-template-columns:1.05fr 1fr;width:100%;max-width:860px;background:${colors.surface};border:1px solid ${colors.border};border-radius:${radii.lg};overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,0.08)}
+        .si-left{background:#FAF6DC;padding:40px 34px}
+        .si-right{padding:40px 34px}
+        .si-field:focus{border-color:${colors.blueberryDark}}
+        @media(max-width:760px){.si-card{grid-template-columns:1fr;max-width:440px}.si-left{padding:30px 26px}.si-right{padding:30px 26px}}
+      `}</style>
 
-      {/* Floating dots */}
-      <div className="si-dot" style={{ width: 16, height: 16, background: '#3A6CE5', top: '12%', left: '8%', opacity: 0.4, animationDelay: '0s', animationDuration: '14s' }} />
-      <div className="si-dot" style={{ width: 12, height: 12, background: '#CF4A4A', top: '20%', right: '12%', opacity: 0.35, animationDelay: '2s', animationDuration: '16s' }} />
-      <div className="si-dot" style={{ width: 14, height: 14, background: '#4CC830', bottom: '25%', left: '6%', opacity: 0.4, animationDelay: '4s', animationDuration: '13s' }} />
-      <div className="si-dot" style={{ width: 10, height: 10, background: '#E8B840', bottom: '18%', right: '10%', opacity: 0.45, animationDelay: '1s', animationDuration: '11s' }} />
-      <div className="si-dot" style={{ width: 8, height: 8, background: '#9BB5E8', top: '55%', left: '15%', opacity: 0.35, animationDelay: '3s', animationDuration: '18s' }} />
-      <div className="si-dot" style={{ width: 12, height: 12, background: '#E8AAAA', top: '40%', right: '5%', opacity: 0.3, animationDelay: '5s', animationDuration: '15s' }} />
+      <div className="si-card">
+        {/* Left — welcome / reassurance */}
+        <div className="si-left">
+          <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: 22 }} onClick={() => navigate('/')}>
+            <DiditLogo height={28} hideBeta />
+          </div>
 
-      {/* Card */}
-      <div style={{
-        position: 'relative',
-        zIndex: 2,
-        width: '100%',
-        maxWidth: '420px',
-        padding: '48px 40px',
-        background: '#FFFFFF',
-        borderRadius: '24px',
-        border: '1px solid #EDE5D8',
-        margin: '20px',
-        textAlign: 'center',
-      }}>
-        {/* Logo */}
-        <div style={{ marginBottom: '24px' }}>
-          <DiditLogo height={48} onNavigate={() => navigate('/')} />
+          <h1 style={{ fontSize: '1.7rem', fontWeight: 900, color: colors.text, margin: '0 0 8px', letterSpacing: '-0.02em', lineHeight: 1.12 }}>
+            Welcome back
+          </h1>
+          <p style={{ fontSize: '0.92rem', fontWeight: 600, color: colors.muted, lineHeight: 1.45, margin: '0 0 24px' }}>
+            Sign in to keep exploring real-world concepts together.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {reassurance.map((line) => (
+              <div key={line} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <Check />
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: colors.text, lineHeight: 1.3 }}>{line}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <h1 style={{
-          fontSize: '1.6rem',
-          fontWeight: 900,
-          color: '#2D2A26',
-          marginBottom: '8px',
-          letterSpacing: '-0.02em',
-        }}>
-          Let's get started
-        </h1>
-        <p style={{
-          color: '#9A8F82',
-          marginBottom: '32px',
-          fontSize: '0.9rem',
-          lineHeight: 1.6,
-        }}>
-          Sign in to play the games
-        </p>
+        {/* Right — sign-in form */}
+        <div className="si-right">
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: colors.text, margin: '0 0 18px', letterSpacing: '-0.01em' }}>
+            Sign in
+          </h2>
 
-        {error && (
-          <div style={{
-            background: '#F2C4BE',
-            color: '#C23C3C',
-            padding: '10px 16px',
-            borderRadius: '12px',
-            marginBottom: '20px',
-            fontSize: '0.8rem',
-            fontWeight: 600,
-          }}>
-            {error}
-          </div>
-        )}
+          {error && (
+            <div style={{ background: colors.coralLight, color: colors.coralDark, padding: '10px 14px', borderRadius: radii.sm, marginBottom: 16, fontSize: '0.82rem', fontWeight: 700 }}>
+              {error}
+            </div>
+          )}
 
-        {/* Google button */}
-        <button
-          onClick={handleGoogle}
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '14px 24px',
-            background: '#2D2A26',
-            color: 'white',
-            border: 'none',
-            borderRadius: '9999px',
-            fontFamily: "'Nunito', sans-serif",
-            fontWeight: 800,
-            fontSize: '1rem',
-            cursor: loading ? 'wait' : 'pointer',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            opacity: loading ? 0.7 : 1,
-            transition: 'all 0.2s',
-          }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          Continue with Google
-        </button>
-
-        {/* Email toggle link */}
-        {!showEmail && (
-          <p
-            onClick={() => setShowEmail(true)}
+          <button
+            onClick={handleGoogle}
+            disabled={loading}
             style={{
-              color: '#9A8F82',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={(e) => e.target.style.color = '#2D2A26'}
-            onMouseLeave={(e) => e.target.style.color = '#9A8F82'}
-          >
-            or use email instead →
-          </p>
-        )}
-
-        {/* Email form - slides open */}
-        {showEmail && (
-          <div style={{ marginTop: '4px' }}>
-            <div style={{
+              width: '100%',
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
-              width: '100%',
-              marginBottom: '16px',
-            }}>
-              <div style={{ flex: 1, height: '1px', background: '#EDE5D8' }} />
-              <span style={{ color: '#9A8F82', fontSize: '0.7rem', fontWeight: 600 }}>email</span>
-              <div style={{ flex: 1, height: '1px', background: '#EDE5D8' }} />
-            </div>
-            <form
-              onSubmit={handleEmailLink}
+              justifyContent: 'center',
+              gap: 10,
+              padding: '13px 0',
+              fontFamily: fonts.display,
+              fontWeight: 800,
+              fontSize: '0.95rem',
+              color: colors.text,
+              background: colors.surface,
+              border: `1px solid ${colors.border}`,
+              borderRadius: radii.sm,
+              cursor: loading ? 'wait' : 'pointer',
+              opacity: loading ? 0.7 : 1,
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.5 29.5 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.3-.4-3.5z" /><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.5 29.5 4.5 24 4.5 16.3 4.5 9.7 8.8 6.3 14.7z" /><path fill="#4CAF50" d="M24 43.5c5.4 0 10.3-2 14-5.3l-6.5-5.5c-2 1.5-4.6 2.3-7.5 2.3-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.6 39.1 16.2 43.5 24 43.5z" /><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.5 5.5c-.5.4 7-5.1 7-15.1 0-1.2-.1-2.3-.4-3.5z" /></svg>
+            Continue with Google
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '16px 0' }}>
+            <div style={{ flex: 1, height: 1, background: colors.border }} />
+            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: colors.muted }}>or use email</span>
+            <div style={{ flex: 1, height: 1, background: colors.border }} />
+          </div>
+
+          <form onSubmit={handleEmailLink}>
+            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: colors.text, marginBottom: 6 }}>Email</label>
+            <input
+              className="si-field"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@email.com"
+              required
+              style={{ ...fieldStyle, marginBottom: 14 }}
+            />
+            <button
+              type="submit"
+              disabled={loading}
               style={{
                 width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-              }}>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                autoFocus
-                style={{
-                  padding: '12px 18px',
-                  borderRadius: '9999px',
-                  border: '2px solid #EDE5D8',
-                  fontFamily: "'Nunito', sans-serif",
-                  fontSize: '0.9rem',
-                  outline: 'none',
-                  background: '#FFFFFF',
-                  transition: 'border-color 0.2s',
-                  color: '#2D2A26',
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#3A6CE5'}
-                onBlur={(e) => e.target.style.borderColor = '#EDE5D8'}
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  padding: '12px 24px',
-                  background: 'transparent',
-                  color: '#2D2A26',
-                  border: '2px solid #EDE5D8',
-                  borderRadius: '9999px',
-                  fontFamily: "'Nunito', sans-serif",
-                  fontWeight: 700,
-                  fontSize: '0.85rem',
-                  cursor: loading ? 'wait' : 'pointer',
-                  opacity: loading ? 0.7 : 1,
-                  transition: 'all 0.2s',
-                }}>
-                Send magic link →
-              </button>
-            </form>
-          </div>
-        )}
+                padding: '16px 0',
+                fontFamily: fonts.display,
+                fontWeight: 900,
+                fontSize: '1.02rem',
+                color: '#1A1A1A',
+                background: '#D4DB4A',
+                border: 'none',
+                borderRadius: radii.pill,
+                cursor: loading ? 'wait' : 'pointer',
+                opacity: loading ? 0.7 : 1,
+              }}
+            >
+              Send magic link →
+            </button>
+          </form>
 
-        {/* Back link */}
-        <p style={{
-          marginTop: '28px',
-          fontSize: '0.8rem',
-          color: '#9A8F82',
-        }}>
-          <span
-            onClick={() => navigate('/')}
-            style={{ cursor: 'pointer', textDecoration: 'underline', fontWeight: 600 }}
-          >
-            ← Back to home
-          </span>
-        </p>
+          <p style={{ fontSize: '0.78rem', color: colors.muted, textAlign: 'center', margin: '12px 0 0', lineHeight: 1.4 }}>
+            We&apos;ll email you a secure link to sign in &mdash; no password needed.
+          </p>
 
+          <p style={{ textAlign: 'center', marginTop: 18, fontSize: '0.8rem', color: colors.muted }}>
+            <span onClick={() => navigate('/')} style={{ cursor: 'pointer', fontWeight: 800, color: colors.blueberryDark }}>← Back to home</span>
+          </p>
+        </div>
       </div>
     </div>
   )
