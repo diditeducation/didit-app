@@ -418,7 +418,7 @@ export default function ConversionLanding() {
 .lp-dot.d6{width:11px;height:11px;background:var(--coral);left:72%;top:9%;animation:lpFloatC 8.5s ease-in-out infinite;animation-delay:.5s}
 .lp-dot.d7{width:9px;height:9px;background:var(--blue);left:6%;top:46%;animation:lpFloatD 7.5s ease-in-out infinite;animation-delay:.9s}
 .lp-dot.d8{width:13px;height:13px;background:var(--sun);left:93%;top:44%;animation:lpFloatA 9.5s ease-in-out infinite;animation-delay:.2s}
-@media(max-width:640px){.lp-dots{display:none}}
+@media(max-width:640px){.lp-dot{transform:scale(.82)}}
 
 .lp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:9999px;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;transition:transform .2s,box-shadow .2s,filter .2s}
 .lp-btn:hover{transform:translateY(-2px)}
@@ -584,7 +584,7 @@ export default function ConversionLanding() {
 
 @media(max-width:640px){
   .lp-why{grid-template-columns:1fr;gap:22px}
-  .lp-hero{padding:36px 20px 24px}
+  .lp-hero{padding:54px 20px 34px}
   .lp-footer{flex-direction:column;text-align:center}
 }
       `}</style>

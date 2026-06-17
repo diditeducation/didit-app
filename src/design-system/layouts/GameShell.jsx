@@ -1,3 +1,4 @@
+import { useRef, useLayoutEffect } from 'react';
 import { fonts, easing } from '../tokens';
 import { PAGE_MAX_WIDTH, BOTTOM_STRIP_HEIGHT } from '../layout';
 import ParentStrip from '../components/ParentStrip';
@@ -21,6 +22,32 @@ export default function GameShell({
   const { muted, toggleMute } = useSoundManager();
   const nav = useNavigate();
   const { isDemo } = useDemo();
+
+  // In the landing sampler the game is squeezed into a small iPad frame.
+  // Rather than scroll, render the game at its natural size and scale it
+  // down to fit the available height — works for every game regardless of
+  // how tall its content is.
+  const gameAreaRef = useRef(null);
+  const contentRef = useRef(null);
+  useLayoutEffect(() => {
+    if (!isDemo) return;
+    const area = gameAreaRef.current;
+    const content = contentRef.current;
+    if (!area || !content) return;
+    const fit = () => {
+      content.style.transform = 'none';
+      const needed = content.scrollHeight;
+      const avail = area.clientHeight;
+      const s = needed > avail && needed > 0 ? avail / needed : 1;
+      content.style.transform = `scale(${s})`;
+      content.style.transformOrigin = 'top center';
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(area);
+    ro.observe(content);
+    return () => ro.disconnect();
+  }, [isDemo]);
 
   // Use 100dvh (dynamic viewport height) instead of 100vh so the layout
   // tracks the iOS Safari URL bar. Subtracting --app-banner-h means
@@ -105,7 +132,7 @@ export default function GameShell({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    overflowY: 'auto',
+    overflowY: isDemo ? 'hidden' : 'auto',
   };
 
   return (
@@ -198,8 +225,12 @@ export default function GameShell({
       )}
 
       {/* Game Area */}
-      <div style={gameAreaStyle}>
-        {children}
+      <div style={gameAreaStyle} ref={gameAreaRef}>
+        {isDemo ? (
+          <div ref={contentRef} style={{ width: '100%' }}>{children}</div>
+        ) : (
+          children
+        )}
       </div>
 
       {/* Bottom Slot — between game area and parent strip */}
