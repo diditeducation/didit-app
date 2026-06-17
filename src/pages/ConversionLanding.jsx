@@ -396,7 +396,7 @@ export default function ConversionLanding() {
 .lp-locked-pill{display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:7px 14px;border-radius:9999px;background:rgba(255,255,255,0.6);line-height:1;white-space:nowrap}
 .lp-locked-cta{display:inline-flex;align-items:center;gap:9px;border:none;border-radius:9999px;padding:14px 32px;font-family:inherit;font-size:16px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.24);transition:transform .15s,box-shadow .15s}
 .lp-locked-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,0.3)}
-@media(max-width:560px){.lp-carousel-stage{height:290px}.lp-carousel-slot{width:200px}.lp-sq-circle{width:74px;height:74px;bottom:-30px}.lp-sq-title{font-size:22px}.lp-sq-lock{font-size:30px;top:18px}.lp-sq-body{padding:36px 10px 14px}.lp-carousel-arrow{width:40px;height:40px;font-size:23px}.lp-tablet{padding:20px;border-radius:30px}}
+@media(max-width:560px){.lp-carousel-stage{height:290px}.lp-carousel-slot{width:200px}.lp-sq-circle{width:74px;height:74px;bottom:-30px}.lp-sq-title{font-size:22px}.lp-sq-lock{font-size:30px;top:18px}.lp-sq-body{padding:36px 10px 14px}.lp-carousel-arrow{width:40px;height:40px;font-size:23px}.lp-tablet{padding:20px;border-radius:30px;aspect-ratio:3/4.5}}
 .lp-hero-note{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:22px}
 
 /* Tiling wavy underline — constant wavelength + thickness at any width */
@@ -527,7 +527,7 @@ export default function ConversionLanding() {
 .lp-concept-text{font-size:14px;line-height:1.62;color:var(--text)}
 .lp-concept-keyword{font-weight:900}
 @media(max-width:760px){.lp-concept-strip{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:480px){.lp-concept-strip{grid-template-columns:1fr;max-width:340px}.lp-concept{height:300px}.lp-concept-back{padding:22px 20px}}
+@media(max-width:480px){.lp-concept-strip{gap:12px;padding:6px 14px 14px;max-width:none}.lp-concept{height:236px}.lp-concept-back{padding:15px 13px}.lp-concept-game{font-size:14.5px}.lp-concept-skills{gap:5px;margin-top:7px}.lp-concept-skill{font-size:9px;padding:2px 7px}.lp-concept-sep{margin:9px 0 10px}.lp-concept-text{font-size:11px;line-height:1.5}.lp-concept-flip{width:28px;height:28px;bottom:9px;right:9px}}
 
 /* ── Testimonials — parent & carer quotes ── */
 .lp-quotes{max-width:1040px;margin:0 auto;padding:48px 24px 52px;text-align:center}

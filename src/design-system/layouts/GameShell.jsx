@@ -100,7 +100,8 @@ export default function GameShell({
 
   const gameAreaStyle = {
     flex: 1,
-    padding: '8px 24px 24px',
+    minHeight: 0,
+    padding: isDemo ? '4px 14px 12px' : '8px 24px 24px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -128,15 +129,15 @@ export default function GameShell({
         // Sampler / demo header: centred logo + title, trial pill + sound top-right.
         if (isDemo) {
           return (
-            <div style={{ position: 'relative', padding: '28px 18px 0', flexShrink: 0 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+            <div style={{ position: 'relative', padding: 'clamp(10px,3vw,28px) 18px 0', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(3px,1vw,8px)' }}>
                 <DiditLogo height={36} hideBeta />
-                <span style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: '1.85rem', letterSpacing: '-0.01em', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{title}</span>
-                <span style={{ display: 'inline-block', padding: '8px 16px', borderRadius: '9999px', background: 'var(--game-primary)', color: '#FFFFFF', fontFamily: fonts.display, fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+                <span style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 'clamp(1.15rem,4.8vw,1.85rem)', letterSpacing: '-0.01em', color: 'var(--game-primary)', whiteSpace: 'nowrap' }}>{title}</span>
+                <span style={{ display: 'inline-block', padding: 'clamp(5px,1.5vw,8px) clamp(11px,3vw,16px)', borderRadius: '9999px', background: 'var(--game-primary)', color: '#FFFFFF', fontFamily: fonts.display, fontWeight: 800, fontSize: 'clamp(0.68rem,2vw,0.85rem)', letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
                   Trial version
                 </span>
               </div>
-              <div style={{ position: 'absolute', top: 28, right: 18 }}>
+              <div style={{ position: 'absolute', top: 'clamp(10px,3vw,28px)', right: 18 }}>
                 <div style={{ transform: 'scale(1.2)' }}>{soundBtn}</div>
               </div>
             </div>
@@ -164,8 +165,8 @@ export default function GameShell({
       {/* Instructions (sampler) OR level tabs */}
       {isDemo ? (
         instructions && (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 24px 4px', flexShrink: 0 }}>
-            <p style={{ margin: 0, fontFamily: fonts.display, fontSize: '1.2rem', fontWeight: 800, color: 'var(--game-text)', textAlign: 'center', maxWidth: '440px', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 'clamp(6px,1.8vw,12px) 24px 4px', flexShrink: 0 }}>
+            <p style={{ margin: 0, fontFamily: fonts.display, fontSize: 'clamp(0.95rem,3.3vw,1.2rem)', fontWeight: 800, color: 'var(--game-text)', textAlign: 'center', maxWidth: '440px', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
               {instructions}
             </p>
           </div>
@@ -208,8 +209,8 @@ export default function GameShell({
         </div>
       )}
 
-      {/* Parent Strip */}
-      <ParentStrip showTagline={false} />
+      {/* Parent Strip — hidden in the landing sampler to give the game full room */}
+      {!isDemo && <ParentStrip showTagline={false} />}
     </div>
     </div>
   );
