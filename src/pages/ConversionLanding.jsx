@@ -354,7 +354,7 @@ export default function ConversionLanding() {
 .lp-fan-circle>*{width:78%;height:78%;object-fit:contain}
 .lp-fan-circle svg{width:78%;height:78%}
 .lp-fan-title{padding:11px 8px 14px;text-align:center;font-weight:900;font-size:clamp(12px,1.5vw,15px);letter-spacing:-0.02em;white-space:nowrap}
-@media(max-width:480px){.lp-fan{max-width:360px}.lp-fan-0{transform:rotate(-8deg) translateX(18%) translateY(10px)}.lp-fan-2{transform:rotate(8deg) translateX(-18%) translateY(10px)}}
+@media(max-width:480px){.lp-fan{max-width:336px}.lp-fan-card{width:110px}.lp-fan-0{transform:rotate(-7deg) translateX(5%) translateY(8px)}.lp-fan-1{transform:translateY(-8px) scale(1.03)}.lp-fan-2{transform:rotate(7deg) translateX(-5%) translateY(8px)}.lp-fan-title{font-size:11.5px;padding:9px 6px 12px}}
 @keyframes lpFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 /* "Try them!" — coverflow carousel above a tablet preview */
 .lp-try-stack{display:flex;flex-direction:column;align-items:center;gap:30px;max-width:880px;margin:10px auto 0;padding:0 4px}
@@ -611,7 +611,7 @@ export default function ConversionLanding() {
             <span className="lp-kw" style={{ color: '#e8b840' }}>Code.</span>{' '}
             <span style={{ color: 'var(--muted)' }}>And more.</span>
           </h1>
-          <p className="lp-hero-play">Real world skills for curious kids aged 2 to 5,<br />explored through play.</p>
+          <p className="lp-hero-play">Real world skills for curious kids aged 2&nbsp;to&nbsp;5,<br />explored through play.</p>
           <HeroFan />
         </header>
 
