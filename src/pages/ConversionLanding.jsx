@@ -397,7 +397,7 @@ export default function ConversionLanding() {
 .lp-locked-pill{display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:7px 14px;border-radius:9999px;background:rgba(255,255,255,0.6);line-height:1;white-space:nowrap}
 .lp-locked-cta{display:inline-flex;align-items:center;gap:9px;border:none;border-radius:9999px;padding:14px 32px;font-family:inherit;font-size:16px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.24);transition:transform .15s,box-shadow .15s}
 .lp-locked-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,0.3)}
-@media(max-width:560px){.lp-carousel-stage{height:290px;--cf-step:116px;-webkit-mask-image:none;mask-image:none}.lp-carousel-slot{width:188px}.lp-sq-circle{width:74px;height:74px;bottom:-30px}.lp-sq-title{font-size:22px}.lp-sq-lock{font-size:30px;top:18px}.lp-sq-body{padding:36px 10px 14px}.lp-carousel-arrow{width:40px;height:40px;font-size:23px}.lp-tablet{padding:20px;border-radius:30px;aspect-ratio:3/4.5}}
+@media(max-width:560px){.lp-carousel-stage{height:290px;--cf-step:116px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%)}.lp-carousel-slot{width:188px}.lp-sq-circle{width:74px;height:74px;bottom:-30px}.lp-sq-title{font-size:22px}.lp-sq-lock{font-size:30px;top:18px}.lp-sq-body{padding:36px 10px 14px}.lp-carousel-arrow{width:40px;height:40px;font-size:23px}.lp-tablet{padding:20px;border-radius:30px;aspect-ratio:3/4.5}}
 .lp-hero-note{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:22px}
 
 /* Tiling wavy underline — constant wavelength + thickness at any width */
@@ -747,7 +747,7 @@ export default function ConversionLanding() {
         {/* About us — intro header, then the expandable with the full story */}
         <div className="lp-about-intro">
           <span className="lp-about-pill">About us</span>
-          <h2 className="lp-about-head">We&apos;re a parent duo building calm, joyful games that introduce toddlers to the{' '}
+          <h2 className="lp-about-head">We&apos;re parents who believe that widening a child&apos;s perspective can give them a head start that lasts a lifetime — so we build calm, joyful games that introduce toddlers to the{' '}
             <span className="lp-about-squig">real-world ideas<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>{' '}grown-ups love.
           </h2>
         </div>
