@@ -76,18 +76,6 @@ export default function SignIn() {
     outline: 'none',
   }
 
-  const Check = () => (
-    <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: '50%', background: colors.grassMid, color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginTop: 1 }}>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-    </span>
-  )
-
-  const reassurance = [
-    'Pick up right where you left off',
-    'Every game, all your progress',
-    'Play on any device',
-  ]
-
   return (
     <div
       style={{
@@ -120,18 +108,9 @@ export default function SignIn() {
           <h1 style={{ fontSize: '1.7rem', fontWeight: 900, color: colors.text, margin: '0 0 8px', letterSpacing: '-0.02em', lineHeight: 1.12 }}>
             Welcome back
           </h1>
-          <p style={{ fontSize: '0.92rem', fontWeight: 600, color: colors.muted, lineHeight: 1.45, margin: '0 0 24px' }}>
-            Sign in to keep exploring real-world concepts together.
+          <p style={{ fontSize: '0.92rem', fontWeight: 600, color: colors.muted, lineHeight: 1.45, margin: 0 }}>
+            Sign in to view all games.
           </p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {reassurance.map((line) => (
-              <div key={line} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <Check />
-                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: colors.text, lineHeight: 1.3 }}>{line}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Right — sign-in form */}

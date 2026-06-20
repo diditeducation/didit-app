@@ -142,7 +142,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>We&apos;re parents who believe that widening a child&apos;s perspective can give them a head start that lasts a lifetime — so we build calm, joyful games that introduce toddlers to the{' '}
+            <h1>We&apos;re parents who believe that widening a child&apos;s perspective can give them the confidence and a head start in life — so we build calm, joyful games that introduce toddlers to the{' '}
               <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>real-world ideas
                 <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>{' '}grown-ups love.
