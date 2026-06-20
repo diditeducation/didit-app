@@ -6,9 +6,8 @@ Design system lives in src/design-system/.
 
 ## Rules — always follow these
 - Import ALL shared components from src/design-system/
-  Never recreate Button, ParentStrip, TrustChips,
-  SkillPill, GameTile, CelebrationOverlay,
-  GameHomeLayout
+  Never recreate Button, ParentStrip, SkillPill,
+  SuccessScreen, Confetti, Toast, GameHomeLayout
 - Never hardcode hex values — always use tokens.js
 - Never build a game home page from scratch —
   always use GameHomeLayout
@@ -34,5 +33,5 @@ Each game lives in src/games/[game-name]/
 - No fail states — wrong answers animate and reset
 - All tap targets minimum 64px
 - Celebrate every correct action
-- CelebrationOverlay for all win/complete states
+- SuccessScreen for all win/complete states
 - Fonts: Nunito (display) Nunito Sans (body)
