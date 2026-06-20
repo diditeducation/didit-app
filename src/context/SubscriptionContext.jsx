@@ -8,10 +8,21 @@ const SubscriptionContext = createContext(null);
 // Statuses Stripe considers "paying / entitled".
 const ACTIVE_STATUSES = ['active', 'trialing'];
 
-// Dev-only override so we can watch the paid/locked UI work BEFORE Stripe
-// is wired up. Toggled by <DevSubscriptionToggle>. Ignored entirely in prod.
+// ── Test bypass ──────────────────────────────────────────────────────────
+// Accounts treated as members WITHOUT a real Stripe subscription, so you can
+// test the paid experience (and flip to the locked state) on the LIVE site,
+// before or after the paywall is switched on. Security note: listing an email
+// here does NOT grant access to anyone — they'd have to actually sign in to
+// that account. To keep emails out of the repo, set VITE_TEST_MEMBER_EMAILS
+// (comma-separated) in Vercel; it overrides this default list.
+const TEST_MEMBER_EMAILS = (import.meta.env.VITE_TEST_MEMBER_EMAILS || 'lee.nigel.t@gmail.com')
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+// localStorage override written by <DevSubscriptionToggle>: '1' = member, '0' = locked.
 const DEV_KEY = 'didit_dev_member';
-const devEnabled = import.meta.env.DEV;
+const devEnabled = import.meta.env.DEV; // localhost always gets the toggle
 
 export function SubscriptionProvider({ children }) {
   const { user } = useAuth();
@@ -20,16 +31,8 @@ export function SubscriptionProvider({ children }) {
   // extension's webhook). `undefined` = still loading, `null` = none.
   const [sub, setSub] = useState(undefined);
 
-  // Dev override state (persisted so it survives reloads).
-  const [devMember, setDevMemberState] = useState(
-    () => devEnabled && localStorage.getItem(DEV_KEY) === '1'
-  );
-  const setDevMember = (on) => {
-    if (!devEnabled) return;
-    if (on) localStorage.setItem(DEV_KEY, '1');
-    else localStorage.removeItem(DEV_KEY);
-    setDevMemberState(!!on);
-  };
+  // Raw override value persisted across reloads ('1' | '0' | null).
+  const [overrideRaw, setOverrideRaw] = useState(() => localStorage.getItem(DEV_KEY));
 
   // Subscribe to the user's Stripe subscription docs in Firestore.
   // Collection: customers/{uid}/subscriptions (firestore-stripe-payments schema).
@@ -54,22 +57,40 @@ export function SubscriptionProvider({ children }) {
     return unsub;
   }, [user]);
 
+  // Who is allowed to use the manual override (localhost dev, or an allowlisted
+  // test account on any environment).
+  const isTester = !!user?.email && TEST_MEMBER_EMAILS.includes(user.email.toLowerCase());
+  const canOverride = devEnabled || isTester;
+
+  // Effective override: an explicit toggle wins; otherwise test accounts default
+  // to "member" (bypass on) and localhost dev defaults to "locked".
+  const overrideMember = overrideRaw === '1' ? true : overrideRaw === '0' ? false : isTester;
+  const devMember = canOverride && overrideMember;
+
+  const setDevMember = (on) => {
+    if (!canOverride) return;
+    localStorage.setItem(DEV_KEY, on ? '1' : '0');
+    setOverrideRaw(on ? '1' : '0');
+  };
+
   const realMember = !!sub;
-  const isMember = devMember || realMember;
+  const isMember = realMember || devMember;
   const loading = user === undefined || sub === undefined;
 
   const value = {
     isMember,
     loading,
-    status: devMember ? 'dev' : (sub?.status ?? 'none'),
+    status: devMember ? (isTester ? 'test' : 'dev') : (sub?.status ?? 'none'),
     // current_period_end is a unix seconds value on the Stripe doc.
     currentPeriodEnd: sub?.current_period_end
       ? new Date(sub.current_period_end * 1000)
       : null,
-    // dev helpers (no-ops in prod)
+    // override helpers (no-ops for normal users)
     devMember,
     setDevMember,
     devEnabled,
+    canOverride,
+    isTester,
   };
 
   return (

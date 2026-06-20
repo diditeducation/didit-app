@@ -1,10 +1,11 @@
 import { useSubscription } from '../context/SubscriptionContext';
 
-// Floating dev-only control to flip between "member" and "trial" so we can
-// watch games lock/unlock without Stripe. Renders nothing in production.
+// Floating control to flip between "member" and "trial" so we can watch games
+// lock/unlock without a real Stripe subscription. Shows on localhost and for
+// allowlisted test accounts on any environment; hidden for everyone else.
 export default function DevSubscriptionToggle() {
-  const { devEnabled, devMember, setDevMember, isMember, status } = useSubscription();
-  if (!devEnabled) return null;
+  const { canOverride, devMember, setDevMember, isMember, status } = useSubscription();
+  if (!canOverride) return null;
 
   return (
     <div
