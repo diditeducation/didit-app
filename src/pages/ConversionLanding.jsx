@@ -534,9 +534,9 @@ export default function ConversionLanding() {
 
 .lp-about-intro{max-width:720px;margin:0 auto;padding:8px 24px 0;text-align:center}
 .lp-about-pill{display:inline-block;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);background:#fff;border:2px solid var(--border);padding:7px 16px;border-radius:9999px;margin-bottom:18px}
-.lp-about-head{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(23px,3.4vw,36px);line-height:1.12;letter-spacing:-0.01em;color:var(--text);margin:0 auto;max-width:680px}
+.lp-about-head{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(18px,2.3vw,26px);line-height:1.18;letter-spacing:-0.01em;color:var(--text);margin:0 auto;max-width:600px}
 .lp-about-squig{position:relative;display:inline-block;white-space:nowrap;color:var(--blue)}
-@media(max-width:560px){.lp-about-head{font-size:clamp(21px,6vw,27px)}}
+@media(max-width:560px){.lp-about-head{font-size:clamp(17px,4.4vw,21px)}}
 
 .lp-accordion{max-width:720px;margin:0 auto;padding:8px 24px 24px}
 .lp-acc{border-top:1px solid var(--border)}
@@ -770,9 +770,6 @@ export default function ConversionLanding() {
           <div>
             <DiditLogo height={30} hideBeta />
             <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
-            <nav className="lp-footer-links" style={{ marginTop: 10 }}>
-              <button onClick={() => { trackLandingClick('footer_about'); navigate('/about'); }}>About did·it</button>
-            </nav>
           </div>
           <div>&copy; 2026 did·it. All rights reserved.</div>
         </footer>
