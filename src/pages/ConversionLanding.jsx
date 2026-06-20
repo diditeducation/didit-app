@@ -525,9 +525,9 @@ export default function ConversionLanding() {
 
 .lp-about-intro{max-width:720px;margin:0 auto;padding:8px 24px 0;text-align:center}
 .lp-about-pill{display:inline-block;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);background:#fff;border:2px solid var(--border);padding:7px 16px;border-radius:9999px;margin-bottom:18px}
-.lp-about-head{font-family:'Nunito',sans-serif;font-weight:600;font-size:clamp(10px,1.15vw,12px);line-height:1.6;letter-spacing:0;color:var(--text);margin:0 auto;max-width:600px}
+.lp-about-head{font-family:'Nunito',sans-serif;font-weight:600;font-size:clamp(12px,1.4vw,14px);line-height:1.6;letter-spacing:0;color:var(--text);margin:0 auto;max-width:600px}
 .lp-about-squig{position:relative;display:inline-block;white-space:nowrap;color:var(--blue)}
-@media(max-width:560px){.lp-about-head{font-size:clamp(9px,2.6vw,11px)}}
+@media(max-width:560px){.lp-about-head{font-size:clamp(11px,3vw,13px)}}
 
 .lp-accordion{max-width:720px;margin:0 auto;padding:8px 24px 24px}
 .lp-acc{border-top:1px solid var(--border)}
