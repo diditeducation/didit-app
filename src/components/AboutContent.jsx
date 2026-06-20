@@ -103,12 +103,18 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 .ap-content--embedded .ap-hero h1{font-size:clamp(22px,5.4vw,30px)}
 .ap-content--embedded .mp-how{padding:56px 24px 60px}
 .ap-content--embedded .mp-how h2{font-size:clamp(22px,5vw,32px);margin-bottom:44px}
-.ap-content--embedded .mp-principles{grid-template-columns:1fr;gap:34px}
-.ap-content--embedded .mp-principle{transform:none!important}
-.ap-content--embedded .mp-maker-grid{grid-template-columns:1fr!important;gap:28px!important}
-.ap-content--embedded .mp-maker-visual{height:240px!important}
-.ap-content--embedded .mp-maker-visual > div:first-child{width:220px!important;height:220px!important}
-.ap-content--embedded .mp-maker-visual img{width:180px!important;height:180px!important}
+.ap-content--embedded .mp-principles{gap:16px}
+.ap-content--embedded .mp-principle{transform:none!important;padding:36px 18px 22px;border-radius:20px}
+.ap-content--embedded .mp-principle h3{font-size:16px;margin-bottom:8px}
+.ap-content--embedded .mp-principle p{font-size:13px;line-height:1.5}
+.ap-content--embedded .mp-principle-num{width:42px;height:42px;font-size:17px;top:-17px;left:16px}
+.ap-content--embedded .mp-maker-grid{grid-template-columns:1fr!important;gap:12px!important}
+.ap-content--embedded .mp-maker-visual{height:150px!important}
+.ap-content--embedded .mp-maker-visual > div:first-child{width:132px!important;height:132px!important}
+.ap-content--embedded .mp-maker-visual img{width:100px!important;height:100px!important}
+.ap-content--embedded .mp-maker-visual > div:not(:first-child){display:none!important}
+/* Phones: stack the philosophy cards (3-up is too tight) */
+@media(max-width:600px){.ap-content--embedded .mp-principles{grid-template-columns:1fr;gap:30px}}
 
 @media(max-width:768px){
   .ap-bar{padding:14px 20px}
@@ -142,7 +148,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>We&apos;re parents who believe that widening a child&apos;s perspective can give them the confidence and a head start in life — so we build calm, joyful games that introduce toddlers to the{' '}
+            <h1>We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a head start in life — so we build calm, joyful games that introduce toddlers to the{' '}
               <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>real-world ideas
                 <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </span>{' '}grown-ups love.
