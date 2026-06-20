@@ -160,7 +160,7 @@ function HeroFan() {
             <div
               className="lp-fan-arch"
               style={{
-                background: game.color,
+                backgroundColor: game.color,
                 backgroundImage: game.bgImage ? `url('${game.bgImage}')` : undefined,
               }}
             >
@@ -193,7 +193,7 @@ function SquareGameCard({ game, locked, selected, onClick }) {
       <div
         className="lp-sq-arch"
         style={{
-          background: game.color,
+          backgroundColor: game.color,
           backgroundImage: game.bgImage ? `url('${game.bgImage}')` : undefined,
         }}
       >
@@ -350,7 +350,7 @@ export default function ConversionLanding() {
 .lp-fan-0{transform:rotate(-9deg) translateX(28%) translateY(10px);z-index:1}
 .lp-fan-1{transform:translateY(-14px) scale(1.06);z-index:3;position:relative}
 .lp-fan-2{transform:rotate(9deg) translateX(-28%) translateY(10px);z-index:1}
-.lp-fan-arch{position:relative;height:clamp(96px,13vw,126px);background-size:cover;background-position:center}
+.lp-fan-arch{position:relative;height:clamp(96px,13vw,126px);background-size:cover;background-position:center;background-repeat:no-repeat}
 .lp-fan-circle{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:clamp(66px,9vw,86px);height:clamp(66px,9vw,86px);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .lp-fan-circle>*{width:78%;height:78%;object-fit:contain}
 .lp-fan-circle svg{width:78%;height:78%}
@@ -367,7 +367,7 @@ export default function ConversionLanding() {
 .lp-sq{position:relative;display:flex;flex-direction:column;width:100%;text-align:center;background:#fff;border:1.5px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;font-family:inherit;padding:0;box-shadow:0 10px 24px rgba(0,0,0,0.1);transition:box-shadow .15s}
 .lp-sq.is-locked .lp-sq-arch{filter:saturate(.85)}
 .lp-sq.is-selected{box-shadow:0 18px 38px rgba(0,0,0,0.2)}
-.lp-sq-arch{position:relative;flex:0 0 auto;height:clamp(112px,30vw,150px);background-size:cover;background-position:center}
+.lp-sq-arch{position:relative;flex:0 0 auto;height:clamp(112px,30vw,150px);background-size:cover;background-position:center;background-repeat:no-repeat}
 .lp-sq-circle{position:absolute;bottom:-36px;left:50%;transform:translateX(-50%);width:90px;height:90px;border-radius:50%;background:#fff;border:4px solid #fff;box-shadow:0 5px 14px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .lp-sq-circle>*{width:80%;height:80%;object-fit:contain}
 .lp-sq-circle svg{width:80%;height:80%}

@@ -347,7 +347,7 @@ export default function HubPage() {
               )}
               <div
                 className="hub-arch-header"
-                style={{ background: game.primary, backgroundImage: `url('${game.bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                style={{ backgroundColor: game.primary, backgroundImage: `url('${game.bgImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
                 <div className="hub-arch-circle">
                   {(() => { const I = GAME_ILLUSTRATIONS[game.key]; return I ? <I /> : null; })()}

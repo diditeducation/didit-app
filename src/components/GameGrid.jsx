@@ -96,7 +96,7 @@ function WishCard({ onClick }) {
       onClick={onClick}
       style={{
         cursor: 'pointer',
-        background: colors.coralDark,
+        backgroundColor: colors.coralDark,
         // Same textured tile that the red game cards (and SurpriseCard's
         // yellow tile) use, then enlarged 130 % so the pattern reads
         // as a hero motif on these stand-out cards.
@@ -181,7 +181,7 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
       onClick={onRandomPlay}
       style={{
         cursor: 'pointer',
-        background: colors.sunMid,
+        backgroundColor: colors.sunMid,
         // Pattern enlarged 130 % so the textured tile reads as a hero
         // motif on these stand-out cards.
         backgroundImage: `url('/backgrounds/background-yellow.png')`,
@@ -439,7 +439,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
                 <div
                   className="gg-arch-header"
                   style={{
-                    background: game.color,
+                    backgroundColor: game.color,
                     backgroundImage: game.bgImage ? `url('${game.bgImage}')` : undefined,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',

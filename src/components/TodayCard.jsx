@@ -97,7 +97,7 @@ export default function TodayCard({ game, onPlay }) {
       <div
         className="today-arch-header"
         style={{
-          background: game.color,
+          backgroundColor: game.color,
           backgroundImage: game.bgImage ? `url('${game.bgImage}')` : undefined,
           backgroundSize: '240px',
           backgroundRepeat: 'repeat',
