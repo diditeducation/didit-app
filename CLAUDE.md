@@ -4,6 +4,16 @@
 Vite + React toddler learning game suite.
 Design system lives in src/design-system/.
 
+## Keep AUDIT.md current — always
+AUDIT.md (repo root) is the living map: project structure,
+component roles, the content "sync map", and dead-code
+status. Whenever you add / remove / move / rename a page,
+component, route, or game — or change a shared/synced piece
+(games.js, trialGames.js, tokens.js, AboutContent, etc.) —
+update AUDIT.md in the SAME change: its routes/components
+tables, the sync map, and the cleanup status. Treat a change
+as incomplete until AUDIT.md reflects it.
+
 ## Rules — always follow these
 - Import ALL shared components from src/design-system/
   Never recreate Button, ParentStrip, SkillPill,

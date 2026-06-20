@@ -1,5 +1,11 @@
 # Did·It — Toddler Learning Games
 
+## Project map / audit
+See **[AUDIT.md](AUDIT.md)** for the living map of the project: structure,
+component roles, the content "sync map" (what to update together), dead-code
+status, and optimisation opportunities. **Keep AUDIT.md up to date with every
+structural change or optimisation** (this is also enforced in `CLAUDE.md`).
+
 ## Game Card Illustrations
 
 Every game card in the hub requires a custom SVG illustration.
