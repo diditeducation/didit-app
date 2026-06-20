@@ -280,7 +280,6 @@ function GameCarousel({ games, selectedId, onSelect }) {
 
 export default function ConversionLanding() {
   const navigate = useNavigate();
-  const [showStickyBar, setShowStickyBar] = useState(false);
   // Carousel order: free games first, arranged so Little Engineer is featured
   // (centre) with Little Shopper to its left and Little DJ to its right.
   const FEATURED_ORDER = ['little-shopper', 'little-engineer', 'little-dj'];
@@ -298,14 +297,6 @@ export default function ConversionLanding() {
   const [selectedId, setSelectedId] = useState('little-engineer');
 
   useEffect(() => { trackPageView('landing_v2'); }, []);
-
-  useEffect(() => {
-    const tried = sessionStorage.getItem('didit_tried_demo') === '1';
-    const onScroll = () => setShowStickyBar(tried || window.scrollY > 520);
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   const goCheckout = (where) => { trackLandingClick(where); navigate('/checkout'); };
   const selectGame = (game) => {
@@ -747,8 +738,8 @@ export default function ConversionLanding() {
         {/* About us — intro header, then the expandable with the full story */}
         <div className="lp-about-intro">
           <span className="lp-about-pill">About us</span>
-          <h2 className="lp-about-head">We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a head start in life — so we build calm, joyful games that introduce toddlers to the{' '}
-            <span className="lp-about-squig">real-world ideas<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>{' '}grown-ups love.
+          <h2 className="lp-about-head">We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a{' '}
+            <span className="lp-about-squig">head start in life<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>.
           </h2>
         </div>
         <div className="lp-accordion">
@@ -773,17 +764,6 @@ export default function ConversionLanding() {
           </div>
           <div>&copy; 2026 did·it. All rights reserved.</div>
         </footer>
-
-        {/* Sticky conversion bar */}
-        <div className={`lp-sticky${showStickyBar ? ' show' : ''}`}>
-          <div className="lp-sticky-text">
-            Unlock every game
-            <span>{PRICE}/month · Cancel anytime</span>
-          </div>
-          <button className="lp-btn lp-btn-lime" onClick={() => goCheckout('sticky_unlock')} style={{ padding: '12px 24px', fontSize: 15 }}>
-            Unlock →
-          </button>
-        </div>
 
       </div>
     </>

@@ -148,10 +148,10 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a head start in life — so we build calm, joyful games that introduce toddlers to the{' '}
-              <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>real-world ideas
+            <h1>We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a{' '}
+              <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>head start in life
                 <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </span>{' '}grown-ups love.
+              </span>.
             </h1>
           </div>
         </section>
@@ -169,17 +169,8 @@ export default function AboutContent({ embedded = false, showHero = true }) {
               <path d="M0,30 C160,5 320,55 480,30 C640,5 800,55 960,30 C1120,5 1280,55 1440,30 L1440,0 L0,0 Z" fill="var(--didit-sun-light)" />
             </svg>
           </div>
-          <div className="mp-maker-grid" style={{ maxWidth: 1000, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
-            {/* Left — visual with decorative blobs */}
-            <div className="reveal mp-maker-visual" style={{ position: 'relative', height: '400px' }}>
-              <div style={{ position: 'absolute', width: '300px', height: '300px', borderRadius: '50% 40% 55% 45%', background: '#FFFFFF', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/game%20illustrations/Bulb.png" alt="Lightbulb" style={{ width: '240px', height: '240px', objectFit: 'contain' }} />
-              </div>
-              <div style={{ position: 'absolute', width: '100px', height: '100px', borderRadius: '45% 55% 50% 50%', background: '#FFFFFF', top: '2%', right: '15%', opacity: 0.7 }} />
-              <div style={{ position: 'absolute', width: '70px', height: '70px', borderRadius: '50% 42% 55% 48%', background: '#FFFFFF', bottom: '10%', left: '8%', opacity: 0.6 }} />
-              <div style={{ position: 'absolute', width: '50px', height: '50px', borderRadius: '50%', background: '#FFFFFF', bottom: '20%', right: '10%', opacity: 0.5 }} />
-            </div>
-            {/* Right — text content */}
+          <div className="mp-maker-grid" style={{ maxWidth: 640, margin: '0 auto', position: 'relative' }}>
+            {/* Text content */}
             <div>
               <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.85rem', fontWeight: 800, color: '#2D2A26', letterSpacing: '0.05em', marginBottom: '8px', textTransform: 'uppercase' }}>How it started</p>
               <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '1.4rem', fontWeight: 900, color: '#2D2A26', marginBottom: '8px' }}>Our Story</div>
