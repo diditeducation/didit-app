@@ -246,8 +246,8 @@ function GameCarousel({ games, selectedId, onSelect }) {
           if (o < -n / 2) o += n;
           const abs = Math.abs(o);
           if (abs > VISIBLE) return null;
-          const sign = Math.sign(o);
-          const x = sign * abs * 170; // evenly-stepped, overlapping jukebox spacing
+          // Horizontal step uses the --cf-step CSS var so it can shrink on
+          // mobile (neighbours peek in instead of sitting off-screen).
           const scale = abs === 0 ? 1 : abs === 1 ? 0.82 : 0.66;
           const opacity = abs === 0 ? 1 : abs === 1 ? 1 : 0.5;
           const isCenter = o === 0;
@@ -257,7 +257,7 @@ function GameCarousel({ games, selectedId, onSelect }) {
               key={game.id}
               className="lp-carousel-slot"
               style={{
-                transform: `translate(calc(-50% + ${x}px), -50%) scale(${scale})`,
+                transform: `translate(calc(-50% + (${o} * var(--cf-step, 170px))), -50%) scale(${scale})`,
                 opacity,
                 zIndex: 100 - abs,
                 pointerEvents: 'auto',
@@ -360,7 +360,7 @@ export default function ConversionLanding() {
 /* "Try them!" — coverflow carousel above a tablet preview */
 .lp-try-stack{display:flex;flex-direction:column;align-items:center;gap:30px;max-width:880px;margin:10px auto 0;padding:0 4px}
 .lp-carousel{position:relative;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
-.lp-carousel-stage{position:relative;flex:1 1 auto;max-width:720px;height:340px;overflow:hidden;touch-action:pan-y;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
+.lp-carousel-stage{position:relative;flex:1 1 auto;max-width:720px;height:340px;overflow:hidden;touch-action:pan-y;--cf-step:170px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
 .lp-carousel-slot{position:absolute;left:50%;top:50%;width:252px;transform-origin:center center;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .42s ease;will-change:transform}
 .lp-carousel-arrow{position:relative;z-index:200;flex:0 0 auto;align-self:center;width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--text);font-size:27px;line-height:1;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding-bottom:4px;box-shadow:0 6px 18px rgba(0,0,0,0.14);transition:transform .15s,opacity .15s}
 .lp-carousel-arrow:hover{transform:scale(1.08)}
@@ -397,7 +397,7 @@ export default function ConversionLanding() {
 .lp-locked-pill{display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:7px 14px;border-radius:9999px;background:rgba(255,255,255,0.6);line-height:1;white-space:nowrap}
 .lp-locked-cta{display:inline-flex;align-items:center;gap:9px;border:none;border-radius:9999px;padding:14px 32px;font-family:inherit;font-size:16px;font-weight:900;color:#fff;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,0.24);transition:transform .15s,box-shadow .15s}
 .lp-locked-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,0.3)}
-@media(max-width:560px){.lp-carousel-stage{height:290px}.lp-carousel-slot{width:200px}.lp-sq-circle{width:74px;height:74px;bottom:-30px}.lp-sq-title{font-size:22px}.lp-sq-lock{font-size:30px;top:18px}.lp-sq-body{padding:36px 10px 14px}.lp-carousel-arrow{width:40px;height:40px;font-size:23px}.lp-tablet{padding:20px;border-radius:30px;aspect-ratio:3/4.5}}
+@media(max-width:560px){.lp-carousel-stage{height:290px;--cf-step:116px;-webkit-mask-image:none;mask-image:none}.lp-carousel-slot{width:188px}.lp-sq-circle{width:74px;height:74px;bottom:-30px}.lp-sq-title{font-size:22px}.lp-sq-lock{font-size:30px;top:18px}.lp-sq-body{padding:36px 10px 14px}.lp-carousel-arrow{width:40px;height:40px;font-size:23px}.lp-tablet{padding:20px;border-radius:30px;aspect-ratio:3/4.5}}
 .lp-hero-note{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:22px}
 
 /* Tiling wavy underline — constant wavelength + thickness at any width */
@@ -435,18 +435,6 @@ export default function ConversionLanding() {
 
 /* Card grid — same column sizing as the hub */
 .lp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,46%),1fr));gap:20px}
-
-/* ── Olipop-style carousel ── */
-.lp-carousel-wrap{position:relative;max-width:1120px;margin:0 auto}
-.lp-carousel{display:flex;align-items:stretch;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 24px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.lp-carousel::-webkit-scrollbar{display:none}
-.lp-slide{flex:0 0 auto;width:236px;scroll-snap-align:center}
-.lp-slide .lp-card{height:100%}
-.lp-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--text);font-size:28px;line-height:1;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding-bottom:4px;box-shadow:0 4px 16px rgba(0,0,0,0.12);transition:transform .15s,box-shadow .15s}
-.lp-arrow:hover{transform:translateY(-50%) scale(1.08);box-shadow:0 6px 20px rgba(0,0,0,0.16)}
-.lp-arrow-left{left:-8px}
-.lp-arrow-right{right:-8px}
-@media(max-width:760px){.lp-arrow{display:none}}
 
 /* ── Card: copied from the hub's gg-card ── */
 .lp-card{display:flex;flex-direction:column;overflow:visible;transition:transform .2s ease,box-shadow .2s ease;cursor:pointer;background:#fff;position:relative;border-radius:16px;border:1px solid var(--border)}
@@ -543,6 +531,12 @@ export default function ConversionLanding() {
 .lp-quote-name{font-weight:800;font-size:15.5px;color:var(--text)}
 .lp-quote-role{font-size:12.5px;color:var(--muted)}
 @media(max-width:640px){.lp-quotes-grid{grid-template-columns:1fr;gap:16px}.lp-quotes{padding:36px 20px 40px}}
+
+.lp-about-intro{max-width:720px;margin:0 auto;padding:8px 24px 0;text-align:center}
+.lp-about-pill{display:inline-block;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);background:#fff;border:2px solid var(--border);padding:7px 16px;border-radius:9999px;margin-bottom:18px}
+.lp-about-head{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(23px,3.4vw,36px);line-height:1.12;letter-spacing:-0.01em;color:var(--text);margin:0 auto;max-width:680px}
+.lp-about-squig{position:relative;display:inline-block;white-space:nowrap;color:var(--blue)}
+@media(max-width:560px){.lp-about-head{font-size:clamp(21px,6vw,27px)}}
 
 .lp-accordion{max-width:720px;margin:0 auto;padding:8px 24px 24px}
 .lp-acc{border-top:1px solid var(--border)}
@@ -750,51 +744,24 @@ export default function ConversionLanding() {
           </div>
         </section>
 
+        {/* About us — intro header, then the expandable with the full story */}
+        <div className="lp-about-intro">
+          <span className="lp-about-pill">About us</span>
+          <h2 className="lp-about-head">We&apos;re a parent duo building calm, joyful games that introduce toddlers to the{' '}
+            <span className="lp-about-squig">real-world ideas<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>{' '}grown-ups love.
+          </h2>
+        </div>
         <div className="lp-accordion">
           <details
             className="lp-acc"
-            onToggle={(e) => { if (e.target.open) trackLandingClick('footer_philosophy'); }}
+            onToggle={(e) => { if (e.target.open) trackLandingClick('footer_about'); }}
           >
             <summary>
-              Our Design Philosophy
+              Our story &amp; design philosophy
               <span className="lp-acc-plus" aria-hidden="true" />
             </summary>
-            <div className="lp-acc-body">
-              <p className="lp-acc-h">Thoughtfully made for little hands and{' '}<span className="lp-acc-squig">big a-ha moments.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></p>
-              <div className="lp-acc-principle">
-                <div className="lp-acc-pnum" style={{ color: 'var(--coral)' }}>01</div>
-                <div><div className="lp-acc-ptitle">Play Together. That&apos;s the Magic.</div><p className="lp-acc-ptext">The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.</p></div>
-              </div>
-              <div className="lp-acc-principle">
-                <div className="lp-acc-pnum" style={{ color: 'var(--blue)' }}>02</div>
-                <div><div className="lp-acc-ptitle">Big Concepts. Made Simple.</div><p className="lp-acc-ptext">The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.</p></div>
-              </div>
-              <div className="lp-acc-principle">
-                <div className="lp-acc-pnum" style={{ color: 'var(--grass)' }}>03</div>
-                <div><div className="lp-acc-ptitle">No Clutter. No Surprises.</div><p className="lp-acc-ptext">A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.</p></div>
-              </div>
-            </div>
-          </details>
-          <details
-            className="lp-acc"
-            onToggle={(e) => { if (e.target.open) trackLandingClick('footer_story'); }}
-          >
-            <summary>
-              Our Story
-              <span className="lp-acc-plus" aria-hidden="true" />
-            </summary>
-            <div className="lp-acc-body">
-              <div className="lp-acc-story">
-                <div className="lp-acc-story-visual">
-                  <img src="/game%20illustrations/Bulb.png" alt="" />
-                </div>
-                <div className="lp-acc-story-text">
-                  <p className="lp-acc-eyebrow">How it started</p>
-                  <p className="lp-acc-p">We&apos;re parents from Sydney, Australia who have a wonderfully energetic and curious toddler. {'🧡'}</p>
-                  <p className="lp-acc-p">Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems. <span className="lp-acc-num" style={{ color: 'var(--coral)' }}>1.</span> Most kids&apos; games are loud, busy, and designed to keep little eyes glued to the screen. <span className="lp-acc-num" style={{ color: 'var(--blue)' }}>2.</span> The educational ones, while great for letters and numbers, rarely go beyond the basics.</p>
-                  <p className="lp-acc-p">So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for. <strong>We hope your family gets to discover that too as you play along!</strong></p>
-                </div>
-              </div>
+            <div className="lp-acc-body" style={{ padding: '0 0 8px' }}>
+              <AboutContent embedded showHero={false} />
             </div>
           </details>
         </div>
@@ -803,10 +770,10 @@ export default function ConversionLanding() {
           <div>
             <DiditLogo height={30} hideBeta />
             <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
+            <nav className="lp-footer-links" style={{ marginTop: 10 }}>
+              <button onClick={() => { trackLandingClick('footer_about'); navigate('/about'); }}>About did·it</button>
+            </nav>
           </div>
-          <nav className="lp-footer-links">
-            <button onClick={() => { trackLandingClick('footer_about'); navigate('/about'); }}>About did·it</button>
-          </nav>
           <div>&copy; 2026 did·it. All rights reserved.</div>
         </footer>
 
