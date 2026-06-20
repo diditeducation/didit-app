@@ -148,7 +148,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>We&apos;re two parents in Sydney, and we believe a few things. That giving children exposure to a wider world enriches their perspective. That their attention isn&apos;t for sale — so, no ads, ever. And that the best way to learn anything is playing it with someone who&apos;s figuring it out right next to you. So we made Did·It.</h1>
+            <h1>We&apos;re two parents in Sydney, and we believe a few things. That giving children exposure to a wider world enriches their perspective. That their attention isn&apos;t for sale — so, no ads, ever. And that the best way to learn anything is playing it with someone who&apos;s figuring it out right next to you.</h1>
           </div>
         </section>
         )}
