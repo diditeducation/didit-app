@@ -66,7 +66,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 .ap-hero{position:relative;overflow:hidden;padding:72px 40px 64px;background:var(--didit-bg);text-align:center}
 .ap-hero-inner{max-width:840px;margin:0 auto;position:relative;z-index:2}
 .ap-eyebrow{display:inline-block;font-size:13px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:var(--didit-coral-mid);background:#FFFFFF;border:2px solid var(--didit-border);padding:7px 16px;border-radius:9999px;margin-bottom:22px}
-.ap-hero h1{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-0.01em;color:var(--didit-text);margin:0 0 20px}
+.ap-hero h1{font-family:'Nunito',sans-serif;font-weight:600;font-size:clamp(16px,1.9vw,20px);line-height:1.6;letter-spacing:0;color:var(--didit-text);max-width:620px;margin:0 auto 20px}
 .ap-hero-sub{font-size:clamp(16px,2vw,19px);line-height:1.55;color:var(--didit-muted);max-width:560px;margin:0 auto 8px;font-weight:600}
 
 /* Floating decorative element images */
@@ -100,7 +100,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
 /* ── Embedded (inside the landing accordion): force single column, trim padding ── */
 .ap-content--embedded .ap-hero{padding:48px 24px 40px}
-.ap-content--embedded .ap-hero h1{font-size:clamp(22px,5.4vw,30px)}
+.ap-content--embedded .ap-hero h1{font-size:clamp(15px,3.6vw,18px)}
 .ap-content--embedded .mp-how{padding:56px 24px 60px}
 .ap-content--embedded .mp-how h2{font-size:clamp(22px,5vw,32px);margin-bottom:44px}
 .ap-content--embedded .mp-principles{gap:16px}
@@ -148,11 +148,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a{' '}
-              <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>head start in life
-                <svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </span>.
-            </h1>
+            <h1>We&apos;re two parents in Sydney, and we believe a few things. That giving children exposure to a wider world enriches their perspective. That their attention isn&apos;t for sale — so, no ads, ever. And that the best way to learn anything is playing it with someone who&apos;s figuring it out right next to you. So we made Did·It.</h1>
           </div>
         </section>
         )}

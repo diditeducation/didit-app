@@ -525,9 +525,9 @@ export default function ConversionLanding() {
 
 .lp-about-intro{max-width:720px;margin:0 auto;padding:8px 24px 0;text-align:center}
 .lp-about-pill{display:inline-block;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);background:#fff;border:2px solid var(--border);padding:7px 16px;border-radius:9999px;margin-bottom:18px}
-.lp-about-head{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(18px,2.3vw,26px);line-height:1.18;letter-spacing:-0.01em;color:var(--text);margin:0 auto;max-width:600px}
+.lp-about-head{font-family:'Nunito',sans-serif;font-weight:600;font-size:clamp(16px,1.9vw,20px);line-height:1.6;letter-spacing:0;color:var(--text);margin:0 auto;max-width:600px}
 .lp-about-squig{position:relative;display:inline-block;white-space:nowrap;color:var(--blue)}
-@media(max-width:560px){.lp-about-head{font-size:clamp(17px,4.4vw,21px)}}
+@media(max-width:560px){.lp-about-head{font-size:clamp(15px,4.4vw,18px)}}
 
 .lp-accordion{max-width:720px;margin:0 auto;padding:8px 24px 24px}
 .lp-acc{border-top:1px solid var(--border)}
@@ -738,9 +738,7 @@ export default function ConversionLanding() {
         {/* About us — intro header, then the expandable with the full story */}
         <div className="lp-about-intro">
           <span className="lp-about-pill">About us</span>
-          <h2 className="lp-about-head">We&apos;re parents who believe that widening a child&apos;s perspective early can give them the confidence and a{' '}
-            <span className="lp-about-squig">head start in life<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-5px', left: '-4px', width: 'calc(100% + 8px)', height: '11px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span>.
-          </h2>
+          <h2 className="lp-about-head">We&apos;re two parents in Sydney, and we believe a few things. That giving children exposure to a wider world enriches their perspective. That their attention isn&apos;t for sale — so, no ads, ever. And that the best way to learn anything is playing it with someone who&apos;s figuring it out right next to you. So we made Did·It.</h2>
         </div>
         <div className="lp-accordion">
           <details
