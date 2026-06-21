@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import MarketingPage from './pages/MarketingPage';
 import ConversionLanding from './pages/ConversionLanding';
 import Hub from './pages/Hub';
 import AboutPage from './pages/AboutPage';
@@ -23,8 +22,7 @@ function HomePage() {
   const { user } = useAuth();
   if (user === undefined) return null; // loading
   // Logged-in users land on the /hub experience (Hub.jsx).
-  // Logged-out visitors get the conversion-focused landing. The old
-  // MarketingPage stays reachable at /home.
+  // Logged-out visitors get the conversion-focused landing.
   return user ? <Hub /> : <ConversionLanding />;
 }
 
@@ -65,7 +63,6 @@ export default function App() {
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<MarketingPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/auth/callback" element={<AuthCallback />} />

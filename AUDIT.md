@@ -37,12 +37,13 @@ Two visual worlds:
 | GameScreen | `/games/:id` | ✅ Live (generic) |
 | AboutPage | `/about` | ✅ Live (linked from game pages + hub) |
 | FeedbackAdminPage | `/admin/feedback` | 🔧 Internal (no public link) |
-| MarketingPage | `/home` | 🟡 Legacy (superseded by ConversionLanding) |
 
 `components/GameIllustrations.jsx` = shared SVG illustration library (not a page). Moved out of `pages/` 2026-06-21.
 
+The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and `Hub` (`/hub`) are the only landing/hub. No `*` catch-all route exists, so unknown URLs render blank (consider adding a redirect to `/` if that ever matters).
+
 ### Lost paths / dead ends
-- `/home` reachable by URL, but its only inbound link was `HubFooter` (dead code) → effectively unlinked. Still live pending decision.
+- `/home` (MarketingPage) — **retired 2026-06-21**, archived.
 - `/hub/classic` (HubPage) — **retired 2026-06-21**, archived.
 - `LandingPage.jsx` was a true orphan (removed in cleanup).
 
@@ -72,7 +73,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 
 | Edit… | Source of truth | Also duplicated in (update manually) |
 |---|---|---|
-| About / Our Story / Design Philosophy copy | `components/AboutContent.jsx` (→ /about + landing expandable) | ⚠️ ConversionLanding "About us" intro paragraph repeats hero text; **MarketingPage (/home) has its OWN independent copies** |
+| About / Our Story / Design Philosophy copy | `components/AboutContent.jsx` (→ /about + landing expandable) | ⚠️ ConversionLanding "About us" intro paragraph repeats the hero text (keep in sync) |
 | Game title / color / icon / tagline | `data/games.js` | clean ✅ |
 | What's free (trial set) | `data/trialGames.js` | clean ✅ |
 | Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
@@ -81,7 +82,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
 
-Biggest content-sync risk: About/Story/Philosophy text lives in **three** places (AboutContent, ConversionLanding intro line, MarketingPage). `/home` silently drifts when the other two are edited.
+Biggest content-sync risk: About/Story/Philosophy text lives in **two** live places — `AboutContent` and the `ConversionLanding` "About us" intro line. Edit both together. (MarketingPage's old copies are now archived, so no longer a drift source.)
 
 ## 6. Cleanup status
 
@@ -93,12 +94,11 @@ Biggest content-sync risk: About/Story/Philosophy text lives in **three** places
 
 ### Done — retired to archive 2026-06-21
 - `pages/HubPage.jsx` + `/hub/classic` route → `archive/2026-06-21_retired/HubPage.jsx`
+- `pages/MarketingPage.jsx` + `/home` route → `archive/2026-06-21_retired/MarketingPage.jsx`
 - `games/little-architect/` → `archive/2026-06-21_retired/little-architect/`
 - Moved `pages/GameIllustrations.jsx` → `components/GameIllustrations.jsx` (all imports updated)
 
-### Pending decision (retire when truly done with the legacy flow)
-- `pages/MarketingPage.jsx` + `/home` route
-- `archive/2026-06-14_pre-monetization/` (older snapshot — keep as history)
+Legacy marketing/hub flow fully retired. `archive/2026-06-14_pre-monetization/` (older snapshot) kept as history.
 
 ### Housekeeping (not in git — your call)
 - `../didit-app-backup-v1-2026-06-10/` (210 MB full backup, outside repo). Do NOT fold into the git-tracked `archive/` (would bloat repo history). Leave outside git or delete.
