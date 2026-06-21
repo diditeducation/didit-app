@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { fonts, colors } from '../design-system/tokens';
 import { useAuth } from '../context/AuthContext';
+import { SHOW_BETA } from '../config';
 
 /**
  * Did·It logo block — logo image + small "BETA" pill underneath.
@@ -14,6 +15,11 @@ import { useAuth } from '../context/AuthContext';
  *   - Signed-out users run the caller's `onNavigate` if provided
  *     (e.g. MarketingPage scrolls to top), otherwise fall through to
  *     /hub which redirects to /signin via the protected route.
+ *
+ * BETA pill: a master switch `SHOW_BETA` (src/config.js) gates it globally —
+ * set it to false to remove BETA everywhere at once. While true, the per-call
+ * `hideBeta` prop controls where it shows (hidden on marketing/sign-up funnel,
+ * shown inside the product).
  *
  * Two visual variants:
  *   tone = 'dark' (default) — for light backgrounds. BETA pill is muted
@@ -63,7 +69,7 @@ export default function DiditLogo({ height = 28, onNavigate, tone = 'dark', hide
         onClick={goHome}
         style={{ height, objectFit: 'contain', cursor: 'pointer', display: 'block' }}
       />
-      {!hideBeta && <span style={{ ...pillStyle, marginTop: 2 }}>BETA</span>}
+      {SHOW_BETA && !hideBeta && <span style={{ ...pillStyle, marginTop: 2 }}>BETA</span>}
     </div>
   );
 }
