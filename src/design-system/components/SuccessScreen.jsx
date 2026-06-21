@@ -15,7 +15,7 @@ import {
   ChemistIllustration, AstronomerIllustration, AnalystIllustration,
   ArchitectIllustration, MatisseIllustration, TraderIllustration,
   ConsultantIllustration,
-} from '../../pages/GameIllustrations';
+} from '../../components/GameIllustrations';
 
 const ILLUSTRATIONS = {
   shopper: ShopperIllustration, mixer: DJIllustration, engineer: EngineerIllustration,

@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { lazy, Suspense } from 'react';
 import MarketingPage from './pages/MarketingPage';
 import ConversionLanding from './pages/ConversionLanding';
-import HubPage from './pages/HubPage';
 import Hub from './pages/Hub';
 import AboutPage from './pages/AboutPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
@@ -23,9 +22,7 @@ import DJGame from './games/little-dj/Game';
 function HomePage() {
   const { user } = useAuth();
   if (user === undefined) return null; // loading
-  // Logged-in users land on the new /hub experience (Hub.jsx) rather
-  // than the legacy HubPage. The legacy version stays available at
-  // /hub/classic for the time being.
+  // Logged-in users land on the /hub experience (Hub.jsx).
   // Logged-out visitors get the conversion-focused landing. The old
   // MarketingPage stays reachable at /home.
   return user ? <Hub /> : <ConversionLanding />;
@@ -74,7 +71,6 @@ export default function App() {
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/hub" element={<ProtectedRoute><Hub /></ProtectedRoute>} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/hub/classic" element={<HubPage />} />
           {/* Demo routes — public, no auth required */}
           <Route path="/demo/little-shopper"  element={<DemoGamePage><ShopperGame /></DemoGamePage>} />
           <Route path="/demo/little-engineer" element={<DemoGamePage><EngineerGame /></DemoGamePage>} />

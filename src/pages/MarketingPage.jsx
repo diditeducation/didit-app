@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { trackPageView, trackLandingClick } from '../analytics';
 import DiditLogo from '../components/DiditLogo';
-import { AstronomerIllustration } from './GameIllustrations';
+import { AstronomerIllustration } from '../components/GameIllustrations';
 
 export default function MarketingPage() {
   const [email, setEmail] = useState('');

@@ -3,7 +3,7 @@ import {
   ChefIllustration,
   EngineerIllustration,
   ConsultantIllustration,
-} from '../pages/GameIllustrations';
+} from './GameIllustrations';
 
 const FONT = "'Nunito', sans-serif";
 

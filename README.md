@@ -23,8 +23,8 @@ Key rules (non-negotiable):
 To add an illustration for a new game:
 1. Read the game's mechanic description
 2. Follow the prompt template in `ILLUSTRATIONS.md` Section 11
-3. Add the component to `src/pages/GameIllustrations.jsx`
-4. Register it in `GAME_ILLUSTRATIONS` in `src/pages/HubPage.jsx`
+3. Add the component to `src/components/GameIllustrations.jsx`
+4. Register it in the `GAME_ILLUSTRATIONS` maps in `src/components/GameGrid.jsx` (hub) **and** `src/pages/ConversionLanding.jsx` (landing) — these two maps must stay in sync
 5. Run the QA checklist from `ILLUSTRATIONS.md` Section 12
 
 ---

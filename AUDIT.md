@@ -14,8 +14,8 @@ src/
 │   ├─ games.js ......... ⭐ SINGLE SOURCE for game metadata (12 games)
 │   └─ trialGames.js .... ⭐ SINGLE SOURCE for what's free + canPlay()
 ├─ design-system/ ....... shared UI kit for GAMES + HUB (tokens, components, layouts)
-├─ components/ .......... app-level components (hub, modals, banners, logo)
-├─ pages/ .............. route screens (+ GameIllustrations, a misfiled shared util)
+├─ components/ .......... app-level components (hub, modals, banners, logo, GameIllustrations)
+├─ pages/ .............. route screens
 └─ games/ .............. 12 live game folders
 ```
 
@@ -38,12 +38,12 @@ Two visual worlds:
 | AboutPage | `/about` | ✅ Live (linked from game pages + hub) |
 | FeedbackAdminPage | `/admin/feedback` | 🔧 Internal (no public link) |
 | MarketingPage | `/home` | 🟡 Legacy (superseded by ConversionLanding) |
-| HubPage | `/hub/classic` | 🟡 Legacy (superseded by Hub) |
-| GameIllustrations | — | ⚠️ Misfiled — shared SVG library, not a page |
+
+`components/GameIllustrations.jsx` = shared SVG illustration library (not a page). Moved out of `pages/` 2026-06-21.
 
 ### Lost paths / dead ends
-- `/home` reachable by URL, but its only inbound link was `HubFooter` (dead code) → effectively unlinked.
-- `/hub/classic` has no inbound links — URL-only.
+- `/home` reachable by URL, but its only inbound link was `HubFooter` (dead code) → effectively unlinked. Still live pending decision.
+- `/hub/classic` (HubPage) — **retired 2026-06-21**, archived.
 - `LandingPage.jsx` was a true orphan (removed in cleanup).
 
 ## 3. Components
@@ -75,7 +75,8 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | About / Our Story / Design Philosophy copy | `components/AboutContent.jsx` (→ /about + landing expandable) | ⚠️ ConversionLanding "About us" intro paragraph repeats hero text; **MarketingPage (/home) has its OWN independent copies** |
 | Game title / color / icon / tagline | `data/games.js` | clean ✅ |
 | What's free (trial set) | `data/trialGames.js` | clean ✅ |
-| Game illustrations (SVGs) | `pages/GameIllustrations.jsx` | clean ✅ (misfiled location) |
+| Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
+| Illustration **map** (illustrationKey → component) | — no single source | ⚠️ duplicated in `components/GameGrid.jsx` (hub) **and** `pages/ConversionLanding.jsx` (landing) — adding a new game's icon means updating BOTH |
 | Brand colors | `design-system/tokens.js` (games + hub) | ⚠️ Marketing pages define their own `--didit-*` / `--coral` vars inline |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
@@ -90,15 +91,20 @@ Biggest content-sync risk: About/Story/Philosophy text lives in **three** places
 - `design-system/components/CelebrationOverlay.jsx`, `GameTile.jsx`, `TrustChips.jsx`, duplicate `FeedbackModal.jsx` (+ removed their index.js exports)
 - `games/little-astronomer/LittleAstronomerGame.jsx`
 
+### Done — retired to archive 2026-06-21
+- `pages/HubPage.jsx` + `/hub/classic` route → `archive/2026-06-21_retired/HubPage.jsx`
+- `games/little-architect/` → `archive/2026-06-21_retired/little-architect/`
+- Moved `pages/GameIllustrations.jsx` → `components/GameIllustrations.jsx` (all imports updated)
+
 ### Pending decision (retire when truly done with the legacy flow)
 - `pages/MarketingPage.jsx` + `/home` route
-- `pages/HubPage.jsx` + `/hub/classic` route
-- `games/little-architect/` (only referenced by legacy HubPage)
-- `archive/2026-06-14_pre-monetization/`
+- `archive/2026-06-14_pre-monetization/` (older snapshot — keep as history)
 
-### Housekeeping
-- Move `pages/GameIllustrations.jsx` → `design-system/` or `components/` (shared library, not a page)
-- `../didit-app-backup-v1-2026-06-10/` (210 MB, not in git) + root one-off HTML files — delete to declutter
+### Housekeeping (not in git — your call)
+- `../didit-app-backup-v1-2026-06-10/` (210 MB full backup, outside repo). Do NOT fold into the git-tracked `archive/` (would bloat repo history). Leave outside git or delete.
+- Root one-off HTML files (`export-sounds.html`, `little-coder.html`) — delete or move into `archive/` if worth keeping.
+
+> **Archives live in `archive/` (git-tracked, in the private repo).** Reference snapshots only — never imported or bundled (outside `src/`).
 
 ## 7. Optimization opportunities
 - Main JS chunk ~888 KB (build warns >500 KB). Games are lazy-loaded; `GameIllustrations` (all SVGs) is pulled into the main bundle via the landing carousel + MarketingPage static import. Lazy-load illustrations / split marketing pages to shrink first load.

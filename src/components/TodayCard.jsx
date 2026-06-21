@@ -14,7 +14,7 @@ import {
   MatisseIllustration,
   TraderIllustration,
   ConsultantIllustration,
-} from '../pages/GameIllustrations';
+} from './GameIllustrations';
 
 const ILLUSTRATIONS = {
   shopper:    ShopperIllustration,

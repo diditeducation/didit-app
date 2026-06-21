@@ -27,7 +27,7 @@ import {
   MatisseIllustration,
   TraderIllustration,
   ConsultantIllustration,
-} from './GameIllustrations';
+} from '../components/GameIllustrations';
 
 const PRICE = '$15';
 

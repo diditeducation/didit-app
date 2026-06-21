@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameHomeLayout from '../../design-system/layouts/GameHomeLayout';
 import FeedbackModal from '../../components/FeedbackModal';
-import { CoderIllustration } from '../../pages/GameIllustrations';
+import { CoderIllustration } from '../../components/GameIllustrations';
 import theme from './theme';
 
 export default function HomePage() {
