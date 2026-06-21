@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { fonts } from '../design-system/tokens';
 import QuickFeedbackModal from './QuickFeedbackModal';
 import { trackLandingClick } from '../analytics';
+import { SHOW_BETA } from '../config';
 
 /**
  * Top-of-app beta strip. Renders on every page (hub, game, marketing,
- * admin) for the entire trial period — there is no dismiss control,
- * intentionally, so every visitor sees the bug-report path.
+ * admin) for the entire trial period. Gated by the global `SHOW_BETA`
+ * flag (src/config.js) — the same master switch as the logo's BETA pill,
+ * so leaving beta removes both in one move.
  *
  * Tapping the strip opens QuickFeedbackModal; submissions land in the
  * shared Firestore `feedback` collection.
@@ -64,7 +66,9 @@ export default function BetaBanner() {
     cursor: 'pointer',
   };
 
-  if (dismissed) return null;
+  // Gated by the same master switch as the logo's BETA pill (src/config.js):
+  // flip SHOW_BETA to false to remove the test-mode strip everywhere too.
+  if (dismissed || !SHOW_BETA) return null;
 
   return (
     <>
