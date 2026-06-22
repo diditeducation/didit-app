@@ -16,8 +16,8 @@ import { fonts, colors } from '../design-system/tokens';
  * To add a new admin: append the email here AND their UID in firestore.rules.
  */
 const ADMIN_EMAILS = [
-  'dannelim@gmail.com',
-  // add more emails here
+  'lim.danne@gmail.com',
+  // add more emails here (and their UID in firestore.rules)
 ];
 
 const VIBE_LABELS = ['', 'Not great', "It's okay", 'Loved it', 'Amazing'];
