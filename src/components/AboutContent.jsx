@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { ABOUT_HERO, ABOUT_STORY, ABOUT_PRINCIPLES } from '../data/aboutCopy';
 
 /**
  * About Did·It content — the hero statement, "Our Story", and "Our Design
@@ -148,7 +149,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>We&apos;re parents in Sydney who believe the world our kids are growing into will keep changing, so we don&apos;t want to stop at the basics. We want to open them up to more ideas. We believe their attention isn&apos;t for sale, so no ads, ever. And that the best learning happens side by side — not by simply handing them the screen.</h1>
+            <h1>{ABOUT_HERO}</h1>
           </div>
         </section>
         )}
@@ -170,14 +171,14 @@ export default function AboutContent({ embedded = false, showHero = true }) {
             <div>
               <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.85rem', fontWeight: 800, color: '#2D2A26', letterSpacing: '0.05em', marginBottom: '8px', textTransform: 'uppercase' }}>How it started</p>
               <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '1.4rem', fontWeight: 900, color: '#2D2A26', marginBottom: '8px' }}>Our Story</div>
-              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>We&apos;re Nigel and Danne, parents from Sydney, Australia who have a wonderfully energetic and curious toddler. {'🧡'}</p>
-              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems.</p>
+              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>{ABOUT_STORY.intro[0]}</p>
+              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>{ABOUT_STORY.intro[1]}</p>
               <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', margin: '0 0 16px', paddingLeft: '20px' }}>
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}><span style={{ color: 'var(--didit-coral-mid)', fontWeight: 800, flexShrink: 0 }}>1.</span><span>Most kids&apos; games are loud, busy, and designed to keep little eyes glued to the screen.</span></div>
-                <div style={{ display: 'flex', gap: '10px' }}><span style={{ color: 'var(--didit-blueberry-dark)', fontWeight: 800, flexShrink: 0 }}>2.</span><span>The educational ones, while great for letters and numbers — rarely go beyond the basics. We were looking for something that could start introducing them to real world bigger ideas.</span></div>
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}><span style={{ color: 'var(--didit-coral-mid)', fontWeight: 800, flexShrink: 0 }}>1.</span><span>{ABOUT_STORY.problems[0]}</span></div>
+                <div style={{ display: 'flex', gap: '10px' }}><span style={{ color: 'var(--didit-blueberry-dark)', fontWeight: 800, flexShrink: 0 }}>2.</span><span>{ABOUT_STORY.problems[1]}</span></div>
               </div>
-              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for.</p>
-              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', fontWeight: 700, margin: '0' }}><span style={{ fontWeight: 800 }}>We hope your family gets to discover that too as you play along!</span></p>
+              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>{ABOUT_STORY.close[0]}</p>
+              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', fontWeight: 700, margin: '0' }}><span style={{ fontWeight: 800 }}>{ABOUT_STORY.close[1]}</span></p>
             </div>
           </div>
         </section>
@@ -192,9 +193,9 @@ export default function AboutContent({ embedded = false, showHero = true }) {
             <p className="mp-section-label-lg reveal">Our Design Philosophy</p>
             <h2 className="reveal">Thoughtfully made for little hands and{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>big a-ha moments.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
             <div className="mp-principles">
-              <div className="mp-principle reveal"><div className="mp-principle-num">01</div><h3>Play Together.<br />That&apos;s the Magic.</h3><p>The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.</p></div>
-              <div className="mp-principle reveal"><div className="mp-principle-num">02</div><h3>Big Concepts.<br />Made Simple.</h3><p>The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.</p></div>
-              <div className="mp-principle reveal"><div className="mp-principle-num">03</div><h3>No Clutter.<br />No Surprises.</h3><p>A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.</p></div>
+              {ABOUT_PRINCIPLES.map((p) => (
+                <div className="mp-principle reveal" key={p.n}><div className="mp-principle-num">{p.n}</div><h3>{p.title[0]}<br />{p.title[1]}</h3><p>{p.body}</p></div>
+              ))}
             </div>
           </div>
         </section>

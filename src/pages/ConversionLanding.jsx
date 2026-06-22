@@ -6,6 +6,7 @@ import { trackPageView, trackLandingClick } from '../analytics';
 import { DemoContext } from '../context/DemoContext';
 import DiditLogo from '../components/DiditLogo';
 import AboutContent from '../components/AboutContent';
+import { ABOUT_HERO } from '../data/aboutCopy';
 
 // The 3 free games, lazy-loaded so they only download when actually played
 // inline. Rendered in an overlay over the landing — no route change.
@@ -737,7 +738,7 @@ export default function ConversionLanding() {
         {/* About us — intro header, then the expandable with the full story */}
         <div className="lp-about-intro">
           <span className="lp-about-pill">About us</span>
-          <h2 className="lp-about-head">We&apos;re parents in Sydney who believe the world our kids are growing into will keep changing, so we don&apos;t want to stop at the basics. We want to open them up to more ideas. We believe their attention isn&apos;t for sale, so no ads, ever. And that the best learning happens side by side — not by simply handing them the screen.</h2>
+          <h2 className="lp-about-head">{ABOUT_HERO}</h2>
         </div>
         <div className="lp-accordion">
           <details

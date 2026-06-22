@@ -4,6 +4,7 @@ import {
   EngineerIllustration,
   ConsultantIllustration,
 } from './GameIllustrations';
+import { ABOUT_STORY, ABOUT_PRINCIPLES } from '../data/aboutCopy';
 
 const FONT = "'Nunito', sans-serif";
 
@@ -12,32 +13,18 @@ const CSS = `
 @keyframes am-sheet-in   { from { transform: translateY(100%) } to { transform: translateY(0) } }
 `;
 
-const PRINCIPLES = [
-  {
-    n: '01',
-    bg: '#FFF3E8',
-    accent: '#EE6A30',
-    title: 'Play Together. That\'s the Magic.',
-    body: 'The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.',
-    Illustration: ChefIllustration,
-  },
-  {
-    n: '02',
-    bg: '#EEF3FD',
-    accent: '#3A6CE5',
-    title: 'Big Concepts. Made Simple.',
-    body: 'The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.',
-    Illustration: EngineerIllustration,
-  },
-  {
-    n: '03',
-    bg: '#EEF3FD',
-    accent: '#3A6CE5',
-    title: 'No Clutter. No Surprises.',
-    body: 'A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.',
-    Illustration: ConsultantIllustration,
-  },
+// Per-card presentation (colours + illustration); copy comes from aboutCopy.js.
+const PRINCIPLE_STYLES = [
+  { bg: '#FFF3E8', accent: '#EE6A30', Illustration: ChefIllustration },
+  { bg: '#EEF3FD', accent: '#3A6CE5', Illustration: EngineerIllustration },
+  { bg: '#EEF3FD', accent: '#3A6CE5', Illustration: ConsultantIllustration },
 ];
+const PRINCIPLES = ABOUT_PRINCIPLES.map((p, i) => ({
+  n: p.n,
+  title: p.title.join(' '),
+  body: p.body,
+  ...PRINCIPLE_STYLES[i],
+}));
 
 function PrincipleCard({ n, bg, accent, title, body, Illustration }) {
   return (
@@ -187,24 +174,21 @@ export default function AboutModal({ onClose }) {
               How it started
             </p>
             <p style={{ fontFamily: FONT, fontSize: 14, lineHeight: 1.7, color: '#2D2A26', margin: '0 0 10px', fontWeight: 500 }}>
-              We're Nigel and Danne, parents from Sydney, Australia who have a wonderfully energetic and curious toddler. 🧡
+              {ABOUT_STORY.intro[0]}
             </p>
             <p style={{ fontFamily: FONT, fontSize: 14, lineHeight: 1.7, color: '#2D2A26', margin: '0 0 10px', fontWeight: 500 }}>
-              Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems.
+              {ABOUT_STORY.intro[1]}
             </p>
             <div style={{ paddingLeft: 4, marginBottom: 12 }}>
-              {[
-                { n: '1.', color: '#CF4A4A', text: 'Most kids\' games are loud, busy, and designed to keep little eyes glued to the screen.' },
-                { n: '2.', color: '#3A6CE5', text: 'The educational ones, while great for letters and numbers — rarely go beyond the basics. We were looking for something that could start introducing them to real world bigger ideas.' },
-              ].map(item => (
-                <div key={item.n} style={{ display: 'flex', gap: 8, marginBottom: 8, fontFamily: FONT, fontSize: 13, lineHeight: 1.6, color: '#2D2A26' }}>
-                  <span style={{ color: item.color, fontWeight: 800, flexShrink: 0 }}>{item.n}</span>
-                  <span style={{ fontWeight: 500 }}>{item.text}</span>
+              {[{ color: '#CF4A4A' }, { color: '#3A6CE5' }].map((item, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8, fontFamily: FONT, fontSize: 13, lineHeight: 1.6, color: '#2D2A26' }}>
+                  <span style={{ color: item.color, fontWeight: 800, flexShrink: 0 }}>{i + 1}.</span>
+                  <span style={{ fontWeight: 500 }}>{ABOUT_STORY.problems[i]}</span>
                 </div>
               ))}
             </div>
             <p style={{ fontFamily: FONT, fontSize: 14, lineHeight: 1.7, color: '#2D2A26', margin: 0, fontWeight: 700 }}>
-              So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for. We hope your family gets to discover that too as you play along!
+              {ABOUT_STORY.close.join(' ')}
             </p>
           </div>
 

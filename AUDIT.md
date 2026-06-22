@@ -12,7 +12,8 @@ src/
 ├─ context/ ............. AuthContext, DemoContext, SubscriptionContext (global state)
 ├─ data/
 │   ├─ games.js ......... ⭐ SINGLE SOURCE for game metadata (12 games)
-│   └─ trialGames.js .... ⭐ SINGLE SOURCE for what's free + canPlay()
+│   ├─ trialGames.js .... ⭐ SINGLE SOURCE for what's free + canPlay()
+│   └─ aboutCopy.js ..... ⭐ SINGLE SOURCE for About hero/story/philosophy text
 ├─ design-system/ ....... shared UI kit for GAMES + HUB (tokens, components, layouts)
 ├─ components/ .......... app-level components (hub, modals, banners, logo, GameIllustrations)
 ├─ pages/ .............. route screens
@@ -57,7 +58,7 @@ The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and
 | ProtectedRoute | Auth gate | App.jsx |
 | BetaBanner | "test mode" bar | App.jsx |
 | DevSubscriptionToggle | Dev-only sub toggle | App.jsx |
-| AboutContent | ⭐ Shared About hero/story/philosophy | AboutPage + ConversionLanding |
+| AboutContent | About hero/story/philosophy layout (text from `data/aboutCopy.js`) | AboutPage + ConversionLanding |
 | GameGrid / TodayCard / SurpriseSheet / ParentGuide / WelcomeModal / AboutModal / HubStoryFooter | Hub building blocks | Hub |
 | WishModal | "wish" survey | GameGrid |
 | QuickFeedbackModal | quick survey | BetaBanner |
@@ -73,7 +74,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 
 | Edit… | Source of truth | Also duplicated in (update manually) |
 |---|---|---|
-| About / Our Story / Design Philosophy copy | `components/AboutContent.jsx` (→ /about + landing expandable) | ⚠️ Two manual copies: (1) ConversionLanding "About us" intro paragraph repeats the hero text; (2) `components/AboutModal.jsx` (hub sheet) repeats the Our Story + Design Philosophy copy. Modal keeps its OWN distinct hero ("engineering, finance, music…" + "why stop at ABCs"); only Story/Philosophy text is kept in sync. |
+| About / Our Story / Design Philosophy copy | `data/aboutCopy.js` (`ABOUT_HERO`, `ABOUT_STORY`, `ABOUT_PRINCIPLES`) | clean ✅ — imported by AboutContent (/about + landing), AboutModal (hub sheet), and the ConversionLanding "About us" intro. Edit copy in one place. (AboutModal keeps its OWN subjects-list hero inline, by design.) |
 | Game title / color / icon / tagline | `data/games.js` | clean ✅ |
 | What's free (trial set) | `data/trialGames.js` | clean ✅ |
 | Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
@@ -83,7 +84,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
 
-Biggest content-sync risk: About/Story/Philosophy text lives in **three** live places — `AboutContent` (source of truth), the `ConversionLanding` "About us" intro line, and `AboutModal` (hub sheet). Edit them together. As of 2026-06-22 the Story + Design Philosophy copy is synced word-for-word across all three; `AboutModal` intentionally retains its own hero. (MarketingPage's old copies are now archived, so no longer a drift source.)
+About copy is no longer a sync risk: as of 2026-06-22 the hero, Our Story, and Design Philosophy text are centralized in `data/aboutCopy.js` and imported by all three surfaces (`AboutContent` → /about + landing accordion, `AboutModal` → hub sheet, `ConversionLanding` "About us" intro). The three components still own their distinct layouts/styling; only the strings are shared. `AboutModal` keeps its own subjects-list hero inline. (MarketingPage's old copies are archived, so no longer a drift source.)
 
 ## 6. Cleanup status
 
@@ -110,5 +111,5 @@ Legacy marketing/hub flow fully retired. `archive/2026-06-14_pre-monetization/` 
 ## 7. Optimization opportunities
 - Main JS chunk ~888 KB (build warns >500 KB). Games are lazy-loaded; `GameIllustrations` (all SVGs) is pulled into the main bundle via the landing carousel + MarketingPage static import. Lazy-load illustrations / split marketing pages to shrink first load.
 - Unify the two color systems (feed marketing pages from tokens.js).
-- Consolidate About content to one source (have MarketingPage import AboutContent, or retire /home).
+- ✅ Done (2026-06-22): About copy consolidated to `data/aboutCopy.js`, imported by AboutContent, AboutModal, and the ConversionLanding intro.
 - De-dupe FeedbackModal to one canonical location.
