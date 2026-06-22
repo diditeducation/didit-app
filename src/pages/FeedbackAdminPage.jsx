@@ -16,7 +16,7 @@ import { fonts, colors } from '../design-system/tokens';
  * To add a new admin: append the email here AND their UID in firestore.rules.
  */
 const ADMIN_EMAILS = [
-  'lim.danne@gmail.com',
+  'did.it.education@gmail.com',
   // add more emails here (and their UID in firestore.rules)
 ];
 
