@@ -20,7 +20,7 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null
         && request.auth.uid in [
-          'PASTE_YOUR_ADMIN_UID_HERE'
+          'bTlG8YZn8INNvHYvONf8u8LqK033'  // dannelim@gmail.com
         ];
     }
 
