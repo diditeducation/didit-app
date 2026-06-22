@@ -69,7 +69,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 
 ## 4. Games
 - 12 games in `games.js`, routed in App.jsx, each `games/<name>/{HomePage,Game,theme,audio}.jsx`. Lazy-loaded.
-- Inconsistent impl pattern: some games keep a `Game.jsx` wrapper + named impl (`ChefGame.jsx`, `ShopGame.jsx`, `LittlePieGame.jsx`); others implement directly in `Game.jsx`. Worth standardizing (not urgent).
+- **Impl pattern (standardized 2026-06-22):** every game's entry is `Game.jsx` — the container that wires up `GameShell`, `SuccessScreen`, `Confetti`, `Toast`, `FeedbackModal`, and analytics. Simple games implement mechanics inline in `Game.jsx`; games with a large play surface extract it into `Board.jsx` (component `<Name>Board`, e.g. `ChefBoard`, `ShopBoard`, `PieBoard`). `Board.jsx` may also export game data (e.g. `little-pie/Board.jsx` exports `LEVEL_DEFS`). Other per-game helpers keep descriptive names (`Canvas.jsx`, `Tray.jsx`, `GridLevel.jsx`, `Waveform.jsx`, etc.).
 
 ## 5. ⭐ Sync map — "if you edit X, also update Y"
 
@@ -104,9 +104,8 @@ About copy is no longer a sync risk: as of 2026-06-22 the hero, Our Story, and D
 
 Legacy marketing/hub flow fully retired. `archive/2026-06-14_pre-monetization/` (older snapshot) kept as history.
 
-### Housekeeping (not in git — your call)
-- `../didit-app-backup-v1-2026-06-10/` (210 MB full backup, outside repo). Do NOT fold into the git-tracked `archive/` (would bloat repo history). Leave outside git or delete.
-- Root one-off HTML files (`export-sounds.html`, `little-coder.html`) — delete or move into `archive/` if worth keeping.
+### Housekeeping
+- ✅ Resolved (verified 2026-06-22): the `../didit-app-backup-v1-2026-06-10/` 210 MB backup and the root one-off HTML files (`export-sounds.html`, `little-coder.html`) are no longer on disk anywhere under the project root. Nothing to do.
 
 > **Archives live in `archive/` (git-tracked, in the private repo).** Reference snapshots only — never imported or bundled (outside `src/`).
 
