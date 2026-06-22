@@ -51,7 +51,14 @@ const ConsultantGame     = lazy(() => import('./games/little-consultant/Game'));
 
 function BetaBannerConditional() {
   const { pathname } = useLocation();
-  if (pathname === '/' || pathname.startsWith('/demo')) return null;
+  // Mirror the logo's BETA-pill convention: hide on public / marketing /
+  // sign-up funnel surfaces, show inside the product (hub, games, admin).
+  const hidden =
+    pathname === '/' ||
+    ['/demo', '/signin', '/check-email', '/auth/callback', '/checkout', '/about'].some(
+      (p) => pathname.startsWith(p)
+    );
+  if (hidden) return null;
   return <BetaBanner />;
 }
 

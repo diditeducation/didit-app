@@ -62,7 +62,7 @@ export default function CheckEmail() {
 
       {/* Logo */}
       <div style={{ marginBottom: '32px' }}>
-        <DiditLogo height={40} onNavigate={() => navigate('/')} />
+        <DiditLogo height={40} hideBeta onNavigate={() => navigate('/')} />
       </div>
 
       {/* Emoji */}

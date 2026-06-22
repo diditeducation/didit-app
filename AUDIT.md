@@ -80,7 +80,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Illustration **map** (illustrationKey → component) | — no single source | ⚠️ duplicated in `components/GameGrid.jsx` (hub) **and** `pages/ConversionLanding.jsx` (landing) — adding a new game's icon means updating BOTH |
 | Brand colors | `design-system/tokens.js` (games + hub) | ⚠️ Marketing pages define their own `--didit-*` / `--coral` vars inline |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
-| Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | logo pill per-surface via `<DiditLogo hideBeta>` (hidden on marketing/sign-up funnel; shown inside the product); `BetaBanner` reads `SHOW_BETA` directly. NB: `CheckEmail` currently shows the pill — inconsistent with SignIn. |
+| Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
 
 Biggest content-sync risk: About/Story/Philosophy text lives in **two** live places — `AboutContent` and the `ConversionLanding` "About us" intro line. Edit both together. (MarketingPage's old copies are now archived, so no longer a drift source.)
