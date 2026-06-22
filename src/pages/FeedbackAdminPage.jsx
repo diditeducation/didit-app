@@ -8,12 +8,12 @@ import { fonts, colors } from '../design-system/tokens';
  * Admin-only feedback inbox at /admin/feedback.
  *
  * Reads from the same Firestore `feedback` collection that
- * FeedbackModal writes to. Access is gated by email — only addresses
- * listed in ADMIN_EMAILS see the data; everyone else gets a polite
- * not-authorised screen.
+ * FeedbackModal writes to. The email check below is only a UI gate —
+ * the REAL security boundary is firestore.rules (`isAdmin()` / ADMIN_UIDS).
+ * Keep this email list and the UID list in firestore.rules pointing at the
+ * same people, or an "admin" will see the page but get permission-denied.
  *
- * To add a new admin: append the email here. (For tighter security
- * later, move the gate to Firestore security rules + a custom claim.)
+ * To add a new admin: append the email here AND their UID in firestore.rules.
  */
 const ADMIN_EMAILS = [
   'dannelim@gmail.com',

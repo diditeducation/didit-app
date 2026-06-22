@@ -113,3 +113,11 @@ Legacy marketing/hub flow fully retired. `archive/2026-06-14_pre-monetization/` 
 - Unify the two color systems (feed marketing pages from tokens.js).
 - ✅ Done (2026-06-22): About copy consolidated to `data/aboutCopy.js`, imported by AboutContent, AboutModal, and the ConversionLanding intro.
 - De-dupe FeedbackModal to one canonical location.
+
+## 8. Security
+- **Firestore rules are the real access control** — `firestore.rules` (version-controlled here). The admin-email check in `FeedbackAdminPage` is only a UI gate, not a boundary. ⚠️ Editing `firestore.rules` does NOT deploy it — publish via Firebase console or `firebase deploy --only firestore:rules`.
+- **Admin identity:** `firestore.rules` → `isAdmin()` checks `ADMIN_UIDS`; the page checks `ADMIN_EMAILS`. **Keep both lists pointing at the same people.**
+- **Collections:** `feedback` (create-any, read-admin), `events` analytics (create-any, read-admin), `customers/{uid}/**` Stripe (read-own only), `products/prices` (public read), everything else denied.
+- **Secrets:** `serviceAccount.json` is gitignored and never imported in `src/` (not bundled) — keep it that way. Firebase web `apiKey`/config in the bundle is public by design (not a secret).
+- **Data sensitivity:** feedback/events contain no emails/UIDs by design — low blast radius. Subscription data is per-user and locked to the owner.
+- Future hardening: swap the email/UID lists for a Firebase custom claim (`request.auth.token.admin`), used by both the rules and the page.
