@@ -20,6 +20,10 @@ export const colors = {
   grassMid: '#4CC830',
   grassDark: '#2EA820',
 
+  // Primary CTA / action accent (lime). Used by the main action buttons
+  // (SignIn, Checkout, WelcomeModal, SuccessScreen) and the landing.
+  lime: '#D4DB4A',
+
   blueberryLight: '#CFD9F4',
   blueberry: '#9BB5E8',
   blueberryMid: '#6B8FD8',

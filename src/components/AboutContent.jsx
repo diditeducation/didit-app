@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { colors } from '../design-system/tokens';
 import { ABOUT_HERO, ABOUT_STORY, ABOUT_PRINCIPLES } from '../data/aboutCopy';
 
 /**
@@ -47,12 +48,12 @@ export default function AboutContent({ embedded = false, showHero = true }) {
       <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       <style>{`
 :root{
-  --didit-bg:#FFFBF5;--didit-surface:#FFFFFF;--didit-border:#EDE5D8;
-  --didit-text:#2D2A26;--didit-muted:#9A8F82;
-  --didit-coral:#E8AAAA;--didit-coral-mid:#CF4A4A;
-  --didit-sun:#F0DC90;--didit-sun-light:#F0F0A0;--didit-sun-mid:#E8B840;
-  --didit-grass-mid:#4CC830;--didit-grass-dark:#2EA820;
-  --didit-blueberry:#9BB5E8;--didit-blueberry-mid:#6B8FD8;--didit-blueberry-dark:#3A6CE5;
+  --didit-bg:${colors.bg};--didit-surface:${colors.surface};--didit-border:${colors.border};
+  --didit-text:${colors.text};--didit-muted:${colors.muted};
+  --didit-coral:${colors.coral};--didit-coral-mid:${colors.coralMid};
+  --didit-sun:${colors.sun};--didit-sun-light:${colors.sunLight};--didit-sun-mid:${colors.sunMid};
+  --didit-grass-mid:${colors.grassMid};--didit-grass-dark:${colors.grassDark};
+  --didit-blueberry:${colors.blueberry};--didit-blueberry-mid:${colors.blueberryMid};--didit-blueberry-dark:${colors.blueberryDark};
 }
 .ap-content{font-family:'Nunito',sans-serif;color:var(--didit-text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .ap-content--embedded{border-radius:22px;overflow:hidden}
@@ -191,7 +192,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
           <div className="mp-float-dot" style={{ width: 8, height: 8, background: 'var(--didit-sun-mid)', top: '30%', left: '15%', opacity: 0.35, animationDelay: '2s', animationDuration: '17s' }} />
           <div className="mp-how-inner">
             <p className="mp-section-label-lg reveal">Our Design Philosophy</p>
-            <h2 className="reveal">Thoughtfully made for little hands and{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>big a-ha moments.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="#F0DC90" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
+            <h2 className="reveal">Thoughtfully made for little hands and{' '}<span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap', color: 'var(--didit-blueberry-dark)' }}>big a-ha moments.<svg viewBox="0 0 200 12" preserveAspectRatio="none" style={{ position: 'absolute', bottom: '-6px', left: '-4px', width: 'calc(100% + 8px)', height: '12px', overflow: 'visible', pointerEvents: 'none', transform: 'rotate(-2deg)', transformOrigin: 'left center' }}><path d="M2,9 C8,3 15,13 25,7 C35,1 42,12 55,5 C65,0 72,11 85,6 C95,2 100,13 112,7 C122,3 128,14 140,8 C150,4 155,12 168,6 C178,2 185,11 198,7" fill="none" stroke="var(--didit-sun)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg></span></h2>
             <div className="mp-principles">
               {ABOUT_PRINCIPLES.map((p) => (
                 <div className="mp-principle reveal" key={p.n}><div className="mp-principle-num">{p.n}</div><h3>{p.title[0]}<br />{p.title[1]}</h3><p>{p.body}</p></div>

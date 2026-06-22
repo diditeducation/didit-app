@@ -20,9 +20,9 @@ src/
 └─ games/ .............. 12 live game folders
 ```
 
-Two visual worlds:
-- **Games + Hub** → `design-system/tokens.js` + design-system components.
-- **Marketing pages** (ConversionLanding, MarketingPage, AboutContent) → each defines its own inline CSS vars (`--didit-*`, `--coral`…), NOT from tokens.js. This split is the main source of "keep in sync" effort.
+One palette, one source: **`design-system/tokens.js`** drives colours everywhere.
+- **Games + Hub** consume tokens directly (theme.js + design-system components).
+- **Marketing pages** (ConversionLanding, AboutContent) still keep their own local CSS-var *names* (`--coral`, `--didit-*`…) for their `<style>` blocks, but the **values are now interpolated from tokens.js** — so there's no second palette to keep in sync. Change a brand colour in tokens.js and it propagates to games, hub, and marketing.
 
 ## 2. Pages & routes
 
@@ -80,7 +80,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | What's free (trial set) | `data/trialGames.js` | clean ✅ |
 | Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
 | Illustration **map** (illustrationKey → component) | — no single source | ⚠️ duplicated in `components/GameGrid.jsx` (hub) **and** `pages/ConversionLanding.jsx` (landing) — adding a new game's icon means updating BOTH |
-| Brand colors | `design-system/tokens.js` (games + hub) | ⚠️ Marketing pages define their own `--didit-*` / `--coral` vars inline |
+| Brand colors | `design-system/tokens.js` (games, hub, AND marketing) | clean ✅ — ConversionLanding & AboutContent derive their `--*` / `--didit-*` CSS vars from tokens.js (interpolated into the `<style>` block); the lime CTA is `colors.lime` everywhere (SignIn, Checkout, WelcomeModal, SuccessScreen, landing). Remaining hardcoded hex = one-off pastel tints (AboutModal) + rgba shadows, not core palette hues. |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
 | Site footer (logo + tagline + copyright) | `design-system/components/SiteFooter.jsx` | clean ✅ — used by ConversionLanding, HubStoryFooter, AboutPage. Beta pill per-surface via `hideBeta`. |
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
@@ -112,7 +112,7 @@ Legacy marketing/hub flow fully retired. `archive/2026-06-14_pre-monetization/` 
 
 ## 7. Optimization opportunities
 - Main JS chunk ~888 KB (build warns >500 KB). Games are lazy-loaded; `GameIllustrations` (all SVGs) is pulled into the main bundle via the landing carousel + MarketingPage static import. Lazy-load illustrations / split marketing pages to shrink first load.
-- Unify the two color systems (feed marketing pages from tokens.js).
+- ✅ Done (2026-06-22): unified the colour systems — marketing pages (ConversionLanding, AboutContent) now derive their CSS vars from tokens.js, and the lime CTA colour is the new `colors.lime` token. Remaining: optional sweep of one-off pastel tints in AboutModal.
 - ✅ Done (2026-06-22): About copy consolidated to `data/aboutCopy.js`, imported by AboutContent, AboutModal, and the ConversionLanding intro.
 - De-dupe FeedbackModal to one canonical location.
 

@@ -7,6 +7,7 @@ import { DemoContext } from '../context/DemoContext';
 import DiditLogo from '../components/DiditLogo';
 import AboutContent from '../components/AboutContent';
 import { SiteFooter } from '../design-system';
+import { colors } from '../design-system/tokens';
 import { ABOUT_HERO } from '../data/aboutCopy';
 
 // The 3 free games, lazy-loaded so they only download when actually played
@@ -321,8 +322,8 @@ export default function ConversionLanding() {
       <style>{`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#FFFBF5;--surface:#fff;--border:#EDE5D8;--text:#2D2A26;--muted:#9A8F82;
-  --lime:#D4DB4A;--blue:#3A6CE5;--coral:#CF4A4A;--sun:#E8B840;--grass:#2EA820;--gold:#E8B840;
+  --bg:${colors.bg};--surface:${colors.surface};--border:${colors.border};--text:${colors.text};--muted:${colors.muted};
+  --lime:${colors.lime};--blue:${colors.blueberryDark};--coral:${colors.coralMid};--sun:${colors.sunMid};--grass:${colors.grassDark};--gold:${colors.sunMid};
 }
 .lp{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .lp-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px 28px;background:rgba(255,251,245,0.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,0.04)}

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../../data/games';
 import { useDemo } from '../../context/DemoContext';
 import DiditLogo from '../../components/DiditLogo';
+import { colors } from '../tokens';
 import {
   ShopperIllustration, DJIllustration, EngineerIllustration,
   ChefIllustration, PianistIllustration, CoderIllustration,
@@ -248,7 +249,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
             That&apos;s just a taste. Unlock every game and keep the real-world adventures going.
           </p>
           <button
-            style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: '#D4DB4A', color: '#1A1A1A', gap: 8 }}
+            style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: colors.lime, color: '#1A1A1A', gap: 8 }}
             onClick={() => { trackSuccessClick('demo_unlock', gameId); nav('/checkout'); }}
           >
             <span>🔓</span><span>Unlock all games</span>

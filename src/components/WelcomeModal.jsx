@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import DiditLogo from './DiditLogo';
+import { colors } from '../design-system/tokens';
 
 const STORAGE_KEY = 'didit:welcome-seen';
 const MAX_VISITS = 3;
@@ -214,7 +215,7 @@ export default function WelcomeModal() {
               width: '100%',
               maxWidth: 280,
               padding: '16px 0',
-              background: '#D4DB4A',
+              background: colors.lime,
               color: '#1A1A1A',
               border: 'none',
               borderRadius: 9999,

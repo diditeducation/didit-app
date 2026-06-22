@@ -80,7 +80,7 @@ export default function Checkout() {
           fontWeight: 900,
           fontSize: '1.02rem',
           color: '#1A1A1A',
-          background: '#D4DB4A',
+          background: colors.lime,
           border: 'none',
           borderRadius: radii.pill,
           cursor: 'pointer',
