@@ -1,6 +1,6 @@
 # Did·It — Project Audit
 
-_Living reference for project structure, component roles, content sync points, and cleanup. Last updated 2026-06-21._
+_Living reference for project structure, component roles, content sync points, and cleanup. Last updated 2026-06-22._
 
 ## 1. Big picture
 
@@ -73,7 +73,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 
 | Edit… | Source of truth | Also duplicated in (update manually) |
 |---|---|---|
-| About / Our Story / Design Philosophy copy | `components/AboutContent.jsx` (→ /about + landing expandable) | ⚠️ ConversionLanding "About us" intro paragraph repeats the hero text (keep in sync) |
+| About / Our Story / Design Philosophy copy | `components/AboutContent.jsx` (→ /about + landing expandable) | ⚠️ Two manual copies: (1) ConversionLanding "About us" intro paragraph repeats the hero text; (2) `components/AboutModal.jsx` (hub sheet) repeats the Our Story + Design Philosophy copy. Modal keeps its OWN distinct hero ("engineering, finance, music…" + "why stop at ABCs"); only Story/Philosophy text is kept in sync. |
 | Game title / color / icon / tagline | `data/games.js` | clean ✅ |
 | What's free (trial set) | `data/trialGames.js` | clean ✅ |
 | Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
@@ -83,7 +83,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
 
-Biggest content-sync risk: About/Story/Philosophy text lives in **two** live places — `AboutContent` and the `ConversionLanding` "About us" intro line. Edit both together. (MarketingPage's old copies are now archived, so no longer a drift source.)
+Biggest content-sync risk: About/Story/Philosophy text lives in **three** live places — `AboutContent` (source of truth), the `ConversionLanding` "About us" intro line, and `AboutModal` (hub sheet). Edit them together. As of 2026-06-22 the Story + Design Philosophy copy is synced word-for-word across all three; `AboutModal` intentionally retains its own hero. (MarketingPage's old copies are now archived, so no longer a drift source.)
 
 ## 6. Cleanup status
 

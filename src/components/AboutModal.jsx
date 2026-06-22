@@ -18,7 +18,7 @@ const PRINCIPLES = [
     bg: '#FFF3E8',
     accent: '#EE6A30',
     title: 'Play Together. That\'s the Magic.',
-    body: 'The games are a tool for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.',
+    body: 'The games are a tool in your parenting toolkit, for you and your child to explore together. Your encouragement and coaching makes the learning moment more magical.',
     Illustration: ChefIllustration,
   },
   {
@@ -26,7 +26,7 @@ const PRINCIPLES = [
     bg: '#EEF3FD',
     accent: '#3A6CE5',
     title: 'Big Concepts. Made Simple.',
-    body: 'The ideas may be big, but the games are simple. Designed for tiny fingers — intuitive and tactile, without being overwhelming.',
+    body: 'The ideas may be big, but the games are simple. Designed for tiny fingers, they are intuitive and tactile, without being overwhelming.',
     Illustration: EngineerIllustration,
   },
   {
@@ -34,7 +34,7 @@ const PRINCIPLES = [
     bg: '#EEF3FD',
     accent: '#3A6CE5',
     title: 'No Clutter. No Surprises.',
-    body: 'A clean, safe, distraction-free space for your child to explore and for you to feel at ease. Zero ads, ever.',
+    body: 'A clean, safe, distraction-free space. Designed for your child to explore and for you to feel at ease. Zero ads, ever.',
     Illustration: ConsultantIllustration,
   },
 ];
@@ -187,15 +187,15 @@ export default function AboutModal({ onClose }) {
               How it started
             </p>
             <p style={{ fontFamily: FONT, fontSize: 14, lineHeight: 1.7, color: '#2D2A26', margin: '0 0 10px', fontWeight: 500 }}>
-              We're parents from Sydney, Australia with a wonderfully energetic and curious toddler. 🧡
+              We're Nigel and Danne, parents from Sydney, Australia who have a wonderfully energetic and curious toddler. 🧡
             </p>
             <p style={{ fontFamily: FONT, fontSize: 14, lineHeight: 1.7, color: '#2D2A26', margin: '0 0 10px', fontWeight: 500 }}>
-              When we went looking for games to play with him, we kept running into two problems:
+              Teaching our child is one of our favourite things to do together. But when we went looking for games to play with him, we kept running into the same two problems.
             </p>
             <div style={{ paddingLeft: 4, marginBottom: 12 }}>
               {[
                 { n: '1.', color: '#CF4A4A', text: 'Most kids\' games are loud, busy, and designed to keep little eyes glued to the screen.' },
-                { n: '2.', color: '#3A6CE5', text: 'The educational ones rarely go beyond ABCs and numbers. We were looking for something that introduced real-world bigger ideas.' },
+                { n: '2.', color: '#3A6CE5', text: 'The educational ones, while great for letters and numbers — rarely go beyond the basics. We were looking for something that could start introducing them to real world bigger ideas.' },
               ].map(item => (
                 <div key={item.n} style={{ display: 'flex', gap: 8, marginBottom: 8, fontFamily: FONT, fontSize: 13, lineHeight: 1.6, color: '#2D2A26' }}>
                   <span style={{ color: item.color, fontWeight: 800, flexShrink: 0 }}>{item.n}</span>
@@ -204,7 +204,7 @@ export default function AboutModal({ onClose }) {
               ))}
             </div>
             <p style={{ fontFamily: FONT, fontSize: 14, lineHeight: 1.7, color: '#2D2A26', margin: 0, fontWeight: 700 }}>
-              So we built some games. The more we played, the more we realised how capable kids really are. We hope your family gets to discover that too. 🌟
+              So we built some games. The more we played, the more we realised how capable kids really are. Their minds can stretch so much further than we give them credit for. We hope your family gets to discover that too as you play along!
             </p>
           </div>
 
