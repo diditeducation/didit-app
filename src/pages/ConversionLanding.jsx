@@ -6,6 +6,7 @@ import { trackPageView, trackLandingClick } from '../analytics';
 import { DemoContext } from '../context/DemoContext';
 import DiditLogo from '../components/DiditLogo';
 import AboutContent from '../components/AboutContent';
+import { SiteFooter } from '../design-system';
 import { ABOUT_HERO } from '../data/aboutCopy';
 
 // The 3 free games, lazy-loaded so they only download when actually played
@@ -558,10 +559,6 @@ export default function ConversionLanding() {
 .lp-acc-story-text{flex:1;min-width:0}
 .lp-acc-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 @media(max-width:560px){.lp-acc-story{flex-direction:column;align-items:center;text-align:left;padding:22px 18px}.lp-acc-story-visual{width:100px;height:100px}.lp-acc-story-visual img{width:78px;height:78px}}
-.lp-footer{padding:36px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;max-width:1000px;margin:0 auto;color:var(--muted);font-size:13px}
-.lp-footer-links{display:flex;gap:22px}
-.lp-footer-links button{background:none;border:none;color:var(--muted);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;padding:0}
-.lp-footer-links button:hover{color:var(--text);text-decoration:underline}
 
 .lp-sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#fff;border-top:1px solid var(--border);box-shadow:0 -4px 24px rgba(0,0,0,0.1);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;transform:translateY(120%);transition:transform .35s cubic-bezier(.16,1,.3,1)}
 .lp-sticky.show{transform:translateY(0)}
@@ -755,13 +752,7 @@ export default function ConversionLanding() {
           </details>
         </div>
 
-        <footer className="lp-footer">
-          <div>
-            <DiditLogo height={30} hideBeta />
-            <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
-          </div>
-          <div>&copy; 2026 did·it. All rights reserved.</div>
-        </footer>
+        <SiteFooter hideBeta />
 
       </div>
     </>

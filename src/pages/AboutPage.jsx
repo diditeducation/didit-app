@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import DiditLogo from '../components/DiditLogo';
 import AboutContent from '../components/AboutContent';
+import { SiteFooter } from '../design-system';
 
 /**
  * About / philosophy page.
@@ -36,6 +37,7 @@ export default function AboutPage() {
         <button className="ap-back" onClick={() => nav('/')}>← Back</button>
       </div>
       <AboutContent />
+      <SiteFooter hideBeta />
     </div>
   );
 }

@@ -5,6 +5,7 @@ export { default as SkillPill } from './components/SkillPill';
 export { default as Confetti } from './components/Confetti';
 export { default as Toast } from './components/Toast';
 export { default as SuccessScreen } from './components/SuccessScreen';
+export { default as SiteFooter } from './components/SiteFooter';
 export { useToast } from './useToast';
 export { useSoundManager, setGlobalMuted, isGlobalMuted } from './useSoundManager';
 export { default as GameHomeLayout } from './layouts/GameHomeLayout';

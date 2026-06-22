@@ -1,6 +1,6 @@
 import { fonts, colors } from '../design-system/tokens';
-import DiditLogo from './DiditLogo';
 import ShareButton from '../design-system/components/ShareButton';
+import SiteFooter from '../design-system/components/SiteFooter';
 
 /**
  * Hub-bottom share CTA + site footer.
@@ -151,44 +151,8 @@ export default function HubStoryFooter() {
         </div>
       </section>
 
-      {/* ── Site footer (mirrors MarketingPage .mp-footer exactly) ── */}
-      <footer style={{
-        background: '#FFFFFF',
-        color: '#2D2A26',
-        padding: '50px 40px 40px',
-      }}>
-        <div style={{
-          maxWidth: 1000,
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 20,
-        }}>
-          <div>
-            <DiditLogo height={32} />
-            <div style={{
-              fontFamily: "'Nunito', sans-serif",
-              fontStyle: 'normal',
-              fontSize: 14,
-              opacity: 1,
-              marginTop: 4,
-              color: '#2D2A26',
-            }}>
-              Real-world concepts for tiny humans.
-            </div>
-          </div>
-          <div style={{
-            fontFamily: "'Nunito', sans-serif",
-            fontSize: 13,
-            opacity: 1,
-            color: '#2D2A26',
-          }}>
-            © 2026 did*it. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      {/* ── Shared site footer (beta pill shown — inside the product) ── */}
+      <SiteFooter />
     </div>
   );
 }

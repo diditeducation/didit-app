@@ -64,7 +64,8 @@ The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and
 | QuickFeedbackModal | quick survey | BetaBanner |
 
 ### src/design-system/components/
-Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPill.
+Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPill, SiteFooter.
+- **SiteFooter** — shared site footer (logo + tagline + copyright). Used by ConversionLanding (`/`), HubStoryFooter (hub, below its share CTA), and AboutPage (`/about`). `hideBeta` prop follows the per-surface beta convention.
 
 ## 4. Games
 - 12 games in `games.js`, routed in App.jsx, each `games/<name>/{HomePage,Game,theme,audio}.jsx`. Lazy-loaded.
@@ -81,6 +82,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Illustration **map** (illustrationKey → component) | — no single source | ⚠️ duplicated in `components/GameGrid.jsx` (hub) **and** `pages/ConversionLanding.jsx` (landing) — adding a new game's icon means updating BOTH |
 | Brand colors | `design-system/tokens.js` (games + hub) | ⚠️ Marketing pages define their own `--didit-*` / `--coral` vars inline |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
+| Site footer (logo + tagline + copyright) | `design-system/components/SiteFooter.jsx` | clean ✅ — used by ConversionLanding, HubStoryFooter, AboutPage. Beta pill per-surface via `hideBeta`. |
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
 
