@@ -6,3 +6,8 @@
 //   false → the BETA pill is removed everywhere in one move (e.g. when we
 //           leave beta). No need to touch any individual call site.
 export const SHOW_BETA = true;
+
+// Subscription pricing — single source of truth. Render via the <Price>
+// component (src/components/Price.jsx) rather than hardcoding "$15" anywhere.
+export const PRICE = '$15';
+export const BILLING_PERIOD = 'month';

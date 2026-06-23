@@ -31,8 +31,7 @@ import {
   TraderIllustration,
   ConsultantIllustration,
 } from '../components/GameIllustrations';
-
-const PRICE = '$15';
+import Price from '../components/Price';
 
 // Concept lifestyle photos (text baked into each image). Each flips on tap to
 // reveal the game it points to and a short write-up of what it builds.
@@ -677,7 +676,7 @@ export default function ConversionLanding() {
           <div className="lp-cta-inner">
             <span className="lp-cta-bob">
               <button className="lp-cta-btn" onClick={() => goCheckout('unlock_main')}>
-                Unlock all games for {PRICE}/month
+                Unlock all games for <Price period />
               </button>
             </span>
             <div className="lp-cta-sub">New games added regularly · Cancel anytime</div>

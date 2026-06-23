@@ -54,6 +54,7 @@ The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and
 | Component | Role | Used by |
 |---|---|---|
 | DiditLogo | Brand logo | 11 places |
+| Price | Subscription price (`$15` / `$15/month`) from `config.js` | ConversionLanding, Checkout |
 | FeedbackModalBase | Shared modal shell — overlay, open/confirm animations (single injected keyframe set), `CloseX`, `SuccessCard`, `SubmitButton`, `submitFeedback()` helper + `FONT`/`SPRING` consts | FeedbackModal, QuickFeedbackModal, WishModal |
 | FeedbackModal | In-game feedback prompt (vibe + likes + wish); thin wrapper over FeedbackModalBase | every game ⭐ |
 | ProtectedRoute | Auth gate | App.jsx |
@@ -88,7 +89,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Feedback modal shell / animation / submit | `components/FeedbackModalBase.jsx` | clean ✅ — shared by FeedbackModal, QuickFeedbackModal, WishModal (all write to the `feedback` collection). Edit the shell here once; only headers/fields/copy live in each modal. |
 | Site footer (logo + tagline + copyright) | `design-system/components/SiteFooter.jsx` | clean ✅ — used by ConversionLanding, HubStoryFooter, AboutPage. Beta pill per-surface via `hideBeta`. |
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
-| Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
+| Price ($15/mo) | `PRICE` + `BILLING_PERIOD` in `src/config.js` | clean ✅ — render via the `<Price>` component (`components/Price.jsx`): `<Price />` → "$15", `<Price period />` → "$15/month". Used by ConversionLanding + Checkout. Never hardcode "$15" at a call site. |
 
 About copy is no longer a sync risk: as of 2026-06-22 the hero, Our Story, and Design Philosophy text are centralized in `data/aboutCopy.js` and imported by all three surfaces (`AboutContent` → /about + landing accordion, `AboutModal` → hub sheet, `ConversionLanding` "About us" intro). The three components still own their distinct layouts/styling; only the strings are shared. `AboutModal` keeps its own subjects-list hero inline. (MarketingPage's old copies are archived, so no longer a drift source.)
 

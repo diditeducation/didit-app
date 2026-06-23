@@ -23,8 +23,8 @@ export default function HomePage() {
           { label: 'Stars' },
           { label: 'Sequences' },
         ]}
-        gameId="little-astronomer"
-        onPlay={() => navigate('/games/little-astronomer/play')}
+        gameId="little-astronaut"
+        onPlay={() => navigate('/games/little-astronaut/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         shareButton

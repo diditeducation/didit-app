@@ -318,7 +318,7 @@ export const GAMES = [
     },
   },
   {
-    id: 'little-astronomer',
+    id: 'little-astronaut',
     illustrationKey: 'astronomer',
     title: 'Little Astronaut',
     emoji: '🌟',
@@ -329,7 +329,7 @@ export const GAMES = [
     instructions: 'Light up the constellation by tapping each glowing star in order.',
     skills: ['Constellations', 'Stars', 'Sequences'],
     bgImage: '/backgrounds/background-yellow.png',
-    path: '/games/little-astronomer',
+    path: '/games/little-astronaut',
     gradient: `linear-gradient(135deg, ${colors.sunMid} 0%, ${colors.night} 100%)`,
     color: colors.sunMid,
     colorDark: colors.sunDark,

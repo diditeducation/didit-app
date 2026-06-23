@@ -27,14 +27,14 @@ export default function Game() {
   const emojiTimer = useRef(null);
   const emojiKey   = useRef(0);
 
-  useEffect(() => { trackGameOpen('little-astronomer'); }, []);
+  useEffect(() => { trackGameOpen('little-astronaut'); }, []);
 
   const handleComplete = (levelId) => {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels(prev => new Set(prev).add(levelId));
-    trackLevelComplete('little-astronomer', levelId);
+    trackLevelComplete('little-astronaut', levelId);
     if (levelId === LEVEL_COUNT) {
-      trackGameComplete('little-astronomer');
+      trackGameComplete('little-astronaut');
       setShowSuccess(true);
     } else {
       setActiveLevel(levelId + 1);
@@ -247,7 +247,7 @@ export default function Game() {
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         showShare
-        gameId="little-astronomer"
+        gameId="little-astronaut"
         boughtItems={boughtItems}
         boughtLabel="Constellations discovered"
       />

@@ -6,9 +6,9 @@ import { colors, fonts, radii } from '../design-system/tokens';
 import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
 import DiditLogo from '../components/DiditLogo';
+import Price from '../components/Price';
+import { BILLING_PERIOD } from '../config';
 import { GAMES } from '../data/games';
-
-const PRICE = '$15';
 
 // Embedded one-page checkout (branded). The card fields below are a visual
 // placeholder for the real Stripe Payment Element, which mounts here in
@@ -86,7 +86,7 @@ export default function Checkout() {
           cursor: 'pointer',
         }}
       >
-        Start playing · {PRICE}/month
+        Start playing · <Price period />
       </button>
 
       {notice && (
@@ -169,8 +169,8 @@ export default function Checkout() {
             Ages 2&ndash;5 is when their brain develops fastest. Watch them explore real-world concepts through play.
           </p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }}>{PRICE}</span>
-            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>/ month</span>
+            <Price style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }} />
+            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>/ {BILLING_PERIOD}</span>
           </div>
           {fromGame && (
             <p style={{ fontSize: '0.85rem', color: colors.muted, margin: '0 0 20px' }}>
