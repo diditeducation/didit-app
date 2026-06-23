@@ -1,35 +1,7 @@
-import { colors, fonts, radii, shadows } from '../design-system/tokens';
+import { fonts, radii } from '../design-system/tokens';
 import { playWelcomeChime } from '../design-system/sharedSounds';
 import { trackGameOpen } from '../analytics';
-import {
-  ShopperIllustration,
-  DJIllustration,
-  EngineerIllustration,
-  ChefIllustration,
-  PianistIllustration,
-  CoderIllustration,
-  ChemistIllustration,
-  AstronomerIllustration,
-  AnalystIllustration,
-  MatisseIllustration,
-  TraderIllustration,
-  ConsultantIllustration,
-} from './GameIllustrations';
-
-const ILLUSTRATIONS = {
-  shopper:    ShopperIllustration,
-  mixer:      DJIllustration,
-  engineer:   EngineerIllustration,
-  chef:       ChefIllustration,
-  dj:         PianistIllustration,
-  coder:      CoderIllustration,
-  chemist:    ChemistIllustration,
-  astronomer: AstronomerIllustration,
-  pie:        AnalystIllustration,
-  matisse:    MatisseIllustration,
-  trader:     TraderIllustration,
-  consultant: ConsultantIllustration,
-};
+import { GAME_ILLUSTRATIONS as ILLUSTRATIONS } from './GameIllustrations';
 
 const css = `
 @keyframes todayBounce {
