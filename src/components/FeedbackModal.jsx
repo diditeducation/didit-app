@@ -1,36 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
-
-const KEYFRAMES_ID = 'didit-feedback-modal-keyframes';
-
-const keyframesCSS = `
-@keyframes fbOverlayIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes fbModalIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0)    scale(1); }
-}
-@keyframes fbConfirmPop {
-  0%   { opacity: 0; transform: scale(0); }
-  60%  { opacity: 1; transform: scale(1.2); }
-  100% { opacity: 1; transform: scale(1); }
-}
-`;
-
-function injectKeyframes() {
-  if (typeof document === 'undefined') return;
-  if (document.getElementById(KEYFRAMES_ID)) return;
-  const style = document.createElement('style');
-  style.id = KEYFRAMES_ID;
-  style.textContent = keyframesCSS;
-  document.head.appendChild(style);
-}
-
-const FONT = "'Nunito', sans-serif";
-const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+import { FONT, SPRING, ModalShell, CloseX, SuccessCard, SubmitButton, submitFeedback } from './FeedbackModalBase';
 
 const VIBES = [
   { emoji: '😞', label: 'Not great',  border: '#E24B4A', bg: '#FCEBEB', text: '#A32D2D' },
@@ -72,11 +41,7 @@ export default function FeedbackModal({ isOpen, onClose, gameName = '' }) {
   const [submitted, setSubmitted] = useState(false);
   const [vibeScale, setVibeScale] = useState({});
   const [chipScale, setChipScale] = useState({});
-  const [btnHover, setBtnHover]   = useState(false);
-  const [btnActive, setBtnActive] = useState(false);
   const wishRef = useRef(null);
-
-  useEffect(() => { injectKeyframes(); }, []);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -121,65 +86,28 @@ export default function FeedbackModal({ isOpen, onClose, gameName = '' }) {
       other: likes.has('other') ? otherText.trim() : null,
       wish: wish.trim(),
     };
-    addDoc(collection(db, 'feedback'), { ...payload, timestamp: serverTimestamp() })
+    submitFeedback(payload)
       .catch((err) => console.error('Feedback save failed:', err));
     setSubmitted(true);
   }
 
-  const overlayStyle = {
-    position: 'fixed',
-    inset: 0,
-    zIndex: 500,
-    background: 'rgba(0,0,0,0.4)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '20px 16px',
-    animation: 'fbOverlayIn 0.18s ease-out both',
-  };
-
-  const modalStyle = {
-    background: '#fff',
-    borderRadius: 20,
-    width: '100%',
-    maxWidth: 380,
-    maxHeight: '90vh',
-    overflowY: 'auto',
-    padding: '24px 22px',
-    boxSizing: 'border-box',
-    animation: 'fbModalIn 0.22s ease-out both',
-    fontFamily: FONT,
-  };
-
   /* ── Confirmation ── */
   if (submitted) {
     return (
-      <div style={overlayStyle} onClick={onClose}>
-        <div style={{ ...modalStyle, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, minHeight: 200 }}>
-          <div style={{ fontSize: 40, animation: 'fbConfirmPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both' }}>💌</div>
-          <p style={{ fontFamily: FONT, fontWeight: 700, fontSize: '0.95rem', color: '#2D2A26', textAlign: 'center', lineHeight: 1.55, margin: 0, maxWidth: 280 }}>
-            Thank you for taking the time! 💛 We value your input and read every single piece of feedback. It's going to help make Did It! even better for the kids and carers to enjoy. Cheers!
-          </p>
-        </div>
-      </div>
+      <SuccessCard onClose={onClose} emoji="💌">
+        Thank you for taking the time! 💛 We value your input and read every single piece of feedback. It's going to help make Did It! even better for the kids and carers to enjoy. Cheers!
+      </SuccessCard>
     );
   }
 
   /* ── Form ── */
   return (
-    <div style={overlayStyle} onClick={onClose}>
-      <div style={modalStyle} onClick={e => e.stopPropagation()}>
+    <ModalShell onClose={onClose} scroll>
 
         {/* Header */}
         <div style={{ marginBottom: 16 }}>
           <div style={{ position: 'relative', textAlign: 'center' }}>
-            <button
-              onClick={onClose}
-              style={{ position: 'absolute', right: 0, top: 0, background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', fontSize: '1.1rem', padding: 0, lineHeight: 1 }}
-              aria-label="Close"
-            >
-              ✕
-            </button>
+            <CloseX onClose={onClose} />
             <div style={{ fontWeight: 900, fontSize: '1.15rem', color: '#3A6CE5', marginBottom: 4 }}>
               How was that?
             </div>
@@ -338,33 +266,9 @@ export default function FeedbackModal({ isOpen, onClose, gameName = '' }) {
         />
 
         {/* Submit */}
-        <button
-          onClick={handleSubmit}
-          onMouseEnter={() => setBtnHover(true)}
-          onMouseLeave={() => { setBtnHover(false); setBtnActive(false); }}
-          onMouseDown={() => setBtnActive(true)}
-          onMouseUp={() => setBtnActive(false)}
-          onTouchStart={() => setBtnActive(true)}
-          onTouchEnd={() => setBtnActive(false)}
-          style={{
-            marginTop: 18,
-            width: '100%',
-            padding: '13px 0',
-            borderRadius: 12,
-            border: 'none',
-            background: '#3A6CE5',
-            color: '#fff',
-            fontFamily: FONT,
-            fontWeight: 800,
-            fontSize: '0.92rem',
-            cursor: 'pointer',
-            transform: btnActive ? 'scale(0.97)' : btnHover ? 'scale(1.02)' : 'scale(1)',
-            transition: `transform 0.2s ${SPRING}`,
-          }}
-        >
+        <SubmitButton onClick={handleSubmit} accent="#3A6CE5" marginTop={18}>
           Send feedback →
-        </button>
-      </div>
-    </div>
+        </SubmitButton>
+    </ModalShell>
   );
 }

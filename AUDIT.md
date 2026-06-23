@@ -54,14 +54,17 @@ The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and
 | Component | Role | Used by |
 |---|---|---|
 | DiditLogo | Brand logo | 11 places |
-| FeedbackModal | In-game feedback prompt | every game ⭐ |
+| FeedbackModalBase | Shared modal shell — overlay, open/confirm animations (single injected keyframe set), `CloseX`, `SuccessCard`, `SubmitButton`, `submitFeedback()` helper + `FONT`/`SPRING` consts | FeedbackModal, QuickFeedbackModal, WishModal |
+| FeedbackModal | In-game feedback prompt (vibe + likes + wish); thin wrapper over FeedbackModalBase | every game ⭐ |
 | ProtectedRoute | Auth gate | App.jsx |
 | BetaBanner | "test mode" bar | App.jsx |
 | DevSubscriptionToggle | Dev-only sub toggle | App.jsx |
 | AboutContent | About hero/story/philosophy layout (text from `data/aboutCopy.js`) | AboutPage + ConversionLanding |
 | GameGrid / TodayCard / SurpriseSheet / ParentGuide / WelcomeModal / AboutModal / HubStoryFooter | Hub building blocks | Hub |
-| WishModal | "wish" survey | GameGrid |
-| QuickFeedbackModal | quick survey | BetaBanner |
+| WishModal | "wish" / game-request survey; wrapper over FeedbackModalBase | GameGrid |
+| QuickFeedbackModal | quick bug-report survey; wrapper over FeedbackModalBase | BetaBanner |
+
+**Feedback modal family:** `FeedbackModal` (full vibe survey), `QuickFeedbackModal` (bug report) and `WishModal` (game request) are three distinct surfaces that all share `FeedbackModalBase` for their shell/animation/submit and all `addDoc` into the **same Firestore `feedback` collection**, tagged by `kind` (`fix-request` / `wish`) + `source` so `/admin/feedback` can tell them apart. Edit shell/animation/submit once in `FeedbackModalBase`; edit each modal's own header/fields/copy in its file.
 
 ### src/design-system/components/
 Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPill, SiteFooter.
@@ -69,7 +72,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 
 ## 4. Games
 - 12 games in `games.js`, routed in App.jsx, each `games/<name>/{HomePage,Game,theme,audio}.jsx`. Lazy-loaded.
-- **Impl pattern (standardized 2026-06-22):** every game's entry is `Game.jsx` — the container that wires up `GameShell`, `SuccessScreen`, `Confetti`, `Toast`, `FeedbackModal`, and analytics. Simple games implement mechanics inline in `Game.jsx`; games with a large play surface extract it into `Board.jsx` (component `<Name>Board`, e.g. `ChefBoard`, `ShopBoard`, `PieBoard`). `Board.jsx` may also export game data (e.g. `little-pie/Board.jsx` exports `LEVEL_DEFS`). Other per-game helpers keep descriptive names (`Canvas.jsx`, `Tray.jsx`, `GridLevel.jsx`, `Waveform.jsx`, etc.).
+- **Impl pattern (standardized 2026-06-22):** every game's entry is `Game.jsx` — the container that wires up `GameShell`, `SuccessScreen`, `Confetti`, `Toast`, `FeedbackModal`, and analytics. Simple games implement mechanics inline in `Game.jsx`; games with a large play surface extract it into `Board.jsx` (component `<Name>Board`, e.g. `ChefBoard`, `ShopBoard`, `PieBoard`). `Board.jsx` may also export game data (e.g. `little-analyst/Board.jsx` exports `LEVEL_DEFS`). Other per-game helpers keep descriptive names (`Canvas.jsx`, `Tray.jsx`, `GridLevel.jsx`, `Waveform.jsx`, etc.).
 
 ## 5. ⭐ Sync map — "if you edit X, also update Y"
 
@@ -82,6 +85,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Illustration **map** (illustrationKey → component) | — no single source | ⚠️ duplicated in `components/GameGrid.jsx` (hub) **and** `pages/ConversionLanding.jsx` (landing) — adding a new game's icon means updating BOTH |
 | Brand colors | `design-system/tokens.js` (games, hub, AND marketing) | clean ✅ — ConversionLanding & AboutContent derive their `--*` / `--didit-*` CSS vars from tokens.js (interpolated into the `<style>` block); the lime CTA is `colors.lime` everywhere (SignIn, Checkout, WelcomeModal, SuccessScreen, landing). Remaining hardcoded hex = one-off pastel tints (AboutModal) + rgba shadows, not core palette hues. |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
+| Feedback modal shell / animation / submit | `components/FeedbackModalBase.jsx` | clean ✅ — shared by FeedbackModal, QuickFeedbackModal, WishModal (all write to the `feedback` collection). Edit the shell here once; only headers/fields/copy live in each modal. |
 | Site footer (logo + tagline + copyright) | `design-system/components/SiteFooter.jsx` | clean ✅ — used by ConversionLanding, HubStoryFooter, AboutPage. Beta pill per-surface via `hideBeta`. |
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
 | Price ($15/mo) | `PRICE` in ConversionLanding | ⚠️ verify Checkout/SignIn don't hardcode separately |
