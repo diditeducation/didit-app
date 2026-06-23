@@ -17,20 +17,7 @@ const DEMO_GAMES = {
   'little-engineer': lazy(() => import('../games/little-engineer/Game')),
   'little-dj': lazy(() => import('../games/little-dj/Game')),
 };
-import {
-  ShopperIllustration,
-  DJIllustration,
-  EngineerIllustration,
-  ChefIllustration,
-  PianistIllustration,
-  CoderIllustration,
-  ChemistIllustration,
-  AstronomerIllustration,
-  AnalystIllustration,
-  MatisseIllustration,
-  TraderIllustration,
-  ConsultantIllustration,
-} from '../components/GameIllustrations';
+import { GAME_ILLUSTRATIONS } from '../components/GameIllustrations';
 import Price from '../components/Price';
 
 // Concept lifestyle photos (text baked into each image). Each flips on tap to
@@ -77,21 +64,6 @@ const CONCEPTS = [
   },
 ];
 
-// Same illustration map the hub (GameGrid) uses, so the cards are identical.
-const GAME_ILLUSTRATIONS = {
-  shopper: ShopperIllustration,
-  mixer: DJIllustration,
-  engineer: EngineerIllustration,
-  chef: ChefIllustration,
-  dj: PianistIllustration,
-  coder: CoderIllustration,
-  chemist: ChemistIllustration,
-  astronomer: AstronomerIllustration,
-  pie: AnalystIllustration,
-  matisse: MatisseIllustration,
-  trader: TraderIllustration,
-  consultant: ConsultantIllustration,
-};
 
 // Wavy underline that tiles at a fixed wavelength + stroke thickness, so it
 // looks identical under any word width (no stretch/squash).

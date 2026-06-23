@@ -635,3 +635,23 @@ export function TraderIllustration() {
     </svg>
   );
 }
+
+// ⭐ Single source of truth: maps each game's `illustrationKey` (from
+// data/games.js) to its illustration component. Import this everywhere
+// instead of rebuilding the map (hub grid, landing, today card, success
+// screen). Adding a new game's icon = one edit here.
+export const GAME_ILLUSTRATIONS = {
+  shopper:    ShopperIllustration,
+  dj:         DJIllustration,
+  engineer:   EngineerIllustration,
+  chef:       ChefIllustration,
+  pianist:    PianistIllustration,
+  coder:      CoderIllustration,
+  chemist:    ChemistIllustration,
+  astronaut:  AstronomerIllustration,
+  analyst:    AnalystIllustration,
+  architect:  ArchitectIllustration,
+  matisse:    MatisseIllustration,
+  trader:     TraderIllustration,
+  consultant: ConsultantIllustration,
+};

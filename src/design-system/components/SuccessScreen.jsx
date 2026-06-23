@@ -10,22 +10,7 @@ import { GAMES } from '../../data/games';
 import { useDemo } from '../../context/DemoContext';
 import DiditLogo from '../../components/DiditLogo';
 import { colors } from '../tokens';
-import {
-  ShopperIllustration, DJIllustration, EngineerIllustration,
-  ChefIllustration, PianistIllustration, CoderIllustration,
-  ChemistIllustration, AstronomerIllustration, AnalystIllustration,
-  ArchitectIllustration, MatisseIllustration, TraderIllustration,
-  ConsultantIllustration,
-} from '../../components/GameIllustrations';
-
-const ILLUSTRATIONS = {
-  shopper: ShopperIllustration, mixer: DJIllustration, engineer: EngineerIllustration,
-  chef: ChefIllustration, dj: PianistIllustration, coder: CoderIllustration,
-  chemist: ChemistIllustration, astronomer: AstronomerIllustration,
-  pie: AnalystIllustration, architect: ArchitectIllustration,
-  matisse: MatisseIllustration, trader: TraderIllustration,
-  consultant: ConsultantIllustration,
-};
+import { GAME_ILLUSTRATIONS as ILLUSTRATIONS } from '../../components/GameIllustrations';
 
 const KEYFRAMES_ID = 'didit-success-screen-keyframes';
 

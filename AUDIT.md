@@ -84,7 +84,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Game title / color / icon / tagline | `data/games.js` | clean ✅ |
 | What's free (trial set) | `data/trialGames.js` | clean ✅ |
 | Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
-| Illustration **map** (illustrationKey → component) | — no single source | ⚠️ duplicated in `components/GameGrid.jsx` (hub) **and** `pages/ConversionLanding.jsx` (landing) — adding a new game's icon means updating BOTH |
+| Illustration **map** (illustrationKey → component) | `components/GameIllustrations.jsx` → `export const GAME_ILLUSTRATIONS` | clean ✅ — imported by GameGrid (hub), ConversionLanding (landing), TodayCard, SuccessScreen. Adding a new game's icon = one edit. |
 | Brand colors | `design-system/tokens.js` (games, hub, AND marketing) | clean ✅ — ConversionLanding & AboutContent derive their `--*` / `--didit-*` CSS vars from tokens.js (interpolated into the `<style>` block); the lime CTA is `colors.lime` everywhere (SignIn, Checkout, WelcomeModal, SuccessScreen, landing). Remaining hardcoded hex = one-off pastel tints (AboutModal) + rgba shadows, not core palette hues. |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
 | Feedback modal shell / animation / submit | `components/FeedbackModalBase.jsx` | clean ✅ — shared by FeedbackModal, QuickFeedbackModal, WishModal (all write to the `feedback` collection). Edit the shell here once; only headers/fields/copy live in each modal. |

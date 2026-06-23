@@ -5,35 +5,7 @@ import { playWelcomeChime } from '../design-system/sharedSounds';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { CATEGORIES } from '../data/games';
 import WishModal from './WishModal';
-import {
-  ShopperIllustration,
-  DJIllustration,
-  EngineerIllustration,
-  ChefIllustration,
-  PianistIllustration,
-  CoderIllustration,
-  ChemistIllustration,
-  AstronomerIllustration,
-  AnalystIllustration,
-  MatisseIllustration,
-  TraderIllustration,
-  ConsultantIllustration,
-} from './GameIllustrations';
-
-const GAME_ILLUSTRATIONS = {
-  shopper:    ShopperIllustration,
-  mixer:      DJIllustration,
-  engineer:   EngineerIllustration,
-  chef:       ChefIllustration,
-  dj:         PianistIllustration,
-  coder:      CoderIllustration,
-  chemist:    ChemistIllustration,
-  astronomer: AstronomerIllustration,
-  pie:        AnalystIllustration,
-  matisse:    MatisseIllustration,
-  trader:     TraderIllustration,
-  consultant: ConsultantIllustration,
-};
+import { GAME_ILLUSTRATIONS } from './GameIllustrations';
 
 const cardCss = `
 .gg-card{display:flex;flex-direction:column;overflow:visible;transition:transform .2s ease;cursor:pointer;background:white;position:relative;border-radius:16px;border:1px solid ${colors.border};width:100%}
