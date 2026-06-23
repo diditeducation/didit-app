@@ -55,7 +55,7 @@ export const GAMES = [
   },
   {
     id: 'little-dj',
-    illustrationKey: 'mixer',
+    illustrationKey: 'dj',
     title: 'Little DJ',
     emoji: '🎧',
     tag: '🎛️ Beat Making',
@@ -167,7 +167,7 @@ export const GAMES = [
   },
   {
     id: 'little-pianist',
-    illustrationKey: 'dj',
+    illustrationKey: 'pianist',
     title: 'Little Pianist',
     emoji: '🎹',
     tag: '🎹 Piano & Solfège',
@@ -281,7 +281,7 @@ export const GAMES = [
   },
   {
     id: 'little-analyst',
-    illustrationKey: 'pie',
+    illustrationKey: 'analyst',
     title: 'Little Analyst',
     emoji: '🥧',
     tag: '🥧 Data visualisation',
@@ -319,7 +319,7 @@ export const GAMES = [
   },
   {
     id: 'little-astronaut',
-    illustrationKey: 'astronomer',
+    illustrationKey: 'astronaut',
     title: 'Little Astronaut',
     emoji: '🌟',
     tag: '🌟 Stars & Constellations',
