@@ -73,6 +73,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 
 ## 4. Games
 - 12 games in `games.js`, routed in App.jsx, each `games/<name>/{HomePage,Game,theme,audio}.jsx`. Lazy-loaded.
+- **Naming convention:** a game's `id` / folder / route slug is always `little-<name>` matching its display title (e.g. title "Little Analyst" → `little-analyst`, "Little Astronaut" → `little-astronaut`). Renamed to align 2026-06-22: `little-pie`→`little-analyst`, `little-astronomer`→`little-astronaut`. (One internal exception: `little-astronaut` keeps `illustrationKey: 'astronomer'` → `AstronomerIllustration`, since the illustration asset key is internal and not a URL.)
 - **Impl pattern (standardized 2026-06-22):** every game's entry is `Game.jsx` — the container that wires up `GameShell`, `SuccessScreen`, `Confetti`, `Toast`, `FeedbackModal`, and analytics. Simple games implement mechanics inline in `Game.jsx`; games with a large play surface extract it into `Board.jsx` (component `<Name>Board`, e.g. `ChefBoard`, `ShopBoard`, `PieBoard`). `Board.jsx` may also export game data (e.g. `little-analyst/Board.jsx` exports `LEVEL_DEFS`). Other per-game helpers keep descriptive names (`Canvas.jsx`, `Tray.jsx`, `GridLevel.jsx`, `Waveform.jsx`, etc.).
 
 ## 5. ⭐ Sync map — "if you edit X, also update Y"
@@ -99,7 +100,7 @@ About copy is no longer a sync risk: as of 2026-06-22 the hero, Our Story, and D
 - `pages/LandingPage.jsx`
 - `components/GameGate.jsx`, `HubFooter.jsx`, `HubShareCTA.jsx`
 - `design-system/components/CelebrationOverlay.jsx`, `GameTile.jsx`, `TrustChips.jsx`, duplicate `FeedbackModal.jsx` (+ removed their index.js exports)
-- `games/little-astronomer/LittleAstronomerGame.jsx`
+- `games/little-astronaut/LittleAstronomerGame.jsx` (folder was `little-astronomer` at the time; renamed 2026-06-22)
 
 ### Done — retired to archive 2026-06-21
 - `pages/HubPage.jsx` + `/hub/classic` route → `archive/2026-06-21_retired/HubPage.jsx`
