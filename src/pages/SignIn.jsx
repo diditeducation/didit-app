@@ -111,6 +111,21 @@ export default function SignIn() {
           <p style={{ fontSize: '0.92rem', fontWeight: 600, color: colors.muted, lineHeight: 1.45, margin: 0 }}>
             Sign in to view all games.
           </p>
+
+          {/* Early-development quote — reassurance on why play matters */}
+          <figure style={{ margin: '30px 0 0', position: 'relative' }}>
+            <span aria-hidden="true" style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 700, fontSize: 52, lineHeight: 0.4, display: 'block', height: 24, color: colors.sunMid, opacity: 0.7 }}>
+              &ldquo;
+            </span>
+            <blockquote style={{ margin: 0 }}>
+              <p style={{ fontSize: '1.05rem', fontWeight: 800, color: colors.text, lineHeight: 1.4, letterSpacing: '-0.01em', margin: '0 0 14px' }}>
+                Ages 2 to 5 is when a child&apos;s brain develops fastest. Play is how they make sense of the world — every game turns simple curiosity into real understanding.
+              </p>
+            </blockquote>
+            <figcaption style={{ fontSize: '0.74rem', fontWeight: 800, color: colors.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              The science of play
+            </figcaption>
+          </figure>
         </div>
 
         {/* Right — sign-in form */}
