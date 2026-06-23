@@ -13,7 +13,7 @@
 
 // Mission statement. Hero on /about + the landing "About us" intro paragraph.
 export const ABOUT_HERO =
-  "We're parents in Sydney who believe the world our kids are growing into will keep changing, so we don't want to stop at the basics. We want to open them up to more ideas. We believe their attention isn't for sale, so no ads, ever. And that the best learning happens side by side — not by simply handing them the screen.";
+  "We're Nigel and Danne, parents from Sydney, Australia. We believe the world our kids are growing into will keep changing, so we don't want to stop at the basics. We want to open them up to more ideas. We believe their attention isn't for sale, so no ads, ever. And that the best learning happens side by side — not by simply handing them the screen.";
 
 // "Our Story" / "How it started".
 export const ABOUT_STORY = {
