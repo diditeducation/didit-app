@@ -116,10 +116,11 @@ Legacy marketing/hub flow fully retired. `archive/2026-06-14_pre-monetization/` 
 > **Archives live in `archive/` (git-tracked, in the private repo).** Reference snapshots only — never imported or bundled (outside `src/`).
 
 ## 7. Optimization opportunities
-- Main JS chunk ~888 KB (build warns >500 KB). Games are lazy-loaded; `GameIllustrations` (all SVGs) is pulled into the main bundle via the landing carousel + MarketingPage static import. Lazy-load illustrations / split marketing pages to shrink first load.
-- ✅ Done (2026-06-22): unified the colour systems — marketing pages (ConversionLanding, AboutContent) now derive their CSS vars from tokens.js, and the lime CTA colour is the new `colors.lime` token. Remaining: optional sweep of one-off pastel tints in AboutModal.
+- ✅ Done (2026-06-22): split the bundle via `manualChunks` in `vite.config.js` — `firebase` (~105 KB gz) and `react` (~17 KB gz) are now separate cached vendor chunks, app code is the `index` chunk (~123 KB gz). The >500 KB build warning is resolved and vendor code is cached across deploys + fetched in parallel. Total first-load bytes (~244 KB gz) are unchanged — that's expected; the win is caching + parallelism.
+- Won't do (low ROI): lazy-loading `GameIllustrations` SVGs. The `/` landing carousel renders several game illustrations above the fold, so they're first-paint-critical — deferring them adds Suspense complexity for little gain.
+- ✅ Done (2026-06-22): unified the colour systems — marketing pages (ConversionLanding, AboutContent) now derive their CSS vars from tokens.js, and the lime CTA colour is the new `colors.lime` token. (One-off pastel tints in AboutModal left as-is: cosmetic only, not worth a sweep.)
 - ✅ Done (2026-06-22): About copy consolidated to `data/aboutCopy.js`, imported by AboutContent, AboutModal, and the ConversionLanding intro.
-- De-dupe FeedbackModal to one canonical location.
+- ✅ Already done (2026-06-21): FeedbackModal de-dup. Only `FeedbackModalBase.jsx` (shared shell) + `FeedbackModal.jsx` (in-game wrapper) remain — these are the intended split, not duplicates. The old duplicate was removed (see §6).
 
 ## 8. Security
 - **Firestore rules are the real access control** — `firestore.rules` (version-controlled here). The admin-email check in `FeedbackAdminPage` is only a UI gate, not a boundary. ⚠️ Editing `firestore.rules` does NOT deploy it — publish via Firebase console or `firebase deploy --only firestore:rules`.
