@@ -79,6 +79,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 .mp-how{padding:90px 40px 110px;background:var(--didit-sun-light)}
 .mp-how-inner{max-width:1040px;margin:0 auto;text-align:center}
 .mp-how h2{font-family:'Nunito',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,44px);color:var(--didit-text);margin-bottom:64px}
+.ap-h2{font-family:'Nunito',sans-serif;font-weight:700;font-size:clamp(30px,4.5vw,44px);line-height:1.1;color:var(--didit-text);margin:0 0 20px}
 
 /* Philosophy cards (tilted, coloured) */
 .mp-principles{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;text-align:left}
@@ -105,6 +106,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 .ap-content--embedded .ap-hero h1{font-size:clamp(11px,2.6vw,13px)}
 .ap-content--embedded .mp-how{padding:56px 24px 60px}
 .ap-content--embedded .mp-how h2{font-size:clamp(22px,5vw,32px);margin-bottom:44px}
+.ap-content--embedded .ap-h2{font-size:clamp(22px,5vw,32px)}
 .ap-content--embedded .mp-principles{gap:16px}
 .ap-content--embedded .mp-principle{transform:none!important;padding:36px 18px 22px;border-radius:20px}
 .ap-content--embedded .mp-principle h3{font-size:16px;margin-bottom:8px}
@@ -123,6 +125,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
   .ap-hero{padding:56px 20px 64px}
   .mp-how{padding:64px 20px 64px}
   .mp-how h2{font-size:clamp(24px,5vw,36px);margin-bottom:48px}
+  .ap-h2{font-size:clamp(24px,5vw,36px)}
   .mp-principles{grid-template-columns:1fr;gap:34px}
   .mp-principle{transform:none!important}
   .mp-maker-grid{grid-template-columns:1fr!important;gap:32px!important}
@@ -170,8 +173,8 @@ export default function AboutContent({ embedded = false, showHero = true }) {
           <div className="mp-maker-grid" style={{ maxWidth: 640, margin: '0 auto', position: 'relative' }}>
             {/* Text content */}
             <div>
-              <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.85rem', fontWeight: 800, color: '#2D2A26', letterSpacing: '0.05em', marginBottom: '8px', textTransform: 'uppercase' }}>How it started</p>
-              <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '1.4rem', fontWeight: 900, color: '#2D2A26', marginBottom: '8px' }}>Our Story</div>
+              <p className="mp-section-label-lg reveal">How it started</p>
+              <h2 className="ap-h2 reveal">Our Story</h2>
               <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>{ABOUT_STORY.intro[0]}</p>
               <p className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', fontStyle: 'normal', margin: '0 0 16px' }}>{ABOUT_STORY.intro[1]}</p>
               <div className="reveal" style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.95rem', lineHeight: 1.4, color: '#2D2A26', margin: '0 0 16px', paddingLeft: '20px' }}>
