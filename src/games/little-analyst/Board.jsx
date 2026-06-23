@@ -159,7 +159,7 @@ function clampOffset(off, containerW, containerH) {
 }
 
 // ── Component ────────────────────────────────────────────────
-export default function LittlePieGame({ levelDef, onMilestone }) {
+export default function PieBoard({ levelDef, onMilestone }) {
   injectKeyframes();
 
   const { filled, gaps } = levelDef;

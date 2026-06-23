@@ -8,7 +8,7 @@ import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
-import ShopGame from './ShopGame';
+import ShopBoard from './Board';
 import { trackGameOpen, trackGameComplete } from '../../analytics';
 import { useDemo } from '../../context/DemoContext';
 
@@ -74,7 +74,7 @@ export default function Game() {
         onBack={() => navigate('/hub')}
         instructions="Let your little one drag the coins onto the shelf to pay for each treat."
       >
-        <ShopGame
+        <ShopBoard
           compact={isDemo}
           resetRef={shopResetRef}
           onMilestone={(x, y) =>

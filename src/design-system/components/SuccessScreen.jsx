@@ -62,7 +62,7 @@ function injectKeyframes() {
 
 const FONT = "'Nunito', sans-serif";
 
-/* Pixel-perfect copy of ShopGame Coin (wallet variant, 32px) */
+/* Pixel-perfect copy of ShopBoard Coin (wallet variant, 32px) */
 function SuccessCoin({ floatDelay = 0 }) {
   return (
     <div

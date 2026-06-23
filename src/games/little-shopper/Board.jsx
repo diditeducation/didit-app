@@ -317,9 +317,9 @@ function fireConfetti(canvas) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ShopGame — single continuous flow
+   ShopBoard — single continuous flow
    ═══════════════════════════════════════════════════════════ */
-export default function ShopGame({ onMilestone, onComplete, onGameEnd, resetRef, compact = false }) {
+export default function ShopBoard({ onMilestone, onComplete, onGameEnd, resetRef, compact = false }) {
   /* Compact mode (landing sampler) tightens the wallet + item area so the
      payment tray ("shelf") fits inside the shorter iPad scene card. */
   const coinSize     = compact ? 'clamp(28px, 7vw, 34px)' : 'clamp(36px, 8vw, 44px)';

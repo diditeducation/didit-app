@@ -19,8 +19,8 @@ export default function HomePage() {
         tag="🥧 Data visualisation"
         description="Uh oh, the chart is missing a piece! Drag the right slice into the gap to complete it. Big slice or little slice — can you spot the one that fits?"
         skillPills={[{ label: 'Percentages' }, { label: 'Shapes' }, { label: 'Spatial recognition' }]}
-        gameId="little-pie"
-        onPlay={() => navigate('/games/little-pie/play')}
+        gameId="little-analyst"
+        onPlay={() => navigate('/games/little-analyst/play')}
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         shareButton

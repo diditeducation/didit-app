@@ -40,8 +40,8 @@ const CoderHome     = lazy(() => import('./games/little-coder/HomePage'));
 const CoderGame     = lazy(() => import('./games/little-coder/Game'));
 const AstronomerHome   = lazy(() => import('./games/little-astronomer/HomePage'));
 const AstronomerGame   = lazy(() => import('./games/little-astronomer/Game'));
-const PieHome           = lazy(() => import('./games/little-pie/HomePage'));
-const PieGame           = lazy(() => import('./games/little-pie/Game'));
+const AnalystHome           = lazy(() => import('./games/little-analyst/HomePage'));
+const AnalystGame           = lazy(() => import('./games/little-analyst/Game'));
 const MatisseHome        = lazy(() => import('./games/little-matisse/HomePage'));
 const MatisseGame        = lazy(() => import('./games/little-matisse/Game'));
 const TraderHome         = lazy(() => import('./games/little-trader/HomePage'));
@@ -113,8 +113,8 @@ export default function App() {
           <Route path="/games/little-astronomer/play" element={<ProtectedRoute><AstronomerGame /></ProtectedRoute>} />
 
           {/* Little Analyst (Pie) */}
-          <Route path="/games/little-pie"      element={<ProtectedRoute><PieHome /></ProtectedRoute>} />
-          <Route path="/games/little-pie/play" element={<ProtectedRoute><PieGame /></ProtectedRoute>} />
+          <Route path="/games/little-analyst"      element={<ProtectedRoute><AnalystHome /></ProtectedRoute>} />
+          <Route path="/games/little-analyst/play" element={<ProtectedRoute><AnalystGame /></ProtectedRoute>} />
 
           {/* Little Architect */}
           {/* Little Matisse */}

@@ -280,7 +280,7 @@ export const GAMES = [
     },
   },
   {
-    id: 'little-pie',
+    id: 'little-analyst',
     illustrationKey: 'pie',
     title: 'Little Analyst',
     emoji: '🥧',
@@ -291,7 +291,7 @@ export const GAMES = [
     instructions: 'Find the slice that fits and complete the pie.',
     skills: ['Percentages', 'Shapes', 'Spatial recognition'],
     bgImage: '/backgrounds/background-red.png',
-    path: '/games/little-pie',
+    path: '/games/little-analyst',
     gradient: `linear-gradient(135deg, ${colors.coralMid} 0%, ${colors.coralDark} 100%)`,
     color: colors.coralMid,
     colorDark: colors.coralDark,

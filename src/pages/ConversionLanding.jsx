@@ -287,7 +287,7 @@ export default function ConversionLanding() {
   // (centre) with Little Shopper to its left and Little DJ to its right.
   const FEATURED_ORDER = ['little-shopper', 'little-engineer', 'little-dj'];
   // Paid games: surface Little Chemist and Little Analyst near the front.
-  const PAID_PRIORITY = ['little-chemist', 'little-pie'];
+  const PAID_PRIORITY = ['little-chemist', 'little-analyst'];
   const paidGames = GAMES.filter((g) => !TRIAL_GAME_IDS.includes(g.id));
   const orderedPaidGames = [
     ...PAID_PRIORITY.map((id) => paidGames.find((g) => g.id === id)).filter(Boolean),

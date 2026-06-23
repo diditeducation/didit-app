@@ -7,7 +7,7 @@ import SuccessScreen from '../../design-system/components/SuccessScreen';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import theme from './theme';
-import LittlePieGame, { LEVEL_DEFS } from './LittlePieGame';
+import PieBoard, { LEVEL_DEFS } from './Board';
 import { trackGameOpen, trackLevelComplete, trackGameComplete } from '../../analytics';
 
 const COMPLETE_TOASTS = [
@@ -19,7 +19,7 @@ const COMPLETE_TOASTS = [
   'All in! 💯',
 ];
 
-// Colors match LittlePieGame
+// Colors match PieBoard
 
 function ptOnCircle(cx, cy, r, deg) {
   const rad = (deg - 90) * Math.PI / 180;
@@ -70,14 +70,14 @@ export default function Game() {
   const { toast, showToast } = useToast();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
-  useEffect(() => { trackGameOpen('little-pie'); }, []);
+  useEffect(() => { trackGameOpen('little-analyst'); }, []);
 
   const handleComplete = (levelId) => {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels(prev => new Set(prev).add(levelId));
-    trackLevelComplete('little-pie', levelId);
+    trackLevelComplete('little-analyst', levelId);
     if (levelId === 6) {
-      trackGameComplete('little-pie');
+      trackGameComplete('little-analyst');
       setTimeout(() => setShowSuccess(true), 1500);
     } else {
       setActiveLevel(levelId + 1);
@@ -121,7 +121,7 @@ export default function Game() {
       >
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
           {!showSuccess && (
-            <LittlePieGame
+            <PieBoard
               key={activeLevel}
               levelDef={LEVEL_DEFS[activeLevel - 1]}
               onMilestone={(x, y) => triggerMilestone(x, y)}
@@ -157,7 +157,7 @@ export default function Game() {
         onBack={() => navigate('/hub')}
         onFeedback={() => setFeedbackOpen(true)}
         showShare
-        gameId="little-pie"
+        gameId="little-analyst"
         boughtItems={BOUGHT_ITEMS}
         boughtLabel="You completed 6 pies!"
       />

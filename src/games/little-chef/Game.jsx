@@ -8,7 +8,7 @@ import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import { fonts } from '../../design-system/tokens';
 import theme from './theme';
-import ChefGame from './ChefGame';
+import ChefBoard from './Board';
 import { trackGameOpen, trackGameComplete } from '../../analytics';
 
 export default function Game() {
@@ -68,7 +68,7 @@ export default function Game() {
         hideTabs
         onBack={() => navigate('/hub')}
       >
-        <ChefGame
+        <ChefBoard
           resetRef={chefResetRef}
           onMilestone={(x, y) =>
             triggerMilestone(

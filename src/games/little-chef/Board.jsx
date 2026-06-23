@@ -55,7 +55,7 @@ function shuffle(arr) {
   return a;
 }
 
-export default function ChefGame({ resetRef, onMilestone, onGameEnd }) {
+export default function ChefBoard({ resetRef, onMilestone, onGameEnd }) {
   const [recipes, setRecipes] = useState(() => pickRecipes());
   const [recipeIdx, setRecipeIdx] = useState(0);
   const [completed, setCompleted] = useState([]);
