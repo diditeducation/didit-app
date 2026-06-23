@@ -666,7 +666,9 @@ export default function ConversionLanding() {
               <div className="lp-quote-mark" aria-hidden="true">&ldquo;</div>
               <div className="lp-quote-title">Widening their world</div>
               <blockquote>
-                "Real exposure to real-world concepts, early — it genuinely feels like a head start."
+                "Technology changes so fast, and I think the way kids learn has to evolve with
+                it. I love that this gives my daughter real exposure to real-world concepts
+                early. It genuinely feels like a head start."
               </blockquote>
               <figcaption>
                 <span className="lp-quote-name" style={{ color: 'var(--grass)' }}>Maya R.</span>
@@ -677,7 +679,9 @@ export default function ConversionLanding() {
               <div className="lp-quote-mark" aria-hidden="true">&ldquo;</div>
               <div className="lp-quote-title">Finally, something <em>actually</em> enriching</div>
               <blockquote>
-                "Not overstimulating — beautifully simple, and something we actually play together."
+                "I love that it's not overstimulating. It's so well designed, simple and
+                intuitive. And I use it as a tool to play together with my children, rather than
+                the hypnotising, mindless games we'd tried before."
               </blockquote>
               <figcaption>
                 <span className="lp-quote-name" style={{ color: 'var(--blue)' }}>Daniel K.</span>
@@ -688,7 +692,9 @@ export default function ConversionLanding() {
               <div className="lp-quote-mark" aria-hidden="true">&ldquo;</div>
               <div className="lp-quote-title">I can see it clicking</div>
               <blockquote>
-                "I watched him grasp one concept, then move to the next — the progression is real."
+                "It was fascinating to watch my son develop and advance his skills as he
+                played. I could really see him grasp one concept and then move on to the next.
+                The progression is real."
               </blockquote>
               <figcaption>
                 <span className="lp-quote-name" style={{ color: 'var(--coral)' }}>Sofia L.</span>
