@@ -5,6 +5,25 @@ import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkT
 import { colors, fonts, radii } from '../design-system/tokens'
 import DiditLogo from '../components/DiditLogo'
 
+// Pool of left-panel quotes — one is picked at random each visit. All are
+// about early childhood, play, and learning. `author`/`role` are optional;
+// `caption` is the brand fallback line when there's no person to attribute.
+const SIGNIN_QUOTES = [
+  {
+    text: "Ages 2 to 5 is when a child's brain develops fastest. Play is how they make sense of the world — every game turns simple curiosity into real understanding.",
+    caption: 'The science of play',
+  },
+  {
+    text: 'Play is the fundamental "work" of childhood.',
+    caption: 'The science of play',
+  },
+  {
+    text: 'Almost all creativity involves purposeful play.',
+    author: 'Abraham Maslow',
+    role: 'American psychologist',
+  },
+]
+
 const getActionCodeSettings = (email) => ({
   url: `${window.location.origin}/auth/callback?email=${encodeURIComponent(email)}`,
   handleCodeInApp: true,
@@ -15,6 +34,8 @@ export default function SignIn() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  // Pick one quote per mount so each visit can show a different one.
+  const [quote] = useState(() => SIGNIN_QUOTES[Math.floor(Math.random() * SIGNIN_QUOTES.length)])
 
   /* On mobile, Firebase falls back from popup → redirect.
      Pick up the result when we land back on this page. */
@@ -112,19 +133,27 @@ export default function SignIn() {
             Sign in to view all games.
           </p>
 
-          {/* Early-development quote — reassurance on why play matters */}
+          {/* Early-development quote — reassurance on why play matters.
+              One of SIGNIN_QUOTES, picked at random per visit. */}
           <figure style={{ margin: '30px 0 0', position: 'relative' }}>
             <span aria-hidden="true" style={{ fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 700, fontSize: 52, lineHeight: 0.4, display: 'block', height: 24, color: colors.sunMid, opacity: 0.7 }}>
               &ldquo;
             </span>
             <blockquote style={{ margin: 0 }}>
               <p style={{ fontSize: '1.05rem', fontWeight: 800, color: colors.text, lineHeight: 1.4, letterSpacing: '-0.01em', margin: '0 0 14px' }}>
-                Ages 2 to 5 is when a child&apos;s brain develops fastest. Play is how they make sense of the world — every game turns simple curiosity into real understanding.
+                {quote.text}
               </p>
             </blockquote>
-            <figcaption style={{ fontSize: '0.74rem', fontWeight: 800, color: colors.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              The science of play
-            </figcaption>
+            {quote.author ? (
+              <figcaption style={{ lineHeight: 1.3 }}>
+                <span style={{ display: 'block', fontSize: '0.84rem', fontWeight: 800, color: colors.text }}>{quote.author}</span>
+                {quote.role && <span style={{ fontSize: '0.76rem', fontWeight: 600, color: colors.muted }}>{quote.role}</span>}
+              </figcaption>
+            ) : quote.caption ? (
+              <figcaption style={{ fontSize: '0.74rem', fontWeight: 800, color: colors.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                {quote.caption}
+              </figcaption>
+            ) : null}
           </figure>
         </div>
 
