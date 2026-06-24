@@ -4,9 +4,10 @@ import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
+import LevelPips from '../../design-system/components/LevelPips';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
-import { fonts, colors, easing } from '../../design-system/tokens';
+import { fonts } from '../../design-system/tokens';
 import { initAudio, sound } from './audio';
 import theme from './theme';
 import Canvas from './Canvas';
@@ -167,7 +168,6 @@ export default function Game() {
   const navigate = useNavigate();
 
   const [activeLevel, setActiveLevel] = useState(1);
-  const [completedLevels, setCompletedLevels] = useState(new Set());
   const [level, setLevel] = useState(() => generateLevel());
   const [placedShapes, setPlacedShapes] = useState([]);
   const [draggingIdx, setDraggingIdx] = useState(null);
@@ -204,7 +204,6 @@ export default function Game() {
     } else {
       // Next level
       trackLevelComplete('little-matisse', activeLevel);
-      setCompletedLevels(prev => new Set(prev).add(activeLevel));
       setActiveLevel(prev => prev + 1);
       setLevel(generateLevel());
       setPlacedShapes([]);
@@ -278,7 +277,6 @@ export default function Game() {
 
   const resetGame = useCallback(() => {
     setActiveLevel(1);
-    setCompletedLevels(new Set());
     setLevel(generateLevel());
     setPlacedShapes([]);
     setDraggingIdx(null);
@@ -320,37 +318,7 @@ export default function Game() {
         title="Little Matisse"
         hideTabs
         onBack={() => navigate('/hub')}
-        topSlot={
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 8,
-            paddingBottom: 10,
-          }}>
-            {Array.from({ length: LEVEL_COUNT }).map((_, i) => {
-              const levelNum = i + 1;
-              const isActive = levelNum === activeLevel;
-              const isDone = completedLevels.has(levelNum) || showSuccess;
-              return (
-                <div
-                  key={i}
-                  style={{
-                    width: isActive && !showSuccess ? 22 : 10,
-                    height: 10,
-                    borderRadius: 999,
-                    background: isDone || isActive
-                      ? 'var(--game-primary)'
-                      : 'rgba(0,0,0,0.12)',
-                    opacity: isDone && !isActive ? 0.45 : 1,
-                    transition: 'all 0.3s ease',
-                    flexShrink: 0,
-                  }}
-                />
-              );
-            })}
-          </div>
-        }
+        topSlot={<LevelPips current={activeLevel} total={LEVEL_COUNT} />}
       >
         <div style={{
           flex: 1,

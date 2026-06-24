@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
+import LevelPips from '../../design-system/components/LevelPips';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import theme from './theme';
@@ -98,26 +99,7 @@ export default function Game() {
         title="Little Analyst"
         hideTabs
         onBack={() => navigate('/hub')}
-        topSlot={
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, paddingBottom: 10 }}>
-            {Array.from({ length: 6 }, (_, i) => {
-              const id     = i + 1;
-              const active = id === activeLevel;
-              const done   = completedLevels.has(id);
-              return (
-                <div key={id} style={{
-                  width:      active ? 22 : 10,
-                  height:     10,
-                  borderRadius: 999,
-                  background: done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
-                  opacity:    done ? 0.45 : 1,
-                  transition: 'all 0.3s ease',
-                  flexShrink: 0,
-                }} />
-              );
-            })}
-          </div>
-        }
+        topSlot={<LevelPips current={activeLevel} total={LEVEL_DEFS.length} />}
       >
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
           {!showSuccess && (
