@@ -6,6 +6,7 @@ export { default as Confetti } from './components/Confetti';
 export { default as Toast } from './components/Toast';
 export { default as SuccessScreen } from './components/SuccessScreen';
 export { default as SiteFooter } from './components/SiteFooter';
+export { default as LevelPips } from './components/LevelPips';
 export { useToast } from './useToast';
 export { useSoundManager, setGlobalMuted, isGlobalMuted } from './useSoundManager';
 export { default as GameHomeLayout } from './layouts/GameHomeLayout';

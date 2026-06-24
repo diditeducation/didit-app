@@ -6,9 +6,9 @@ import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
-import { colors, fonts, easing } from '../../design-system/tokens';
 import theme from './theme';
 import GridLevel from './GridLevel';
+import LevelPips from '../../design-system/components/LevelPips';
 import { trackGameOpen, trackLevelComplete, trackGameComplete } from '../../analytics';
 
 const LEVELS = [
@@ -16,8 +16,6 @@ const LEVELS = [
   { id: 2, minMoves: 2 },
   { id: 3, minMoves: 2 },
   { id: 4, minMoves: 3 },
-  { id: 5, minMoves: 3 },
-  { id: 6, minMoves: 4 },
 ];
 
 const WIN_TOASTS = [
@@ -28,37 +26,6 @@ const WIN_TOASTS = [
   'So close! 🔥',
   'You did it! 🏆',
 ];
-
-/* ── Level pip indicator ── */
-function LevelPips({ current, total }) {
-  return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: 6,
-      padding: '4px 0 14px',
-    }}>
-      {Array.from({ length: total }, (_, i) => {
-        const isActive = i + 1 === current;
-        const isDone   = i + 1 < current;
-        return (
-          <div key={i} style={{
-            height: 8,
-            width: isActive ? 28 : 8,
-            borderRadius: 4,
-            background: isActive
-              ? colors.sunDark
-              : isDone
-                ? colors.sunMid
-                : 'rgba(0,0,0,0.13)',
-            transition: `all 0.35s ${easing.bounce}`,
-          }} />
-        );
-      })}
-    </div>
-  );
-}
 
 export default function Game() {
   const navigate = useNavigate();

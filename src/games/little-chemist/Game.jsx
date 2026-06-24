@@ -4,6 +4,7 @@ import GameShell from '../../design-system/layouts/GameShell';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
+import LevelPips from '../../design-system/components/LevelPips';
 import FeedbackModal from '../../components/FeedbackModal';
 import { useToast } from '../../design-system/useToast';
 import theme from './theme';
@@ -81,10 +82,8 @@ function AtomBall({ el, size = 48 }) {
 // ── Level components array ────────────────────────────────────
 const LEVEL_COMPONENTS = [Level1, Level2, Level3, Level4, Level5, Level6];
 
-const LEVEL_DEFS = Array.from({ length: 6 }, (_, i) => ({
-  id: i + 1,
-  label: `⚗️ ${i + 1}`,
-}));
+// Sampler runs a short fixed number of levels.
+const LEVEL_COUNT = 4;
 
 // ── Game ──────────────────────────────────────────────────────
 export default function Game() {
@@ -109,7 +108,7 @@ export default function Game() {
     if (completedLevels.has(levelId)) return;
     setCompletedLevels(prev => new Set(prev).add(levelId));
     trackLevelComplete('little-chemist', levelId);
-    if (levelId === 6) {
+    if (levelId === LEVEL_COUNT) {
       trackGameComplete('little-chemist');
       setTimeout(() => setShowSuccess(true), 1500);
     } else {
@@ -137,8 +136,8 @@ export default function Game() {
   const cfg = levelConfigs[activeLevel - 1];
   const LevelComponent = LEVEL_COMPONENTS[activeLevel - 1];
 
-  // Unique elements encountered across all levels (for success screen)
-  const uniqueElements = [...new Map(levelConfigs.map(c => [c.element.symbol, c.element])).values()];
+  // Unique elements encountered across the played levels (for success screen)
+  const uniqueElements = [...new Map(levelConfigs.slice(0, LEVEL_COUNT).map(c => [c.element.symbol, c.element])).values()];
   const boughtItems    = uniqueElements.map(el => ({ node: <AtomBall el={el} />, name: el.name }));
 
   return (
@@ -159,24 +158,7 @@ export default function Game() {
         hideTabs
         onBack={() => navigate('/hub')}
         instructions="Let your little one add atoms to balance the seesaw by matching the number on the left."
-        topSlot={
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, paddingBottom: 10 }}>
-            {Array.from({ length: 6 }, (_, i) => {
-              const id = i + 1;
-              const active = id === activeLevel;
-              const done   = completedLevels.has(id);
-              return (
-                <div key={id} style={{
-                  width: active ? 22 : 10, height: 10, borderRadius: 999,
-                  background: done || active ? 'var(--game-primary)' : 'rgba(0,0,0,0.12)',
-                  opacity: done ? 0.45 : 1,
-                  transition: 'all 0.3s ease',
-                  flexShrink: 0,
-                }} />
-              );
-            })}
-          </div>
-        }
+        topSlot={<LevelPips current={activeLevel} total={LEVEL_COUNT} />}
       >
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%' }}>
           {!showSuccess && (

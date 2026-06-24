@@ -25,7 +25,7 @@ const ALL_RECIPES = [
   { name: 'Stir Fry', emoji: '🥘', steps: [{ emoji: '🥕', label: 'Veggies' }, { emoji: '🍄', label: 'Mushroom' }, { emoji: '🥄', label: 'Stir' }, { emoji: '🍝', label: 'Noodles' }] },
 ];
 
-const GAME_SIZE = 6;
+const GAME_SIZE = 4;
 
 function pickRecipes() {
   const shuffled = [...ALL_RECIPES];
@@ -55,7 +55,7 @@ function shuffle(arr) {
   return a;
 }
 
-export default function ChefBoard({ resetRef, onMilestone, onGameEnd }) {
+export default function ChefBoard({ resetRef, onMilestone, onGameEnd, onProgress }) {
   const [recipes, setRecipes] = useState(() => pickRecipes());
   const [recipeIdx, setRecipeIdx] = useState(0);
   const [completed, setCompleted] = useState([]);
@@ -75,6 +75,11 @@ export default function ChefBoard({ resetRef, onMilestone, onGameEnd }) {
       document.head.appendChild(s);
     }
   }, []);
+
+  // Report recipe progress up so the parent can render the level marker.
+  useEffect(() => {
+    if (onProgress) onProgress(recipeIdx, recipes.length);
+  }, [recipeIdx, recipes.length, onProgress]);
 
   const recipe = recipes[recipeIdx] || recipes[0];
   const nextStepIdx = completed.length;
@@ -161,16 +166,8 @@ export default function ChefBoard({ resetRef, onMilestone, onGameEnd }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: '8px 16px', width: '100%', maxWidth: 440, margin: '0 auto' }}>
 
-      {/* ── Progress Dots ── */}
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginBottom: 4 }}>
-        {recipes.map((_, i) => (
-          <div key={i} style={{
-            width: 10, height: 10, borderRadius: '50%',
-            background: i < recipeIdx ? 'var(--game-primary)' : i === recipeIdx ? 'var(--game-accent)' : 'rgba(0,0,0,0.1)',
-            transition: 'background 0.3s',
-          }} />
-        ))}
-      </div>
+      {/* Recipe progress shown by the shared LevelPips marker in GameShell's
+          topSlot (driven by onProgress) — no in-board dots needed. */}
 
       {/* ── Recipe Card ── */}
       <div style={{

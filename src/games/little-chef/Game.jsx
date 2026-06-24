@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameShell from '../../design-system/layouts/GameShell';
+import LevelPips from '../../design-system/components/LevelPips';
 import Confetti from '../../design-system/components/Confetti';
 import Toast from '../../design-system/components/Toast';
 import SuccessScreen from '../../design-system/components/SuccessScreen';
@@ -21,7 +22,12 @@ export default function Game() {
     originY: 50,
   });
   const [chefResult, setChefResult] = useState({ cooked: [], total: 0 });
+  const [progress, setProgress] = useState({ idx: 0, total: 4 });
   const chefResetRef = useRef(null);
+  // Stable + bail-out so ChefBoard's progress effect can't loop.
+  const handleProgress = useCallback((idx, total) => {
+    setProgress((prev) => (prev.idx === idx && prev.total === total ? prev : { idx, total }));
+  }, []);
   const { toast, showToast } = useToast();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
@@ -68,9 +74,11 @@ export default function Game() {
         hideTabs
         onBack={() => navigate('/hub')}
         instructions="Let your little one tap each step to crack, pour and stir through the recipe."
+        topSlot={<LevelPips current={progress.idx + 1} total={progress.total} />}
       >
         <ChefBoard
           resetRef={chefResetRef}
+          onProgress={handleProgress}
           onMilestone={(x, y) =>
             triggerMilestone(
               x,

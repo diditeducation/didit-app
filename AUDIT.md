@@ -71,8 +71,9 @@ The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and
 **Feedback modal family:** `FeedbackModal` (full vibe survey), `QuickFeedbackModal` (bug report) and `WishModal` (game request) are three distinct surfaces that all share `FeedbackModalBase` for their shell/animation/submit and all `addDoc` into the **same Firestore `feedback` collection**, tagged by `kind` (`fix-request` / `wish`) + `source` so `/admin/feedback` can tell them apart. Edit shell/animation/submit once in `FeedbackModalBase`; edit each modal's own header/fields/copy in its file.
 
 ### src/design-system/components/
-Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPill, SiteFooter.
+Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPill, SiteFooter, LevelPips.
 - **SiteFooter** — shared site footer (logo + tagline + copyright). Used by ConversionLanding (`/`), HubStoryFooter (hub, below its share CTA), and AboutPage (`/about`). `hideBeta` prop follows the per-surface beta convention.
+- **LevelPips** — shared level-progress marker (pip row, theme-coloured via `--game-primary`/`--game-accent`) in `GameShell`'s `topSlot`. Unifies the markers across the multi-level sampler games (Little Coder, Chemist, Chef), each capped at **4 levels** for the trial. Chef lifts recipe progress out of `ChefBoard` via an `onProgress` callback. (Single-level demos — Shopper, Engineer, DJ — have no level marker.)
 
 ## 4. Games
 - 12 games in `games.js`, routed in App.jsx, each `games/<name>/{HomePage,Game,theme,audio}.jsx`. Lazy-loaded.
