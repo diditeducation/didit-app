@@ -10,7 +10,7 @@ import DiditLogo from '../components/DiditLogo'
 // `caption` is the brand fallback line when there's no person to attribute.
 const SIGNIN_QUOTES = [
   {
-    text: "Ages 2 to 5 is when a child's brain develops fastest. Play is how they make sense of the world — every game turns simple curiosity into real understanding.",
+    text: 'Between ages 2 and 5, play is how the brain learns fastest.',
     caption: 'The science of play',
   },
   {
