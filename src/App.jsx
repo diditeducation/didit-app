@@ -6,6 +6,7 @@ import AboutPage from './pages/AboutPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
 import GameScreen from './pages/GameScreen';
 import BetaBanner from './components/BetaBanner';
+import RouteMeta from './components/RouteMeta';
 import ProtectedRoute from './components/ProtectedRoute';
 import DevSubscriptionToggle from './components/DevSubscriptionToggle';
 import Checkout from './pages/Checkout';
@@ -65,6 +66,7 @@ function BetaBannerConditional() {
 export default function App() {
   return (
     <BrowserRouter>
+      <RouteMeta />
       <BetaBannerConditional />
       <DevSubscriptionToggle />
       <Suspense fallback={null}>

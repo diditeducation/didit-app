@@ -41,6 +41,8 @@ One palette, one source: **`design-system/tokens.js`** drives colours everywhere
 
 `components/GameIllustrations.jsx` = shared SVG illustration library (not a page). Moved out of `pages/` 2026-06-21.
 
+**SEO / social-share metadata (added 2026-06-24):** `index.html` carries default title + description + Open Graph + Twitter tags **served before JS** — this is what fixes the homepage's social share previews for non-JS bots (WhatsApp/iMessage/Facebook/Google). Per-route tags live in `src/seo.js` (`ROUTE_META` + dynamic game/demo handling) and are applied client-side by `components/RouteMeta.jsx` on each navigation — this updates browser-tab titles and helps JS-running crawlers (Google), and marks private surfaces (`/hub`, `/check-email`, `/auth/callback`, `/checkout`-adjacent, `/admin`) `noindex`. ⚠️ **Known limitation:** non-JS social scrapers only see the static `index.html` tags, so per-route previews for `/about`, `/games/*` etc. are NOT yet correct for those bots — that needs build-time pre-rendering (deferred). ⚠️ **og:image is a stopgap** pointing at `/logo.png` (6 MB, not 1200×630) — replace with a real `/og-image.png` and update `SITE.image` in `src/seo.js` + the 4 `*:image` tags in `index.html`.
+
 The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and `Hub` (`/hub`) are the only landing/hub. No `*` catch-all route exists, so unknown URLs render blank (consider adding a redirect to `/` if that ever matters).
 
 ### Lost paths / dead ends
@@ -59,6 +61,7 @@ The legacy marketing/hub flow is fully retired — `ConversionLanding` (`/`) and
 | FeedbackModal | In-game feedback prompt (vibe + likes + wish); thin wrapper over FeedbackModalBase | every game ⭐ |
 | ProtectedRoute | Auth gate | App.jsx |
 | BetaBanner | "test mode" bar | App.jsx |
+| RouteMeta | Syncs `<head>` (title/description/canonical/OG/Twitter) to the current route on navigation; renders nothing. Reads `src/seo.js` | App.jsx (inside `<BrowserRouter>`) |
 | DevSubscriptionToggle | Dev-only sub toggle | App.jsx |
 | AboutContent | About hero/story/philosophy layout (text from `data/aboutCopy.js`) | AboutPage + ConversionLanding |
 | GameGrid / TodayCard / SurpriseSheet / ParentGuide / WelcomeModal / AboutModal / HubStoryFooter | Hub building blocks | Hub |
@@ -87,6 +90,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 | Illustration **map** (illustrationKey → component) | `components/GameIllustrations.jsx` → `export const GAME_ILLUSTRATIONS` | clean ✅ — imported by GameGrid (hub), ConversionLanding (landing), TodayCard, SuccessScreen. Adding a new game's icon = one edit. |
 | Brand colors | `design-system/tokens.js` (games, hub, AND marketing) | clean ✅ — ConversionLanding & AboutContent derive their `--*` / `--didit-*` CSS vars from tokens.js (interpolated into the `<style>` block); the lime CTA is `colors.lime` everywhere (SignIn, Checkout, WelcomeModal, SuccessScreen, landing). Remaining hardcoded hex = one-off pastel tints (AboutModal) + rgba shadows, not core palette hues. |
 | Logo | `components/DiditLogo.jsx` | clean ✅ |
+| Per-route SEO / OG meta | `src/seo.js` (`SITE` + `ROUTE_META`); applied by `components/RouteMeta.jsx` | ⚠️ the **homepage defaults are duplicated in `index.html`** (must be static for non-JS bots) — if you change the site title/description/og:image, update BOTH `index.html` and `SITE`/`ROUTE_META['/']` in `src/seo.js`. |
 | Feedback modal shell / animation / submit | `components/FeedbackModalBase.jsx` | clean ✅ — shared by FeedbackModal, QuickFeedbackModal, WishModal (all write to the `feedback` collection). Edit the shell here once; only headers/fields/copy live in each modal. |
 | Site footer (logo + tagline + copyright) | `design-system/components/SiteFooter.jsx` | clean ✅ — used by ConversionLanding, HubStoryFooter, AboutPage. Beta pill per-surface via `hideBeta`. |
 | Beta on/off (logo "BETA" pill **+** the "test mode" top banner) | master switch `SHOW_BETA` in `src/config.js` — flip to false to remove both everywhere | **Per-surface convention (both pill + banner follow it): hidden on public/marketing/sign-up funnel — `/`, `/demo`, `/signin`, `/check-email`, `/auth/callback`, `/checkout`, `/about`; shown inside the product — hub, games, admin.** Pill via `<DiditLogo hideBeta>` per page; banner via the route list in `App.jsx` → `BetaBannerConditional`. Keep the two lists in agreement. |
