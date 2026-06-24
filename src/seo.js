@@ -19,8 +19,8 @@ import { GAMES } from './data/games';
 export const SITE = {
   name: 'Did·It',
   url: 'https://didit.games',
-  // Stopgap share image — replace with a real 1200×630 /og-image.png later.
-  image: 'https://didit.games/logo.png',
+  // 1200×630 social share image (public/og-image.jpg).
+  image: 'https://didit.games/og-image.jpg',
   defaultTitle: 'Did·It — Real-world learning games for curious kids aged 2–5',
   defaultDescription:
     'Real-world learning games for curious kids aged 2–5 — finance, engineering, music and more, explored through play. No ads, ever. Made by two parents.',
