@@ -360,11 +360,16 @@ export default function ConversionLanding() {
 /* Tablet mockup */
 .lp-tablet{position:relative;width:min(580px,95vw);aspect-ratio:3/4;overflow:hidden;background:#15110D;border-radius:42px;padding:30px;box-shadow:0 30px 70px rgba(0,0,0,0.32),inset 0 0 0 2px rgba(255,255,255,0.06)}
 .lp-tablet::before{content:'';position:absolute;left:50%;top:9px;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.22)}
-.lp-tablet-screen{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
-.lp-tablet-screen>*{flex:1;min-height:0;height:100%!important}
+.lp-tablet-screen{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;container-type:size}
+.lp-tablet-screen>*:not(.lp-game-fit){flex:1;min-height:0;height:100%!important}
 /* Free games render GameShell, hard-coded to 100dvh — force it to fill the
    fixed-height screen instead of stretching the tablet past its 4/3 ratio. */
 .lp-tablet-screen div[style*="100dvh"]{height:100%!important;max-height:100%!important}
+/* Scale-to-fit: render the game at a fixed reference size (tall enough that
+   no game's content overflows) and uniformly scale it down to fit the frame —
+   so the whole game always fits with no cut-off and no scroll, at any width. */
+.lp-game-fit{position:absolute;top:50%;left:50%;width:520px;height:780px;transform-origin:center center;transform:translate(-50%,-50%) scale(min(100cqw / 520px, 100cqh / 780px))}
+.lp-game-fit>*{width:100%!important;height:100%!important}
 /* Locked-game card inside the tablet — game-coloured panel, flip-card-back style.
    Centred stack: illustration, title, main skill, instructions, description, and a
    small floating "Unlock to play" button right below. */
@@ -624,7 +629,7 @@ export default function ConversionLanding() {
                 {PhoneGame ? (
                   <Suspense fallback={<div className="lp-inline-load">Loading…</div>}>
                     <DemoContext.Provider value={{ isDemo: true, onAdvance: advanceToRandomTrial }}>
-                      <PhoneGame key={selectedId} />
+                      <div className="lp-game-fit"><PhoneGame key={selectedId} /></div>
                     </DemoContext.Provider>
                   </Suspense>
                 ) : (
