@@ -117,6 +117,7 @@ export default function Game() {
         title="Little Coder"
         hideTabs
         onBack={() => navigate('/hub')}
+        instructions="Let your little one tap the arrows to steer the rat all the way to the cheese."
         topSlot={
           <LevelPips current={activeLevel} total={LEVELS.length} />
         }

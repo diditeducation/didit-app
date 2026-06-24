@@ -67,6 +67,7 @@ export default function Game() {
         title="Little Chef"
         hideTabs
         onBack={() => navigate('/hub')}
+        instructions="Let your little one tap each step to crack, pour and stir through the recipe."
       >
         <ChefBoard
           resetRef={chefResetRef}
