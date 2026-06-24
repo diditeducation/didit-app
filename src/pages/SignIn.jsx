@@ -22,6 +22,10 @@ const SIGNIN_QUOTES = [
     author: 'Abraham Maslow',
     role: 'American psychologist',
   },
+  {
+    text: "We can't teach kids the jobs of year 2045, but we can teach them to stay curious.",
+    caption: "Built for what's next",
+  },
 ]
 
 const getActionCodeSettings = (email) => ({
