@@ -1,0 +1,12 @@
+# didit.games — crawler policy
+User-agent: *
+Allow: /
+
+# Keep private / transactional surfaces out of search
+Disallow: /hub
+Disallow: /checkout
+Disallow: /check-email
+Disallow: /auth/
+Disallow: /admin/
+
+Sitemap: https://didit.games/sitemap.xml
