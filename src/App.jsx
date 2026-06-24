@@ -75,10 +75,13 @@ export default function App() {
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/hub" element={<ProtectedRoute><Hub /></ProtectedRoute>} />
           <Route path="/checkout" element={<Checkout />} />
-          {/* Demo routes — public, no auth required */}
+          {/* Demo routes — public, no auth required (mirror TRIAL_GAME_IDS) */}
           <Route path="/demo/little-shopper"  element={<DemoGamePage><ShopperGame /></DemoGamePage>} />
           <Route path="/demo/little-engineer" element={<DemoGamePage><EngineerGame /></DemoGamePage>} />
           <Route path="/demo/little-dj"       element={<DemoGamePage><DJGame /></DemoGamePage>} />
+          <Route path="/demo/little-coder"    element={<DemoGamePage><CoderGame /></DemoGamePage>} />
+          <Route path="/demo/little-chemist"  element={<DemoGamePage><ChemistGame /></DemoGamePage>} />
+          <Route path="/demo/little-chef"     element={<DemoGamePage><ChefGame /></DemoGamePage>} />
 
           <Route path="/about" element={<AboutPage />} />
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />

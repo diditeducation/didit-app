@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GAMES } from '../data/games';
 import { TRIAL_GAME_IDS } from '../data/trialGames';
@@ -10,12 +10,16 @@ import { SiteFooter } from '../design-system';
 import { colors } from '../design-system/tokens';
 import { ABOUT_HERO } from '../data/aboutCopy';
 
-// The 3 free games, lazy-loaded so they only download when actually played
-// inline. Rendered in an overlay over the landing — no route change.
+// The free trial games, lazy-loaded so they only download when actually
+// played inline. Rendered in the tablet on the landing — no route change.
+// Keep these keys in sync with TRIAL_GAME_IDS.
 const DEMO_GAMES = {
   'little-shopper': lazy(() => import('../games/little-shopper/Game')),
   'little-engineer': lazy(() => import('../games/little-engineer/Game')),
   'little-dj': lazy(() => import('../games/little-dj/Game')),
+  'little-coder': lazy(() => import('../games/little-coder/Game')),
+  'little-chemist': lazy(() => import('../games/little-chemist/Game')),
+  'little-chef': lazy(() => import('../games/little-chef/Game')),
 };
 import { GAME_ILLUSTRATIONS } from '../components/GameIllustrations';
 import Price from '../components/Price';
@@ -256,9 +260,10 @@ export default function ConversionLanding() {
   const navigate = useNavigate();
   // Carousel order: free games first, arranged so Little Engineer is featured
   // (centre) with Little Shopper to its left and Little DJ to its right.
-  const FEATURED_ORDER = ['little-shopper', 'little-engineer', 'little-dj'];
-  // Paid games: surface Little Chemist and Little Analyst near the front.
-  const PAID_PRIORITY = ['little-chemist', 'little-analyst'];
+  // Free trial games lead the carousel (upfront, playable inline).
+  const FEATURED_ORDER = TRIAL_GAME_IDS;
+  // Paid games: surface Little Analyst near the front.
+  const PAID_PRIORITY = ['little-analyst'];
   const paidGames = GAMES.filter((g) => !TRIAL_GAME_IDS.includes(g.id));
   const orderedPaidGames = [
     ...PAID_PRIORITY.map((id) => paidGames.find((g) => g.id === id)).filter(Boolean),
@@ -282,6 +287,18 @@ export default function ConversionLanding() {
       trackLandingClick(`grid_${game.id}`);
     }
   };
+
+  // When a trial game is completed inline, auto-advance to another random
+  // trial game so the visitor keeps sampling without any action. Stable
+  // identity (reads current id via the setState updater) so the timer in
+  // SuccessScreen isn't reset on every parent re-render.
+  const advanceToRandomTrial = useCallback(() => {
+    trackLandingClick('demo_autoadvance');
+    setSelectedId((curr) => {
+      const others = TRIAL_GAME_IDS.filter((id) => id !== curr && DEMO_GAMES[id]);
+      return others.length ? others[Math.floor(Math.random() * others.length)] : curr;
+    });
+  }, []);
 
   const selectedGame = GAMES.find((g) => g.id === selectedId);
   const selectedFree = TRIAL_GAME_IDS.includes(selectedId);
@@ -606,7 +623,7 @@ export default function ConversionLanding() {
               <div className="lp-tablet-screen">
                 {PhoneGame ? (
                   <Suspense fallback={<div className="lp-inline-load">Loading…</div>}>
-                    <DemoContext.Provider value={{ isDemo: true }}>
+                    <DemoContext.Provider value={{ isDemo: true, onAdvance: advanceToRandomTrial }}>
                       <PhoneGame key={selectedId} />
                     </DemoContext.Provider>
                   </Suspense>

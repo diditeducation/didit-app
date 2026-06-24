@@ -100,7 +100,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
   const [savingsConfetti, setSavingsConfetti] = useState(false);
   const nav = useNavigate();
   const { muted, toggleMute } = useSoundManager();
-  const { isDemo } = useDemo();
+  const { isDemo, onAdvance } = useDemo();
 
   useEffect(() => {
     injectKeyframes();
@@ -116,6 +116,15 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
       setSavingsConfetti(false);
     }
   }, [visible, savedCoins]);
+
+  // Demo sampler: after a brief celebration, auto-advance to the next trial
+  // game (no action needed). Only when an onAdvance is provided (landing
+  // tablet + /demo/* routes); the normal full-game flow never auto-advances.
+  useEffect(() => {
+    if (!visible || !isDemo || !onAdvance) return;
+    const t = setTimeout(() => onAdvance(), 2800);
+    return () => clearTimeout(t);
+  }, [visible, isDemo, onAdvance]);
 
   if (!visible) return null;
 
@@ -231,7 +240,9 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
             <span style={{ color: 'var(--game-primary)' }}>did it!</span>
           </div>
           <p style={{ ...subheadingStyle, maxWidth: 340, fontWeight: 700 }}>
-            That&apos;s just a taste. Unlock every game and keep the real-world adventures going.
+            {onAdvance
+              ? 'Nice work! Loading another free game to try…'
+              : "That's just a taste. Unlock every game and keep the real-world adventures going."}
           </p>
           <button
             style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: colors.lime, color: '#1A1A1A', gap: 8 }}
@@ -241,9 +252,14 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
           </button>
           <button
             style={{ ...btnBase, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '14px 0', fontSize: '0.95rem', background: 'color-mix(in srgb, var(--game-primary) 12%, transparent)', color: 'var(--game-primary)' }}
-            onClick={() => { trackSuccessClick('play_again', gameId); onPlayAgain(); }}
+            onClick={() => {
+              if (onAdvance) { trackSuccessClick('demo_next', gameId); onAdvance(); }
+              else { trackSuccessClick('play_again', gameId); onPlayAgain(); }
+            }}
           >
-            <span>🔄</span><span>Play again</span>
+            {onAdvance
+              ? <><span>▶</span><span>Try another now</span></>
+              : <><span>🔄</span><span>Play again</span></>}
           </button>
         </div>
       </div>

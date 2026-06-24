@@ -34,7 +34,7 @@ One palette, one source: **`design-system/tokens.js`** drives colours everywhere
 | CheckEmail | `/check-email` | ✅ Live (magic link) |
 | AuthCallback | `/auth/callback` | ✅ Live |
 | Checkout | `/checkout` | ✅ Live |
-| DemoGamePage | `/demo/*` | ✅ Live (trial wrapper) |
+| DemoGamePage | `/demo/*` (6 trial games) | ✅ Live (trial wrapper). Provides `DemoContext` with `onAdvance` → on completing a trial game, auto-jumps to a random other trial game. Same auto-advance powers the landing tablet sampler. |
 | GameScreen | `/games/:id` | ✅ Live (generic) |
 | AboutPage | `/about` | ✅ Live (linked from game pages + hub) |
 | FeedbackAdminPage | `/admin/feedback` | 🔧 Internal (no public link) |
@@ -82,7 +82,7 @@ Live: SuccessScreen, Confetti, Toast, Button, ShareButton, ParentStrip, SkillPil
 |---|---|---|
 | About / Our Story / Design Philosophy copy | `data/aboutCopy.js` (`ABOUT_HERO`, `ABOUT_STORY`, `ABOUT_PRINCIPLES`) | clean ✅ — imported by AboutContent (/about + landing), AboutModal (hub sheet), and the ConversionLanding "About us" intro. Edit copy in one place. (AboutModal keeps its OWN subjects-list hero inline, by design.) |
 | Game title / color / icon / tagline | `data/games.js` | clean ✅ |
-| What's free (trial set) | `data/trialGames.js` | clean ✅ |
+| What's free (trial set) | `data/trialGames.js` → `TRIAL_GAME_IDS` (6 games: shopper, engineer, dj, coder, chemist, chef) | ⚠️ 3-way mirror — adding/removing a trial game means updating ALL: (1) `TRIAL_GAME_IDS`, (2) `DEMO_GAMES` lazy-import map in `pages/ConversionLanding.jsx`, (3) the `/demo/<id>` routes in `App.jsx`. The carousel's free/locked badge derives from `TRIAL_GAME_IDS` automatically. |
 | Game illustration SVGs | `components/GameIllustrations.jsx` | clean ✅ (one definition) |
 | Illustration **map** (illustrationKey → component) | `components/GameIllustrations.jsx` → `export const GAME_ILLUSTRATIONS` | clean ✅ — imported by GameGrid (hub), ConversionLanding (landing), TodayCard, SuccessScreen. Adding a new game's icon = one edit. |
 | Brand colors | `design-system/tokens.js` (games, hub, AND marketing) | clean ✅ — ConversionLanding & AboutContent derive their `--*` / `--didit-*` CSS vars from tokens.js (interpolated into the `<style>` block); the lime CTA is `colors.lime` everywhere (SignIn, Checkout, WelcomeModal, SuccessScreen, landing). Remaining hardcoded hex = one-off pastel tints (AboutModal) + rgba shadows, not core palette hues. |
