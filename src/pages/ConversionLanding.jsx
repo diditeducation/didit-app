@@ -315,8 +315,8 @@ export default function ConversionLanding() {
 }
 .lp{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 .lp-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px 28px;background:rgba(255,251,245,0.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,0.04)}
-.lp-login{position:absolute;right:28px;top:50%;transform:translateY(-50%);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--text);cursor:pointer;background:#fff;border:1px solid var(--border);border-radius:9999px;padding:8px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.05);transition:background .15s ease,border-color .15s ease}
-.lp-login:hover{background:#FBF6EE;border-color:#DFD4C2}
+.lp-login{position:absolute;right:28px;top:50%;transform:translateY(-50%);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer;background:var(--blue);border:none;border-radius:9999px;padding:8px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.08);transition:filter .15s ease}
+.lp-login:hover{filter:brightness(1.08)}
 
 /* Hero — headline with floating dots + a wider, smaller subhead */
 .lp-hero{position:relative;text-align:center;padding:56px 24px 8px;max-width:880px;margin:0 auto}
