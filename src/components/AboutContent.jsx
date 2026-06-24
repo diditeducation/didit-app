@@ -68,7 +68,9 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 .ap-hero{position:relative;overflow:hidden;padding:72px 40px 64px;background:var(--didit-bg);text-align:center}
 .ap-hero-inner{max-width:840px;margin:0 auto;position:relative;z-index:2}
 .ap-eyebrow{display:inline-block;font-size:13px;font-weight:900;letter-spacing:0.14em;text-transform:uppercase;color:var(--didit-coral-mid);background:#FFFFFF;border:2px solid var(--didit-border);padding:7px 16px;border-radius:9999px;margin-bottom:22px}
-.ap-hero h1{font-family:'Nunito',sans-serif;font-weight:600;font-size:17.5px;line-height:1.62;letter-spacing:0;color:var(--didit-text);max-width:620px;margin:0 auto 20px}
+.ap-hero-copy{max-width:620px;margin:0 auto 20px}
+.ap-hero-copy p{font-family:'Nunito',sans-serif;font-weight:600;font-size:17.5px;line-height:1.62;letter-spacing:0;color:var(--didit-text);margin:0 0 14px}
+.ap-hero-copy p:last-child{margin-bottom:0}
 .ap-hero-sub{font-size:clamp(16px,2vw,19px);line-height:1.55;color:var(--didit-muted);max-width:560px;margin:0 auto 8px;font-weight:600}
 
 /* Floating decorative element images */
@@ -103,7 +105,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
 /* ── Embedded (inside the landing accordion): force single column, trim padding ── */
 .ap-content--embedded .ap-hero{padding:48px 24px 40px}
-.ap-content--embedded .ap-hero h1{font-size:clamp(11px,2.6vw,13px)}
+.ap-content--embedded .ap-hero-copy p{font-size:clamp(11px,2.6vw,13px)}
 .ap-content--embedded .mp-how{padding:56px 24px 60px}
 .ap-content--embedded .mp-how h2{font-size:clamp(22px,5vw,32px);margin-bottom:44px}
 .ap-content--embedded .ap-h2{font-size:clamp(22px,5vw,32px)}
@@ -153,7 +155,7 @@ export default function AboutContent({ embedded = false, showHero = true }) {
 
           <div className="ap-hero-inner">
             <span className="ap-eyebrow">About Did·It</span>
-            <h1>{ABOUT_HERO}</h1>
+            <div className="ap-hero-copy">{ABOUT_HERO.map((p, i) => <p key={i}>{p}</p>)}</div>
           </div>
         </section>
         )}

@@ -522,6 +522,8 @@ export default function ConversionLanding() {
 .lp-about-intro{max-width:720px;margin:0 auto;padding:8px 24px 0;text-align:center}
 .lp-about-pill{display:inline-block;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--coral);background:#fff;border:2px solid var(--border);padding:7px 16px;border-radius:9999px;margin-bottom:18px}
 .lp-about-head{font-family:'Nunito',sans-serif;font-weight:600;font-size:17.5px;line-height:1.62;letter-spacing:0;color:var(--text);margin:0 auto;max-width:600px}
+.lp-about-head p{margin:0 0 14px}
+.lp-about-head p:last-child{margin-bottom:0}
 .lp-about-squig{position:relative;display:inline-block;white-space:nowrap;color:var(--blue)}
 
 .lp-accordion{max-width:720px;margin:0 auto;padding:8px 24px 24px}
@@ -729,7 +731,7 @@ export default function ConversionLanding() {
         {/* About us — intro header, then the expandable with the full story */}
         <div className="lp-about-intro">
           <span className="lp-about-pill">About us</span>
-          <h2 className="lp-about-head">{ABOUT_HERO}</h2>
+          <div className="lp-about-head">{ABOUT_HERO.map((p, i) => <p key={i}>{p}</p>)}</div>
         </div>
         <div className="lp-accordion">
           <details

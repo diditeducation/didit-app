@@ -11,9 +11,13 @@
  * (AboutModal's subjects-list hero is intentionally modal-only and stays inline.)
  */
 
-// Mission statement. Hero on /about + the landing "About us" intro paragraph.
-export const ABOUT_HERO =
-  "We're Nigel and Danne, parents from Sydney, Australia. We believe the world our kids are growing into will keep changing, so we don't want to stop at the basics. We want to open them up to more ideas. We believe their attention isn't for sale, so no ads, ever. And that the best learning happens side by side — not by simply handing them the screen.";
+// Mission statement. Hero on /about + the landing "About us" intro.
+// An array of paragraphs — each consumer renders one <p> per item.
+export const ABOUT_HERO = [
+  "We're Nigel and Danne, parents to a toddler in Sydney. 👋 Like a lot of parents, we find ourselves wondering: what will the world look like when our kid grows up?",
+  "We don't have the answer. But we do believe a few things. That the world will keep changing in ways we can't predict. That curiosity and problem-solving matter more than any single skill. And that the best learning happens side by side — not by handing them a screen and walking away.",
+  "Did·It is what we built for those in-between moments. Simple, open-ended games that spark a question, a conversation, or just a bit of wonder — with you right there beside them.",
+];
 
 // "Our Story" / "How it started".
 export const ABOUT_STORY = {
