@@ -158,7 +158,7 @@ export default function Game() {
         title="Little Chemist"
         hideTabs
         onBack={() => navigate('/hub')}
-        instructions="Let your little one add atoms to balance the seesaw and meet each new element."
+        instructions="Let your little one add atoms to balance the seesaw by matching the number on the left."
         topSlot={
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, paddingBottom: 10 }}>
             {Array.from({ length: 6 }, (_, i) => {
