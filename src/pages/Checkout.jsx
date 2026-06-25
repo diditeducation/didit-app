@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -7,7 +7,8 @@ import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
 import DiditLogo from '../components/DiditLogo';
 import Price from '../components/Price';
-import { BILLING_PERIOD } from '../config';
+import { BILLING_PERIOD, STRIPE_ENABLED } from '../config';
+import { startSubscriptionCheckout } from '../stripe';
 import { GAMES } from '../data/games';
 
 // Embedded one-page checkout (branded). The card fields below are a visual
@@ -23,6 +24,12 @@ export default function Checkout() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [notice, setNotice] = useState('');
+  const [busy, setBusy] = useState(false);
+  const cancelRef = useRef(null);
+  const timerRef = useRef(null);
+
+  // Clean up any in-flight checkout listener / timeout on unmount.
+  useEffect(() => () => { cancelRef.current?.(); clearTimeout(timerRef.current); }, []);
 
   const fromGame = from ? GAMES.find((g) => g.id === from) : null;
   // A "real" signed-in user (not the anonymous/undetermined states) skips the
@@ -30,6 +37,31 @@ export default function Checkout() {
   const signedIn = !!user && !user.isAnonymous;
 
   const activate = () => {
+    if (busy) return;
+    // Real Stripe (firestore-stripe-payments extension) once a price is configured.
+    if (STRIPE_ENABLED) {
+      if (!signedIn) {
+        setNotice('Please sign in above first, then continue to secure checkout.');
+        return;
+      }
+      setNotice('');
+      setBusy(true);
+      cancelRef.current = startSubscriptionCheckout(user.uid, {
+        onError: (err) => {
+          clearTimeout(timerRef.current);
+          setBusy(false);
+          setNotice(err?.message || 'Could not start checkout. Please try again.');
+        },
+      });
+      // Safety net if the extension never answers (e.g. not installed yet).
+      timerRef.current = setTimeout(() => {
+        cancelRef.current?.();
+        setBusy(false);
+        setNotice('Checkout is taking longer than expected. Please try again.');
+      }, 15000);
+      return;
+    }
+    // Fallbacks until Stripe is switched on: dev simulate, else "coming soon".
     if (devEnabled) {
       setDevMember(true);
       navigate('/hub');
@@ -72,6 +104,7 @@ export default function Checkout() {
 
       <button
         onClick={activate}
+        disabled={busy}
         style={{
           width: '100%',
           marginTop: 18,
@@ -83,10 +116,11 @@ export default function Checkout() {
           background: colors.lime,
           border: 'none',
           borderRadius: radii.pill,
-          cursor: 'pointer',
+          cursor: busy ? 'wait' : 'pointer',
+          opacity: busy ? 0.7 : 1,
         }}
       >
-        Start playing · <Price period />
+        {busy ? 'Redirecting to secure checkout…' : <>Start playing · <Price period /></>}
       </button>
 
       {notice && (

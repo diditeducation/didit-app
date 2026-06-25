@@ -11,3 +11,15 @@ export const SHOW_BETA = true;
 // component (src/components/Price.jsx) rather than hardcoding "$15" anywhere.
 export const PRICE = '$15';
 export const BILLING_PERIOD = 'month';
+
+// ── Stripe checkout ────────────────────────────────────────────────────────
+// The Stripe Price ID for the subscription (e.g. "price_1AbC..."). Set it in
+// Vercel as VITE_STRIPE_PRICE_ID once the firestore-stripe-payments Firebase
+// extension is installed and the product/price exist in Stripe.
+//
+// While this is empty, STRIPE_ENABLED is false and Checkout falls back to the
+// dev "simulate payment" path (localhost) or a "coming soon" notice — so the
+// real flow stays inert until you flip it on by setting the env var. No code
+// change needed to go live.
+export const STRIPE_PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID || '';
+export const STRIPE_ENABLED = !!STRIPE_PRICE_ID;
