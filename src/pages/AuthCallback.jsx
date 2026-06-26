@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo } from 'firebase/auth'
-import { trackSignInSuccess } from '../analytics'
+import { trackSignInSuccess, recordSignIn } from '../analytics'
 
 export default function AuthCallback() {
   const navigate = useNavigate()
@@ -21,6 +21,7 @@ export default function AuthCallback() {
       signInWithEmailLink(auth, email, window.location.href)
         .then((result) => {
           trackSignInSuccess('email', getAdditionalUserInfo(result)?.isNewUser)
+          recordSignIn('email')
           localStorage.removeItem('didit_email')
           navigate('/hub')
         })

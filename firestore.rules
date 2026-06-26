@@ -36,6 +36,18 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // ── User profiles (users/{uid}): lifecycle history per account ──
+    // A signed-in user may create/update ONLY their own profile doc (analytics:
+    // createdAt, convertedAt, source). Admins read all for the dashboard. NOT a
+    // security boundary — payment truth lives in customers/{uid}/payments
+    // (Admin-SDK written); these fields are the client's own view and could be
+    // self-reported, so treat them as analytics, not entitlement.
+    match /users/{uid} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow create, update: if request.auth != null && request.auth.uid == uid;
+      allow delete: if isAdmin();
+    }
+
     // ── Stripe (firestore-stripe-payments extension) ──
     // A signed-in user can read ONLY their own customer record + subscriptions
     // /payments, and create their own checkout sessions. The extension itself

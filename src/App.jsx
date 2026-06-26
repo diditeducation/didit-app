@@ -4,6 +4,8 @@ import ConversionLanding from './pages/ConversionLanding';
 import Hub from './pages/Hub';
 import AboutPage from './pages/AboutPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
+import AnalyticsAdminPage from './pages/AnalyticsAdminPage';
+import MarketingLanding from './pages/MarketingLanding';
 import GameScreen from './pages/GameScreen';
 import BetaBanner from './components/BetaBanner';
 import RouteMeta from './components/RouteMeta';
@@ -57,7 +59,7 @@ function BetaBannerConditional() {
   // sign-up funnel surfaces, show inside the product (hub, games, admin).
   const hidden =
     pathname === '/' ||
-    ['/demo', '/signin', '/check-email', '/auth/callback', '/checkout', '/about'].some(
+    ['/demo', '/go', '/signin', '/check-email', '/auth/callback', '/checkout', '/about'].some(
       (p) => pathname.startsWith(p)
     );
   if (hidden) return null;
@@ -87,7 +89,10 @@ export default function App() {
           <Route path="/demo/little-chef"     element={<DemoGamePage><ChefGame /></DemoGamePage>} />
 
           <Route path="/about" element={<AboutPage />} />
+          {/* Marketing-source landing — identical to `/` but tags the source */}
+          <Route path="/go/:source" element={<MarketingLanding />} />
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
+          <Route path="/admin/analytics" element={<AnalyticsAdminPage />} />
 
           {/* Little Engineer ✓ name matches folder */}
           <Route path="/games/little-engineer"      element={<GameRoute><EngineerHome /></GameRoute>} />

@@ -8,7 +8,7 @@
 //                          //   to the same person after they sign in
 //     src,                 // first-touch source (utm_source / referrer / 'direct')
 //     env, date, timestamp }
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db, auth } from './firebase';
 
 function getUser() {
@@ -59,6 +59,20 @@ function getFirstTouchSource() {
   } catch {
     return 'direct';
   }
+}
+
+// Marketing-source landing routes (/go/:source, e.g. /go/instagram). Records
+// the campaign source as the first-touch `src` so identical landing pages on
+// different links are attributable. First touch wins (same as utm/referrer) —
+// a returning visitor keeps their original source. Call during RENDER of the
+// marketing route so it lands before the landing's page_view fires.
+export function captureMarketingSource(source) {
+  if (!source) return;
+  try {
+    if (localStorage.getItem('didit:src') === null) {
+      localStorage.setItem('didit:src', String(source).slice(0, 40));
+    }
+  } catch { /* storage blocked */ }
 }
 
 function today() {
@@ -219,4 +233,48 @@ export function trackCheckoutStart(via) {
  */
 export function trackPurchase() {
   return write({ event: 'purchase_success', via: getCheckoutVia() });
+}
+
+// ── User profile database (users/{uid}) ────────────────────────────────────
+// A per-account history doc, separate from the flat event log: one row per
+// signed-in user with when they first appeared (became a free account) and
+// when/whether they converted to paying. Lets you query "who are my users and
+// where are they in the lifecycle" without scanning every event.
+//   { uid, email, displayName, anonId, firstTouchSrc,
+//     createdAt,        // first time we wrote the profile ≈ became a free user
+//     lastSeenAt,       // refreshed on every upsert
+//     lastSignInMethod, // 'google' | 'email'
+//     convertedAt, paidVia, paid }   // set once payment is confirmed
+
+/** Create/refresh the signed-in user's profile doc. `extra` is merged in. */
+export function upsertUserProfile(extra = {}) {
+  const user = auth.currentUser;
+  if (!user) return Promise.resolve();
+  const ref = doc(db, 'users', user.uid);
+  const data = {
+    uid: user.uid,
+    email: user.email ?? null,
+    displayName: user.displayName ?? null,
+    anonId: getAnonId(),
+    firstTouchSrc: getFirstTouchSource(),
+    lastSeenAt: serverTimestamp(),
+    ...extra,
+  };
+  // Stamp createdAt only on the first write per browser, so merges don't keep
+  // resetting "when they first appeared".
+  try {
+    const k = `didit:profile-created:${user.uid}`;
+    if (!localStorage.getItem(k)) { data.createdAt = serverTimestamp(); localStorage.setItem(k, '1'); }
+  } catch { /* storage blocked — createdAt simply omitted */ }
+  return setDoc(ref, data, { merge: true }).catch(() => {});
+}
+
+/** Record sign-in on the profile (method: 'google' | 'email'). */
+export function recordSignIn(method) {
+  return upsertUserProfile({ lastSignInMethod: method });
+}
+
+/** Mark the account as converted to paying, with the checkout placement. */
+export function markConverted() {
+  return upsertUserProfile({ convertedAt: serverTimestamp(), paidVia: getCheckoutVia(), paid: true });
 }

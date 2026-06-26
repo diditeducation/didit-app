@@ -4,7 +4,7 @@ import { auth, googleProvider } from '../firebase'
 import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail, getAdditionalUserInfo } from 'firebase/auth'
 import { colors, fonts, radii } from '../design-system/tokens'
 import DiditLogo from '../components/DiditLogo'
-import { trackSignInView, trackSignInMethod, trackMagicLinkSent, trackSignInSuccess } from '../analytics'
+import { trackSignInView, trackSignInMethod, trackMagicLinkSent, trackSignInSuccess, recordSignIn } from '../analytics'
 
 // Pool of left-panel quotes — one is picked at random each visit. All are
 // about early childhood, play, and learning. `author`/`role` are optional;
@@ -54,6 +54,7 @@ export default function SignIn() {
       .then(result => {
         if (result?.user) {
           trackSignInSuccess('google', getAdditionalUserInfo(result)?.isNewUser)
+          recordSignIn('google')
           navigate('/hub')
         } else setLoading(false)
       })
@@ -70,6 +71,7 @@ export default function SignIn() {
     try {
       const result = await signInWithPopup(auth, googleProvider)
       trackSignInSuccess('google', getAdditionalUserInfo(result)?.isNewUser)
+      recordSignIn('google')
       navigate('/hub')
     } catch (err) {
       if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user' ||

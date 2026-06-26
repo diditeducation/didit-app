@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './AuthContext';
-import { trackPurchase, setAnalyticsTier } from '../analytics';
+import { trackPurchase, setAnalyticsTier, markConverted } from '../analytics';
 
 const SubscriptionContext = createContext(null);
 
@@ -57,7 +57,7 @@ export function SubscriptionProvider({ children }) {
         if (paid) {
           try {
             const key = `didit:purchased:${user.uid}`;
-            if (!localStorage.getItem(key)) { localStorage.setItem(key, '1'); trackPurchase(); }
+            if (!localStorage.getItem(key)) { localStorage.setItem(key, '1'); trackPurchase(); markConverted(); }
           } catch { /* storage blocked */ }
         }
       },
