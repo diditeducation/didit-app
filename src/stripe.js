@@ -1,6 +1,7 @@
 import { collection, addDoc, onSnapshot } from 'firebase/firestore';
-import { db } from './firebase';
-import { STRIPE_PRICE_ID } from './config';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import app, { db } from './firebase';
+import { STRIPE_PRICE_ID, STRIPE_FUNCTIONS_REGION } from './config';
 
 /**
  * Start a Stripe Checkout session via the firestore-stripe-payments Firebase
@@ -52,4 +53,24 @@ export function startSubscriptionCheckout(uid, { onError } = {}) {
     cancelled = true;
     unsub();
   };
+}
+
+/**
+ * Open the Stripe Customer Portal so a member can manage / cancel / update
+ * their subscription. Calls the firestore-stripe-payments extension's
+ * `createPortalLink` callable, then redirects to Stripe's hosted page; Stripe
+ * returns the user to `returnUrl` afterwards.
+ *
+ * Requires the extension installed. Throws on failure (caller shows UI).
+ */
+export async function openCustomerPortal() {
+  const functions = getFunctions(app, STRIPE_FUNCTIONS_REGION);
+  const createPortalLink = httpsCallable(
+    functions,
+    'ext-firestore-stripe-payments-createPortalLink',
+  );
+  const { data } = await createPortalLink({
+    returnUrl: `${window.location.origin}/hub`,
+  });
+  window.location.assign(data.url);
 }

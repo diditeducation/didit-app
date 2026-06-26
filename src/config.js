@@ -24,6 +24,11 @@ export const BILLING_PERIOD = 'month';
 export const STRIPE_PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID || '';
 export const STRIPE_ENABLED = !!STRIPE_PRICE_ID;
 
+// Region the firestore-stripe-payments extension is installed in — must match,
+// or the customer-portal callable won't be found. Default is the extension's
+// default (us-central1); override with VITE_STRIPE_FUNCTIONS_REGION if needed.
+export const STRIPE_FUNCTIONS_REGION = import.meta.env.VITE_STRIPE_FUNCTIONS_REGION || 'us-central1';
+
 // ── Paywall enforcement ─────────────────────────────────────────────────────
 // Master switch for the in-product paywall. When OFF (default), every signed-in
 // user can play all 12 games (current behaviour). When ON, non-members are held
