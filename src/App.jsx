@@ -8,6 +8,7 @@ import GameScreen from './pages/GameScreen';
 import BetaBanner from './components/BetaBanner';
 import RouteMeta from './components/RouteMeta';
 import ProtectedRoute from './components/ProtectedRoute';
+import GameRoute from './components/GameRoute';
 import DevSubscriptionToggle from './components/DevSubscriptionToggle';
 import Checkout from './pages/Checkout';
 import DemoGamePage from './pages/DemoGamePage';
@@ -89,54 +90,54 @@ export default function App() {
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
 
           {/* Little Engineer ✓ name matches folder */}
-          <Route path="/games/little-engineer"      element={<ProtectedRoute><EngineerHome /></ProtectedRoute>} />
-          <Route path="/games/little-engineer/play" element={<ProtectedRoute><EngineerGame /></ProtectedRoute>} />
+          <Route path="/games/little-engineer"      element={<GameRoute><EngineerHome /></GameRoute>} />
+          <Route path="/games/little-engineer/play" element={<GameRoute><EngineerGame /></GameRoute>} />
 
           {/* Little Pianist */}
-          <Route path="/games/little-pianist"      element={<ProtectedRoute><PianistHome /></ProtectedRoute>} />
-          <Route path="/games/little-pianist/play" element={<ProtectedRoute><PianistGame /></ProtectedRoute>} />
+          <Route path="/games/little-pianist"      element={<GameRoute><PianistHome /></GameRoute>} />
+          <Route path="/games/little-pianist/play" element={<GameRoute><PianistGame /></GameRoute>} />
 
           {/* Little Shopper ✓ name matches folder */}
-          <Route path="/games/little-shopper"      element={<ProtectedRoute><ShopperHome /></ProtectedRoute>} />
-          <Route path="/games/little-shopper/play" element={<ProtectedRoute><ShopperGame /></ProtectedRoute>} />
+          <Route path="/games/little-shopper"      element={<GameRoute><ShopperHome /></GameRoute>} />
+          <Route path="/games/little-shopper/play" element={<GameRoute><ShopperGame /></GameRoute>} />
 
           {/* Little Chef ✓ name matches folder */}
-          <Route path="/games/little-chef"         element={<ProtectedRoute><ChefHome /></ProtectedRoute>} />
-          <Route path="/games/little-chef/play"    element={<ProtectedRoute><ChefGame /></ProtectedRoute>} />
+          <Route path="/games/little-chef"         element={<GameRoute><ChefHome /></GameRoute>} />
+          <Route path="/games/little-chef/play"    element={<GameRoute><ChefGame /></GameRoute>} />
 
           {/* Little Chemist */}
-          <Route path="/games/little-chemist"      element={<ProtectedRoute><ChemistHome /></ProtectedRoute>} />
-          <Route path="/games/little-chemist/play" element={<ProtectedRoute><ChemistGame /></ProtectedRoute>} />
+          <Route path="/games/little-chemist"      element={<GameRoute><ChemistHome /></GameRoute>} />
+          <Route path="/games/little-chemist/play" element={<GameRoute><ChemistGame /></GameRoute>} />
 
           {/* Little Coder */}
-          <Route path="/games/little-coder"      element={<ProtectedRoute><CoderHome /></ProtectedRoute>} />
-          <Route path="/games/little-coder/play" element={<ProtectedRoute><CoderGame /></ProtectedRoute>} />
+          <Route path="/games/little-coder"      element={<GameRoute><CoderHome /></GameRoute>} />
+          <Route path="/games/little-coder/play" element={<GameRoute><CoderGame /></GameRoute>} />
 
 
           {/* Little Astronaut */}
-          <Route path="/games/little-astronaut"      element={<ProtectedRoute><AstronautHome /></ProtectedRoute>} />
-          <Route path="/games/little-astronaut/play" element={<ProtectedRoute><AstronautGame /></ProtectedRoute>} />
+          <Route path="/games/little-astronaut"      element={<GameRoute><AstronautHome /></GameRoute>} />
+          <Route path="/games/little-astronaut/play" element={<GameRoute><AstronautGame /></GameRoute>} />
 
           {/* Little Analyst (Pie) */}
-          <Route path="/games/little-analyst"      element={<ProtectedRoute><AnalystHome /></ProtectedRoute>} />
-          <Route path="/games/little-analyst/play" element={<ProtectedRoute><AnalystGame /></ProtectedRoute>} />
+          <Route path="/games/little-analyst"      element={<GameRoute><AnalystHome /></GameRoute>} />
+          <Route path="/games/little-analyst/play" element={<GameRoute><AnalystGame /></GameRoute>} />
 
           {/* Little Architect */}
           {/* Little Matisse */}
-          <Route path="/games/little-matisse"      element={<ProtectedRoute><MatisseHome /></ProtectedRoute>} />
-          <Route path="/games/little-matisse/play" element={<ProtectedRoute><MatisseGame /></ProtectedRoute>} />
+          <Route path="/games/little-matisse"      element={<GameRoute><MatisseHome /></GameRoute>} />
+          <Route path="/games/little-matisse/play" element={<GameRoute><MatisseGame /></GameRoute>} />
 
           {/* Little Trader */}
-          <Route path="/games/little-trader"      element={<ProtectedRoute><TraderHome /></ProtectedRoute>} />
-          <Route path="/games/little-trader/play" element={<ProtectedRoute><TraderGame /></ProtectedRoute>} />
+          <Route path="/games/little-trader"      element={<GameRoute><TraderHome /></GameRoute>} />
+          <Route path="/games/little-trader/play" element={<GameRoute><TraderGame /></GameRoute>} />
 
           {/* Little Consultant */}
-          <Route path="/games/little-consultant"      element={<ProtectedRoute><ConsultantHome /></ProtectedRoute>} />
-          <Route path="/games/little-consultant/play" element={<ProtectedRoute><ConsultantGame /></ProtectedRoute>} />
+          <Route path="/games/little-consultant"      element={<GameRoute><ConsultantHome /></GameRoute>} />
+          <Route path="/games/little-consultant/play" element={<GameRoute><ConsultantGame /></GameRoute>} />
 
           {/* Little DJ */}
-          <Route path="/games/little-dj"           element={<ProtectedRoute><DJHome /></ProtectedRoute>} />
-          <Route path="/games/little-dj/play"      element={<ProtectedRoute><DJGame /></ProtectedRoute>} />
+          <Route path="/games/little-dj"           element={<GameRoute><DJHome /></GameRoute>} />
+          <Route path="/games/little-dj/play"      element={<GameRoute><DJGame /></GameRoute>} />
           {/* Redirect old little-mixer URL */}
           <Route path="/games/little-mixer"         element={<Navigate to="/games/little-dj" replace />} />
           <Route path="/games/little-mixer/play"    element={<Navigate to="/games/little-dj/play" replace />} />

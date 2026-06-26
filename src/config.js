@@ -23,3 +23,14 @@ export const BILLING_PERIOD = 'month';
 // change needed to go live.
 export const STRIPE_PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID || '';
 export const STRIPE_ENABLED = !!STRIPE_PRICE_ID;
+
+// ── Paywall enforcement ─────────────────────────────────────────────────────
+// Master switch for the in-product paywall. When OFF (default), every signed-in
+// user can play all 12 games (current behaviour). When ON, non-members are held
+// to the free set (TRIAL_GAME_IDS / canPlay) and locked games route to /checkout.
+//
+// Set VITE_PAYWALL_ENFORCED=true in Vercel to switch it on — do this only AFTER
+// Stripe is live (STRIPE_ENABLED), otherwise you lock users out with no way to
+// pay. Test/dev accounts always keep full access via the SubscriptionContext
+// override, so you can QA the locked state on the live site before flipping it.
+export const PAYWALL_ENFORCED = import.meta.env.VITE_PAYWALL_ENFORCED === 'true';

@@ -4,6 +4,9 @@ import { trackFilterSelect, trackLandingClick } from '../analytics';
 import { playWelcomeChime } from '../design-system/sharedSounds';
 import { colors, fonts, radii, shadows } from '../design-system/tokens';
 import { CATEGORIES } from '../data/games';
+import { canPlay } from '../data/trialGames';
+import { PAYWALL_ENFORCED } from '../config';
+import { useSubscription } from '../context/SubscriptionContext';
 import WishModal from './WishModal';
 import { GAME_ILLUSTRATIONS } from './GameIllustrations';
 
@@ -231,6 +234,16 @@ function SurpriseCard({ onSurprise, onRandomPlay }) {
 export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
   const [filter, setFilter] = useState('All');
   const [wishOpen, setWishOpen] = useState(false);
+  const { isMember } = useSubscription();
+
+  // Locked = paywall on AND this game isn't free for this user. Locked cards
+  // show an Unlock badge and route to checkout instead of into the game.
+  const isLocked = (game) => PAYWALL_ENFORCED && !canPlay(game.id, isMember);
+  const openGame = (game) => {
+    if (isLocked(game)) { trackLandingClick(`locked_${game.id}`); onNavigate(`/checkout?from=${game.id}`); return; }
+    playWelcomeChime();
+    onNavigate(game.path);
+  };
 
   // ── Seeded PRNG (mulberry32) ──────────────────────────────────────────────
   // Returns a deterministic pseudo-random number generator seeded by an integer.
@@ -389,8 +402,23 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
               <div
                 key={game.id}
                 className="gg-card"
-                onClick={() => { playWelcomeChime(); onNavigate(game.path); }}
+                onClick={() => openGame(game)}
               >
+                {/* Lock badge (paywall on + not free for this user) */}
+                {isLocked(game) && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 8, left: 8, zIndex: 10,
+                    background: 'rgba(255,255,255,0.92)',
+                    borderRadius: radii.pill,
+                    padding: '2px 9px',
+                    fontSize: 11, fontWeight: 800,
+                    color: game.colorDark,
+                    fontFamily: fonts.display,
+                  }}>
+                    🔒
+                  </div>
+                )}
                 {/* Today badge */}
                 {game.id === todayId && (
                   <div style={{
@@ -429,9 +457,9 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
                   <button
                     className="gg-play-btn"
                     style={{ background: game.colorDark }}
-                    onClick={e => { e.stopPropagation(); playWelcomeChime(); onNavigate(game.path); }}
+                    onClick={e => { e.stopPropagation(); openGame(game); }}
                   >
-                    Play →
+                    {isLocked(game) ? 'Unlock 🔓' : 'Play →'}
                   </button>
                 </div>
               </div>
