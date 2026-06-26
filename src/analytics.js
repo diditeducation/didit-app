@@ -2,6 +2,8 @@
 // Each document:
 //   { event, gameId?, level?, ...payload,
 //     userId, userEmail,   // who (null when logged-out)
+//     tier,                // 'anon' | 'free' | 'paid' AT THE MOMENT of the event
+//                          //   — split any event by free vs paying users
 //     anonId,              // stable per-browser id — links a logged-out visit
 //                          //   to the same person after they sign in
 //     src,                 // first-touch source (utm_source / referrer / 'direct')
@@ -13,6 +15,13 @@ function getUser() {
   const user = auth.currentUser;
   return { userId: user?.uid ?? null, userEmail: user?.email ?? null };
 }
+
+// Membership tier AT THE MOMENT an event fires — 'anon' (logged-out),
+// 'free' (signed-in, not paid), 'paid' (real Family Pass). Kept in sync by
+// SubscriptionContext via setAnalyticsTier(). Lets every event be split by
+// who did it (e.g. game plays by free vs paying users) without a join.
+let _tier = 'anon';
+export function setAnalyticsTier(tier) { _tier = tier || 'anon'; }
 
 // Stable anonymous visitor id, created once and reused. Lets us follow one
 // person's journey across the login boundary (landing → signed-in → paid).
@@ -67,6 +76,7 @@ function write(payload) {
   return addDoc(collection(db, 'events'), {
     ...payload,
     ...getUser(),
+    tier: _tier,         // 'anon' | 'free' | 'paid' at the moment of the event
     anonId: getAnonId(),
     src: getFirstTouchSource(),
     env: getEnv(),
@@ -187,12 +197,7 @@ export function trackCheckoutStart() {
   return write({ event: 'checkout_start' });
 }
 
-/** Subscription became active — the conversion. Fire once per activation. */
+/** Family Pass purchased — the conversion. Fire once per account. */
 export function trackPurchase() {
   return write({ event: 'purchase_success' });
-}
-
-/** Subscription cancelled / lapsed. */
-export function trackSubscriptionCanceled() {
-  return write({ event: 'subscription_canceled' });
 }
