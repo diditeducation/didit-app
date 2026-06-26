@@ -13,35 +13,14 @@ import WelcomeModal from '../components/WelcomeModal';
 import AboutModal from '../components/AboutModal';
 import ShareButton from '../design-system/components/ShareButton';
 import { useAuth } from '../context/AuthContext';
-import { useSubscription } from '../context/SubscriptionContext';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import { STRIPE_ENABLED } from '../config';
-import { openCustomerPortal } from '../stripe';
 
 export default function Hub() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isMember } = useSubscription();
   const isLoggedIn = !!user;
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [portalBusy, setPortalBusy] = useState(false);
-  const [portalError, setPortalError] = useState('');
-
-  // Open the Stripe customer portal (manage / cancel). Reachable by any
-  // signed-in member from the hub — never gated behind a paid game, so a
-  // lapsed member can always get back here to manage billing.
-  const manageSubscription = async () => {
-    if (portalBusy) return;
-    setPortalBusy(true);
-    setPortalError('');
-    try {
-      await openCustomerPortal(); // redirects to Stripe on success
-    } catch {
-      setPortalBusy(false);
-      setPortalError('Could not open billing. Please try again.');
-    }
-  };
 
   // Wait for auth to resolve before tracking so userId/userEmail are populated
   const hubTracked = useRef(false);
@@ -150,30 +129,9 @@ export default function Hub() {
                     <div style={{ fontSize: 12, color: colors.muted, marginBottom: 16, wordBreak: 'break-all' }}>
                       {user?.email}
                     </div>
-                    {STRIPE_ENABLED && isMember && (
-                      <>
-                        <button
-                          onClick={manageSubscription}
-                          disabled={portalBusy}
-                          style={{
-                            width: '100%', padding: '10px 16px', marginBottom: 10,
-                            background: 'transparent', border: `1px solid ${colors.border}`,
-                            borderRadius: 9999, fontFamily: fonts.display,
-                            fontSize: 13, fontWeight: 700, color: colors.text,
-                            cursor: portalBusy ? 'wait' : 'pointer', opacity: portalBusy ? 0.7 : 1,
-                          }}
-                        >
-                          {portalBusy ? 'Opening billing…' : 'Manage subscription'}
-                        </button>
-                        {portalError && (
-                          <div style={{ fontSize: 11, color: colors.coralDark, fontWeight: 700, marginBottom: 10 }}>
-                            {portalError}
-                          </div>
-                        )}
-                      </>
-                    )}
                     <button
                       onClick={async () => {
+                        trackLandingClick('sign_out');
                         await signOut(auth);
                         setShowUserMenu(false);
                         navigate('/');

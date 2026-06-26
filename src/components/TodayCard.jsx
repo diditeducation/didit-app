@@ -1,6 +1,6 @@
 import { fonts, radii } from '../design-system/tokens';
 import { playWelcomeChime } from '../design-system/sharedSounds';
-import { trackGameOpen } from '../analytics';
+import { trackLandingClick } from '../analytics';
 import { GAME_ILLUSTRATIONS as ILLUSTRATIONS } from './GameIllustrations';
 
 const css = `
@@ -149,7 +149,7 @@ export default function TodayCard({ game, onPlay }) {
         {/* Play button — compact + bouncing */}
         <button
           className="today-play-btn"
-          onClick={() => { playWelcomeChime(); trackGameOpen(game.id + '-featured'); onPlay(); }}
+          onClick={() => { playWelcomeChime(); trackLandingClick('today_play_' + game.id); onPlay(); }}
           style={{
             marginTop: 4,
             display: 'inline-flex',
