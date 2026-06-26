@@ -9,6 +9,7 @@ import DiditLogo from '../components/DiditLogo';
 import Price from '../components/Price';
 import { BILLING_PERIOD, STRIPE_ENABLED } from '../config';
 import { startSubscriptionCheckout } from '../stripe';
+import { trackCheckoutView, trackCheckoutStart } from '../analytics';
 import { GAMES } from '../data/games';
 
 // Embedded one-page checkout (branded). The card fields below are a visual
@@ -28,6 +29,9 @@ export default function Checkout() {
   const cancelRef = useRef(null);
   const timerRef = useRef(null);
 
+  // Funnel: checkout page viewed.
+  useEffect(() => { trackCheckoutView(); }, []);
+
   // Clean up any in-flight checkout listener / timeout on unmount.
   useEffect(() => () => { cancelRef.current?.(); clearTimeout(timerRef.current); }, []);
 
@@ -46,6 +50,7 @@ export default function Checkout() {
       }
       setNotice('');
       setBusy(true);
+      trackCheckoutStart();
       cancelRef.current = startSubscriptionCheckout(user.uid, {
         onError: (err) => {
           clearTimeout(timerRef.current);
@@ -63,6 +68,7 @@ export default function Checkout() {
     }
     // Fallbacks until Stripe is switched on: dev simulate, else "coming soon".
     if (devEnabled) {
+      trackCheckoutStart();
       setDevMember(true);
       navigate('/hub');
     } else {

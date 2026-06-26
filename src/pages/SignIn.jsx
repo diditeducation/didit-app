@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, googleProvider } from '../firebase'
-import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail, getAdditionalUserInfo } from 'firebase/auth'
 import { colors, fonts, radii } from '../design-system/tokens'
 import DiditLogo from '../components/DiditLogo'
+import { trackSignInView, trackSignInMethod, trackMagicLinkSent, trackSignInSuccess } from '../analytics'
 
 // Pool of left-panel quotes — one is picked at random each visit. All are
 // about early childhood, play, and learning. `author`/`role` are optional;
@@ -41,6 +42,9 @@ export default function SignIn() {
   // Pick one quote per mount so each visit can show a different one.
   const [quote] = useState(() => SIGNIN_QUOTES[Math.floor(Math.random() * SIGNIN_QUOTES.length)])
 
+  // Funnel: sign-in page viewed.
+  useEffect(() => { trackSignInView() }, [])
+
   /* On mobile, Firebase falls back from popup → redirect.
      Pick up the result when we land back on this page. */
   useEffect(() => {
@@ -48,8 +52,10 @@ export default function SignIn() {
     setLoading(true)
     getRedirectResult(auth)
       .then(result => {
-        if (result?.user) navigate('/hub')
-        else setLoading(false)
+        if (result?.user) {
+          trackSignInSuccess('google', getAdditionalUserInfo(result)?.isNewUser)
+          navigate('/hub')
+        } else setLoading(false)
       })
       .catch(err => {
         setError(err.message)
@@ -60,8 +66,10 @@ export default function SignIn() {
   const handleGoogle = async () => {
     setLoading(true)
     setError(null)
+    trackSignInMethod('google')
     try {
-      await signInWithPopup(auth, googleProvider)
+      const result = await signInWithPopup(auth, googleProvider)
+      trackSignInSuccess('google', getAdditionalUserInfo(result)?.isNewUser)
       navigate('/hub')
     } catch (err) {
       if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user' ||
@@ -78,8 +86,10 @@ export default function SignIn() {
     e.preventDefault()
     if (!email) return
     setLoading(true)
+    trackSignInMethod('email')
     try {
       await sendSignInLinkToEmail(auth, email, getActionCodeSettings(email))
+      trackMagicLinkSent()
       localStorage.setItem('didit_email', email)
       navigate('/check-email')
     } catch (err) {

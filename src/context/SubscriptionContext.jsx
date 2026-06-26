@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './AuthContext';
+import { trackPurchase, trackSubscriptionCanceled } from '../analytics';
 
 const SubscriptionContext = createContext(null);
 
@@ -34,6 +35,9 @@ export function SubscriptionProvider({ children }) {
   // Raw override value persisted across reloads ('1' | '0' | null).
   const [overrideRaw, setOverrideRaw] = useState(() => localStorage.getItem(DEV_KEY));
 
+  // Tracks active→none transitions per session so we can log churn once.
+  const prevActiveRef = useRef(undefined);
+
   // Subscribe to the user's Stripe subscription docs in Firestore.
   // Collection: customers/{uid}/subscriptions (firestore-stripe-payments schema).
   // Until the extension is installed this collection is simply empty → not a member.
@@ -43,6 +47,7 @@ export function SubscriptionProvider({ children }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!user) { setSub(null); return; }     // logged out
 
+    prevActiveRef.current = undefined;        // reset transition tracking per user
     const ref = collection(db, 'customers', user.uid, 'subscriptions');
     const unsub = onSnapshot(
       ref,
@@ -51,6 +56,18 @@ export function SubscriptionProvider({ children }) {
           .map((d) => d.data())
           .find((s) => ACTIVE_STATUSES.includes(s.status));
         setSub(active || null);
+
+        // Conversion funnel: log purchase once per account (first time a real
+        // active subscription is seen) and churn on a live active→none flip.
+        const isActive = !!active;
+        if (isActive) {
+          try {
+            const key = `didit:purchased:${user.uid}`;
+            if (!localStorage.getItem(key)) { localStorage.setItem(key, '1'); trackPurchase(); }
+          } catch { /* storage blocked */ }
+        }
+        if (prevActiveRef.current === true && !isActive) trackSubscriptionCanceled();
+        prevActiveRef.current = isActive;
       },
       () => setSub(null) // collection missing / rules deny → treat as none
     );
