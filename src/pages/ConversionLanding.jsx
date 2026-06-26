@@ -23,6 +23,7 @@ const DEMO_GAMES = {
 };
 import { GAME_ILLUSTRATIONS } from '../components/GameIllustrations';
 import Price from '../components/Price';
+import { PRICE_NOTE } from '../config';
 
 // Concept lifestyle photos (text baked into each image). Each flips on tap to
 // reveal the game it points to and a short write-up of what it builds.
@@ -675,7 +676,7 @@ export default function ConversionLanding() {
                 Unlock every game · <Price />
               </button>
             </span>
-            <div className="lp-cta-sub">One payment · Yours forever · No subscription, no ads</div>
+            <div className="lp-cta-sub">{PRICE_NOTE} · One payment, yours forever · No subscription</div>
           </div>
         </div>
 

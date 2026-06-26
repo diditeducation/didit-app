@@ -1,6 +1,5 @@
 import { fonts, colors } from '../tokens';
 import DiditLogo from '../../components/DiditLogo';
-import { STRIPE_PORTAL_LOGIN_URL } from '../../config';
 
 /**
  * Shared site footer — logo + tagline + copyright strip.
@@ -35,16 +34,6 @@ export default function SiteFooter({ hideBeta = false }) {
         <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
       </div>
       <div style={{ textAlign: 'right' }}>
-        {STRIPE_PORTAL_LOGIN_URL && (
-          <a
-            href={STRIPE_PORTAL_LOGIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: colors.muted, textDecoration: 'underline', display: 'block', marginBottom: 4, fontWeight: 700 }}
-          >
-            Manage subscription
-          </a>
-        )}
         <div>© 2026 did·it. All rights reserved.</div>
       </div>
     </footer>

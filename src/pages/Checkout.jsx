@@ -7,7 +7,7 @@ import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
 import DiditLogo from '../components/DiditLogo';
 import Price from '../components/Price';
-import { STRIPE_ENABLED } from '../config';
+import { STRIPE_ENABLED, PRICE_NOTE } from '../config';
 import { startCheckout } from '../stripe';
 import { trackCheckoutView, trackCheckoutStart } from '../analytics';
 import { GAMES } from '../data/games';
@@ -215,6 +215,7 @@ export default function Checkout() {
             <Price style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }} />
             <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>one-time · yours forever</span>
           </div>
+          <p style={{ fontSize: '0.8rem', fontWeight: 800, color: colors.blueberryDark, margin: '0 0 4px' }}>{PRICE_NOTE}</p>
           {fromGame && (
             <p style={{ fontSize: '0.85rem', color: colors.muted, margin: '0 0 20px' }}>
               Pick up right where you left off with <strong style={{ color: colors.text }}>{fromGame.title}</strong>.

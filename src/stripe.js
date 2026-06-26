@@ -1,32 +1,34 @@
 import { collection, addDoc, onSnapshot } from 'firebase/firestore';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import app, { db } from './firebase';
-import { STRIPE_PRICE_ID, STRIPE_FUNCTIONS_REGION } from './config';
+import { db } from './firebase';
+import { STRIPE_PRICE_ID } from './config';
 
 /**
- * Start a Stripe Checkout session via the firestore-stripe-payments Firebase
- * extension.
+ * Start a one-time Stripe Checkout session (the "Founding Family Pass") via the
+ * firestore-stripe-payments Firebase extension.
  *
- * Flow: write a doc to customers/{uid}/checkout_sessions → the extension picks
- * it up, creates a Stripe Checkout Session, and writes back either `url` (we
- * redirect the browser to it) or `error`. After payment, Stripe's webhook (via
- * the extension) writes customers/{uid}/subscriptions/{id} with status
- * "active", which SubscriptionContext already listens to → isMember flips true.
+ * Flow: write a doc to customers/{uid}/checkout_sessions with `mode: 'payment'`
+ * → the extension picks it up, creates a Stripe Checkout Session, and writes
+ * back either `url` (we redirect the browser to it) or `error`. After a
+ * successful payment, the extension's webhook writes a doc to
+ * customers/{uid}/payments/{id} with status "succeeded", which
+ * SubscriptionContext listens to → isMember flips true (permanently — there is
+ * no recurring charge and nothing to cancel).
  *
- * Requires: the extension installed + STRIPE_PRICE_ID (VITE_STRIPE_PRICE_ID) set.
- * `allow_promotion_codes` enables Stripe-native promo codes on the hosted page,
- * so a 100%-off coupon doubles as a paywall bypass with no custom code.
+ * Requires: the extension installed + STRIPE_PRICE_ID (VITE_STRIPE_PRICE_ID) set
+ * to a ONE-TIME price. `allow_promotion_codes` enables Stripe-native promo codes
+ * on the hosted page, so a 100%-off coupon doubles as a paywall bypass with no
+ * custom code.
  *
  * Returns an unsubscribe function; calls onError(err) on failure. The caller is
  * responsible for any UI (spinner / timeout).
  */
-export function startSubscriptionCheckout(uid, { onError } = {}) {
+export function startCheckout(uid, { onError } = {}) {
   let unsub = () => {};
   let cancelled = false;
 
   addDoc(collection(db, 'customers', uid, 'checkout_sessions'), {
     price: STRIPE_PRICE_ID,
-    mode: 'subscription',
+    mode: 'payment',
     allow_promotion_codes: true,
     success_url: `${window.location.origin}/hub`,
     cancel_url: `${window.location.origin}/checkout`,
@@ -53,24 +55,4 @@ export function startSubscriptionCheckout(uid, { onError } = {}) {
     cancelled = true;
     unsub();
   };
-}
-
-/**
- * Open the Stripe Customer Portal so a member can manage / cancel / update
- * their subscription. Calls the firestore-stripe-payments extension's
- * `createPortalLink` callable, then redirects to Stripe's hosted page; Stripe
- * returns the user to `returnUrl` afterwards.
- *
- * Requires the extension installed. Throws on failure (caller shows UI).
- */
-export async function openCustomerPortal() {
-  const functions = getFunctions(app, STRIPE_FUNCTIONS_REGION);
-  const createPortalLink = httpsCallable(
-    functions,
-    'ext-firestore-stripe-payments-createPortalLink',
-  );
-  const { data } = await createPortalLink({
-    returnUrl: `${window.location.origin}/hub`,
-  });
-  window.location.assign(data.url);
 }

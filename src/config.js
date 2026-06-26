@@ -7,15 +7,22 @@
 //           leave beta). No need to touch any individual call site.
 export const SHOW_BETA = true;
 
-// Subscription pricing — single source of truth. Render via the <Price>
-// component (src/components/Price.jsx) rather than hardcoding "$15" anywhere.
-export const PRICE = '$15';
-export const BILLING_PERIOD = 'month';
+// Pricing — single source of truth. Did·It sells a ONE-TIME "Founding Family
+// Pass" (lifetime access incl. future games), NOT a subscription. Render the
+// amount via the <Price> component (src/components/Price.jsx); never hardcode "$29".
+export const PRICE = '$29';
+// Label appended by <Price suffix /> — reads "one-time", not "/month".
+export const PRICE_MODEL = 'one-time';
+// Honest founding-price note shown near the price during the beta window —
+// implies the price will rise without a fake "was/now" anchor. Set to '' to
+// remove it everywhere once founding pricing ends (and bump PRICE).
+export const PRICE_NOTE = 'Founding price for a limited time';
 
 // ── Stripe checkout ────────────────────────────────────────────────────────
-// The Stripe Price ID for the subscription (e.g. "price_1AbC..."). Set it in
-// Vercel as VITE_STRIPE_PRICE_ID once the firestore-stripe-payments Firebase
-// extension is installed and the product/price exist in Stripe.
+// The Stripe Price ID for the one-time Family Pass (a `mode: payment` price,
+// e.g. "price_1AbC..."). Set it in Vercel as VITE_STRIPE_PRICE_ID once the
+// firestore-stripe-payments Firebase extension is installed and the product/
+// price exist in Stripe.
 //
 // While this is empty, STRIPE_ENABLED is false and Checkout falls back to the
 // dev "simulate payment" path (localhost) or a "coming soon" notice — so the
@@ -23,19 +30,6 @@ export const BILLING_PERIOD = 'month';
 // change needed to go live.
 export const STRIPE_PRICE_ID = import.meta.env.VITE_STRIPE_PRICE_ID || '';
 export const STRIPE_ENABLED = !!STRIPE_PRICE_ID;
-
-// Region the firestore-stripe-payments extension is installed in — must match,
-// or the customer-portal callable won't be found. Default is the extension's
-// default (us-central1); override with VITE_STRIPE_FUNCTIONS_REGION if needed.
-export const STRIPE_FUNCTIONS_REGION = import.meta.env.VITE_STRIPE_FUNCTIONS_REGION || 'us-central1';
-
-// Stripe-hosted Customer Portal LOGIN page (e.g. https://billing.stripe.com/p/login/xxx).
-// This is the no-app-login escape hatch: a member who can't sign in to Did·It
-// (lost their email/Google account, etc.) enters their email here and Stripe
-// emails them a secure link to manage / cancel. Enable + copy the link from the
-// Stripe Dashboard (Settings → Billing → Customer portal), set it in Vercel.
-// When empty, the public "Manage subscription" footer link is hidden.
-export const STRIPE_PORTAL_LOGIN_URL = import.meta.env.VITE_STRIPE_PORTAL_LOGIN_URL || '';
 
 // ── Paywall enforcement ─────────────────────────────────────────────────────
 // Master switch for the in-product paywall. When OFF (default), every signed-in
