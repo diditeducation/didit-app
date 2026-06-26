@@ -29,6 +29,14 @@ export const STRIPE_ENABLED = !!STRIPE_PRICE_ID;
 // default (us-central1); override with VITE_STRIPE_FUNCTIONS_REGION if needed.
 export const STRIPE_FUNCTIONS_REGION = import.meta.env.VITE_STRIPE_FUNCTIONS_REGION || 'us-central1';
 
+// Stripe-hosted Customer Portal LOGIN page (e.g. https://billing.stripe.com/p/login/xxx).
+// This is the no-app-login escape hatch: a member who can't sign in to Did·It
+// (lost their email/Google account, etc.) enters their email here and Stripe
+// emails them a secure link to manage / cancel. Enable + copy the link from the
+// Stripe Dashboard (Settings → Billing → Customer portal), set it in Vercel.
+// When empty, the public "Manage subscription" footer link is hidden.
+export const STRIPE_PORTAL_LOGIN_URL = import.meta.env.VITE_STRIPE_PORTAL_LOGIN_URL || '';
+
 // ── Paywall enforcement ─────────────────────────────────────────────────────
 // Master switch for the in-product paywall. When OFF (default), every signed-in
 // user can play all 12 games (current behaviour). When ON, non-members are held
