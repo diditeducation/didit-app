@@ -10,7 +10,7 @@ import { PAYWALL_ENFORCED } from '../config';
  *
  * - Not signed in → /signin.
  * - Signed in but the game is locked for them (non-member + non-trial game) →
- *   /checkout?from=<gameId>. Trial games and members pass through.
+ *   /checkout?from=<gameId>&via=game_locked. Trial games and members pass through.
  * - When PAYWALL_ENFORCED is off, behaves exactly like ProtectedRoute.
  *
  * The gameId is derived from the URL (/games/<id>[/play]) so this works for
@@ -29,7 +29,7 @@ export default function GameRoute({ children }) {
     if (gameId) {
       if (loading) return null;                       // wait for sub state
       if (!canPlay(gameId, isMember)) {
-        return <Navigate to={`/checkout?from=${gameId}`} replace />;
+        return <Navigate to={`/checkout?from=${gameId}&via=game_locked`} replace />;
       }
     }
   }

@@ -246,7 +246,7 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
           </p>
           <button
             style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: colors.lime, color: '#1A1A1A', gap: 8 }}
-            onClick={() => { trackSuccessClick('demo_unlock', gameId); nav('/checkout'); }}
+            onClick={() => { trackSuccessClick('demo_unlock', gameId); nav('/checkout?via=demo_success'); }}
           >
             <span>🔓</span><span>Unlock all games</span>
           </button>

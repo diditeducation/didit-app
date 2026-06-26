@@ -277,7 +277,7 @@ export default function ConversionLanding() {
 
   useEffect(() => { trackPageView('landing_v2'); }, []);
 
-  const goCheckout = (where) => { trackLandingClick(where); navigate('/checkout'); };
+  const goCheckout = (where) => { trackLandingClick(where); navigate('/checkout?via=landing'); };
   const selectGame = (game) => {
     setSelectedId(game.id);
     if (TRIAL_GAME_IDS.includes(game.id)) {
@@ -672,10 +672,10 @@ export default function ConversionLanding() {
           <div className="lp-cta-inner">
             <span className="lp-cta-bob">
               <button className="lp-cta-btn" onClick={() => goCheckout('unlock_main')}>
-                Unlock all games for <Price period />
+                Unlock every game · <Price />
               </button>
             </span>
-            <div className="lp-cta-sub">New games added regularly · Cancel anytime</div>
+            <div className="lp-cta-sub">One payment · Yours forever · No subscription, no ads</div>
           </div>
         </div>
 

@@ -187,17 +187,36 @@ export function trackSignInSuccess(method, isNewUser = false) {
   return write({ event: 'signin_success', method, isNewUser: !!isNewUser });
 }
 
-/** Checkout page viewed. */
-export function trackCheckoutView() {
-  return write({ event: 'checkout_view' });
+// Where the user entered checkout from — the conversion *placement*, distinct
+// from `src` (first-touch acquisition). Persisted so it survives the Stripe
+// redirect/reload and can be stamped onto purchase_success, which fires later
+// from SubscriptionContext (after the user is back from Stripe).
+//   'landing' | 'demo_success' | 'hub_grid' | 'game_locked' | 'direct'
+const CHECKOUT_VIA_KEY = 'didit:checkout-via';
+function setCheckoutVia(via) {
+  try { localStorage.setItem(CHECKOUT_VIA_KEY, via || 'direct'); } catch { /* storage blocked */ }
+}
+function getCheckoutVia() {
+  try { return localStorage.getItem(CHECKOUT_VIA_KEY) || 'direct'; } catch { return 'direct'; }
+}
+
+/** Checkout page viewed. `via` = which flow brought them here (also persisted). */
+export function trackCheckoutView(via = 'direct') {
+  setCheckoutVia(via);
+  return write({ event: 'checkout_view', via });
 }
 
 /** Checkout started (Stripe redirect or dev-simulate). */
-export function trackCheckoutStart() {
-  return write({ event: 'checkout_start' });
+export function trackCheckoutStart(via) {
+  return write({ event: 'checkout_start', via: via || getCheckoutVia() });
 }
 
-/** Family Pass purchased — the conversion. Fire once per account. */
+/**
+ * Family Pass purchased — the conversion. Fire once per account.
+ * Attributes the sale to the checkout placement (`via`) captured on entry,
+ * so you can see whether a purchase came from the landing page vs an in-app
+ * flow even though this fires from SubscriptionContext after the redirect.
+ */
 export function trackPurchase() {
-  return write({ event: 'purchase_success' });
+  return write({ event: 'purchase_success', via: getCheckoutVia() });
 }

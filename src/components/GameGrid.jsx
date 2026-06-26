@@ -240,7 +240,7 @@ export default function GameGrid({ games, todayId, onNavigate, onSurprise }) {
   // show an Unlock badge and route to checkout instead of into the game.
   const isLocked = (game) => PAYWALL_ENFORCED && !canPlay(game.id, isMember);
   const openGame = (game) => {
-    if (isLocked(game)) { trackLandingClick(`locked_${game.id}`); onNavigate(`/checkout?from=${game.id}`); return; }
+    if (isLocked(game)) { trackLandingClick(`locked_${game.id}`); onNavigate(`/checkout?from=${game.id}&via=hub_grid`); return; }
     playWelcomeChime();
     onNavigate(game.path);
   };

@@ -7,8 +7,8 @@ import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
 import DiditLogo from '../components/DiditLogo';
 import Price from '../components/Price';
-import { BILLING_PERIOD, STRIPE_ENABLED } from '../config';
-import { startSubscriptionCheckout } from '../stripe';
+import { STRIPE_ENABLED } from '../config';
+import { startCheckout } from '../stripe';
 import { trackCheckoutView, trackCheckoutStart } from '../analytics';
 import { GAMES } from '../data/games';
 
@@ -20,6 +20,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const from = params.get('from');
+  const via = params.get('via') || 'direct';
   const { devEnabled, setDevMember } = useSubscription();
   const { user } = useAuth();
   const [email, setEmail] = useState('');
@@ -29,8 +30,10 @@ export default function Checkout() {
   const cancelRef = useRef(null);
   const timerRef = useRef(null);
 
-  // Funnel: checkout page viewed.
-  useEffect(() => { trackCheckoutView(); }, []);
+  // Funnel: checkout page viewed. `via` records the flow that brought the user
+  // here and is persisted so it survives the Stripe redirect and tags the
+  // eventual purchase_success.
+  useEffect(() => { trackCheckoutView(via); }, [via]);
 
   // Clean up any in-flight checkout listener / timeout on unmount.
   useEffect(() => () => { cancelRef.current?.(); clearTimeout(timerRef.current); }, []);
@@ -50,8 +53,8 @@ export default function Checkout() {
       }
       setNotice('');
       setBusy(true);
-      trackCheckoutStart();
-      cancelRef.current = startSubscriptionCheckout(user.uid, {
+      trackCheckoutStart(via);
+      cancelRef.current = startCheckout(user.uid, {
         onError: (err) => {
           clearTimeout(timerRef.current);
           setBusy(false);
@@ -68,7 +71,7 @@ export default function Checkout() {
     }
     // Fallbacks until Stripe is switched on: dev simulate, else "coming soon".
     if (devEnabled) {
-      trackCheckoutStart();
+      trackCheckoutStart(via);
       setDevMember(true);
       navigate('/hub');
     } else {
@@ -77,11 +80,11 @@ export default function Checkout() {
   };
 
   const perks = [
+    ['Yours forever', 'One payment — lifetime access, no subscription'],
     ['All games unlocked', 'Finance, coding, music, science & more'],
-    ['New games added regularly', 'Fresh concepts every few weeks'],
+    ['Future games included', 'New games added at no extra cost'],
     ['Made for co-play', 'Designed for you and your child together'],
     ['Zero ads, ever', 'A calm, safe, distraction-free space'],
-    ['Cancel anytime', 'No lock-in, no questions asked'],
   ];
 
   const fieldStyle = {
@@ -126,7 +129,7 @@ export default function Checkout() {
           opacity: busy ? 0.7 : 1,
         }}
       >
-        {busy ? 'Redirecting to secure checkout…' : <>Start playing · <Price period /></>}
+        {busy ? 'Redirecting to secure checkout…' : <>Get the Family Pass · <Price /></>}
       </button>
 
       {notice && (
@@ -137,7 +140,7 @@ export default function Checkout() {
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 14, color: colors.muted }}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-        <span style={{ fontSize: '0.76rem', fontWeight: 700 }}>Secured by Stripe · Cancel anytime</span>
+        <span style={{ fontSize: '0.76rem', fontWeight: 700 }}>Secured by Stripe · One-time payment</span>
       </div>
 
       {devEnabled && (
@@ -210,7 +213,7 @@ export default function Checkout() {
           </p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
             <Price style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }} />
-            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>/ {BILLING_PERIOD}</span>
+            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>one-time · yours forever</span>
           </div>
           {fromGame && (
             <p style={{ fontSize: '0.85rem', color: colors.muted, margin: '0 0 20px' }}>
