@@ -150,10 +150,9 @@ export default function AnalyticsAdminPage() {
       </div>
 
       {/* Funnel */}
-      <Section title="Funnel — landing → conversion → play" sub="Distinct people reaching each step (by anonId/uid).">
-        {stats.funnel.map((s, i) => (
-          <FunnelBar key={s.label} label={s.label} count={s.count} max={stats.funnel[0].count}
-            rel={i === 0 ? null : pct(s.count, stats.funnel[i - 1].count)} />
+      <Section title="Funnel — landing → conversion → play" sub="Distinct people reaching each milestone, as % of unique visitors. These are NOT strictly nested (demo plays are anonymous, before sign-in), so each bar is its own share of visitors — not a step-to-step drop-off.">
+        {stats.funnel.map((s) => (
+          <FunnelBar key={s.label} label={s.label} count={s.count} total={stats.funnelDenom} />
         ))}
       </Section>
 
@@ -225,7 +224,6 @@ function computeStats(rows) {
   const signedIn = new Set();
   const paying = new Set();
   const landingSet = new Set();
-  const signinSet = new Set();
   const checkoutSet = new Set();
   const playSet = new Set();
   const purchaseSet = new Set();
@@ -252,7 +250,6 @@ function computeStats(rows) {
       case 'page_view':
         if (e.page === 'landing' || e.page === 'landing_v2') landingSet.add(p);
         break;
-      case 'signin_success': signinSet.add(p); break;
       case 'checkout_view': checkoutSet.add(p); break;
       case 'purchase_success': {
         purchaseSet.add(p);
@@ -298,10 +295,16 @@ function computeStats(rows) {
     paying: paying.size,
     totalPlays: freePlays + paidPlays,
     freePlays, paidPlays,
+    // Milestones in journey order, each as a share of unique visitors. NOT a
+    // strictly-nested funnel — demo plays are anonymous (before sign-in), so
+    // "Played a game" can exceed "Signed in". `signedIn.size` = distinct
+    // accounts (matches the summary card), more robust than counting
+    // signin_success events that may scroll out of the event window.
+    funnelDenom: visitors.size,
     funnel: [
       { label: 'Visited landing', count: landingSet.size },
-      { label: 'Signed in', count: signinSet.size },
       { label: 'Played a game', count: playSet.size },
+      { label: 'Signed in', count: signedIn.size },
       { label: 'Reached checkout', count: checkoutSet.size },
       { label: 'Purchased', count: purchaseSet.size },
     ],
@@ -349,13 +352,14 @@ function Section({ title, sub, children }) {
   );
 }
 
-function FunnelBar({ label, count, max, rel }) {
-  const w = max ? Math.max(2, Math.round((count / max) * 100)) : 0;
+function FunnelBar({ label, count, total }) {
+  const share = total ? (count / total) * 100 : 0;
+  const w = count > 0 ? Math.max(2, Math.round(share)) : 0;
   return (
     <div style={{ marginBottom: 8 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: fonts.body, fontSize: 13, marginBottom: 3 }}>
         <span style={{ fontWeight: 700, color: colors.text }}>{label}</span>
-        <span style={{ color: colors.muted }}>{count.toLocaleString()}{rel != null && <span style={{ marginLeft: 8, fontWeight: 700, color: colors.grassMid }}>{rel}</span>}</span>
+        <span style={{ color: colors.muted }}>{count.toLocaleString()}<span style={{ marginLeft: 8, fontWeight: 700, color: colors.grassMid }}>{total ? `${Math.round(share)}%` : '—'}</span></span>
       </div>
       <div style={{ height: 10, background: '#F0EBE3', borderRadius: 9999, overflow: 'hidden' }}>
         <div style={{ width: `${w}%`, height: '100%', background: colors.blueberryDark, borderRadius: 9999 }} />

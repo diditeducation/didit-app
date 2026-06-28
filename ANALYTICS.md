@@ -4,7 +4,7 @@ _Plain-English guide to your data: what's collected, where it lives, how to read
 it, and how to verify it. For the developer-level taxonomy, see **AUDIT.md §9**.
 Keep this file current whenever analytics change (see "Keeping this current")._
 
-_Last updated: 2026-06-27._
+_Last updated: 2026-06-28._
 
 ---
 
@@ -143,6 +143,23 @@ the signed-in account. The comment next to it is cosmetic; the UID is what's
 enforced.
 
 ---
+
+## Reading the dashboard correctly
+
+- **The "funnel" is milestones, NOT a strict drop-off.** Each bar is that
+  milestone's share of **unique visitors**. The steps are *not* nested subsets:
+  demo plays are anonymous and happen *before* sign-in, so "Played a game" can
+  (and does) exceed "Signed in". Don't read it as a clean top-to-bottom
+  conversion rate — read each bar as "X% of visitors did this".
+- **"Unique visitors" is inflated by bots + private mode.** `anonId` lives in
+  browser storage; search crawlers and incognito sessions mint a fresh id each
+  visit (and may land on `/about` or `/demo/*` from the sitemap without ever
+  hitting the homepage — which is why visitors ≫ "Visited landing"). Your real
+  human count is lower than the headline. Treat trends over time as more
+  reliable than the absolute number.
+- **"Signed in" can differ between the summary card and per-source table:** the
+  card / funnel count distinct accounts (`userId`); a future bot-filter would
+  change both together.
 
 ## Limits worth knowing
 
