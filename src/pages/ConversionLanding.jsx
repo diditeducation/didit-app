@@ -480,7 +480,7 @@ export default function ConversionLanding() {
 .lp-cta-btn{background:#F7D560;color:#1A1A1A;border:none;border-radius:9999px;font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(21px,2.8vw,27px);padding:24px 64px;cursor:pointer;box-shadow:0 9px 0 #D9B23E,0 18px 34px rgba(0,0,0,0.22);transition:transform .1s ease,box-shadow .1s ease}
 .lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 0 #D9B23E,0 22px 38px rgba(0,0,0,0.24)}
 .lp-cta-btn:active{transform:translateY(5px);box-shadow:0 3px 0 #D9B23E,0 8px 16px rgba(0,0,0,0.20)}
-.lp-cta-sub{margin-top:22px;color:#3d3a2e;font-size:14px;font-weight:700}
+.lp-cta-sub{margin:22px auto 0;max-width:580px;color:#3d3a2e;font-size:clamp(16px,1.9vw,19px);font-weight:700;line-height:1.5}
 @media(prefers-reduced-motion:reduce){.lp-cta-bob{animation:none}}
 
 .lp-paid{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
