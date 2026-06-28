@@ -81,7 +81,7 @@ export default function Checkout() {
 
   const perks = [
     ['Everything in our library', 'All our games — finance, coding, music, science & more'],
-    ['Yours forever', 'One payment, no subscription, nothing to cancel'],
+    ['Pay once', 'One payment, no subscription, nothing to cancel'],
     ['A growing library', 'We keep adding new games as we grow'],
     ['Made for co-play', 'Designed for you and your child together'],
     ['Zero ads, ever', 'A calm, safe, distraction-free space'],
@@ -213,7 +213,7 @@ export default function Checkout() {
           </p>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
             <Price style={{ fontSize: '2.2rem', fontWeight: 900, color: colors.blueberryDark, letterSpacing: '-0.02em' }} />
-            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>one-time · yours forever</span>
+            <span style={{ fontSize: '0.95rem', fontWeight: 700, color: colors.muted }}>one-time</span>
           </div>
           <p style={{ fontSize: '0.8rem', fontWeight: 800, color: colors.blueberryDark, margin: '0 0 4px' }}>{PRICE_NOTE}</p>
           {fromGame && (
