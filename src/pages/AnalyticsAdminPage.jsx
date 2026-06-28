@@ -7,10 +7,17 @@ import { fonts, colors } from '../design-system/tokens';
 /**
  * Admin-only analytics dashboard at /admin/analytics.
  *
- * Reads the flat `events` log + the `users` profile collection and renders the
- * funnel, marketing-source breakdown, conversion-placement split, free-vs-paid
- * play counts, a user table, and the raw recent events — plus CSV/JSON export
- * of everything for offline analysis.
+ * Three sections over a selectable time window (Day / Week / Month / All):
+ *  1. Funnel & Interaction — two funnels:
+ *       A) Landing universe (keyed by anonId): visited landing → did activities
+ *          (played a demo / other top-5 clicks) → signed in → reached checkout
+ *          (split by via) → purchased.
+ *       B) Hub universe (logged-in, keyed by userId): visited hub → paying
+ *          players (by game) / free players (by game) → free reached checkout
+ *          (by via) → purchased.
+ *  2. Users — active users, new sign-ups, new paying users (in-window).
+ *  3. Others — recent raw events.
+ * Plus CSV/JSON export of the in-window, filtered data.
  *
  * The email check is only a UI gate; the REAL boundary is firestore.rules
  * (`isAdmin()`). Keep this list and the rules' ADMIN_UIDS pointing at the same
@@ -30,10 +37,18 @@ const INTERNAL_UIDS = ['bTlG8YZn8INNvHYvONf8u8LqK033']; // did.it.education@gmai
 const isInternalRow = (e) =>
   INTERNAL_EMAILS.includes((e.userEmail || '').toLowerCase()) || INTERNAL_UIDS.includes(e.userId);
 
+const DAY = 86400000;
+const WINDOWS = { '24h': DAY, '7d': 7 * DAY, '30d': 30 * DAY, all: Infinity };
+const TIMEFRAMES = [['24h', 'Day'], ['7d', 'Week'], ['30d', 'Month'], ['all', 'All']];
+
 // ── helpers ────────────────────────────────────────────────────────────────
 function tsToDate(ts) {
   if (!ts) return null;
   return ts.toDate ? ts.toDate() : new Date(ts);
+}
+function tsMs(ts) {
+  const d = tsToDate(ts);
+  return d ? d.getTime() : null;
 }
 function fmt(ts) {
   const d = tsToDate(ts);
@@ -43,13 +58,17 @@ function fmtDay(ts) {
   const d = tsToDate(ts);
   return d ? d.toISOString().slice(0, 10) : '—';
 }
-// Stable per-person key: prefer the signed-in uid, else the anon browser id.
-function personKey(e) {
-  return e.userId || e.anonId || e.id;
-}
 function pct(n, d) {
   if (!d) return '0%';
   return `${Math.round((n / d) * 100)}%`;
+}
+// Map<key, Set> → [[key, size], …] sorted by size desc.
+function setMapRows(m) {
+  return [...m.entries()].map(([k, s]) => [k, s.size]).sort((a, b) => b[1] - a[1]);
+}
+function addToSetMap(m, key, val) {
+  if (!m.has(key)) m.set(key, new Set());
+  m.get(key).add(val);
 }
 
 function csvEscape(v) {
@@ -88,6 +107,9 @@ function usersToCSV(rows) {
   }
   return lines.join('\n');
 }
+function stripTs(e) {
+  return { ...e, timestamp: tsToDate(e.timestamp)?.toISOString() ?? null };
+}
 
 // ── main ─────────────────────────────────────────────────────────────────
 export default function AnalyticsAdminPage() {
@@ -95,8 +117,9 @@ export default function AnalyticsAdminPage() {
   const [events, setEvents] = useState(null);
   const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
-  const [env, setEnv] = useState('prod'); // 'prod' | 'all'
-  const [excludeInternal, setExcludeInternal] = useState(true); // hide admin/test
+  const [env, setEnv] = useState('prod');             // 'prod' | 'all'
+  const [excludeInternal, setExcludeInternal] = useState(true);
+  const [timeframe, setTimeframe] = useState('7d');   // '24h' | '7d' | '30d' | 'all'
 
   const isAdmin = !!user && ADMIN_EMAILS.includes((user.email || '').toLowerCase());
 
@@ -110,23 +133,44 @@ export default function AnalyticsAdminPage() {
     const unsubU = onSnapshot(
       collection(db, 'users'),
       (snap) => setUsers(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
-      () => setUsers([]), // users may be empty before anyone signs in
+      () => setUsers([]),
     );
     return () => { unsubE(); unsubU(); };
   }, [isAdmin]);
 
+  // Time window. Date.now() is fine here (browser, not a workflow sandbox).
+  const cutoff = useMemo(() => {
+    const w = WINDOWS[timeframe];
+    return w === Infinity ? 0 : Date.now() - w;
+  }, [timeframe]);
+
+  const inWindow = useMemo(() => (ts) => {
+    const m = tsMs(ts);
+    return m == null ? true : m >= cutoff; // pending serverTimestamp → keep
+  }, [cutoff]);
+
   const rows = useMemo(() => {
-    const base = (events || []).filter((e) => env === 'all' ? true : (e.env || 'prod') === 'prod');
+    let base = (events || []).filter((e) => (env === 'all' ? true : (e.env || 'prod') === 'prod'));
+    base = base.filter((e) => inWindow(e.timestamp));
     if (!excludeInternal) return base;
-    // Find the anonIds tied to any internal account, then drop that account's
-    // WHOLE session — including its pre-login (anonymous) browsing, not just the
-    // signed-in rows.
     const internalAnon = new Set();
     for (const e of base) if (isInternalRow(e) && e.anonId) internalAnon.add(e.anonId);
     return base.filter((e) => !isInternalRow(e) && !(e.anonId && internalAnon.has(e.anonId)));
-  }, [events, env, excludeInternal]);
+  }, [events, env, excludeInternal, inWindow]);
 
   const stats = useMemo(() => computeStats(rows), [rows]);
+
+  const usersShown = useMemo(() => {
+    if (!users) return [];
+    return excludeInternal
+      ? users.filter((u) => !INTERNAL_EMAILS.includes((u.email || '').toLowerCase()) && !INTERNAL_UIDS.includes(u.uid))
+      : users;
+  }, [users, excludeInternal]);
+
+  const userCounts = useMemo(() => ({
+    newSignups: usersShown.filter((u) => { const m = tsMs(u.createdAt); return m != null && m >= cutoff; }).length,
+    newPaying: usersShown.filter((u) => { const m = tsMs(u.convertedAt); return m != null && m >= cutoff; }).length,
+  }), [usersShown, cutoff]);
 
   if (user === undefined) return <Frame><Centered text="Checking sign-in…" /></Frame>;
   if (!user) return <Frame><Centered text="Sign in to view analytics." cta={{ label: 'Go to sign in', href: '/signin' }} /></Frame>;
@@ -134,92 +178,96 @@ export default function AnalyticsAdminPage() {
   if (error) return <Frame><Centered title="Couldn't load analytics" text={error} /></Frame>;
   if (events === null || users === null) return <Frame><Centered text="Loading…" /></Frame>;
 
-  // users aren't env-tagged; optionally drop internal accounts.
-  const prodUsers = excludeInternal
-    ? users.filter((u) => !INTERNAL_EMAILS.includes((u.email || '').toLowerCase()) && !INTERNAL_UIDS.includes(u.uid))
-    : users;
+  const A = stats.funnelA;
+  const B = stats.funnelB;
+  const windowLabel = TIMEFRAMES.find(([k]) => k === timeframe)?.[1] || timeframe;
 
   return (
     <Frame>
-      <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+      <header style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 18 }}>
         <div>
           <h1 style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 24, color: colors.text, margin: 0 }}>Analytics</h1>
           <div style={{ fontFamily: fonts.body, fontSize: 13, color: colors.muted, marginTop: 2 }}>
-            {rows.length.toLocaleString()} events{events.length >= EVENTS_LIMIT ? ` (capped at ${EVENTS_LIMIT})` : ''} · {prodUsers.length} users · live
+            {windowLabel} · {rows.length.toLocaleString()} events{events.length >= EVENTS_LIMIT ? ` (load capped at ${EVENTS_LIMIT})` : ''} · live
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: fonts.display, fontWeight: 700, fontSize: 13, color: colors.text, background: '#FFFFFF', border: `1px solid ${colors.border}`, borderRadius: 9999, padding: '9px 14px', cursor: 'pointer' }}>
-            <input type="checkbox" checked={excludeInternal} onChange={(e) => setExcludeInternal(e.target.checked)} style={{ cursor: 'pointer' }} />
-            Exclude admin/test
-          </label>
-          <select value={env} onChange={(e) => setEnv(e.target.value)} style={selectStyle}>
-            <option value="prod">Prod only</option>
-            <option value="all">All envs (incl. local/dev)</option>
-          </select>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           <Btn onClick={() => download(`didit-events-${fmtDay(new Date())}.csv`, eventsToCSV(rows), 'text/csv;charset=utf-8;')}>Events CSV</Btn>
           <Btn onClick={() => download(`didit-events-${fmtDay(new Date())}.json`, JSON.stringify(rows.map(stripTs), null, 2), 'application/json')}>Events JSON</Btn>
-          <Btn onClick={() => download(`didit-users-${fmtDay(new Date())}.csv`, usersToCSV(prodUsers), 'text/csv;charset=utf-8;')}>Users CSV</Btn>
+          <Btn onClick={() => download(`didit-users-${fmtDay(new Date())}.csv`, usersToCSV(usersShown), 'text/csv;charset=utf-8;')}>Users CSV</Btn>
         </div>
       </header>
 
-      {/* Summary */}
-      <div style={cardRow}>
-        <Stat label="Visitors" value={stats.engagedVisitors} hint={`engaged · ${stats.visitors.toLocaleString()} incl. passive/bots`} />
-        <Stat label="Signed in" value={stats.signedIn} hint="distinct accounts" />
-        <Stat label="Paying" value={stats.paying} hint={`${pct(stats.paying, stats.engagedVisitors)} of visitors`} />
-        <Stat label="Game plays" value={stats.totalPlays} hint={`${stats.freePlays} free · ${stats.paidPlays} paid`} />
+      {/* Controls */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {TIMEFRAMES.map(([k, label]) => (
+            <button key={k} onClick={() => setTimeframe(k)} style={tfBtn(timeframe === k)}>{label}</button>
+          ))}
+        </div>
+        <label style={chipLabel}>
+          <input type="checkbox" checked={excludeInternal} onChange={(e) => setExcludeInternal(e.target.checked)} style={{ cursor: 'pointer' }} />
+          Exclude admin/test
+        </label>
+        <select value={env} onChange={(e) => setEnv(e.target.value)} style={selectStyle}>
+          <option value="prod">Prod only</option>
+          <option value="all">All envs (incl. local/dev)</option>
+        </select>
       </div>
 
-      {/* Funnel */}
-      <Section title="Funnel — landing → conversion → play" sub="Distinct people reaching each milestone, as % of engaged visitors (anonIds with ≥1 interaction). NOT strictly nested — demo plays are anonymous and happen before sign-in — so each bar is its own share, not a step-to-step drop-off.">
-        {stats.funnel.map((s) => (
-          <FunnelBar key={s.label} label={s.label} count={s.count} total={stats.funnelDenom} />
-        ))}
+      {/* ═══ Section 1 — Funnel & Interaction ═══ */}
+      <SectionHead n="1" title="Funnel & Interaction" />
+
+      <Section title="Funnel A — Landing visitors" sub="Universe: everyone who viewed the landing page in this window. Each bar = share of those visitors.">
+        {A.universe === 0 ? <Empty text="No landing visits in this window." /> : (
+          <>
+            <FunnelBar label="Visited landing" count={A.universe} total={A.universe} />
+            <Breakdown head={['Top source', 'Visitors']} rows={A.sources} />
+
+            <StepLabel>Did activities</StepLabel>
+            <FunnelBar label="Played a demo game" count={A.played} total={A.universe} />
+            <SubLabel>Other landing interactions — top 5</SubLabel>
+            <Breakdown head={['Button / item', 'People']} rows={A.clicks} empty="No other interactions." />
+
+            <StepLabel>Conversion</StepLabel>
+            <FunnelBar label="Signed in" count={A.signed} total={A.universe} />
+            <FunnelBar label="Reached checkout" count={A.checkout} total={A.universe} />
+            <Breakdown head={['Checkout source (via)', 'People']} rows={A.checkoutVia} empty="No checkouts." />
+            <FunnelBar label="Purchased" count={A.purchased} total={A.universe} />
+          </>
+        )}
       </Section>
 
-      {/* Marketing sources */}
-      <Section title="Marketing sources" sub="First-touch src (utm / referrer / /go/:source links).">
-        <Table head={['Source', 'Visitors', 'Signed in', 'Paid', 'Conv.']}
-          rows={stats.sources.map((s) => [s.src, s.visitors, s.signedIn, s.paid, pct(s.paid, s.visitors)])} />
+      <Section title="Funnel B — Logged-in, visited games hub" sub="Universe: signed-in users who opened the games hub in this window.">
+        {B.universe === 0 ? <Empty text="No hub visits in this window." /> : (
+          <>
+            <FunnelBar label="Visited games hub" count={B.universe} total={B.universe} />
+
+            <FunnelBar label="Paying users who played a game" count={B.paidPlayers} total={B.universe} />
+            <Breakdown head={['Game', 'Paying players']} rows={B.paidGames} empty="No paid plays." />
+
+            <FunnelBar label="Free users who played a game" count={B.freePlayers} total={B.universe} />
+            <Breakdown head={['Game', 'Free players']} rows={B.freeGames} empty="No free plays." />
+
+            <StepLabel>Free-user conversion</StepLabel>
+            <FunnelBar label="Free users who reached checkout" count={B.freeCheckout} total={B.universe} />
+            <Breakdown head={['Checkout source (via)', 'People']} rows={B.checkoutVia} empty="No checkouts." />
+            <FunnelBar label="Purchased" count={B.purchased} total={B.universe} />
+          </>
+        )}
       </Section>
 
-      {/* Conversion placement */}
-      <Section title="Conversions by placement (via)" sub="Which flow the purchase came from.">
-        {stats.viaRows.length === 0
-          ? <Empty text="No purchases yet." />
-          : <Table head={['Placement', 'Purchases']} rows={stats.viaRows.map((v) => [v.via, v.n])} />}
-      </Section>
+      {/* ═══ Section 2 — Users ═══ */}
+      <SectionHead n="2" title="Users" />
+      <div style={cardRow}>
+        <Stat label="Active users" value={stats.activeUsers} hint="logged in + played a game" />
+        <Stat label="New sign-ups" value={userCounts.newSignups} hint="accounts created in window" />
+        <Stat label="New paying users" value={userCounts.newPaying} hint="converted to paid in window" />
+      </div>
 
-      {/* Plays by tier + top games */}
-      <Section title="What gets played" sub="game_open grouped by player state, then by game.">
-        <Table head={['Game', 'Total plays', 'Free', 'Paid']}
-          rows={stats.topGames.map((g) => [g.gameId, g.total, g.free, g.paid])} />
-      </Section>
-
-      {/* Top clicks */}
-      <Section title="Top button clicks" sub="landing_click intents across landing + hub.">
-        <Table head={['Button', 'Clicks']} rows={stats.topClicks.map((c) => [c.id, c.n])} />
-      </Section>
-
-      {/* Users */}
-      <Section title={`Users (${prodUsers.length})`} sub="Lifecycle: when each account first appeared and if/when they converted.">
-        {prodUsers.length === 0
-          ? <Empty text="No signed-in users yet." />
-          : <Table head={['Email', 'First seen', 'Converted', 'Via', 'Source']}
-              rows={[...prodUsers]
-                .sort((a, b) => (tsToDate(b.createdAt)?.getTime() || 0) - (tsToDate(a.createdAt)?.getTime() || 0))
-                .map((u) => [
-                  u.email || u.uid,
-                  fmtDay(u.createdAt),
-                  u.convertedAt ? fmtDay(u.convertedAt) : '—',
-                  u.paidVia || '—',
-                  u.firstTouchSrc || '—',
-                ])} />}
-      </Section>
-
-      {/* Raw events */}
-      <Section title="Recent events (latest 100)" sub="Full log is in the CSV/JSON export above.">
+      {/* ═══ Section 3 — Others ═══ */}
+      <SectionHead n="3" title="Others" />
+      <Section title="Recent events" sub="Latest 100 in this window. Full set is in the CSV/JSON export above.">
         <Table
           head={['When', 'Event', 'Tier', 'Game/Detail', 'Src', 'Who']}
           mono
@@ -236,106 +284,103 @@ export default function AnalyticsAdminPage() {
   );
 }
 
-function stripTs(e) {
-  return { ...e, timestamp: tsToDate(e.timestamp)?.toISOString() ?? null };
-}
-
 // ── stats engine ───────────────────────────────────────────────────────────
 function computeStats(rows) {
-  const visitors = new Set();
-  const engaged = new Set(); // fired ≥1 interaction (not just a passive view)
-  const signedIn = new Set();
-  const paying = new Set();
-  const landingSet = new Set();
-  const checkoutSet = new Set();
-  const playSet = new Set();
-  const purchaseSet = new Set();
-
-  const srcMap = new Map();   // src → {visitors:Set, signedIn:Set, paid:Set}
-  const viaMap = new Map();   // via → count (purchases)
-  const gameMap = new Map();  // gameId → {total, free, paid}
-  const clickMap = new Map(); // buttonId → count
-
-  const srcEntry = (s) => {
-    const k = s || 'direct';
-    if (!srcMap.has(k)) srcMap.set(k, { visitors: new Set(), signedIn: new Set(), paid: new Set() });
-    return srcMap.get(k);
-  };
+  // ───── Funnel A: landing universe, keyed by anonId (anonId is on every
+  // event, so it stitches a person across the login boundary). ─────
+  const aUniverse = new Set();
+  const aSrc = new Map();          // src → Set(anonId)
+  const aPlayed = new Set();
+  const aClicks = new Map();       // buttonId → Set(anonId)
+  const aSigned = new Set();
+  const aCheckout = new Set();
+  const aCheckoutVia = new Map();  // via → Set(anonId)
+  const aPurchased = new Set();
 
   for (const e of rows) {
-    const p = personKey(e);
-    visitors.add(p);
-    // "Engaged" = did something beyond passively loading a page. A page_view /
-    // session_start alone (typical of a crawler) doesn't count.
-    if (e.event !== 'page_view' && e.event !== 'session_start') engaged.add(p);
-    srcEntry(e.src).visitors.add(p);
-    if (e.userId) { signedIn.add(e.userId); srcEntry(e.src).signedIn.add(e.userId); }
-    if (e.tier === 'paid') paying.add(e.userId || p);
-
+    if (e.event === 'page_view' && (e.page === 'landing' || e.page === 'landing_v2') && e.anonId) {
+      aUniverse.add(e.anonId);
+      addToSetMap(aSrc, e.src || 'direct', e.anonId);
+    }
+  }
+  for (const e of rows) {
+    const a = e.anonId;
+    if (!a || !aUniverse.has(a)) continue;
+    if (e.userId) aSigned.add(a); // any identified event = they signed in
     switch (e.event) {
-      case 'page_view':
-        if (e.page === 'landing' || e.page === 'landing_v2') landingSet.add(p);
-        break;
-      case 'checkout_view': checkoutSet.add(p); break;
-      case 'purchase_success': {
-        purchaseSet.add(p);
-        srcEntry(e.src).paid.add(e.userId || p);
-        const v = e.via || 'direct';
-        viaMap.set(v, (viaMap.get(v) || 0) + 1);
-        break;
-      }
-      case 'game_open': {
-        playSet.add(p);
-        const id = e.gameId || 'unknown';
-        if (!gameMap.has(id)) gameMap.set(id, { total: 0, free: 0, paid: 0 });
-        const g = gameMap.get(id);
-        g.total++;
-        if (e.tier === 'paid') g.paid++; else g.free++;
-        break;
-      }
+      case 'game_open': aPlayed.add(a); break;
       case 'landing_click':
-        if (e.buttonId) clickMap.set(e.buttonId, (clickMap.get(e.buttonId) || 0) + 1);
+        // "Other" interactions exclude the demo-play taps (counted as iia).
+        if (e.buttonId && !e.buttonId.startsWith('demo_play') && e.buttonId !== 'demo_autoadvance') {
+          addToSetMap(aClicks, e.buttonId, a);
+        }
         break;
+      case 'checkout_view':
+        aCheckout.add(a);
+        addToSetMap(aCheckoutVia, e.via || 'direct', a);
+        break;
+      case 'purchase_success': aPurchased.add(a); break;
       default: break;
     }
   }
 
-  const sources = [...srcMap.entries()]
-    .map(([src, v]) => ({ src, visitors: v.visitors.size, signedIn: v.signedIn.size, paid: v.paid.size }))
-    .sort((a, b) => b.visitors - a.visitors);
+  // ───── Funnel B: hub universe, keyed by userId (logged-in). ─────
+  const bUniverse = new Set();
+  const bPaid = new Set();
+  const bFree = new Set();
+  const bPaidGame = new Map();     // gameId → Set(userId)
+  const bFreeGame = new Map();
+  const bFreeCheckout = new Set();
+  const bCheckoutVia = new Map();
+  const bPurchased = new Set();
 
-  const viaRows = [...viaMap.entries()].map(([via, n]) => ({ via, n })).sort((a, b) => b.n - a.n);
+  for (const e of rows) {
+    if (e.event === 'page_view' && e.page === 'hub' && e.userId) bUniverse.add(e.userId);
+  }
+  for (const e of rows) {
+    const u = e.userId;
+    if (!u || !bUniverse.has(u)) continue;
+    switch (e.event) {
+      case 'game_open': {
+        const id = e.gameId || 'unknown';
+        if (e.tier === 'paid') { bPaid.add(u); addToSetMap(bPaidGame, id, u); }
+        else { bFree.add(u); addToSetMap(bFreeGame, id, u); }
+        break;
+      }
+      case 'checkout_view':
+        if (e.tier !== 'paid') { bFreeCheckout.add(u); addToSetMap(bCheckoutVia, e.via || 'direct', u); }
+        break;
+      case 'purchase_success': bPurchased.add(u); break;
+      default: break;
+    }
+  }
 
-  const topGames = [...gameMap.entries()]
-    .map(([gameId, g]) => ({ gameId, ...g }))
-    .sort((a, b) => b.total - a.total);
-
-  const topClicks = [...clickMap.entries()].map(([id, n]) => ({ id, n })).sort((a, b) => b.n - a.n).slice(0, 25);
-
-  let freePlays = 0, paidPlays = 0;
-  for (const g of topGames) { freePlays += g.free; paidPlays += g.paid; }
+  // ───── Section 2: active users (logged in AND played a game). ─────
+  const activeUsers = new Set();
+  for (const e of rows) if (e.event === 'game_open' && e.userId) activeUsers.add(e.userId);
 
   return {
-    visitors: visitors.size,
-    engagedVisitors: engaged.size,
-    signedIn: signedIn.size,
-    paying: paying.size,
-    totalPlays: freePlays + paidPlays,
-    freePlays, paidPlays,
-    // Milestones in journey order, each as a share of unique visitors. NOT a
-    // strictly-nested funnel — demo plays are anonymous (before sign-in), so
-    // "Played a game" can exceed "Signed in". `signedIn.size` = distinct
-    // accounts (matches the summary card), more robust than counting
-    // signin_success events that may scroll out of the event window.
-    funnelDenom: engaged.size,
-    funnel: [
-      { label: 'Visited landing', count: landingSet.size },
-      { label: 'Played a game', count: playSet.size },
-      { label: 'Signed in', count: signedIn.size },
-      { label: 'Reached checkout', count: checkoutSet.size },
-      { label: 'Purchased', count: purchaseSet.size },
-    ],
-    sources, viaRows, topGames, topClicks,
+    funnelA: {
+      universe: aUniverse.size,
+      sources: setMapRows(aSrc),
+      played: aPlayed.size,
+      clicks: setMapRows(aClicks).slice(0, 5),
+      signed: aSigned.size,
+      checkout: aCheckout.size,
+      checkoutVia: setMapRows(aCheckoutVia),
+      purchased: aPurchased.size,
+    },
+    funnelB: {
+      universe: bUniverse.size,
+      paidPlayers: bPaid.size,
+      paidGames: setMapRows(bPaidGame),
+      freePlayers: bFree.size,
+      freeGames: setMapRows(bFreeGame),
+      freeCheckout: bFreeCheckout.size,
+      checkoutVia: setMapRows(bCheckoutVia),
+      purchased: bPurchased.size,
+    },
+    activeUsers: activeUsers.size,
   };
 }
 
@@ -344,6 +389,18 @@ const selectStyle = {
   fontFamily: fonts.display, fontWeight: 700, fontSize: 13, color: colors.text,
   background: '#FFFFFF', border: `1px solid ${colors.border}`, borderRadius: 9999, padding: '9px 14px', cursor: 'pointer',
 };
+const chipLabel = {
+  display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: fonts.display, fontWeight: 700,
+  fontSize: 13, color: colors.text, background: '#FFFFFF', border: `1px solid ${colors.border}`,
+  borderRadius: 9999, padding: '9px 14px', cursor: 'pointer',
+};
+const tfBtn = (active) => ({
+  fontFamily: fonts.display, fontWeight: 800, fontSize: 13,
+  color: active ? '#FFFFFF' : colors.text,
+  background: active ? colors.blueberryDark : '#FFFFFF',
+  border: `1px solid ${active ? colors.blueberryDark : colors.border}`,
+  borderRadius: 9999, padding: '9px 16px', cursor: 'pointer',
+});
 const cardRow = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 24 };
 
 function Btn({ children, onClick }) {
@@ -352,6 +409,16 @@ function Btn({ children, onClick }) {
       background: colors.blueberryDark, color: '#FFFFFF', border: 'none', borderRadius: 9999,
       padding: '9px 16px', fontFamily: fonts.display, fontWeight: 800, fontSize: 13, cursor: 'pointer',
     }}>{children}</button>
+  );
+}
+
+function SectionHead({ n, title }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '14px 0 12px' }}>
+      <span style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 13, color: '#FFFFFF', background: colors.text, borderRadius: 9999, width: 24, height: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{n}</span>
+      <h2 style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 19, color: colors.text, margin: 0 }}>{title}</h2>
+      <div style={{ flex: 1, height: 1, background: colors.border }} />
+    </div>
   );
 }
 
@@ -369,14 +436,21 @@ function Stat({ label, value, hint }) {
 
 function Section({ title, sub, children }) {
   return (
-    <section style={{ marginBottom: 26 }}>
-      <h2 style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 16, color: colors.text, margin: '0 0 2px' }}>{title}</h2>
+    <section style={{ marginBottom: 22 }}>
+      <h3 style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 15, color: colors.text, margin: '0 0 2px' }}>{title}</h3>
       {sub && <div style={{ fontFamily: fonts.body, fontSize: 12, color: colors.muted, marginBottom: 10 }}>{sub}</div>}
       <div style={{ background: '#FFFFFF', border: `1px solid ${colors.border}`, borderRadius: 14, padding: '12px 14px' }}>
         {children}
       </div>
     </section>
   );
+}
+
+function StepLabel({ children }) {
+  return <div style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 12, color: colors.text, margin: '12px 0 6px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{children}</div>;
+}
+function SubLabel({ children }) {
+  return <div style={{ fontFamily: fonts.body, fontWeight: 800, fontSize: 11, color: colors.muted, margin: '6px 0 2px 2px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{children}</div>;
 }
 
 function FunnelBar({ label, count, total }) {
@@ -391,6 +465,15 @@ function FunnelBar({ label, count, total }) {
       <div style={{ height: 10, background: '#F0EBE3', borderRadius: 9999, overflow: 'hidden' }}>
         <div style={{ width: `${w}%`, height: '100%', background: colors.blueberryDark, borderRadius: 9999 }} />
       </div>
+    </div>
+  );
+}
+
+// Indented mini-table for a step's breakdown.
+function Breakdown({ head, rows, empty }) {
+  return (
+    <div style={{ margin: '2px 0 14px 14px', borderLeft: `2px solid ${colors.border}`, paddingLeft: 12 }}>
+      {rows.length === 0 ? <Empty text={empty || 'No data.'} /> : <Table head={head} rows={rows} />}
     </div>
   );
 }
@@ -414,7 +497,7 @@ function Table({ head, rows, mono }) {
 }
 
 function Empty({ text }) {
-  return <div style={{ fontFamily: fonts.body, fontSize: 13, color: colors.muted, padding: '8px 2px' }}>{text}</div>;
+  return <div style={{ fontFamily: fonts.body, fontSize: 13, color: colors.muted, padding: '6px 2px' }}>{text}</div>;
 }
 
 function Frame({ children }) {

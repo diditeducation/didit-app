@@ -102,6 +102,9 @@ those are written from `env: "local"` and filtered out of the dashboard by the
 - **You must be signed in as the admin account** (`did.it.education@gmail.com`);
   anyone else sees "Not authorised."
 - Updates itself live. Reads the most-recent **5000** events (`EVENTS_LIMIT`).
+- **Time-frame toggle:** **Day** (24h) / **Week** (7d) / **Month** (30d) / **All**.
+  Filters every section — funnels, user counts, recent events, and exports — to
+  events (and `users` createdAt/convertedAt) inside that window. Defaults to Week.
 - **Env filter** defaults to **Prod only** (hides localhost/dev noise).
 - **"Exclude admin/test"** toggle (on by default) removes your own and the test
   account's activity — and not just their signed-in rows: it drops their *whole
@@ -110,10 +113,21 @@ those are written from `env: "local"` and filtered out of the dashboard by the
   list lives in `AnalyticsAdminPage.jsx` (`INTERNAL_EMAILS` / `INTERNAL_UIDS`) —
   keep it in sync with the admin UID in `firestore.rules` and
   `TEST_MEMBER_EMAILS` in `SubscriptionContext`.
-- Sections: summary cards · funnel · marketing sources · conversions by `via` ·
-  plays by tier & game · top clicks · user table · recent raw events.
-- **Download buttons:** Events CSV · Events JSON · Users CSV — for your own
-  analysis. Exports the currently-filtered set (capped at 5000).
+- **Three sections:**
+  - **1 · Funnel & Interaction** — two funnels, each bar = share of its universe:
+    - **Funnel A — Landing visitors** (universe = anyone who viewed the landing;
+      keyed by `anonId` so it follows them through sign-in): Visited landing
+      (+ top sources) → Played a demo / Other landing interactions (top 5) →
+      Signed in → Reached checkout (+ split by `via`) → Purchased.
+    - **Funnel B — Logged-in hub visitors** (universe = signed-in users who
+      opened the hub; keyed by `userId`): Visited hub → Paying players (+ by
+      game) → Free players (+ by game) → Free users reached checkout (+ by
+      `via`) → Purchased.
+  - **2 · Users** — Active users (logged in **and** played a game), New sign-ups
+    (`users.createdAt` in window), New paying users (`users.convertedAt` in window).
+  - **3 · Others** — recent raw events (latest 100 in window).
+- **Download buttons:** Events CSV · Events JSON · Users CSV — exports the
+  currently-filtered set (time-frame + env + exclude-internal all apply).
 
 ---
 
