@@ -4,6 +4,15 @@
 Vite + React toddler learning game suite.
 Design system lives in src/design-system/.
 
+## Keep ANALYTICS.md current — always
+ANALYTICS.md (repo root) is the owner-facing analytics guide
+(what's tracked, the database, the dashboard, the verify
+steps). Whenever analytics change — a new tracked event or
+event field, a new collection, a dashboard section, a
+firestore.rules change, or a new /go marketing convention —
+update ANALYTICS.md in the SAME change (and bump its "Last
+updated" date) alongside AUDIT.md §9.
+
 ## Keep AUDIT.md current — always
 AUDIT.md (repo root) is the living map: project structure,
 component roles, the content "sync map", and dead-code
