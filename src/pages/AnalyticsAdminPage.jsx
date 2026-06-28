@@ -143,14 +143,14 @@ export default function AnalyticsAdminPage() {
 
       {/* Summary */}
       <div style={cardRow}>
-        <Stat label="Unique visitors" value={stats.visitors} hint="distinct anonId" />
+        <Stat label="Visitors" value={stats.engagedVisitors} hint={`engaged · ${stats.visitors.toLocaleString()} incl. passive/bots`} />
         <Stat label="Signed in" value={stats.signedIn} hint="distinct accounts" />
-        <Stat label="Paying" value={stats.paying} hint={`${pct(stats.paying, stats.visitors)} of visitors`} />
+        <Stat label="Paying" value={stats.paying} hint={`${pct(stats.paying, stats.engagedVisitors)} of visitors`} />
         <Stat label="Game plays" value={stats.totalPlays} hint={`${stats.freePlays} free · ${stats.paidPlays} paid`} />
       </div>
 
       {/* Funnel */}
-      <Section title="Funnel — landing → conversion → play" sub="Distinct people reaching each milestone, as % of unique visitors. These are NOT strictly nested (demo plays are anonymous, before sign-in), so each bar is its own share of visitors — not a step-to-step drop-off.">
+      <Section title="Funnel — landing → conversion → play" sub="Distinct people reaching each milestone, as % of engaged visitors (anonIds with ≥1 interaction). NOT strictly nested — demo plays are anonymous and happen before sign-in — so each bar is its own share, not a step-to-step drop-off.">
         {stats.funnel.map((s) => (
           <FunnelBar key={s.label} label={s.label} count={s.count} total={stats.funnelDenom} />
         ))}
@@ -221,6 +221,7 @@ function stripTs(e) {
 // ── stats engine ───────────────────────────────────────────────────────────
 function computeStats(rows) {
   const visitors = new Set();
+  const engaged = new Set(); // fired ≥1 interaction (not just a passive view)
   const signedIn = new Set();
   const paying = new Set();
   const landingSet = new Set();
@@ -242,6 +243,9 @@ function computeStats(rows) {
   for (const e of rows) {
     const p = personKey(e);
     visitors.add(p);
+    // "Engaged" = did something beyond passively loading a page. A page_view /
+    // session_start alone (typical of a crawler) doesn't count.
+    if (e.event !== 'page_view' && e.event !== 'session_start') engaged.add(p);
     srcEntry(e.src).visitors.add(p);
     if (e.userId) { signedIn.add(e.userId); srcEntry(e.src).signedIn.add(e.userId); }
     if (e.tier === 'paid') paying.add(e.userId || p);
@@ -291,6 +295,7 @@ function computeStats(rows) {
 
   return {
     visitors: visitors.size,
+    engagedVisitors: engaged.size,
     signedIn: signedIn.size,
     paying: paying.size,
     totalPlays: freePlays + paidPlays,
@@ -300,7 +305,7 @@ function computeStats(rows) {
     // "Played a game" can exceed "Signed in". `signedIn.size` = distinct
     // accounts (matches the summary card), more robust than counting
     // signin_success events that may scroll out of the event window.
-    funnelDenom: visitors.size,
+    funnelDenom: engaged.size,
     funnel: [
       { label: 'Visited landing', count: landingSet.size },
       { label: 'Played a game', count: playSet.size },
@@ -353,7 +358,7 @@ function Section({ title, sub, children }) {
 }
 
 function FunnelBar({ label, count, total }) {
-  const share = total ? (count / total) * 100 : 0;
+  const share = total ? Math.min(100, (count / total) * 100) : 0;
   const w = count > 0 ? Math.max(2, Math.round(share)) : 0;
   return (
     <div style={{ marginBottom: 8 }}>

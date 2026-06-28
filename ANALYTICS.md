@@ -151,15 +151,22 @@ enforced.
   demo plays are anonymous and happen *before* sign-in, so "Played a game" can
   (and does) exceed "Signed in". Don't read it as a clean top-to-bottom
   conversion rate — read each bar as "X% of visitors did this".
-- **"Unique visitors" is inflated by bots + private mode.** `anonId` lives in
-  browser storage; search crawlers and incognito sessions mint a fresh id each
-  visit (and may land on `/about` or `/demo/*` from the sitemap without ever
-  hitting the homepage — which is why visitors ≫ "Visited landing"). Your real
-  human count is lower than the headline. Treat trends over time as more
-  reliable than the absolute number.
-- **"Signed in" can differ between the summary card and per-source table:** the
-  card / funnel count distinct accounts (`userId`); a future bot-filter would
-  change both together.
+- **Bot filtering is active, in two layers:**
+  1. **Capture-time** (`analytics.js` `isBot()`): events from known crawler /
+     preview / automation user-agents and `navigator.webdriver` are **not
+     written** at all — keeps the database clean going forward. Only catches
+     JS-running bots (non-JS crawlers never fire analytics anyway).
+  2. **Dashboard-time:** the headline **"Visitors" = *engaged* visitors** —
+     `anonId`s that fired at least one *interaction* (click / play / sign-in /
+     checkout), not just a passive `page_view`. A bot or drive-by that only
+     loads a page doesn't count. The card's hint shows the raw total
+     (`N incl. passive/bots`) for comparison, and the funnel is a share of
+     engaged visitors.
+- **Still, treat absolute counts as approximate** — a determined headless
+  scraper with a real browser UA that also clicks could slip through. Trends
+  over time remain more reliable than any single absolute number.
+- **"Signed in" counts distinct accounts (`userId`)** in both the summary card
+  and the funnel, so they agree.
 
 ## Limits worth knowing
 

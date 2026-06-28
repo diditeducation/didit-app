@@ -86,7 +86,20 @@ function getEnv() {
   return 'prod';
 }
 
+// Lightweight bot filter — keeps crawler/preview/automation hits out of the
+// event log so "unique visitors" reflects humans. Only catches JS-running bots
+// (non-JS crawlers never fire analytics anyway). Conservative word list +
+// navigator.webdriver (set by headless/automation). Real users won't match.
+const BOT_RE = /bot|crawl|spider|slurp|mediapartners|facebookexternalhit|embedly|quora|pinterest|redditbot|whatsapp|telegram|slackbot|discordbot|headless|lighthouse|chrome-lighthouse|phantomjs|puppeteer|playwright|selenium|python-requests|axios|node-fetch|curl|wget|httpclient|monitoring|uptime|pingdom|gtmetrix|semrush|ahrefs|mj12|dotbot|petalbot|yandex|duckduck|baidu|sogou|exabot|applebot|googlebot|bingpreview|google-inspectiontool/i;
+function isBot() {
+  try {
+    if (navigator.webdriver) return true;
+    return BOT_RE.test(navigator.userAgent || '');
+  } catch { return false; }
+}
+
 function write(payload) {
+  if (isBot()) return Promise.resolve(); // drop crawler/automation hits
   return addDoc(collection(db, 'events'), {
     ...payload,
     ...getUser(),
