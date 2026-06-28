@@ -23,7 +23,7 @@ const DEMO_GAMES = {
 };
 import { GAME_ILLUSTRATIONS } from '../components/GameIllustrations';
 import Price from '../components/Price';
-import { PRICE_NOTE } from '../config';
+import { PRICE_NOTE, PRICE_HEADLINE, PRICE_CTA } from '../config';
 
 // Concept lifestyle photos (text baked into each image). Each flips on tap to
 // reveal the game it points to and a short write-up of what it builds.
@@ -473,6 +473,7 @@ export default function ConversionLanding() {
 .lp-wave svg{width:100%;height:100%;display:block}
 .lp-wave-bottom{bottom:-40px}
 .lp-cta-inner{position:relative;z-index:2;text-align:center;padding:20px 24px 0}
+.lp-cta-head{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(20px,3vw,28px);color:#1A1A1A;letter-spacing:-0.01em;margin-bottom:18px}
 .lp-cta-bob{display:inline-block;animation:lpCtaBob 3s ease-in-out infinite}
 @keyframes lpCtaBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 /* Chunky, tactile "press me" button with a colored ledge */
@@ -660,7 +661,7 @@ export default function ConversionLanding() {
                       style={{ background: selectedGame.colorDark }}
                       onClick={() => goCheckout(`tablet_unlock_${selectedGame.id}`)}
                     >
-                      🔓 Unlock to play
+                      🔓 Unlock all games · <Price />
                     </button>
                   </div>
                 )}
@@ -671,12 +672,13 @@ export default function ConversionLanding() {
 
           {/* Conversion CTA — sits on the green base of the shared gradient zone */}
           <div className="lp-cta-inner">
+            <div className="lp-cta-head">{PRICE_HEADLINE}</div>
             <span className="lp-cta-bob">
               <button className="lp-cta-btn" onClick={() => goCheckout('unlock_main')}>
-                Unlock every game · <Price />
+                {PRICE_CTA} · <Price />
               </button>
             </span>
-            <div className="lp-cta-sub">{PRICE_NOTE} · One payment, yours forever · No subscription</div>
+            <div className="lp-cta-sub">{PRICE_NOTE}</div>
           </div>
         </div>
 

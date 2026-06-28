@@ -11,6 +11,7 @@ import { useDemo } from '../../context/DemoContext';
 import DiditLogo from '../../components/DiditLogo';
 import { colors } from '../tokens';
 import { GAME_ILLUSTRATIONS as ILLUSTRATIONS } from '../../components/GameIllustrations';
+import { PRICE, PRICE_NOTE, PRICE_HEADLINE } from '../../config';
 
 const KEYFRAMES_ID = 'didit-success-screen-keyframes';
 
@@ -242,14 +243,17 @@ export default function SuccessScreen({ visible, gameName, learnedText, learnedS
           <p style={{ ...subheadingStyle, maxWidth: 340, fontWeight: 700 }}>
             {onAdvance
               ? 'Nice work! Loading another free game to try…'
-              : "That's just a taste. Unlock every game and keep the real-world adventures going."}
+              : `That's just a taste. ${PRICE_HEADLINE}.`}
           </p>
           <button
             style={{ ...primaryBtnStyle, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '16px 0', fontSize: '1rem', background: colors.lime, color: '#1A1A1A', gap: 8 }}
             onClick={() => { trackSuccessClick('demo_unlock', gameId); nav('/checkout?via=demo_success'); }}
           >
-            <span>🔓</span><span>Unlock all games</span>
+            <span>🔓</span><span>Unlock all games · {PRICE}</span>
           </button>
+          <p style={{ margin: '2px 0 0', fontSize: '0.74rem', fontWeight: 700, color: '#9A8F82', textAlign: 'center', maxWidth: 340, lineHeight: 1.4 }}>
+            {PRICE_NOTE}
+          </p>
           <button
             style={{ ...btnBase, flex: '0 0 auto', width: '100%', maxWidth: 340, padding: '14px 0', fontSize: '0.95rem', background: 'color-mix(in srgb, var(--game-primary) 12%, transparent)', color: 'var(--game-primary)' }}
             onClick={() => {

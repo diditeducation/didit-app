@@ -7,7 +7,7 @@ import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
 import DiditLogo from '../components/DiditLogo';
 import Price from '../components/Price';
-import { STRIPE_ENABLED, PRICE_NOTE } from '../config';
+import { STRIPE_ENABLED, PRICE_NOTE, PRICE_CTA } from '../config';
 import { startCheckout } from '../stripe';
 import { trackCheckoutView, trackCheckoutStart } from '../analytics';
 import { GAMES } from '../data/games';
@@ -80,9 +80,9 @@ export default function Checkout() {
   };
 
   const perks = [
-    ['Yours forever', 'One payment — lifetime access, no subscription'],
-    ['All games unlocked', 'Finance, coding, music, science & more'],
-    ['Future games included', 'New games added at no extra cost'],
+    ['Everything in our library', 'All our games — finance, coding, music, science & more'],
+    ['Yours forever', 'One payment, no subscription, nothing to cancel'],
+    ['A growing library', 'We keep adding new games as we grow'],
     ['Made for co-play', 'Designed for you and your child together'],
     ['Zero ads, ever', 'A calm, safe, distraction-free space'],
   ];
@@ -129,7 +129,7 @@ export default function Checkout() {
           opacity: busy ? 0.7 : 1,
         }}
       >
-        {busy ? 'Redirecting to secure checkout…' : <>Get the Family Pass · <Price /></>}
+        {busy ? 'Redirecting to secure checkout…' : <>{PRICE_CTA} · <Price /></>}
       </button>
 
       {notice && (

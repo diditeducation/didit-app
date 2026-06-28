@@ -13,10 +13,15 @@ export const SHOW_BETA = true;
 export const PRICE = '$29';
 // Label appended by <Price suffix /> — reads "one-time", not "/month".
 export const PRICE_MODEL = 'one-time';
-// Honest founding-price note shown near the price during the beta window —
-// implies the price will rise without a fake "was/now" anchor. Set to '' to
-// remove it everywhere once founding pricing ends (and bump PRICE).
-export const PRICE_NOTE = 'Founding price for a limited time';
+
+// Workshopped conversion copy — single source so every funnel surface matches.
+// NOTE: intentionally signals a growing library WITHOUT promising specific
+// future games are included — "founding member · perks as we grow" rewards
+// early buyers without over-committing to give away all future content.
+export const PRICE_HEADLINE = 'Everything in our library, yours to play';
+export const PRICE_CTA = 'Unlock the full games library'; // price appended at call sites
+export const PRICE_NOTE =
+  'Be a founding member and get this limited time price · One payment only · Early supporters get perks as we grow';
 
 // ── Stripe checkout ────────────────────────────────────────────────────────
 // The Stripe Price ID for the one-time Family Pass (a `mode: payment` price,
