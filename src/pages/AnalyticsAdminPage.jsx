@@ -22,6 +22,14 @@ const ADMIN_EMAILS = [
 
 const EVENTS_LIMIT = 5000; // most-recent N events; raise if you outgrow it
 
+// Your own + test accounts — excluded by default so internal activity doesn't
+// skew the numbers. Keep in sync with ADMIN UID in firestore.rules and
+// TEST_MEMBER_EMAILS in SubscriptionContext.
+const INTERNAL_EMAILS = ['did.it.education@gmail.com', 'lee.nigel.t@gmail.com'];
+const INTERNAL_UIDS = ['bTlG8YZn8INNvHYvONf8u8LqK033']; // did.it.education@gmail.com
+const isInternalRow = (e) =>
+  INTERNAL_EMAILS.includes((e.userEmail || '').toLowerCase()) || INTERNAL_UIDS.includes(e.userId);
+
 // ── helpers ────────────────────────────────────────────────────────────────
 function tsToDate(ts) {
   if (!ts) return null;
@@ -88,6 +96,7 @@ export default function AnalyticsAdminPage() {
   const [users, setUsers] = useState(null);
   const [error, setError] = useState(null);
   const [env, setEnv] = useState('prod'); // 'prod' | 'all'
+  const [excludeInternal, setExcludeInternal] = useState(true); // hide admin/test
 
   const isAdmin = !!user && ADMIN_EMAILS.includes((user.email || '').toLowerCase());
 
@@ -106,10 +115,16 @@ export default function AnalyticsAdminPage() {
     return () => { unsubE(); unsubU(); };
   }, [isAdmin]);
 
-  const rows = useMemo(
-    () => (events || []).filter((e) => env === 'all' ? true : (e.env || 'prod') === 'prod'),
-    [events, env],
-  );
+  const rows = useMemo(() => {
+    const base = (events || []).filter((e) => env === 'all' ? true : (e.env || 'prod') === 'prod');
+    if (!excludeInternal) return base;
+    // Find the anonIds tied to any internal account, then drop that account's
+    // WHOLE session — including its pre-login (anonymous) browsing, not just the
+    // signed-in rows.
+    const internalAnon = new Set();
+    for (const e of base) if (isInternalRow(e) && e.anonId) internalAnon.add(e.anonId);
+    return base.filter((e) => !isInternalRow(e) && !(e.anonId && internalAnon.has(e.anonId)));
+  }, [events, env, excludeInternal]);
 
   const stats = useMemo(() => computeStats(rows), [rows]);
 
@@ -119,7 +134,10 @@ export default function AnalyticsAdminPage() {
   if (error) return <Frame><Centered title="Couldn't load analytics" text={error} /></Frame>;
   if (events === null || users === null) return <Frame><Centered text="Loading…" /></Frame>;
 
-  const prodUsers = users; // users aren't env-tagged; show all
+  // users aren't env-tagged; optionally drop internal accounts.
+  const prodUsers = excludeInternal
+    ? users.filter((u) => !INTERNAL_EMAILS.includes((u.email || '').toLowerCase()) && !INTERNAL_UIDS.includes(u.uid))
+    : users;
 
   return (
     <Frame>
@@ -131,6 +149,10 @@ export default function AnalyticsAdminPage() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: fonts.display, fontWeight: 700, fontSize: 13, color: colors.text, background: '#FFFFFF', border: `1px solid ${colors.border}`, borderRadius: 9999, padding: '9px 14px', cursor: 'pointer' }}>
+            <input type="checkbox" checked={excludeInternal} onChange={(e) => setExcludeInternal(e.target.checked)} style={{ cursor: 'pointer' }} />
+            Exclude admin/test
+          </label>
           <select value={env} onChange={(e) => setEnv(e.target.value)} style={selectStyle}>
             <option value="prod">Prod only</option>
             <option value="all">All envs (incl. local/dev)</option>

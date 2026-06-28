@@ -103,6 +103,13 @@ those are written from `env: "local"` and filtered out of the dashboard by the
   anyone else sees "Not authorised."
 - Updates itself live. Reads the most-recent **5000** events (`EVENTS_LIMIT`).
 - **Env filter** defaults to **Prod only** (hides localhost/dev noise).
+- **"Exclude admin/test"** toggle (on by default) removes your own and the test
+  account's activity — and not just their signed-in rows: it drops their *whole
+  session* (matched by the `anonId` tied to their account), so pre-login
+  browsing by internal accounts doesn't skew the numbers either. The internal
+  list lives in `AnalyticsAdminPage.jsx` (`INTERNAL_EMAILS` / `INTERNAL_UIDS`) —
+  keep it in sync with the admin UID in `firestore.rules` and
+  `TEST_MEMBER_EMAILS` in `SubscriptionContext`.
 - Sections: summary cards · funnel · marketing sources · conversions by `via` ·
   plays by tier & game · top clicks · user table · recent raw events.
 - **Download buttons:** Events CSV · Events JSON · Users CSV — for your own
