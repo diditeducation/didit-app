@@ -92,6 +92,7 @@ assert.equal(B.purchased, 1, 'B.purchased = u4');
 
 // ── Section 2 ──
 assert.equal(s.activeUsers, 4, 'activeUsers = u2,u3,u4,u5 (any signed-in game_open)');
+assert.equal(s.successfulPayments, 2, 'successfulPayments = p1 + u4 purchase_success events');
 
 // ── filterRows: env filter ──────────────────────────────────────────────────
 {

@@ -238,6 +238,7 @@ export default function AnalyticsAdminPage() {
         <Stat label="Active users" value={stats.activeUsers} hint="logged in + played a game" />
         <Stat label="New sign-ups" value={userCounts.newSignups} hint="accounts created in window" />
         <Stat label="New paying users" value={userCounts.newPaying} hint="converted to paid in window" />
+        <Stat label="Successful payments" value={stats.successfulPayments} hint="purchase events in window" />
       </div>
 
       {/* ═══ Section 3 — Others ═══ */}

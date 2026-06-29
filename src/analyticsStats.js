@@ -118,9 +118,14 @@ export function computeStats(rows) {
     }
   }
 
-  // ───── Section 2: active users (logged in AND played a game). ─────
+  // ───── Section 2: active users (logged in AND played a game) +
+  // successful payments (count of purchase_success events in window). ─────
   const activeUsers = new Set();
-  for (const e of rows) if (e.event === 'game_open' && e.userId) activeUsers.add(e.userId);
+  let successfulPayments = 0;
+  for (const e of rows) {
+    if (e.event === 'game_open' && e.userId) activeUsers.add(e.userId);
+    if (e.event === 'purchase_success') successfulPayments++;
+  }
 
   return {
     funnelA: {
@@ -144,5 +149,6 @@ export function computeStats(rows) {
       purchased: bPurchased.size,
     },
     activeUsers: activeUsers.size,
+    successfulPayments,
   };
 }

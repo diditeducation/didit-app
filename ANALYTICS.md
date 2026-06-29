@@ -4,7 +4,7 @@ _Plain-English guide to your data: what's collected, where it lives, how to read
 it, and how to verify it. For the developer-level taxonomy, see **AUDIT.md §9**.
 Keep this file current whenever analytics change (see "Keeping this current")._
 
-_Last updated: 2026-06-28._
+_Last updated: 2026-06-29._
 
 ---
 
@@ -124,7 +124,9 @@ those are written from `env: "local"` and filtered out of the dashboard by the
       game) → Free players (+ by game) → Free users reached checkout (+ by
       `via`) → Purchased.
   - **2 · Users** — Active users (logged in **and** played a game), New sign-ups
-    (`users.createdAt` in window), New paying users (`users.convertedAt` in window).
+    (`users.createdAt` in window), New paying users (`users.convertedAt` in window),
+    Successful payments (count of `purchase_success` events in window — a
+    cross-check on "new paying users", which is derived from the `users` table).
   - **3 · Others** — recent raw events (latest 100 in window).
 - **Download buttons:** Events CSV · Events JSON · Users CSV — exports the
   currently-filtered set (time-frame + env + exclude-internal all apply).
