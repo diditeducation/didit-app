@@ -152,20 +152,10 @@ export default function SignIn() {
               &ldquo;
             </span>
             <blockquote style={{ margin: 0 }}>
-              <p style={{ fontSize: '1.05rem', fontWeight: 800, color: colors.text, lineHeight: 1.4, letterSpacing: '-0.01em', margin: '0 0 14px' }}>
+              <p style={{ fontSize: '1.05rem', fontWeight: 800, color: colors.text, lineHeight: 1.4, letterSpacing: '-0.01em', margin: 0 }}>
                 {quote.text}
               </p>
             </blockquote>
-            {quote.author ? (
-              <figcaption style={{ lineHeight: 1.3 }}>
-                <span style={{ display: 'block', fontSize: '0.84rem', fontWeight: 800, color: colors.text }}>{quote.author}</span>
-                {quote.role && <span style={{ fontSize: '0.76rem', fontWeight: 600, color: colors.muted }}>{quote.role}</span>}
-              </figcaption>
-            ) : quote.caption ? (
-              <figcaption style={{ fontSize: '0.74rem', fontWeight: 800, color: colors.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                {quote.caption}
-              </figcaption>
-            ) : null}
           </figure>
         </div>
 
