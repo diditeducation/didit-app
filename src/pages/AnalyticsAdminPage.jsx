@@ -8,15 +8,15 @@ import { computeStats, filterRows, tsToMs, INTERNAL_EMAILS, INTERNAL_UIDS } from
 /**
  * Admin-only analytics dashboard at /admin/analytics.
  *
- * Three sections over a selectable time window (Day / Week / Month / All):
- *  1. Funnel & Interaction — two funnels:
+ * Three sections over a selectable time window (Day / Week / Month / All / From):
+ *  1. Users — active users, new sign-ups, new paying users, payments (in-window).
+ *  2. Funnel & Interaction — two funnels:
  *       A) Landing universe (keyed by anonId): visited landing → did activities
  *          (played a demo / other top-5 clicks) → signed in → reached checkout
  *          (split by via) → purchased.
  *       B) Hub universe (logged-in, keyed by userId): visited hub → paying
  *          players (by game) / free players (by game) → free reached checkout
  *          (by via) → purchased.
- *  2. Users — active users, new sign-ups, new paying users (in-window).
  *  3. Others — recent raw events.
  * Plus CSV/JSON export of the in-window, filtered data.
  *
@@ -211,8 +211,17 @@ export default function AnalyticsAdminPage() {
         </select>
       </div>
 
-      {/* ═══ Section 1 — Funnel & Interaction ═══ */}
-      <SectionHead n="1" title="Funnel & Interaction" />
+      {/* ═══ Section 1 — Users ═══ */}
+      <SectionHead n="1" title="Users" />
+      <div style={cardRow}>
+        <Stat label="Active users" value={stats.activeUsers} hint="logged in + played a game" />
+        <Stat label="New sign-ups" value={userCounts.newSignups} hint="accounts created in window" />
+        <Stat label="New paying users" value={userCounts.newPaying} hint="converted to paid in window" />
+        <Stat label="Successful payments" value={stats.successfulPayments} hint="purchase events in window" />
+      </div>
+
+      {/* ═══ Section 2 — Funnel & Interaction ═══ */}
+      <SectionHead n="2" title="Funnel & Interaction" />
 
       <Section title="Funnel A — Landing visitors" sub="Universe: everyone who viewed the landing page in this window. Each bar = share of those visitors.">
         {A.universe === 0 ? <Empty text="No landing visits in this window." /> : (
@@ -252,15 +261,6 @@ export default function AnalyticsAdminPage() {
           </>
         )}
       </Section>
-
-      {/* ═══ Section 2 — Users ═══ */}
-      <SectionHead n="2" title="Users" />
-      <div style={cardRow}>
-        <Stat label="Active users" value={stats.activeUsers} hint="logged in + played a game" />
-        <Stat label="New sign-ups" value={userCounts.newSignups} hint="accounts created in window" />
-        <Stat label="New paying users" value={userCounts.newPaying} hint="converted to paid in window" />
-        <Stat label="Successful payments" value={stats.successfulPayments} hint="purchase events in window" />
-      </div>
 
       {/* ═══ Section 3 — Others ═══ */}
       <SectionHead n="3" title="Others" />

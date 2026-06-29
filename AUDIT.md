@@ -41,7 +41,7 @@ One palette, one source: **`design-system/tokens.js`** drives colours everywhere
 | PrivacyPage | `/privacy` | ✅ Live — lean Privacy Policy (categories only, **no provider names**). Linked from SiteFooter + checkout. Shares `LegalPage`. |
 | MarketingLanding | `/go/:source` | ✅ Live — identical to `/` but tags first-touch `src` from the path (e.g. `/go/instagram`). One page, per-channel links. |
 | FeedbackAdminPage | `/admin/feedback` | 🔧 Internal (no public link) |
-| AnalyticsAdminPage | `/admin/analytics` | 🔧 Internal (no public link) — time-framed (Day/Week/Month/All); §1 Funnel A (landing universe, by anonId) + Funnel B (hub universe, by userId); §2 Users (active/new/paying); §3 recent events; CSV/JSON export. Exclude-admin/test + env toggles. |
+| AnalyticsAdminPage | `/admin/analytics` | 🔧 Internal (no public link) — time-framed (Day/Week/Month/All + From-date); §1 Users (active/new-signups/new-paying/payments); §2 Funnel A (landing universe, by anonId) + Funnel B (hub universe, by userId); §3 recent events; CSV/JSON export. Exclude-admin/test + env toggles. |
 
 `components/GameIllustrations.jsx` = shared SVG illustration library (not a page). Moved out of `pages/` 2026-06-21.
 
