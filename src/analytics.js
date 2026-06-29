@@ -291,3 +291,12 @@ export function recordSignIn(method) {
 export function markConverted() {
   return upsertUserProfile({ convertedAt: serverTimestamp(), paidVia: getCheckoutVia(), paid: true });
 }
+
+/**
+ * Record the user's marketing-email opt-in on their profile (a timestamped
+ * consent record). Called after sign-in when they ticked the optional opt-in.
+ * Stores marketingOptIn + the time consent was given.
+ */
+export function setMarketingOptIn(optIn) {
+  return upsertUserProfile({ marketingOptIn: !!optIn, marketingOptInAt: serverTimestamp() });
+}

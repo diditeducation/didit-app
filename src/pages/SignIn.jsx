@@ -4,29 +4,18 @@ import { auth, googleProvider } from '../firebase'
 import { signInWithPopup, signInWithRedirect, getRedirectResult, sendSignInLinkToEmail, getAdditionalUserInfo } from 'firebase/auth'
 import { colors, fonts, radii } from '../design-system/tokens'
 import DiditLogo from '../components/DiditLogo'
-import { trackSignInView, trackSignInMethod, trackMagicLinkSent, trackSignInSuccess, recordSignIn } from '../analytics'
+import { trackSignInView, trackSignInMethod, trackMagicLinkSent, trackSignInSuccess, recordSignIn, setMarketingOptIn } from '../analytics'
+
+const MARKETING_KEY = 'didit_marketing_optin'
 
 // Pool of left-panel quotes — one is picked at random each visit. All are
 // about early childhood, play, and learning. `author`/`role` are optional;
 // `caption` is the brand fallback line when there's no person to attribute.
 const SIGNIN_QUOTES = [
-  {
-    text: 'Between ages 2 and 5, play is how the brain learns fastest.',
-    caption: 'The science of play',
-  },
-  {
-    text: 'Play is the fundamental "work" of childhood.',
-    caption: 'The science of play',
-  },
-  {
-    text: 'Almost all creativity involves purposeful play.',
-    author: 'Abraham Maslow',
-    role: 'American psychologist',
-  },
-  {
-    text: "We can't teach kids the jobs of year 2045, but we can teach them to stay curious.",
-    caption: "Built for what's next",
-  },
+  { text: 'Between ages 2 and 5, play is how the brain learns fastest.' },
+  { text: 'Play is the fundamental "work" of childhood.' },
+  { text: 'Almost all creativity involves purposeful play.' },
+  { text: "We can't teach kids the jobs of year 2045, but we can teach them to stay curious." },
 ]
 
 const getActionCodeSettings = (email) => ({
@@ -39,6 +28,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [marketing, setMarketing] = useState(false)
   // Pick one quote per mount so each visit can show a different one.
   const [quote] = useState(() => SIGNIN_QUOTES[Math.floor(Math.random() * SIGNIN_QUOTES.length)])
 
@@ -55,6 +45,8 @@ export default function SignIn() {
         if (result?.user) {
           trackSignInSuccess('google', getAdditionalUserInfo(result)?.isNewUser)
           recordSignIn('google')
+          if (localStorage.getItem(MARKETING_KEY) === '1') setMarketingOptIn(true)
+          localStorage.removeItem(MARKETING_KEY)
           navigate('/hub')
         } else setLoading(false)
       })
@@ -68,10 +60,13 @@ export default function SignIn() {
     setLoading(true)
     setError(null)
     trackSignInMethod('google')
+    localStorage.setItem(MARKETING_KEY, marketing ? '1' : '0') // survives redirect fallback
     try {
       const result = await signInWithPopup(auth, googleProvider)
       trackSignInSuccess('google', getAdditionalUserInfo(result)?.isNewUser)
       recordSignIn('google')
+      if (marketing) setMarketingOptIn(true)
+      localStorage.removeItem(MARKETING_KEY)
       navigate('/hub')
     } catch (err) {
       if (err.code === 'auth/popup-blocked' || err.code === 'auth/popup-closed-by-user' ||
@@ -93,6 +88,7 @@ export default function SignIn() {
       await sendSignInLinkToEmail(auth, email, getActionCodeSettings(email))
       trackMagicLinkSent()
       localStorage.setItem('didit_email', email)
+      localStorage.setItem(MARKETING_KEY, marketing ? '1' : '0') // applied in AuthCallback after sign-in
       navigate('/check-email')
     } catch (err) {
       setError(err.message)
@@ -251,6 +247,16 @@ export default function SignIn() {
           <p style={{ fontSize: '0.78rem', color: colors.muted, textAlign: 'center', margin: '12px 0 0', lineHeight: 1.4 }}>
             We&apos;ll email you a secure link to sign in &mdash; no password needed.
           </p>
+
+          <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, marginTop: 18, cursor: 'pointer', fontSize: '0.78rem', color: colors.muted, lineHeight: 1.45 }}>
+            <input
+              type="checkbox"
+              checked={marketing}
+              onChange={(e) => setMarketing(e.target.checked)}
+              style={{ marginTop: 2, width: 16, height: 16, flexShrink: 0, cursor: 'pointer', accentColor: colors.blueberryDark }}
+            />
+            <span>Send me occasional updates about new games and founding-member perks. No spam — unsubscribe anytime.</span>
+          </label>
 
           <p style={{ textAlign: 'center', marginTop: 18, fontSize: '0.8rem', color: colors.muted }}>
             <span onClick={() => navigate('/')} style={{ cursor: 'pointer', fontWeight: 800, color: colors.blueberryDark }}>← Back to home</span>

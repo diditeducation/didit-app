@@ -30,7 +30,7 @@ One palette, one source: **`design-system/tokens.js`** drives colours everywhere
 |---|---|---|
 | ConversionLanding | `/` (logged-out) | ✅ Live — primary landing |
 | Hub | `/` (logged-in), `/hub` | ✅ Live — primary hub |
-| SignIn | `/signin` | ✅ Live |
+| SignIn | `/signin` | ✅ Live — Google + email magic-link. Has an **optional, unticked marketing opt-in** checkbox; choice persists via `localStorage('didit_marketing_optin')` and writes to `users/{uid}.marketingOptIn` after auth (`setMarketingOptIn`) — Google path in SignIn, magic-link path in AuthCallback. |
 | CheckEmail | `/check-email` | ✅ Live (magic link) |
 | AuthCallback | `/auth/callback` | ✅ Live |
 | Checkout | `/checkout` | ✅ Live |

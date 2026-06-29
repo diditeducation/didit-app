@@ -21,6 +21,7 @@ export default function PrivacyPage() {
         <li>basic information about how the app is used, so we can keep it working and improve it.</li>
       </ul>
       <p>We <strong>don't run ads</strong>, and we <strong>don't sell your information</strong>.</p>
+      <p>If you opt in, we'll use your email to send occasional updates about new games and founding-member perks. You can unsubscribe at any time, and we'll never share your email with anyone else.</p>
 
       <h2>3. How we use it</h2>
       <p>To provide and secure Did·It, remember your purchase and sign you in, improve the games, understand how families find us, and respond to you.</p>

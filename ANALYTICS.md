@@ -73,6 +73,7 @@ those are written from `env: "local"` and filtered out of the dashboard by the
 | `createdAt` | ≈ when they became a **free** user (stamped once) |
 | `lastSeenAt`, `lastSignInMethod` | recency + google/email |
 | `convertedAt` / `paidVia` / `paid` | when/how they became **paying** |
+| `marketingOptIn` / `marketingOptInAt` | opted in to marketing emails (set from the optional, unticked opt-in checkbox on sign-in) + when consent was given |
 
 > `users` is **analytics only, never entitlement.** A user can write their own
 > row, so `paid`/`convertedAt` are self-reportable. The real paywall truth is

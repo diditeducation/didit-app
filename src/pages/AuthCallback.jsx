@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { isSignInWithEmailLink, signInWithEmailLink, getAdditionalUserInfo } from 'firebase/auth'
-import { trackSignInSuccess, recordSignIn } from '../analytics'
+import { trackSignInSuccess, recordSignIn, setMarketingOptIn } from '../analytics'
 
 export default function AuthCallback() {
   const navigate = useNavigate()
@@ -23,6 +23,8 @@ export default function AuthCallback() {
           trackSignInSuccess('email', getAdditionalUserInfo(result)?.isNewUser)
           recordSignIn('email')
           localStorage.removeItem('didit_email')
+          if (localStorage.getItem('didit_marketing_optin') === '1') setMarketingOptIn(true)
+          localStorage.removeItem('didit_marketing_optin')
           navigate('/hub')
         })
         .catch((err) => {
