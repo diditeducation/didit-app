@@ -42,8 +42,16 @@ const ROUTE_META = {
     description: 'Sign in to Did·It to play real-world learning games with your child.',
   },
   '/checkout': {
-    title: 'Subscribe — Did·It',
-    description: 'Unlock every Did·It game for your family — real-world learning through play, with no ads.',
+    title: 'Unlock the full games library — Did·It',
+    description: 'Unlock every Did·It game for your family — real-world learning through play, with no ads. One-time founding price.',
+  },
+  '/terms': {
+    title: 'Terms of Use — Did·It',
+    description: 'The terms for using Did·It and the one-time Family Pass.',
+  },
+  '/privacy': {
+    title: 'Privacy Policy — Did·It',
+    description: 'How Did·It handles your information.',
   },
   // Private / transactional surfaces — keep out of search results.
   '/check-email': { title: 'Check your email — Did·It', noindex: true },

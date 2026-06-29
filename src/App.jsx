@@ -3,6 +3,8 @@ import { lazy, Suspense } from 'react';
 import ConversionLanding from './pages/ConversionLanding';
 import Hub from './pages/Hub';
 import AboutPage from './pages/AboutPage';
+import TermsPage from './pages/TermsPage';
+import PrivacyPage from './pages/PrivacyPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
 import AnalyticsAdminPage from './pages/AnalyticsAdminPage';
 import MarketingLanding from './pages/MarketingLanding';
@@ -59,7 +61,7 @@ function BetaBannerConditional() {
   // sign-up funnel surfaces, show inside the product (hub, games, admin).
   const hidden =
     pathname === '/' ||
-    ['/demo', '/go', '/signin', '/check-email', '/auth/callback', '/checkout', '/about'].some(
+    ['/demo', '/go', '/signin', '/check-email', '/auth/callback', '/checkout', '/about', '/terms', '/privacy'].some(
       (p) => pathname.startsWith(p)
     );
   if (hidden) return null;
@@ -89,6 +91,8 @@ export default function App() {
           <Route path="/demo/little-chef"     element={<DemoGamePage><ChefGame /></DemoGamePage>} />
 
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
           {/* Marketing-source landing — identical to `/` but tags the source */}
           <Route path="/go/:source" element={<MarketingLanding />} />
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />

@@ -34,6 +34,11 @@ export default function SiteFooter({ hideBeta = false }) {
         <div style={{ marginTop: 4 }}>Real-world concepts for tiny humans.</div>
       </div>
       <div style={{ textAlign: 'right' }}>
+        <div style={{ marginBottom: 4 }}>
+          <a href="/terms" style={{ color: colors.muted, textDecoration: 'underline', fontWeight: 700 }}>Terms</a>
+          <span style={{ margin: '0 8px' }}>·</span>
+          <a href="/privacy" style={{ color: colors.muted, textDecoration: 'underline', fontWeight: 700 }}>Privacy</a>
+        </div>
         <div>© 2026 did·it. All rights reserved.</div>
       </div>
     </footer>

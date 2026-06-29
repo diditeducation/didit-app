@@ -143,6 +143,12 @@ export default function Checkout() {
         <span style={{ fontSize: '0.76rem', fontWeight: 700 }}>Secured by Stripe · One-time payment</span>
       </div>
 
+      <p style={{ textAlign: 'center', margin: '10px 0 0', fontSize: '0.72rem', color: colors.muted, lineHeight: 1.5 }}>
+        By continuing you agree to our{' '}
+        <a href="/terms" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Terms</a>{' '}and{' '}
+        <a href="/privacy" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Privacy Policy</a>.
+      </p>
+
       {devEnabled && (
         <button
           onClick={() => { setDevMember(true); navigate('/hub'); }}
