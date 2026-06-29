@@ -80,12 +80,13 @@ function eventsToCSV(rows) {
   }
   return lines.join('\n');
 }
-const USER_COLS = ['email', 'uid', 'createdAt', 'convertedAt', 'paid', 'paidVia', 'firstTouchSrc', 'lastSignInMethod', 'lastSeenAt', 'anonId'];
+const USER_COLS = ['email', 'uid', 'marketingOptIn', 'marketingOptInAt', 'createdAt', 'convertedAt', 'paid', 'paidVia', 'firstTouchSrc', 'lastSignInMethod', 'lastSeenAt', 'anonId'];
+const USER_TS_COLS = new Set(['createdAt', 'convertedAt', 'lastSeenAt', 'marketingOptInAt']);
 function usersToCSV(rows) {
   const lines = [USER_COLS.join(',')];
   for (const r of rows) {
     lines.push(USER_COLS.map((c) => {
-      if (c === 'createdAt' || c === 'convertedAt' || c === 'lastSeenAt') return csvEscape(tsToDate(r[c])?.toISOString() ?? '');
+      if (USER_TS_COLS.has(c)) return csvEscape(tsToDate(r[c])?.toISOString() ?? '');
       return csvEscape(r[c]);
     }).join(','));
   }
@@ -152,6 +153,8 @@ export default function AnalyticsAdminPage() {
   const userCounts = useMemo(() => ({
     newSignups: usersShown.filter((u) => { const m = tsToMs(u.createdAt); return m != null && m >= cutoff; }).length,
     newPaying: usersShown.filter((u) => { const m = tsToMs(u.convertedAt); return m != null && m >= cutoff; }).length,
+    newOptIns: usersShown.filter((u) => { const m = tsToMs(u.marketingOptInAt); return m != null && m >= cutoff; }).length,
+    totalOptIns: usersShown.filter((u) => u.marketingOptIn).length,
   }), [usersShown, cutoff]);
 
   if (user === undefined) return <Frame><Centered text="Checking sign-in…" /></Frame>;
@@ -218,6 +221,7 @@ export default function AnalyticsAdminPage() {
         <Stat label="New sign-ups" value={userCounts.newSignups} hint="accounts created in window" />
         <Stat label="New paying users" value={userCounts.newPaying} hint="converted to paid in window" />
         <Stat label="Successful payments" value={stats.successfulPayments} hint="purchase events in window" />
+        <Stat label="Marketing opt-ins" value={userCounts.newOptIns} hint={`new in window · ${userCounts.totalOptIns.toLocaleString()} total`} />
       </div>
 
       {/* ═══ Section 2 — Funnel & Interaction ═══ */}

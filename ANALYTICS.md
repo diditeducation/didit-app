@@ -121,7 +121,8 @@ those are written from `env: "local"` and filtered out of the dashboard by the
   - **1 · Users** — Active users (logged in **and** played a game), New sign-ups
     (`users.createdAt` in window), New paying users (`users.convertedAt` in window),
     Successful payments (count of `purchase_success` events in window — a
-    cross-check on "new paying users", which is derived from the `users` table).
+    cross-check on "new paying users", which is derived from the `users` table),
+    Marketing opt-ins (new in window · total opted-in shown in the hint).
   - **2 · Funnel & Interaction** — two funnels, each bar = share of its universe:
     - **Funnel A — Landing visitors** (universe = anyone who viewed the landing;
       keyed by `anonId` so it follows them through sign-in): Visited landing
@@ -133,7 +134,9 @@ those are written from `env: "local"` and filtered out of the dashboard by the
       `via`) → Purchased.
   - **3 · Others** — recent raw events (latest 100 in window).
 - **Download buttons:** Events CSV · Events JSON · Users CSV — exports the
-  currently-filtered set (time-frame + env + exclude-internal all apply).
+  currently-filtered set (time-frame + env + exclude-internal all apply). The
+  **Users CSV includes `marketingOptIn` + `marketingOptInAt`** — filter that
+  column to `true` to get your email-marketing list (with consent timestamps).
 
 ---
 
