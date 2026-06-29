@@ -33,7 +33,7 @@ export const LEGAL = {
 };
 
 // ── Stripe checkout ────────────────────────────────────────────────────────
-// The Stripe Price ID for the one-time Family Pass (a `mode: payment` price,
+// The Stripe Price ID for the one-time Membership Pass (a `mode: payment` price,
 // e.g. "price_1AbC..."). Set it in Vercel as VITE_STRIPE_PRICE_ID once the
 // firestore-stripe-payments Firebase extension is installed and the product/
 // price exist in Stripe.

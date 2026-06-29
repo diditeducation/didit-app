@@ -47,7 +47,7 @@ const ROUTE_META = {
   },
   '/terms': {
     title: 'Terms of Use — Did·It',
-    description: 'The terms for using Did·It and the one-time Family Pass.',
+    description: 'The terms for using Did·It and the one-time Founding Membership Pass.',
   },
   '/privacy': {
     title: 'Privacy Policy — Did·It',

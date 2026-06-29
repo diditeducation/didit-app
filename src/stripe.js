@@ -3,7 +3,7 @@ import { db } from './firebase';
 import { STRIPE_PRICE_ID } from './config';
 
 /**
- * Start a one-time Stripe Checkout session (the "Founding Family Pass") via the
+ * Start a one-time Stripe Checkout session (the "Founding Membership Pass") via the
  * firestore-stripe-payments Firebase extension.
  *
  * Flow: write a doc to customers/{uid}/checkout_sessions with `mode: 'payment'`

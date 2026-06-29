@@ -121,7 +121,7 @@ export default function Checkout() {
           style={{ marginTop: 2, width: 17, height: 17, flexShrink: 0, cursor: 'pointer', accentColor: colors.blueberryDark }}
         />
         <span>
-          I agree to the{' '}
+          I'm 18 or older, I agree to the{' '}
           <a href="/terms" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Terms</a>{' '}and{' '}
           <a href="/privacy" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Privacy Policy</a>, and I want access right away — I understand my purchase unlocks immediately and that this waives any 14-day cancellation right where it would otherwise apply (EU/UK).
         </span>

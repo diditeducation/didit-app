@@ -17,7 +17,7 @@ function getUser() {
 }
 
 // Membership tier AT THE MOMENT an event fires — 'anon' (logged-out),
-// 'free' (signed-in, not paid), 'paid' (real Family Pass). Kept in sync by
+// 'free' (signed-in, not paid), 'paid' (real Membership Pass). Kept in sync by
 // SubscriptionContext via setAnalyticsTier(). Lets every event be split by
 // who did it (e.g. game plays by free vs paying users) without a join.
 let _tier = 'anon';
@@ -239,7 +239,7 @@ export function trackCheckoutStart(via) {
 }
 
 /**
- * Family Pass purchased — the conversion. Fire once per account.
+ * Membership Pass purchased — the conversion. Fire once per account.
  * Attributes the sale to the checkout placement (`via`) captured on entry,
  * so you can see whether a purchase came from the landing page vs an in-app
  * flow even though this fires from SubscriptionContext after the redirect.

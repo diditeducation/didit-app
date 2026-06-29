@@ -25,7 +25,7 @@ const devEnabled = import.meta.env.DEV; // localhost always gets the toggle
 export function SubscriptionProvider({ children }) {
   const { user } = useAuth();
 
-  // Whether the user has a successful one-time purchase (the Family Pass),
+  // Whether the user has a successful one-time purchase (the Membership Pass),
   // written to Firestore by the Stripe extension's webhook.
   // `undefined` = still loading, `false` = none, `true` = paid (lifetime).
   const [hasPaid, setHasPaid] = useState(undefined);
@@ -69,7 +69,7 @@ export function SubscriptionProvider({ children }) {
   // Keep analytics' tier tag in sync so every event records whether it was
   // done by an anonymous visitor, a free signed-in user, or a real payer.
   // Uses real payment state (hasPaid), so dev/test overrides don't pollute
-  // "paid" play data. 'paid' means a genuine Family Pass purchase.
+  // "paid" play data. 'paid' means a genuine Membership Pass purchase.
   useEffect(() => {
     if (user === undefined) return;            // auth resolving
     if (!user) { setAnalyticsTier('anon'); return; }

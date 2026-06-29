@@ -11,13 +11,13 @@ export default function TermsPage() {
       </p>
 
       <h2>1. These terms</h2>
-      <p>By creating an account or buying the Family Pass, you agree to these terms. If you don't agree, please don't use Did·It.</p>
+      <p>By creating an account or buying the Founding Membership Pass, you agree to these terms. If you don't agree, please don't use Did·It.</p>
 
       <h2>2. What Did·It is</h2>
       <p>Did·It is a collection of web-based learning games for young children, designed to be played by a child together with a parent or carer. Accounts are created and managed by an adult.</p>
 
       <h2>3. What you're buying</h2>
-      <p>The <strong>Founding Family Pass</strong> is a <strong>one-time purchase</strong> that unlocks the games <strong>currently</strong> in the Did·It library at the time of purchase. It is <strong>not a subscription</strong>.</p>
+      <p>The <strong>Founding Membership Pass</strong> is a <strong>one-time purchase</strong> that unlocks the games <strong>currently</strong> in the Did·It library at the time of purchase. It is <strong>not a subscription</strong>.</p>
       <ul>
         <li>The library <strong>may change over time</strong> — we may add, update, improve, replace, or remove games and features.</li>
         <li>Your purchase gives you access to the library <strong>as it exists from time to time</strong>. It is not a purchase of any specific game, any guaranteed number of games, or any promise of future games.</li>
@@ -28,10 +28,10 @@ export default function TermsPage() {
       <p>Your purchase gives you a personal, non-exclusive, non-transferable, non-commercial licence to access and play Did·It for you and your household. You don't own the games or content — we and our licensors do. You may not resell, share, sublicense, copy, or reverse-engineer the games, or let others use your access outside your household.</p>
 
       <h2>5. Price and payment</h2>
-      <p>Prices are shown at checkout and include any applicable taxes unless stated. Payments are handled securely by a third-party payment provider; we don't store your card details. The "founding" price is a limited-time introductory price and may rise for future buyers.</p>
+      <p>Prices are shown at checkout and include any applicable taxes unless stated. Payments are handled securely by a third-party payment provider; we don't store your card details. The "founding" price is a limited-time introductory price and may change for future buyers.</p>
 
       <h2>6. Refunds</h2>
-      <p>Because the Family Pass gives you immediate access to digital content, we generally <strong>don't offer refunds for change of mind</strong>. <strong>Nothing in these terms limits any rights you have under consumer laws that apply to you — including the Australian Consumer Law — which we do not exclude.</strong> If something is seriously wrong (for example, the games don't work and we can't fix it, or they're not as described), contact us and we'll make it right, including a refund where the law requires.</p>
+      <p>Because the Founding Membership Pass gives you immediate access to digital content, we generally <strong>don't offer refunds for change of mind</strong>. <strong>Nothing in these terms limits any rights you have under consumer laws that apply to you — including the Australian Consumer Law — which we do not exclude.</strong> If something is seriously wrong (for example, the games don't work and we can't fix it, or they're not as described), contact us and we'll make it right, including a refund where the law requires.</p>
       <p>If you are in the EU or UK: by purchasing and getting immediate access, you ask us to begin straight away and acknowledge you lose the standard 14-day cancellation right once access begins.</p>
 
       <h2>7. Your account</h2>
