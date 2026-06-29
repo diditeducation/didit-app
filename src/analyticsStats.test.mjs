@@ -1,7 +1,7 @@
 // Run: node src/analyticsStats.test.mjs
 // Hand-checks computeStats against a small synthetic event set with known answers.
 import assert from 'node:assert/strict';
-import { computeStats } from './analyticsStats.js';
+import { computeStats, filterRows } from './analyticsStats.js';
 
 // ── Synthetic universe ──────────────────────────────────────────────────────
 // Funnel A people (by anonId) — none of them visit the hub, to keep universes
@@ -92,5 +92,46 @@ assert.equal(B.purchased, 1, 'B.purchased = u4');
 
 // ── Section 2 ──
 assert.equal(s.activeUsers, 4, 'activeUsers = u2,u3,u4,u5 (any signed-in game_open)');
+
+// ── filterRows: env filter ──────────────────────────────────────────────────
+{
+  const evts = [
+    { event: 'x', env: 'prod', anonId: 'z1' },
+    { event: 'x', env: 'local', anonId: 'z2' },
+    { event: 'x', anonId: 'z3' }, // missing env → treated as prod
+  ];
+  assert.equal(filterRows(evts, { env: 'prod' }).length, 2, 'prod-only keeps prod + env-less');
+  assert.equal(filterRows(evts, { env: 'all' }).length, 3, 'all envs keeps everything');
+}
+
+// ── filterRows: time window ─────────────────────────────────────────────────
+{
+  const now = 1_000_000_000_000;
+  const evts = [
+    { event: 'recent', env: 'prod', anonId: 'z1', timestamp: now - 1_000 },        // inside
+    { event: 'old', env: 'prod', anonId: 'z2', timestamp: now - 10 * 86400000 },   // 10d ago
+    { event: 'pending', env: 'prod', anonId: 'z3', timestamp: null },              // pending → kept
+  ];
+  const cutoff = now - 86400000; // last 24h
+  const kept = filterRows(evts, { env: 'prod', cutoff }).map((e) => e.event).sort();
+  assert.deepEqual(kept, ['pending', 'recent'], 'time window keeps in-window + pending, drops old');
+  assert.equal(filterRows(evts, { env: 'prod', cutoff: 0 }).length, 3, 'cutoff 0 keeps all');
+}
+
+// ── filterRows: exclude internal (incl. whole session by anonId) ─────────────
+{
+  const evts = [
+    // internal admin signs in on anonId iA — both rows are internal-session
+    { event: 'page_view', env: 'prod', anonId: 'iA' },                              // pre-login (anon)
+    { event: 'signin_success', env: 'prod', anonId: 'iA', userId: 'bTlG8YZn8INNvHYvONf8u8LqK033' },
+    // internal test email
+    { event: 'game_open', env: 'prod', anonId: 'iB', userEmail: 'LEE.NIGEL.T@gmail.com' },
+    // a real external visitor
+    { event: 'page_view', env: 'prod', anonId: 'ext1' },
+  ];
+  const kept = filterRows(evts, { excludeInternal: true });
+  assert.deepEqual(kept.map((e) => e.anonId), ['ext1'], 'excludes internal rows + their whole anon session (case-insensitive email)');
+  assert.equal(filterRows(evts, { excludeInternal: false }).length, 4, 'toggle off keeps internal');
+}
 
 console.log('✓ all analyticsStats assertions passed');

@@ -3,7 +3,7 @@ import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestor
 import { db } from '../firebase';
 import { useAuth } from '../context/AuthContext';
 import { fonts, colors } from '../design-system/tokens';
-import { computeStats } from '../analyticsStats';
+import { computeStats, filterRows, tsToMs, INTERNAL_EMAILS, INTERNAL_UIDS } from '../analyticsStats';
 
 /**
  * Admin-only analytics dashboard at /admin/analytics.
@@ -30,13 +30,9 @@ const ADMIN_EMAILS = [
 
 const EVENTS_LIMIT = 5000; // most-recent N events; raise if you outgrow it
 
-// Your own + test accounts — excluded by default so internal activity doesn't
-// skew the numbers. Keep in sync with ADMIN UID in firestore.rules and
-// TEST_MEMBER_EMAILS in SubscriptionContext.
-const INTERNAL_EMAILS = ['did.it.education@gmail.com', 'lee.nigel.t@gmail.com'];
-const INTERNAL_UIDS = ['bTlG8YZn8INNvHYvONf8u8LqK033']; // did.it.education@gmail.com
-const isInternalRow = (e) =>
-  INTERNAL_EMAILS.includes((e.userEmail || '').toLowerCase()) || INTERNAL_UIDS.includes(e.userId);
+// INTERNAL_EMAILS / INTERNAL_UIDS / isInternalRow / filterRows live in
+// ../analyticsStats (pure + unit-tested). Keep that list in sync with the admin
+// UID in firestore.rules and TEST_MEMBER_EMAILS in SubscriptionContext.
 
 const DAY = 86400000;
 const WINDOWS = { '24h': DAY, '7d': 7 * DAY, '30d': 30 * DAY, all: Infinity };
@@ -46,10 +42,6 @@ const TIMEFRAMES = [['24h', 'Day'], ['7d', 'Week'], ['30d', 'Month'], ['all', 'A
 function tsToDate(ts) {
   if (!ts) return null;
   return ts.toDate ? ts.toDate() : new Date(ts);
-}
-function tsMs(ts) {
-  const d = tsToDate(ts);
-  return d ? d.getTime() : null;
 }
 function fmt(ts) {
   const d = tsToDate(ts);
@@ -136,19 +128,10 @@ export default function AnalyticsAdminPage() {
     return w === Infinity ? 0 : Date.now() - w;
   }, [timeframe]);
 
-  const inWindow = useMemo(() => (ts) => {
-    const m = tsMs(ts);
-    return m == null ? true : m >= cutoff; // pending serverTimestamp → keep
-  }, [cutoff]);
-
-  const rows = useMemo(() => {
-    let base = (events || []).filter((e) => (env === 'all' ? true : (e.env || 'prod') === 'prod'));
-    base = base.filter((e) => inWindow(e.timestamp));
-    if (!excludeInternal) return base;
-    const internalAnon = new Set();
-    for (const e of base) if (isInternalRow(e) && e.anonId) internalAnon.add(e.anonId);
-    return base.filter((e) => !isInternalRow(e) && !(e.anonId && internalAnon.has(e.anonId)));
-  }, [events, env, excludeInternal, inWindow]);
+  const rows = useMemo(
+    () => filterRows(events, { env, cutoff, excludeInternal }),
+    [events, env, cutoff, excludeInternal],
+  );
 
   const stats = useMemo(() => computeStats(rows), [rows]);
 
@@ -160,8 +143,8 @@ export default function AnalyticsAdminPage() {
   }, [users, excludeInternal]);
 
   const userCounts = useMemo(() => ({
-    newSignups: usersShown.filter((u) => { const m = tsMs(u.createdAt); return m != null && m >= cutoff; }).length,
-    newPaying: usersShown.filter((u) => { const m = tsMs(u.convertedAt); return m != null && m >= cutoff; }).length,
+    newSignups: usersShown.filter((u) => { const m = tsToMs(u.createdAt); return m != null && m >= cutoff; }).length,
+    newPaying: usersShown.filter((u) => { const m = tsToMs(u.convertedAt); return m != null && m >= cutoff; }).length,
   }), [usersShown, cutoff]);
 
   if (user === undefined) return <Frame><Centered text="Checking sign-in…" /></Frame>;

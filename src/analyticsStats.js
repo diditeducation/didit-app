@@ -5,6 +5,40 @@
 // exclude-internal applied by the caller). Each event looks like:
 //   { event, page?, gameId?, buttonId?, via?, tier?, anonId, userId, ... }
 
+// Your own + test accounts — excluded by default so internal activity doesn't
+// skew the numbers. Keep in sync with the admin UID in firestore.rules and
+// TEST_MEMBER_EMAILS in SubscriptionContext.
+export const INTERNAL_EMAILS = ['did.it.education@gmail.com', 'lee.nigel.t@gmail.com'];
+export const INTERNAL_UIDS = ['bTlG8YZn8INNvHYvONf8u8LqK033']; // did.it.education@gmail.com
+export const isInternalRow = (e) =>
+  INTERNAL_EMAILS.includes((e.userEmail || '').toLowerCase()) || INTERNAL_UIDS.includes(e.userId);
+
+// Coerce any timestamp shape (Firestore Timestamp, Date, epoch ms, ISO string)
+// to epoch ms, or null if absent/unparseable.
+export function tsToMs(ts) {
+  if (ts == null) return null;
+  if (typeof ts === 'number') return ts;
+  if (typeof ts === 'string') { const t = Date.parse(ts); return Number.isNaN(t) ? null : t; }
+  if (typeof ts.toDate === 'function') return ts.toDate().getTime();
+  if (ts instanceof Date) return ts.getTime();
+  return null;
+}
+
+/**
+ * Apply the dashboard's three filters in order: env (prod-only vs all),
+ * time window (timestamp >= cutoff; a pending/null timestamp is kept as
+ * "just now"), and exclude-internal (drop internal accounts AND their whole
+ * session, matched by the anonId tied to the account).
+ */
+export function filterRows(events, { env = 'prod', cutoff = 0, excludeInternal = true } = {}) {
+  let base = (events || []).filter((e) => (env === 'all' ? true : (e.env || 'prod') === 'prod'));
+  base = base.filter((e) => { const m = tsToMs(e.timestamp); return m == null ? true : m >= cutoff; });
+  if (!excludeInternal) return base;
+  const internalAnon = new Set();
+  for (const e of base) if (isInternalRow(e) && e.anonId) internalAnon.add(e.anonId);
+  return base.filter((e) => !isInternalRow(e) && !(e.anonId && internalAnon.has(e.anonId)));
+}
+
 // Map<key, Set> → [[key, size], …] sorted by size desc.
 export function setMapRows(m) {
   return [...m.entries()].map(([k, s]) => [k, s.size]).sort((a, b) => b[1] - a[1]);
