@@ -21,7 +21,7 @@ export const PRICE_MODEL = 'one-time';
 export const PRICE_HEADLINE = 'Everything in our library, yours to play';
 export const PRICE_CTA = 'Unlock the full games library'; // price appended at call sites
 export const PRICE_NOTE =
-  'Be a founding member and get this limited time price · One payment only · Early supporters get perks as we grow';
+  'Be a founding member and get this limited time price · One payment only · Early supporters may get perks as we grow';
 
 // ── Business / legal details (shown on /terms and /privacy) ─────────────────
 // ⚠️ FILL THESE IN before publishing the legal pages / charging real money.
