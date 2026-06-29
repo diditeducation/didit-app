@@ -37,7 +37,7 @@ One palette, one source: **`design-system/tokens.js`** drives colours everywhere
 | DemoGamePage | `/demo/*` (6 trial games) | ✅ Live (trial wrapper). Provides `DemoContext` with `onAdvance` → on completing a trial game, auto-jumps to a random other trial game. Same auto-advance powers the landing tablet sampler. |
 | GameScreen | `/games/:id` | ✅ Live (generic) |
 | AboutPage | `/about` | ✅ Live (linked from game pages + hub) |
-| TermsPage | `/terms` | ✅ Live — lean Terms of Use. Linked from SiteFooter + checkout agreement line. Shares `LegalPage` chrome; copy uses `LEGAL` consts in config.js. |
+| TermsPage | `/terms` | ✅ Live — lean Terms of Use. Linked from SiteFooter + a checkout **consent checkbox** (required; gates the pay button — covers Terms/Privacy agreement + EU/UK immediate-access waiver of the 14-day cancellation right). Shares `LegalPage` chrome; copy uses `LEGAL` consts in config.js. |
 | PrivacyPage | `/privacy` | ✅ Live — lean Privacy Policy (categories only, **no provider names**). Linked from SiteFooter + checkout. Shares `LegalPage`. |
 | MarketingLanding | `/go/:source` | ✅ Live — identical to `/` but tags first-touch `src` from the path (e.g. `/go/instagram`). One page, per-channel links. |
 | FeedbackAdminPage | `/admin/feedback` | 🔧 Internal (no public link) |

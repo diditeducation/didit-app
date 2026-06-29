@@ -27,6 +27,7 @@ export default function Checkout() {
   const [password, setPassword] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [consent, setConsent] = useState(false);
   const cancelRef = useRef(null);
   const timerRef = useRef(null);
 
@@ -45,6 +46,7 @@ export default function Checkout() {
 
   const activate = () => {
     if (busy) return;
+    if (!consent) { setNotice('Please tick the box to agree and continue.'); return; }
     // Real Stripe (firestore-stripe-payments extension) once a price is configured.
     if (STRIPE_ENABLED) {
       if (!signedIn) {
@@ -111,12 +113,26 @@ export default function Checkout() {
         </div>
       </div>
 
+      <label style={{ display: 'flex', alignItems: 'flex-start', gap: 9, marginTop: 18, cursor: 'pointer', fontSize: '0.76rem', color: colors.text, lineHeight: 1.5 }}>
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setNotice(''); }}
+          style={{ marginTop: 2, width: 17, height: 17, flexShrink: 0, cursor: 'pointer', accentColor: colors.blueberryDark }}
+        />
+        <span>
+          I agree to the{' '}
+          <a href="/terms" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Terms</a>{' '}and{' '}
+          <a href="/privacy" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Privacy Policy</a>, and I want access right away — I understand my purchase unlocks immediately and that this waives any 14-day cancellation right where it would otherwise apply (EU/UK).
+        </span>
+      </label>
+
       <button
         onClick={activate}
-        disabled={busy}
+        disabled={busy || !consent}
         style={{
           width: '100%',
-          marginTop: 18,
+          marginTop: 14,
           padding: '16px 0',
           fontFamily: fonts.display,
           fontWeight: 900,
@@ -125,8 +141,9 @@ export default function Checkout() {
           background: colors.lime,
           border: 'none',
           borderRadius: radii.pill,
-          cursor: busy ? 'wait' : 'pointer',
-          opacity: busy ? 0.7 : 1,
+          cursor: busy ? 'wait' : (!consent ? 'not-allowed' : 'pointer'),
+          opacity: busy || !consent ? 0.55 : 1,
+          transition: 'opacity .15s ease',
         }}
       >
         {busy ? 'Redirecting to secure checkout…' : <>{PRICE_CTA} · <Price /></>}
@@ -142,12 +159,6 @@ export default function Checkout() {
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
         <span style={{ fontSize: '0.76rem', fontWeight: 700 }}>Secured by Stripe · One-time payment</span>
       </div>
-
-      <p style={{ textAlign: 'center', margin: '10px 0 0', fontSize: '0.72rem', color: colors.muted, lineHeight: 1.5 }}>
-        By continuing you agree to our{' '}
-        <a href="/terms" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Terms</a>{' '}and{' '}
-        <a href="/privacy" style={{ color: colors.blueberryDark, fontWeight: 700 }}>Privacy Policy</a>.
-      </p>
 
       {devEnabled && (
         <button
