@@ -105,6 +105,9 @@ those are written from `env: "local"` and filtered out of the dashboard by the
 - **Time-frame toggle:** **Day** (24h) / **Week** (7d) / **Month** (30d) / **All**.
   Filters every section — funnels, user counts, recent events, and exports — to
   events (and `users` createdAt/convertedAt) inside that window. Defaults to Week.
+- **"From" date picker:** pick a start date to consider only events on/after it
+  (local start of day). It **overrides** the Day/Week/Month toggle while set;
+  clicking a toggle button (or the ✕) clears it. Applies to every section + exports.
 - **Env filter** defaults to **Prod only** (hides localhost/dev noise).
 - **"Exclude admin/test"** toggle (on by default) removes your own and the test
   account's activity — and not just their signed-in rows: it drops their *whole

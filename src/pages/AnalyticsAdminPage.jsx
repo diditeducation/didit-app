@@ -104,6 +104,7 @@ export default function AnalyticsAdminPage() {
   const [env, setEnv] = useState('prod');             // 'prod' | 'all'
   const [excludeInternal, setExcludeInternal] = useState(true);
   const [timeframe, setTimeframe] = useState('7d');   // '24h' | '7d' | '30d' | 'all'
+  const [fromDate, setFromDate] = useState('');       // 'YYYY-MM-DD'; overrides timeframe when set
 
   const isAdmin = !!user && ADMIN_EMAILS.includes((user.email || '').toLowerCase());
 
@@ -122,11 +123,17 @@ export default function AnalyticsAdminPage() {
     return () => { unsubE(); unsubU(); };
   }, [isAdmin]);
 
-  // Time window. Date.now() is fine here (browser, not a workflow sandbox).
+  // Time window cutoff. An explicit "From" date (YYYY-MM-DD, local start of day)
+  // wins; otherwise the Day/Week/Month/All toggle. Date.now() is fine here
+  // (browser, not a workflow sandbox).
   const cutoff = useMemo(() => {
+    if (fromDate) {
+      const ms = new Date(`${fromDate}T00:00:00`).getTime();
+      if (!Number.isNaN(ms)) return ms;
+    }
     const w = WINDOWS[timeframe];
     return w === Infinity ? 0 : Date.now() - w;
-  }, [timeframe]);
+  }, [timeframe, fromDate]);
 
   const rows = useMemo(
     () => filterRows(events, { env, cutoff, excludeInternal }),
@@ -155,7 +162,7 @@ export default function AnalyticsAdminPage() {
 
   const A = stats.funnelA;
   const B = stats.funnelB;
-  const windowLabel = TIMEFRAMES.find(([k]) => k === timeframe)?.[1] || timeframe;
+  const windowLabel = fromDate ? `From ${fromDate}` : (TIMEFRAMES.find(([k]) => k === timeframe)?.[1] || timeframe);
 
   return (
     <Frame>
@@ -177,9 +184,23 @@ export default function AnalyticsAdminPage() {
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24, alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: 4 }}>
           {TIMEFRAMES.map(([k, label]) => (
-            <button key={k} onClick={() => setTimeframe(k)} style={tfBtn(timeframe === k)}>{label}</button>
+            <button key={k} onClick={() => { setTimeframe(k); setFromDate(''); }} style={tfBtn(!fromDate && timeframe === k)}>{label}</button>
           ))}
         </div>
+        <label style={{ ...chipLabel, gap: 8 }}>
+          From
+          <input
+            type="date"
+            value={fromDate}
+            max={fmtDay(new Date())}
+            onChange={(e) => setFromDate(e.target.value)}
+            style={{ fontFamily: fonts.display, fontWeight: 700, fontSize: 13, color: colors.text, border: 'none', background: 'transparent', cursor: 'pointer' }}
+          />
+          {fromDate && (
+            <span role="button" onClick={(e) => { e.preventDefault(); setFromDate(''); }} title="Clear from date"
+              style={{ cursor: 'pointer', color: colors.muted, fontWeight: 800, paddingLeft: 2 }}>✕</span>
+          )}
+        </label>
         <label style={chipLabel}>
           <input type="checkbox" checked={excludeInternal} onChange={(e) => setExcludeInternal(e.target.checked)} style={{ cursor: 'pointer' }} />
           Exclude admin/test
