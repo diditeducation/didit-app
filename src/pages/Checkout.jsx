@@ -84,7 +84,7 @@ export default function Checkout() {
 
   const perks = [
     ['Everything in our library', 'All our games — finance, coding, music, science & more'],
-    ['Pay once', 'One payment, no subscription, nothing to cancel'],
+    ['Pay once', 'One payment to access the games library — no subscription'],
     ['A growing library', 'We may add new games over time'],
     ['Made for co-play', 'Designed for you and your child together'],
     ['Zero ads, ever', 'A calm, safe, distraction-free space'],
