@@ -50,17 +50,20 @@ export const STRIPE_ENABLED = !!STRIPE_PRICE_ID;
 // (TRIAL_GAME_IDS / canPlay = the 6 games with demos on the landing) and locked
 // games route to /checkout; members + dev/test accounts always pass.
 //
-// Default: **tied to Stripe** — enforcement turns on automatically the moment
-// payments are live (STRIPE_ENABLED), and never before, so users are never
-// locked with no way to pay. No separate switch to remember.
-//
-// Manual overrides (VITE_PAYWALL_ENFORCED in Vercel):
-//   'true'  → force ON even without Stripe (e.g. to test the funnel pre-launch;
-//             checkout shows the "coming soon" notice).
-//   'false' → force OFF even when Stripe is live (kill switch).
-//   unset   → follow STRIPE_ENABLED (the default above).
+// Default: **ON** — we run the founding-pass model (see FOUNDING_PASS below), so
+// the paywall is live now even before Stripe. Kill switch: VITE_PAYWALL_ENFORCED
+// = 'false'. ('true' also forces on; unset = on.)
 const PAYWALL_OVERRIDE = import.meta.env.VITE_PAYWALL_ENFORCED;
-export const PAYWALL_ENFORCED =
-  PAYWALL_OVERRIDE === 'true' ? true
-  : PAYWALL_OVERRIDE === 'false' ? false
-  : STRIPE_ENABLED;
+export const PAYWALL_ENFORCED = PAYWALL_OVERRIDE !== 'false';
+
+// ── Founding-pass model (pre-Stripe access) ─────────────────────────────────
+// While Stripe isn't live, /checkout runs a real-looking flow but, instead of a
+// card, issues each signed-in user a unique promo code worth the $29 pass for
+// free (see src/founding.js + components/FoundingClaim.jsx). Auto-off once
+// Stripe is configured (STRIPE_ENABLED) → real card checkout takes over.
+export const FOUNDING_PASS = !STRIPE_ENABLED;
+
+// Anyone whose account was created before this instant keeps full access without
+// having to claim — so flipping the paywall on doesn't lock out existing users.
+// New signups go through the founding-pass claim. Tune if you relaunch.
+export const FOUNDING_GRANDFATHER_BEFORE = '2026-06-30T10:00:00Z';

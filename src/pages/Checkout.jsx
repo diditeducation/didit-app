@@ -7,8 +7,9 @@ import { useSubscription } from '../context/SubscriptionContext';
 import { useAuth } from '../context/AuthContext';
 import DiditLogo from '../components/DiditLogo';
 import Price from '../components/Price';
-import { STRIPE_ENABLED, PRICE_NOTE, PRICE_CTA } from '../config';
+import { STRIPE_ENABLED, FOUNDING_PASS, PRICE_NOTE, PRICE_CTA } from '../config';
 import { startCheckout } from '../stripe';
+import FoundingClaim from '../components/FoundingClaim';
 import { trackCheckoutView, trackCheckoutStart } from '../analytics';
 import { GAMES } from '../data/games';
 
@@ -258,6 +259,8 @@ export default function Checkout() {
             <div style={{ minHeight: 360, display: 'flex', alignItems: 'center', justifyContent: 'center', color: colors.muted, fontWeight: 700 }}>
               Loading…
             </div>
+          ) : FOUNDING_PASS ? (
+            <FoundingClaim via={via} />
           ) : signedIn ? (
             <>
               <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: colors.text, margin: '0 0 16px', letterSpacing: '-0.01em' }}>

@@ -1,8 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from './AuthContext';
+import { FOUNDING_GRANDFATHER_BEFORE } from '../config';
 import { trackPurchase, setAnalyticsTier, markConverted } from '../analytics';
+
+const GRANDFATHER_TS = Date.parse(FOUNDING_GRANDFATHER_BEFORE);
 
 const SubscriptionContext = createContext(null);
 
@@ -32,6 +35,26 @@ export function SubscriptionProvider({ children }) {
 
   // Raw override value persisted across reloads ('1' | '0' | null).
   const [overrideRaw, setOverrideRaw] = useState(() => localStorage.getItem(DEV_KEY));
+
+  // Founding-pass flag from the user's own profile doc (users/{uid}.founding),
+  // set when they claim their code. Grants access without a real payment.
+  const [founding, setFounding] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!user) { setFounding(false); return; }
+    const unsub = onSnapshot(
+      doc(db, 'users', user.uid),
+      (snap) => setFounding(snap.data()?.founding === true),
+      () => setFounding(false),
+    );
+    return unsub;
+  }, [user]);
+
+  // Grandfather: accounts created before the cutoff keep access without claiming,
+  // so turning the paywall on doesn't lock out existing users.
+  const grandfathered =
+    !!user?.metadata?.creationTime &&
+    Date.parse(user.metadata.creationTime) < GRANDFATHER_TS;
 
   // Subscribe to the user's one-time payment docs in Firestore.
   // Collection: customers/{uid}/payments (firestore-stripe-payments schema).
@@ -94,13 +117,16 @@ export function SubscriptionProvider({ children }) {
   };
 
   const realMember = hasPaid === true;
-  const isMember = realMember || devMember;
+  const isMember = realMember || devMember || founding || grandfathered;
   const loading = user === undefined || hasPaid === undefined;
 
   const value = {
     isMember,
     loading,
-    status: devMember ? (isTester ? 'test' : 'dev') : (realMember ? 'paid' : 'none'),
+    status: devMember ? (isTester ? 'test' : 'dev')
+      : realMember ? 'paid'
+      : (founding || grandfathered) ? 'founding'
+      : 'none',
     // override helpers (no-ops for normal users)
     devMember,
     setDevMember,
