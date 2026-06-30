@@ -214,6 +214,8 @@ export default function AnalyticsAdminPage() {
         </select>
       </div>
 
+      <Definitions />
+
       {/* ═══ Section 1 — Users ═══ */}
       <SectionHead n="1" title="Users" />
       <div style={cardRow}>
@@ -320,6 +322,78 @@ function SectionHead({ n, title }) {
       <h2 style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 19, color: colors.text, margin: 0 }}>{title}</h2>
       <div style={{ flex: 1, height: 1, background: colors.border }} />
     </div>
+  );
+}
+
+// Collapsible glossary so the numbers stay legible but every term/metric is
+// one click away from a precise definition.
+function Def({ term, children }) {
+  return (
+    <div style={{ marginBottom: 7, fontFamily: fonts.body, fontSize: 12.5, lineHeight: 1.45 }}>
+      <span style={{ fontWeight: 800, color: colors.text }}>{term}</span>
+      <span style={{ color: colors.muted }}> — {children}</span>
+    </div>
+  );
+}
+function DefGroup({ title, children }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontFamily: fonts.display, fontWeight: 900, fontSize: 12, color: colors.text, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{title}</div>
+      {children}
+    </div>
+  );
+}
+function Definitions() {
+  return (
+    <details style={{ background: '#FFFFFF', border: `1px solid ${colors.border}`, borderRadius: 14, padding: '0 16px', marginBottom: 24 }}>
+      <summary style={{ cursor: 'pointer', padding: '13px 0', fontFamily: fonts.display, fontWeight: 800, fontSize: 14, color: colors.text, listStyle: 'revert' }}>
+        ⓘ Definitions — how to read this dashboard
+      </summary>
+      <div style={{ padding: '4px 0 14px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '4px 28px' }}>
+        <DefGroup title="Key terms">
+          <Def term="Visitor (anonId)">one browser. A stable id stored in the browser that follows a person across sign-in. Incognito / cleared storage / bots create new ones.</Def>
+          <Def term="User (userId)">a signed-in account.</Def>
+          <Def term="Tier">paying state at the instant an action happened — anon (logged out), free (signed in, not paid), paid.</Def>
+          <Def term="Source (src)">first-touch — where they first arrived from (a /go/&lt;name&gt; link, utm_source, referrer site, or “direct”). Kept for life; first touch wins.</Def>
+          <Def term="Placement (via)">which flow led them into checkout — landing, demo_success, hub_grid, or game_locked.</Def>
+          <Def term="Universe">the denominator of a funnel — who is counted. Funnel A = landing viewers; Funnel B = signed-in hub visitors. Each bar is a share of its universe.</Def>
+        </DefGroup>
+
+        <DefGroup title="Filters">
+          <Def term="Day / Week / Month / All">only events in that recent range (24h / 7d / 30d / everything loaded).</Def>
+          <Def term="From date">only events on/after the chosen date; overrides the Day/Week/Month buttons while set.</Def>
+          <Def term="Prod only / All envs">hide localhost & dev test data (default: Prod only).</Def>
+          <Def term="Exclude admin/test">drop your own + test accounts, including their whole pre-login session (matched by anonId).</Def>
+        </DefGroup>
+
+        <DefGroup title="Users (Section 1)">
+          <Def term="Active users">distinct signed-in accounts that opened a game in the window (played, even if not completed).</Def>
+          <Def term="New sign-ups">accounts whose profile was first created in the window.</Def>
+          <Def term="New paying users">accounts that converted to paid in the window (from the users table).</Def>
+          <Def term="Successful payments">count of purchase events in the window — a cross-check on new paying users (from the event log).</Def>
+          <Def term="Marketing opt-ins">accounts that ticked the email opt-in (new in window; total in the hint).</Def>
+        </DefGroup>
+
+        <DefGroup title="Funnel A — Landing visitors">
+          <Def term="Visited landing">viewed the landing page (split by top source).</Def>
+          <Def term="Played a demo game">opened any game.</Def>
+          <Def term="Other landing interactions">top 5 non-demo button/item taps.</Def>
+          <Def term="Signed in">went on to create/enter an account.</Def>
+          <Def term="Reached checkout / Purchased">opened checkout (split by via) / completed a purchase.</Def>
+        </DefGroup>
+
+        <DefGroup title="Funnel B — Hub visitors">
+          <Def term="Visited games hub">signed-in users who opened the hub (the universe).</Def>
+          <Def term="Paying / Free users played">users who opened a game while paid / free, split by game.</Def>
+          <Def term="Free reached checkout / Purchased">free users who opened checkout (split by via) / bought.</Def>
+        </DefGroup>
+
+        <DefGroup title="Reading the funnels">
+          <Def term="% = share of universe">each bar is its own share of the funnel’s universe — NOT a step-to-step drop-off.</Def>
+          <Def term="Not strictly nested">demo plays are anonymous and happen before sign-in, so a later bar can exceed an earlier one.</Def>
+        </DefGroup>
+      </div>
+    </details>
   );
 }
 
