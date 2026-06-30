@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <p>To run Did·It and process your purchase, we collect:</p>
       <ul>
         <li>the details you give us (such as your email, and your name if you choose to sign in with it);</li>
-        <li>a record of your purchase — your payment is handled securely by a third-party payment provider, and <strong>we don't store your card details</strong>; and</li>
+        <li>whether you've unlocked the games — <strong>access is free right now, so we're not collecting payment</strong> (if we introduce paid pricing later, payments will be handled by a secure third-party provider and we won't store your card details); and</li>
         <li>basic information about how the app is used, so we can keep it working and improve it.</li>
       </ul>
       <p>We <strong>don't run ads</strong>, and we <strong>don't sell your information</strong>.</p>

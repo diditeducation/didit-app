@@ -16,26 +16,28 @@ export default function TermsPage() {
       <h2>2. What Did·It is</h2>
       <p>Did·It is a collection of web-based learning games for young children, designed to be played by a child together with a parent or carer. Accounts are created and managed by an adult.</p>
 
-      <h2>3. What you're buying</h2>
-      <p>The <strong>Founding Membership Pass</strong> is a <strong>one-time purchase</strong> that unlocks the games <strong>currently</strong> in the Did·It library at the time of purchase. It is <strong>not a subscription</strong>.</p>
+      <h2>3. What you get</h2>
+      <p><strong>Right now, access to Did·It is free.</strong> During our current launch period we're not charging — you unlock the games in the library by entering a promo code at checkout, at no cost.</p>
+      <p>We plan to introduce a paid <strong>Founding Membership Pass</strong> in future — a <strong>one-time purchase</strong> (not a subscription) that would unlock the games then in the Did·It library. When that happens, these terms will apply to it.</p>
       <ul>
         <li>The library <strong>may change over time</strong> — we may add, update, improve, replace, or remove games and features.</li>
-        <li>Your purchase gives you access to the library <strong>as it exists from time to time</strong>. It is not a purchase of any specific game, any guaranteed number of games, or any promise of future games.</li>
+        <li>Access (free now, or paid later) is to the library <strong>as it exists from time to time</strong> — not to any specific game, any guaranteed number of games, or any promise of future games.</li>
         <li>We may, but are not obligated to, add new games, at our discretion.</li>
       </ul>
 
       <h2>4. Your licence</h2>
-      <p>Your purchase gives you a personal, non-exclusive, non-transferable, non-commercial licence to access and play Did·It for you and your household. You don't own the games or content — we and our licensors do. You may not resell, share, sublicense, copy, or reverse-engineer the games, or let others use your access outside your household.</p>
+      <p>Your access gives you a personal, non-exclusive, non-transferable, non-commercial licence to use Did·It for you and your household. You don't own the games or content — we and our licensors do. You may not resell, share, sublicense, copy, or reverse-engineer the games, or let others use your access outside your household.</p>
 
       <h2>5. Price and payment</h2>
-      <p>Prices are shown at checkout and include any applicable taxes unless stated. Payments are handled securely by a third-party payment provider; we don't store your card details. The "founding" price is a limited-time introductory price and may change for future buyers.</p>
+      <p><strong>We're not collecting payment at the moment.</strong> Access is currently free — you unlock everything with a promo code at checkout, and no money is charged.</p>
+      <p>If we introduce paid pricing later, prices will be shown at checkout (including any applicable taxes), and payments will be handled securely by a third-party payment provider — we won't store your card details. Any "founding" price would be a limited-time introductory price that may change for future buyers.</p>
 
       <h2>6. Refunds</h2>
-      <p>Because the Founding Membership Pass gives you immediate access to digital content, we generally <strong>don't offer refunds for change of mind</strong>. <strong>Nothing in these terms limits any rights you have under consumer laws that apply to you — including the Australian Consumer Law — which we do not exclude.</strong> If something is seriously wrong (for example, the games don't work and we can't fix it, or they're not as described), contact us and we'll make it right, including a refund where the law requires.</p>
-      <p>If you are in the EU or UK: by purchasing and getting immediate access, you ask us to begin straight away and acknowledge you lose the standard 14-day cancellation right once access begins.</p>
+      <p>Access is free right now, so there's nothing to pay and nothing to refund. <strong>Nothing in these terms limits any rights you have under consumer laws that apply to you — including the Australian Consumer Law — which we do not exclude.</strong></p>
+      <p>If we start charging later: because the pass gives immediate access to digital content, we generally won't offer change-of-mind refunds, and (in the EU/UK) by getting immediate access you'd ask us to begin straight away and lose the standard 14-day cancellation right once access begins. Your consumer-law rights would still apply, and if something is seriously wrong we'll make it right, including a refund where the law requires.</p>
 
       <h2>7. Your account</h2>
-      <p>You're responsible for keeping your login secure. Access is tied to your account, so if you change devices, just sign in with the email you purchased with. Tell us promptly if you think your account has been misused.</p>
+      <p>You're responsible for keeping your login secure. Access is tied to your account, so if you change devices, just sign in with the email you signed up with. Tell us promptly if you think your account has been misused.</p>
 
       <h2>8. Acceptable use</h2>
       <p>Use Did·It lawfully and as intended. Don't attempt to break, copy, scrape, disrupt, or gain unauthorised access to the service, and don't use it to harm anyone.</p>
