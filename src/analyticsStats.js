@@ -48,7 +48,18 @@ export function addToSetMap(m, key, val) {
   m.get(key).add(val);
 }
 
-export function computeStats(rows) {
+/**
+ * @param rows  filtered event rows
+ * @param opts.foundingAnonIds  Set of anonIds that CLAIMED the founding pass in
+ *        window (free-access "conversion" under the promo-code model)
+ * @param opts.foundingUserIds  Set of userIds that claimed in window
+ * A "conversion" = a real purchase_success event OR a founding claim — so the
+ * funnels light up whether access came from a payment or a free promo code.
+ */
+export function computeStats(rows, opts = {}) {
+  const { foundingAnonIds = new Set(), foundingUserIds = new Set() } = opts;
+  const personKey = (e) => e.userId || e.anonId || e.id;
+
   // ───── Funnel A: landing universe, keyed by anonId (anonId is on every
   // event, so it stitches a person across the login boundary). ─────
   const aUniverse = new Set();
@@ -118,13 +129,21 @@ export function computeStats(rows) {
     }
   }
 
-  // ───── Section 2: active users (logged in AND played a game) +
-  // successful payments (count of purchase_success events in window). ─────
+  // Conversion = real purchase OR a founding claim (free access via promo code).
+  const aConverted = new Set(aPurchased);
+  for (const a of aUniverse) if (foundingAnonIds.has(a)) aConverted.add(a);
+  const bConverted = new Set(bPurchased);
+  for (const u of bUniverse) if (foundingUserIds.has(u)) bConverted.add(u);
+
+  // ───── Section 2: active users (logged in AND played a game), payments
+  // (real purchase_success events), and who entered the checkout/claim flow. ─────
   const activeUsers = new Set();
+  const flowEntered = new Set(); // distinct people who reached checkout (any flow)
   let successfulPayments = 0;
   for (const e of rows) {
     if (e.event === 'game_open' && e.userId) activeUsers.add(e.userId);
     if (e.event === 'purchase_success') successfulPayments++;
+    if (e.event === 'checkout_view') flowEntered.add(personKey(e));
   }
 
   return {
@@ -136,7 +155,7 @@ export function computeStats(rows) {
       signed: aSigned.size,
       checkout: aCheckout.size,
       checkoutVia: setMapRows(aCheckoutVia),
-      purchased: aPurchased.size,
+      converted: aConverted.size,
     },
     funnelB: {
       universe: bUniverse.size,
@@ -146,9 +165,10 @@ export function computeStats(rows) {
       freeGames: setMapRows(bFreeGame),
       freeCheckout: bFreeCheckout.size,
       checkoutVia: setMapRows(bCheckoutVia),
-      purchased: bPurchased.size,
+      converted: bConverted.size,
     },
     activeUsers: activeUsers.size,
+    flowEntered: flowEntered.size,
     successfulPayments,
   };
 }

@@ -4,7 +4,7 @@ _Plain-English guide to your data: what's collected, where it lives, how to read
 it, and how to verify it. For the developer-level taxonomy, see **AUDIT.md §9**.
 Keep this file current whenever analytics change (see "Keeping this current")._
 
-_Last updated: 2026-06-29._
+_Last updated: 2026-06-30._
 
 ---
 
@@ -72,12 +72,21 @@ those are written from `env: "local"` and filtered out of the dashboard by the
 | `firstTouchSrc` | where they first came from |
 | `createdAt` | ≈ when they became a **free** user (stamped once) |
 | `lastSeenAt`, `lastSignInMethod` | recency + google/email |
-| `convertedAt` / `paidVia` / `paid` | when/how they became **paying** |
+| `convertedAt` / `paidVia` / `paid` | when/how they became **paying** (real Stripe — unused while the founding-pass model is on) |
+| **`founding` / `foundingClaimedAt` / `foundingCode`** | **the current model:** claimed free access via a unique promo code at checkout. `founding=true` + `foundingClaimedAt` is the **conversion** (no money changes hands) |
 | `marketingOptIn` / `marketingOptInAt` | opted in to marketing emails (set from the optional, unticked opt-in checkbox on sign-in) + when consent was given |
 
 > `users` is **analytics only, never entitlement.** A user can write their own
-> row, so `paid`/`convertedAt` are self-reportable. The real paywall truth is
-> `customers/{uid}/payments` (written by Stripe via the Admin SDK). See AUDIT §8.
+> row, so `paid`/`convertedAt`/`founding` are self-reportable. The real paywall
+> truth is `customers/{uid}/payments` (Stripe, Admin SDK). See AUDIT §8.
+
+> **Monetization model (current): free access via promo code, not payment.**
+> There are no real paying users. At "checkout" every signed-in user is issued a
+> unique founding promo code; claiming it writes `founding=true` +
+> `foundingClaimedAt`. So a **"conversion" = a founding claim**, and the
+> dashboard treats a claim exactly like a purchase would have been. If real
+> Stripe payments ever turn on, those (`purchase_success`) count as conversions
+> too — the dashboard handles either.
 
 ---
 
@@ -87,11 +96,12 @@ those are written from `env: "local"` and filtered out of the dashboard by the
    channel its own link: `yoursite.com/go/instagram`, `/go/facebook`,
    `/go/newsletter` — all render the identical landing, each tags its source.
    (`?utm_source=...` also works.)
-2. **At what point / flow did they pay?** → `via` on `purchase_success`
-   (`landing` / `demo_success` / `hub_grid` / `game_locked`).
+2. **Which flow did they convert through?** → `via` (`landing` / `demo_success` /
+   `hub_grid` / `game_locked`), shown on the funnels' checkout split. Conversion =
+   a founding-pass claim (current model) or a real `purchase_success`.
 3. **Were they paying or free at any interaction?** → `tier` on every event.
 4. **User history — first free vs converted?** → `users` collection
-   (`createdAt` vs `convertedAt`).
+   (`createdAt` vs `foundingClaimedAt`, or `convertedAt` for real payments).
 5. **Full log of all clicks/games?** → the `events` collection.
 6. **Broad funnel landing → conversion → play?** → the dashboard funnel.
 
@@ -122,24 +132,26 @@ those are written from `env: "local"` and filtered out of the dashboard by the
   `TEST_MEMBER_EMAILS` in `SubscriptionContext`.
 - **Three sections:**
   - **1 · Users** — Active users (logged in **and** played a game), New sign-ups
-    (`users.createdAt` in window), New paying users (`users.convertedAt` in window),
-    Successful payments (count of `purchase_success` events in window — a
-    cross-check on "new paying users", which is derived from the `users` table),
-    Marketing opt-ins (new in window · total opted-in shown in the hint).
+    (`users.createdAt` in window), **Founding members** (claimed free access via
+    promo code in window, by `foundingClaimedAt`; total in the hint — the current
+    "conversion"), **Entered checkout flow** (distinct people who reached the
+    claim/checkout page in window), Marketing opt-ins (new · total in hint), and
+    **Real payments** (only shown if any Stripe purchases exist).
   - **2 · Funnel & Interaction** — two funnels, each bar = share of its universe:
     - **Funnel A — Landing visitors** (universe = anyone who viewed the landing;
       keyed by `anonId` so it follows them through sign-in): Visited landing
       (+ top sources) → Played a demo / Other landing interactions (top 5) →
-      Signed in → Reached checkout (+ split by `via`) → Purchased.
+      Signed in → Reached checkout (+ split by `via`) → Claimed pass.
     - **Funnel B — Logged-in hub visitors** (universe = signed-in users who
       opened the hub; keyed by `userId`): Visited hub → Paying players (+ by
       game) → Free players (+ by game) → Free users reached checkout (+ by
-      `via`) → Purchased.
+      `via`) → Claimed pass.
   - **3 · Others** — recent raw events (latest 100 in window).
 - **Download buttons:** Events CSV · Events JSON · Users CSV — exports the
   currently-filtered set (time-frame + env + exclude-internal all apply). The
-  **Users CSV includes `marketingOptIn` + `marketingOptInAt`** — filter that
-  column to `true` to get your email-marketing list (with consent timestamps).
+  **Users CSV includes `founding`/`foundingCode`/`foundingClaimedAt`** (who
+  claimed free access, their code, and when) **and `marketingOptIn`/
+  `marketingOptInAt`** — filter `marketingOptIn=true` for your email list.
 
 ---
 

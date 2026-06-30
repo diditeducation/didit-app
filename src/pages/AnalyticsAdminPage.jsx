@@ -80,8 +80,8 @@ function eventsToCSV(rows) {
   }
   return lines.join('\n');
 }
-const USER_COLS = ['email', 'uid', 'marketingOptIn', 'marketingOptInAt', 'createdAt', 'convertedAt', 'paid', 'paidVia', 'firstTouchSrc', 'lastSignInMethod', 'lastSeenAt', 'anonId'];
-const USER_TS_COLS = new Set(['createdAt', 'convertedAt', 'lastSeenAt', 'marketingOptInAt']);
+const USER_COLS = ['email', 'uid', 'founding', 'foundingCode', 'foundingClaimedAt', 'marketingOptIn', 'marketingOptInAt', 'createdAt', 'convertedAt', 'paid', 'paidVia', 'firstTouchSrc', 'lastSignInMethod', 'lastSeenAt', 'anonId'];
+const USER_TS_COLS = new Set(['createdAt', 'convertedAt', 'lastSeenAt', 'marketingOptInAt', 'foundingClaimedAt']);
 function usersToCSV(rows) {
   const lines = [USER_COLS.join(',')];
   for (const r of rows) {
@@ -141,8 +141,6 @@ export default function AnalyticsAdminPage() {
     [events, env, cutoff, excludeInternal],
   );
 
-  const stats = useMemo(() => computeStats(rows), [rows]);
-
   const usersShown = useMemo(() => {
     if (!users) return [];
     return excludeInternal
@@ -150,9 +148,29 @@ export default function AnalyticsAdminPage() {
       : users;
   }, [users, excludeInternal]);
 
+  // Founding-pass model (no real payments): a "conversion" = a user who claimed
+  // their free promo code. The durable truth is users/{uid}.founding +
+  // foundingClaimedAt. Feed the in-window claimers into the funnels so the
+  // conversion step reflects claims, not payments.
+  const foundingSets = useMemo(() => {
+    const foundingAnonIds = new Set();
+    const foundingUserIds = new Set();
+    for (const u of usersShown) {
+      const m = tsToMs(u.foundingClaimedAt);
+      if (u.founding && m != null && m >= cutoff) {
+        if (u.uid) foundingUserIds.add(u.uid);
+        if (u.anonId) foundingAnonIds.add(u.anonId);
+      }
+    }
+    return { foundingAnonIds, foundingUserIds };
+  }, [usersShown, cutoff]);
+
+  const stats = useMemo(() => computeStats(rows, foundingSets), [rows, foundingSets]);
+
   const userCounts = useMemo(() => ({
     newSignups: usersShown.filter((u) => { const m = tsToMs(u.createdAt); return m != null && m >= cutoff; }).length,
-    newPaying: usersShown.filter((u) => { const m = tsToMs(u.convertedAt); return m != null && m >= cutoff; }).length,
+    newFounding: usersShown.filter((u) => { const m = tsToMs(u.foundingClaimedAt); return u.founding && m != null && m >= cutoff; }).length,
+    totalFounding: usersShown.filter((u) => u.founding).length,
     newOptIns: usersShown.filter((u) => { const m = tsToMs(u.marketingOptInAt); return m != null && m >= cutoff; }).length,
     totalOptIns: usersShown.filter((u) => u.marketingOptIn).length,
   }), [usersShown, cutoff]);
@@ -221,9 +239,12 @@ export default function AnalyticsAdminPage() {
       <div style={cardRow}>
         <Stat label="Active users" value={stats.activeUsers} hint="logged in + played a game" />
         <Stat label="New sign-ups" value={userCounts.newSignups} hint="accounts created in window" />
-        <Stat label="New paying users" value={userCounts.newPaying} hint="converted to paid in window" />
-        <Stat label="Successful payments" value={stats.successfulPayments} hint="purchase events in window" />
+        <Stat label="Founding members" value={userCounts.newFounding} hint={`claimed free access in window · ${userCounts.totalFounding.toLocaleString()} total`} />
+        <Stat label="Entered checkout flow" value={stats.flowEntered} hint="reached the claim/checkout page" />
         <Stat label="Marketing opt-ins" value={userCounts.newOptIns} hint={`new in window · ${userCounts.totalOptIns.toLocaleString()} total`} />
+        {stats.successfulPayments > 0 && (
+          <Stat label="Real payments" value={stats.successfulPayments} hint="Stripe purchase events in window" />
+        )}
       </div>
 
       {/* ═══ Section 2 — Funnel & Interaction ═══ */}
@@ -244,7 +265,7 @@ export default function AnalyticsAdminPage() {
             <FunnelBar label="Signed in" count={A.signed} total={A.universe} />
             <FunnelBar label="Reached checkout" count={A.checkout} total={A.universe} />
             <Breakdown head={['Checkout source (via)', 'People']} rows={A.checkoutVia} empty="No checkouts." />
-            <FunnelBar label="Purchased" count={A.purchased} total={A.universe} />
+            <FunnelBar label="Claimed pass" count={A.converted} total={A.universe} />
           </>
         )}
       </Section>
@@ -263,7 +284,7 @@ export default function AnalyticsAdminPage() {
             <StepLabel>Free-user conversion</StepLabel>
             <FunnelBar label="Free users who reached checkout" count={B.freeCheckout} total={B.universe} />
             <Breakdown head={['Checkout source (via)', 'People']} rows={B.checkoutVia} empty="No checkouts." />
-            <FunnelBar label="Purchased" count={B.purchased} total={B.universe} />
+            <FunnelBar label="Claimed pass" count={B.converted} total={B.universe} />
           </>
         )}
       </Section>
@@ -369,9 +390,10 @@ function Definitions() {
         <DefGroup title="Users (Section 1)">
           <Def term="Active users">distinct signed-in accounts that opened a game in the window (played, even if not completed).</Def>
           <Def term="New sign-ups">accounts whose profile was first created in the window.</Def>
-          <Def term="New paying users">accounts that converted to paid in the window (from the users table).</Def>
-          <Def term="Successful payments">count of purchase events in the window — a cross-check on new paying users (from the event log).</Def>
+          <Def term="Founding members">accounts that claimed their free promo code in the window (the current “conversion” — access is free, no payment). Total in the hint.</Def>
+          <Def term="Entered checkout flow">distinct people who reached the claim/checkout page in the window (whether or not they finished).</Def>
           <Def term="Marketing opt-ins">accounts that ticked the email opt-in (new in window; total in the hint).</Def>
+          <Def term="Real payments">only shown if any Stripe purchases exist — count of real payment events (the model is free promo codes for now, so normally hidden).</Def>
         </DefGroup>
 
         <DefGroup title="Funnel A — Landing visitors">
@@ -379,13 +401,13 @@ function Definitions() {
           <Def term="Played a demo game">opened any game.</Def>
           <Def term="Other landing interactions">top 5 non-demo button/item taps.</Def>
           <Def term="Signed in">went on to create/enter an account.</Def>
-          <Def term="Reached checkout / Purchased">opened checkout (split by via) / completed a purchase.</Def>
+          <Def term="Reached checkout / Claimed pass">opened checkout (split by via) / claimed the free founding pass (or, if ever live, paid). Conversion = a founding claim OR a real purchase.</Def>
         </DefGroup>
 
         <DefGroup title="Funnel B — Hub visitors">
           <Def term="Visited games hub">signed-in users who opened the hub (the universe).</Def>
           <Def term="Paying / Free users played">users who opened a game while paid / free, split by game.</Def>
-          <Def term="Free reached checkout / Purchased">free users who opened checkout (split by via) / bought.</Def>
+          <Def term="Free reached checkout / Claimed pass">free users who opened checkout (split by via) / claimed the free pass.</Def>
         </DefGroup>
 
         <DefGroup title="Reading the funnels">

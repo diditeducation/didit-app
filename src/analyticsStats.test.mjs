@@ -74,7 +74,7 @@ assert.deepEqual(
 assert.equal(A.signed, 1, 'A.signed = p1 only');
 assert.equal(A.checkout, 1, 'A.checkout = p1');
 assert.deepEqual(A.checkoutVia, [['landing', 1]], 'A.checkoutVia');
-assert.equal(A.purchased, 1, 'A.purchased = p1');
+assert.equal(A.converted, 1, 'A.converted = p1 (purchase, no founding sets)');
 
 // ── Funnel B assertions ──
 assert.equal(B.universe, 3, 'B.universe = u2,u3,u4 (u5 never visited hub)');
@@ -88,11 +88,24 @@ assert.deepEqual(
 );
 assert.equal(B.freeCheckout, 2, 'B.freeCheckout = u3,u4');
 assert.deepEqual(B.checkoutVia, [['hub_grid', 2]], 'B.checkoutVia');
-assert.equal(B.purchased, 1, 'B.purchased = u4');
+assert.equal(B.converted, 1, 'B.converted = u4 (purchase, no founding sets)');
 
 // ── Section 2 ──
 assert.equal(s.activeUsers, 4, 'activeUsers = u2,u3,u4,u5 (any signed-in game_open)');
 assert.equal(s.successfulPayments, 2, 'successfulPayments = p1 + u4 purchase_success events');
+assert.equal(s.flowEntered, 3, 'flowEntered = u1,u3,u4 (distinct checkout_view people)');
+
+// ── Founding model: claim = conversion (free promo code, no payment) ──
+{
+  const f = computeStats(rows, { foundingAnonIds: new Set(['p2']), foundingUserIds: new Set(['u3']) });
+  // Funnel A converted = p1 (purchase) + p2 (founding claim, in landing universe)
+  assert.equal(f.funnelA.converted, 2, 'A.converted = purchase ∪ founding claim');
+  // Funnel B converted = u4 (purchase) + u3 (founding claim, in hub universe)
+  assert.equal(f.funnelB.converted, 2, 'B.converted = purchase ∪ founding claim');
+  // A founding anonId NOT in the landing universe must not inflate it
+  const f2 = computeStats(rows, { foundingAnonIds: new Set(['zzz']), foundingUserIds: new Set() });
+  assert.equal(f2.funnelA.converted, 1, 'founding outside universe is ignored');
+}
 
 // ── filterRows: env filter ──────────────────────────────────────────────────
 {
